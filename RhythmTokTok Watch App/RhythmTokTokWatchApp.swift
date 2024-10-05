@@ -1,6 +1,6 @@
 //
 //  RhythmTokTokWatchApp.swift
-//  RhythmTokTokWatch Watch App
+//  RhythmTokTokWatchApp
 //
 //  Created by 백록담 on 10/5/24.
 //
