@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  RhythmTokTokWatch Watch App
+//  RhythmTokTokWatchWatchApp
 //
 //  Created by 백록담 on 10/5/24.
 //

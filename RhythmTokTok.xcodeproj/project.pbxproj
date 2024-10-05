@@ -19,7 +19,7 @@
 		02CFE1242CB1156C008454B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1232CB1156C008454B8 /* ContentView.swift */; };
 		02CFE1262CB1156D008454B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1252CB1156D008454B8 /* Assets.xcassets */; };
 		02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */; };
-		02CFE12C2CB1156D008454B8 /* RhythmTokTok Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTok Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +28,7 @@
 			containerPortal = 02BFECE02CB10A13003CEC8A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 02CFE11E2CB1156C008454B8;
-			remoteInfo = "RhythmTokTok Watch App";
+			remoteInfo = "RhythmTokTokWatchApp";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -39,7 +39,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				02CFE12C2CB1156D008454B8 /* RhythmTokTok Watch App.app in Embed Watch Content */,
+				02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,7 +57,7 @@
 		02BFECFA2CB10A15003CEC8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BFECFC2CB10A15003CEC8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02BFED032CB10B52003CEC8A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		02CFE11F2CB1156C008454B8 /* RhythmTokTok Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RhythmTokTok Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RhythmTokTokWatchApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CFE1212CB1156C008454B8 /* RhythmTokTokWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RhythmTokTokWatchApp.swift; sourceTree = "<group>"; };
 		02CFE1232CB1156C008454B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 			children = (
 				02BFED032CB10B52003CEC8A /* .swiftlint.yml */,
 				02BFECEA2CB10A13003CEC8A /* RhythmTokTok */,
-				02CFE1202CB1156C008454B8 /* RhythmTokTok Watch App */,
+				02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */,
 				02BFECE92CB10A13003CEC8A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -96,7 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */,
-				02CFE11F2CB1156C008454B8 /* RhythmTokTok Watch App.app */,
+				02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,7 +116,7 @@
 			path = RhythmTokTok;
 			sourceTree = "<group>";
 		};
-		02CFE1202CB1156C008454B8 /* RhythmTokTok Watch App */ = {
+		02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */ = {
 			isa = PBXGroup;
 			children = (
 				02CFE1212CB1156C008454B8 /* RhythmTokTokWatchApp.swift */,
@@ -124,7 +124,7 @@
 				02CFE1252CB1156D008454B8 /* Assets.xcassets */,
 				02CFE1272CB1156D008454B8 /* Preview Content */,
 			);
-			path = "RhythmTokTok Watch App";
+			path = "RhythmTokTokWatchApp";
 			sourceTree = "<group>";
 		};
 		02CFE1272CB1156D008454B8 /* Preview Content */ = {
@@ -158,9 +158,9 @@
 			productReference = 02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */;
 			productType = "com.apple.product-type.application";
 		};
-		02CFE11E2CB1156C008454B8 /* RhythmTokTok Watch App */ = {
+		02CFE11E2CB1156C008454B8 /* RhythmTokTokWatchApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 02CFE12D2CB1156D008454B8 /* Build configuration list for PBXNativeTarget "RhythmTokTok Watch App" */;
+			buildConfigurationList = 02CFE12D2CB1156D008454B8 /* Build configuration list for PBXNativeTarget "RhythmTokTokWatchApp" */;
 			buildPhases = (
 				02CFE11B2CB1156C008454B8 /* Sources */,
 				02CFE11C2CB1156C008454B8 /* Frameworks */,
@@ -170,9 +170,9 @@
 			);
 			dependencies = (
 			);
-			name = "RhythmTokTok Watch App";
-			productName = "RhythmTokTok Watch App";
-			productReference = 02CFE11F2CB1156C008454B8 /* RhythmTokTok Watch App.app */;
+			name = "RhythmTokTokWatchApp";
+			productName = "RhythmTokTokWatchApp";
+			productReference = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -207,7 +207,7 @@
 			projectRoot = "";
 			targets = (
 				02BFECE72CB10A13003CEC8A /* RhythmTokTok */,
-				02CFE11E2CB1156C008454B8 /* RhythmTokTok Watch App */,
+				02CFE11E2CB1156C008454B8 /* RhythmTokTokWatchApp */,
 			);
 		};
 /* End PBXProject section */
@@ -282,7 +282,7 @@
 /* Begin PBXTargetDependency section */
 		02CFE12B2CB1156D008454B8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 02CFE11E2CB1156C008454B8 /* RhythmTokTok Watch App */;
+			target = 02CFE11E2CB1156C008454B8 /* RhythmTokTokWatchApp */;
 			targetProxy = 02CFE12A2CB1156D008454B8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -495,7 +495,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTok Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 7D79VTP9PN;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -526,7 +526,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTok Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 7D79VTP9PN;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -571,7 +571,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		02CFE12D2CB1156D008454B8 /* Build configuration list for PBXNativeTarget "RhythmTokTok Watch App" */ = {
+		02CFE12D2CB1156D008454B8 /* Build configuration list for PBXNativeTarget "RhythmTokTokWatchApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				02CFE12E2CB1156D008454B8 /* Debug */,
