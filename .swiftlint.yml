@@ -1,0 +1,18 @@
+disabled_rules: # Default Rules에서 비활성화할 규칙
+    
+    # 라인 뒤에 공백이 없어야 합니다. https://realm.github.io/SwiftLint/trailing_whitespace.html
+    - trailing_whitespace
+
+    # 강제 캐스팅은 피해야합니다. https://realm.github.io/SwiftLint/force_cast.html
+    - force_cast
+
+    # 강제 언래핑은 피해야합니다. https://realm.github.io/SwiftLint/force_unwrapping.html
+    - force_unwrapping
+opt_in_rules:
+    # .count==0 보다는 .isEmpty를 사용하는 것이 좋습니다. https://realm.github.io/SwiftLint/empty_count.html
+    - empty_count
+
+    # 빈 String 문자열과 비교하는 것 보다는 .isEmpty를 사용하는 것이 좋습니다. https://realm.github.io/SwiftLint/empty_string.html
+    - empty_string
+excluded:
+    - .github
