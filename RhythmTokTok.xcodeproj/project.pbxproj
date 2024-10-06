@@ -20,6 +20,7 @@
 		02CFE1262CB1156D008454B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1252CB1156D008454B8 /* Assets.xcassets */; };
 		02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */; };
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +29,7 @@
 			containerPortal = 02BFECE02CB10A13003CEC8A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 02CFE11E2CB1156C008454B8;
-			remoteInfo = "RhythmTokTokWatchApp";
+			remoteInfo = RhythmTokTokWatchApp;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -57,11 +58,12 @@
 		02BFECFA2CB10A15003CEC8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BFECFC2CB10A15003CEC8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02BFED032CB10B52003CEC8A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RhythmTokTokWatchApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTokWatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CFE1212CB1156C008454B8 /* RhythmTokTokWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RhythmTokTokWatchApp.swift; sourceTree = "<group>"; };
 		02CFE1232CB1156C008454B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaMannager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */,
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
 				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
+				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
 				02BFECF12CB10A13003CEC8A /* Main.storyboard */,
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
 				02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */,
@@ -124,7 +127,7 @@
 				02CFE1252CB1156D008454B8 /* Assets.xcassets */,
 				02CFE1272CB1156D008454B8 /* Preview Content */,
 			);
-			path = "RhythmTokTokWatchApp";
+			path = RhythmTokTokWatchApp;
 			sourceTree = "<group>";
 		};
 		02CFE1272CB1156D008454B8 /* Preview Content */ = {
@@ -170,8 +173,8 @@
 			);
 			dependencies = (
 			);
-			name = "RhythmTokTokWatchApp";
-			productName = "RhythmTokTokWatchApp";
+			name = RhythmTokTokWatchApp;
+			productName = RhythmTokTokWatchApp;
 			productReference = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -202,6 +205,9 @@
 				Base,
 			);
 			mainGroup = 02BFECDF2CB10A13003CEC8A;
+			packageReferences = (
+				1E3E09102CB2954C00EE1868 /* XCRemoteSwiftPackageReference "AudioKit" */,
+			);
 			productRefGroup = 02BFECE92CB10A13003CEC8A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -265,6 +271,7 @@
 				02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
+				1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -581,6 +588,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1E3E09102CB2954C00EE1868 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCVersionGroup section */
 		02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */ = {
