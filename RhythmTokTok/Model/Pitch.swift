@@ -4,6 +4,7 @@
 //
 //  Created by sungkug_apple_developer_ac on 10/6/24.
 //
+import Foundation
 
 enum Pitch: String {
     case C4, D4, E4, F4, G4, A4, B4, C5
