@@ -21,6 +21,7 @@
 		02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */; };
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */; };
+		1E3E09132CB295D800EE1868 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1E3E09122CB295D800EE1868 /* AudioKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E3E09132CB295D800EE1868 /* AudioKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +92,7 @@
 				02BFED032CB10B52003CEC8A /* .swiftlint.yml */,
 				02BFECEA2CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */,
+				1E3E09112CB295D800EE1868 /* Frameworks */,
 				02BFECE92CB10A13003CEC8A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -136,6 +139,13 @@
 				02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1E3E09112CB295D800EE1868 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -599,6 +609,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1E3E09122CB295D800EE1868 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E3E09102CB2954C00EE1868 /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = AudioKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */ = {
