@@ -7,3 +7,7 @@
 
 import AudioKit
 import AVFoundation
+
+struct MediaMannager {
+    
+}

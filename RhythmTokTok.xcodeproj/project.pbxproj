@@ -22,6 +22,8 @@
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */; };
 		1E3E09132CB295D800EE1868 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1E3E09122CB295D800EE1868 /* AudioKit */; };
+		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
+		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,8 @@
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaMannager.swift; sourceTree = "<group>"; };
+		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
+		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,7 @@
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
 				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
+				1E3E09142CB2987E00EE1868 /* Model */,
 				02BFECF12CB10A13003CEC8A /* Main.storyboard */,
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
 				02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */,
@@ -146,6 +151,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1E3E09142CB2987E00EE1868 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E09152CB2988300EE1868 /* Measure.swift */,
+				1E3E09172CB298A900EE1868 /* Note.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,7 +291,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
+				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
