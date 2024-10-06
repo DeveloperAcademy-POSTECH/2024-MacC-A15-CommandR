@@ -9,15 +9,16 @@ import AudioKit
 import AVFoundation
 
 struct MediaMannager {
+    private let volumeScale: Float32 = 5.0 // 볼륨
     private var bpm = 60
     private var outputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output.wav").path()
     
-    func getMediaFile(xmlData: Data) {
-        Task {
-            let parsedMeasures = await parseMusicXMLData(xmlData: xmlData)
-            createMediaFile(from: parsedMeasures.flatMap { $0.notes })
-        }
+    func getMediaFile(xmlData: Data) async throws -> URL {
+        let parsedMeasures = await parseMusicXMLData(xmlData: xmlData)
+        let outputURL = try await createMediaFile(from: parsedMeasures.flatMap { $0.notes })
+        return outputURL
     }
+    
     
     func parseMusicXMLData(xmlData: Data) async -> [Measure]{
         
@@ -59,18 +60,16 @@ struct MediaMannager {
         }
     }
     
-    func createMediaFile(from notes: [Note]) {
+    func createMediaFile(from notes: [Note]) async throws -> URL {
         let outputURL = URL(fileURLWithPath: outputPath)
 
         do {
-            // 오디오 파일을 `.wav`로 생성
             let firstNoteFileURL = filePath(for: notes[0].pitch)!
             let channelCount = getChannelCount(of: firstNoteFileURL)
             let sampleRate = 44100.0
             let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: sampleRate, channels: channelCount, interleaved: false)
             let file = try AVAudioFile(forWriting: outputURL, settings: format!.settings)
             
-            // 모든 음표를 처리
             for note in notes {
                 guard let fileURL = filePath(for: note.pitch) else {
                     print("Audio file not found for pitch: \(note.pitch)")
@@ -79,17 +78,17 @@ struct MediaMannager {
                 
                 let durationInSeconds = Double(note.duration) / Double(bpm) * 60.0
                 
-                // 오디오 샘플을 로드하여 버퍼에 합성
                 try writeSample(fileURL: fileURL, duration: durationInSeconds, format: format!, audioFile: file)
             }
             
             print("Media file created at \(outputURL.path)")
+            return outputURL
         } catch {
             print("Error creating audio file: \(error)")
+            throw error
         }
     }
     
-    // 오디오 샘플을 재생하고 버퍼에 쓰기
     func writeSample(fileURL: URL, duration: Double, format: AVAudioFormat, audioFile: AVAudioFile) throws {
         let sourceAudioFile = try AVAudioFile(forReading: fileURL)
         
@@ -99,9 +98,7 @@ struct MediaMannager {
         }
         
         try sourceAudioFile.read(into: buffer)
-        
-        // 버퍼 볼륨 조정
-        let volumeScale: Float32 = 5.0 // 볼륨을 크게 조정하고 싶다면 1.0보다 크게 설정
+       
         for channel in 0..<Int(buffer.format.channelCount) {
             if let channelData = buffer.floatChannelData?[channel] {
                 for frame in 0..<Int(buffer.frameLength) {
@@ -110,15 +107,14 @@ struct MediaMannager {
             }
         }
         
-        // 버퍼 길이 조절: `duration`에 따라 `frameLength` 설정
         let frameCount = AVAudioFrameCount(duration * format.sampleRate)
         buffer.frameLength = min(frameCount, buffer.frameCapacity)
         
-        // 생성된 버퍼를 오디오 파일에 작성
         do {
             try audioFile.write(from: buffer)
         } catch {
             print("Error writing audio buffer to file: \(error)")
+            throw error
         }
     }
 }
