@@ -23,6 +23,7 @@ class LoadingViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupActions()
+        generateMusicXMLAudio()
     }
     
     private func setupUI() {
