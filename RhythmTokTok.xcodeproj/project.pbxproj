@@ -24,6 +24,7 @@
 		1E3E09132CB295D800EE1868 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1E3E09122CB295D800EE1868 /* AudioKit */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
+		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaMannager.swift; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicXMLParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
 				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
+				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
 				1E3E09142CB2987E00EE1868 /* Model */,
 				02BFECF12CB10A13003CEC8A /* Main.storyboard */,
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
@@ -293,6 +296,7 @@
 			files = (
 				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
+				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
