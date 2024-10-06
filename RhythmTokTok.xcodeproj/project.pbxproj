@@ -42,6 +42,7 @@
 		1E3E093B2CB2AAB400EE1868 /* me.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09292CB2AAB400EE1868 /* me.mp3 */; };
 		1E3E093C2CB2AAB400EE1868 /* rah.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09262CB2AAB400EE1868 /* rah.mp3 */; };
 		1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E092E2CB2AAB400EE1868 /* pa.mp3 */; };
+		1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		1E3E092D2CB2AAB400EE1868 /* si.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = si.mp3; path = RhythmTokTok/Resources/si.mp3; sourceTree = SOURCE_ROOT; };
 		1E3E092E2CB2AAB400EE1868 /* pa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pa.mp3; path = RhythmTokTok/Resources/pa.mp3; sourceTree = SOURCE_ROOT; };
 		1E3E092F2CB2AAB400EE1868 /* pah.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pah.mp3; path = RhythmTokTok/Resources/pah.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MahlFaGe4Sample.musicxml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 				1E3E09222CB2AAB400EE1868 /* do.mp3 */,
 				1E3E09232CB2AAB400EE1868 /* dohigh.mp3 */,
 				1E3E09242CB2AAB400EE1868 /* doh.mp3 */,
+				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
 				1E3E09252CB2AAB400EE1868 /* ra.mp3 */,
 				1E3E09262CB2AAB400EE1868 /* rah.mp3 */,
 				1E3E09272CB2AAB400EE1868 /* re.mp3 */,
@@ -335,6 +338,7 @@
 				1E3E093B2CB2AAB400EE1868 /* me.mp3 in Resources */,
 				1E3E093C2CB2AAB400EE1868 /* rah.mp3 in Resources */,
 				1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */,
+				1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
