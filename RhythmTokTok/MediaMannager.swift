@@ -10,6 +10,7 @@ import AVFoundation
 
 struct MediaMannager {
     private let volumeScale: Float32 = 5.0 // 볼륨
+    private let quarterNoteDuration = 1.0 // 예: 1초를 의미할 경우
     private var bpm = 60
     private var outputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.wav").path()
     
@@ -76,7 +77,7 @@ struct MediaMannager {
                     continue
                 }
                 
-                let durationInSeconds = Double(note.duration) / Double(bpm) * 60.0
+                let durationInSeconds = Double(note.duration) / Double(bpm) * 60.0 / quarterNoteDuration
 
                 try writeSample(fileURL: fileURL, duration: durationInSeconds, format: format!, audioFile: file)
             }
