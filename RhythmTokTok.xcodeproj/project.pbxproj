@@ -114,13 +114,13 @@
 		1E3E092E2CB2AAB400EE1868 /* pa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pa.mp3; path = RhythmTokTok/Resources/Sound/pa.mp3; sourceTree = SOURCE_ROOT; };
 		1E3E092F2CB2AAB400EE1868 /* pah.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pah.mp3; path = RhythmTokTok/Resources/Sound/pah.mp3; sourceTree = SOURCE_ROOT; };
 		1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MahlFaGe4Sample.musicxml; sourceTree = "<group>"; };
-		1E3E09412CB3ED5000EE1868 /* speechDo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechDo.mp3; sourceTree = "<group>"; };
-		1E3E09442CB3EDA500EE1868 /* speechRe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechRe.mp3; sourceTree = "<group>"; };
-		1E3E09462CB3EDD800EE1868 /* speechMe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechMe.mp3; sourceTree = "<group>"; };
-		1E3E09482CB3EE0600EE1868 /* speechPa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechPa.mp3; sourceTree = "<group>"; };
-		1E3E094A2CB3EE3D00EE1868 /* speechSol.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechSol.mp3; sourceTree = "<group>"; };
-		1E3E094C2CB3EE6700EE1868 /* speechRa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechRa.mp3; sourceTree = "<group>"; };
-		1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechSi.mp3; sourceTree = "<group>"; };
+		1E3E09412CB3ED5000EE1868 /* speechDo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechDo.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechDo.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09442CB3EDA500EE1868 /* speechRe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechRe.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechRe.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09462CB3EDD800EE1868 /* speechMe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechMe.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechMe.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09482CB3EE0600EE1868 /* speechPa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechPa.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechPa.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E094A2CB3EE3D00EE1868 /* speechSol.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechSol.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechSol.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E094C2CB3EE6700EE1868 /* speechRa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechRa.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechRa.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechSi.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechSi.mp3; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,8 +233,9 @@
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
 			);
-			path = Resources;
-			sourceTree = "<group>";
+			name = Resources;
+			path = RhythmTokTok/Resources;
+			sourceTree = SOURCE_ROOT;
 		};
 		1E3E09432CB3ED5400EE1868 /* Sound */ = {
 			isa = PBXGroup;
@@ -255,8 +256,9 @@
 				1E3E09282CB2AAB400EE1868 /* reh.mp3 */,
 				1E3E09292CB2AAB400EE1868 /* me.mp3 */,
 			);
-			path = Sound;
-			sourceTree = "<group>";
+			name = Sound;
+			path = RhythmTokTok/Resources/Sound;
+			sourceTree = SOURCE_ROOT;
 		};
 		1E3E09502CB3EEA100EE1868 /* Speech */ = {
 			isa = PBXGroup;
@@ -269,8 +271,9 @@
 				1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */,
 				1E3E094A2CB3EE3D00EE1868 /* speechSol.mp3 */,
 			);
-			path = Speech;
-			sourceTree = "<group>";
+			name = Speech;
+			path = RhythmTokTok/Resources/Sound/Speech;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 

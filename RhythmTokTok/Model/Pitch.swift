@@ -18,14 +18,14 @@ enum Pitch: String {
     // 음계에 해당하는 파일명
     var fileName: String {
         switch self {
-        case .C4, .C2, .C3: return "do"
-        case .D4, .D1, .D2, .D3, .D5: return "re"
-        case .E4, .E1, .E2, .E3, .E5: return "me"
-        case .F4, .F1, .F2, .F3, .F5: return "pa"
-        case .G4, .G1, .G2, .G3, .G5: return "sol"
-        case .A4, .A1, .A2, .A3, .A5: return "ra"
-        case .B4, .B1, .B2, .B3, .B5: return "si"
-        case .C5: return "dohigh"
+        case .C4, .C2, .C3: return "speechDo"
+        case .D4, .D1, .D2, .D3, .D5: return "speechRe"
+        case .E4, .E1, .E2, .E3, .E5: return "speechMe"
+        case .F4, .F1, .F2, .F3, .F5: return "speechPa"
+        case .G4, .G1, .G2, .G3, .G5: return "speechSol"
+        case .A4, .A1, .A2, .A3, .A5: return "speechRa"
+        case .B4, .B1, .B2, .B3, .B5: return "speechSi"
+        case .C5: return "speechDo"
         case .silence: return "silence"
         }
     }
