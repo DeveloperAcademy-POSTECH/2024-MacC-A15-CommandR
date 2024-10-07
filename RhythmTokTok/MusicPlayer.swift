@@ -18,7 +18,7 @@ class MusicPlayer: ObservableObject {
             try AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
-            print("Failed to set AVAudioSession: \(error)")
+            print("Error [MusicPlayer]: Failed to set AVAudioSession: \(error)")
         }
     }
     
@@ -31,7 +31,7 @@ class MusicPlayer: ObservableObject {
             player?.prepareToPlay()
             print("Audio player initialized successfully.")
         } catch {
-            print("Error loading audio file: \(error)")
+            print("Error [MusicPlayer]: loading audio file: \(error)")
         }
     }
     

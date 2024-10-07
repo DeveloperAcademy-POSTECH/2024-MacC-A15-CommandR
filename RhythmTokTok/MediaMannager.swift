@@ -26,14 +26,6 @@ struct MediaMannager {
         let parser = MusicXMLParser()
         let measures = await parser.parseMusicXML(from: xmlData)
         
-        // 파싱이 완료된 후에 작업을 처리, 확인용 프린트
-//        print("Parsed measures count: \(measures.count)")
-//        for measure in measures {
-//            for note in measure.notes {
-//                print("Pitch: \(note.pitch), Duration: \(note.duration)")
-//            }
-//        }
-//        
         return measures
     }
     
@@ -46,7 +38,7 @@ struct MediaMannager {
         if let pitchEnum = Pitch(rawValue: pitch) {
             return pitchEnum.fileURL
         } else {
-            print("Pitch not found in enum: \(pitch)")
+            print("Error [MediaMannager]:  Pitch not found in enum: \(pitch)")
             return nil
         }
     }
@@ -56,8 +48,8 @@ struct MediaMannager {
             let audioFile = try AVAudioFile(forReading: url)
             return audioFile.processingFormat.channelCount
         } catch {
-            print("Error reading audio file: \(error)")
-            return 1 // default to mono if there's an error
+            print("Error [MediaMannager]: reading audio file: \(error)")
+            return 1
         }
     }
     
@@ -73,7 +65,7 @@ struct MediaMannager {
 
             for note in notes {
                 guard let fileURL = filePath(for: note.pitch) else {
-                    print("Audio file not found for pitch: \(note.pitch), duration \(note.duration)")
+                    print("Error [MediaMannager]: Audio file not found for pitch: \(note.pitch)")
                     continue
                 }
                 
@@ -82,10 +74,10 @@ struct MediaMannager {
                 try writeSample(fileURL: fileURL, duration: durationInSeconds, format: format!, audioFile: file)
             }
             
-            print("Media file created at \(outputURL.path)")
+//            print("Media file created at \(outputURL.path)")
             return outputURL
         } catch {
-            print("Error creating audio file: \(error)")
+            print("Error [MediaMannager]: creating audio file: \(error)")
             throw error
         }
     }
@@ -94,19 +86,19 @@ struct MediaMannager {
     func convertChannelCount(buffer: AVAudioPCMBuffer, to targetChannelCount: AVAudioChannelCount) -> AVAudioPCMBuffer? {
         // 대상 포맷 생성
         guard let targetFormat = AVAudioFormat(commonFormat: buffer.format.commonFormat, sampleRate: buffer.format.sampleRate, channels: targetChannelCount, interleaved: buffer.format.isInterleaved) else {
-            print("Failed to create target format for channel conversion.")
+            print("Error [MediaMannager]: Failed to create target format for channel conversion.")
             return nil
         }
         
         // AVAudioConverter 생성
         guard let converter = AVAudioConverter(from: buffer.format, to: targetFormat) else {
-            print("Failed to create AVAudioConverter.")
+            print("Error [MediaMannager]: Failed to create AVAudioConverter.")
             return nil
         }
         
         // 변환된 버퍼 생성
         guard let convertedBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat, frameCapacity: buffer.frameCapacity) else {
-            print("Failed to create converted buffer.")
+            print("Error [MediaMannager]: Failed to create converted buffer.")
             return nil
         }
         
@@ -119,7 +111,7 @@ struct MediaMannager {
         }
         
         if let error = error {
-            print("Error during conversion: \(error)")
+            print("Error [MediaMannager]: during conversion: \(error)")
             return nil
         }
         
@@ -130,7 +122,7 @@ struct MediaMannager {
         let sourceAudioFile = try AVAudioFile(forReading: fileURL)
         
         guard let sourceBuffer = AVAudioPCMBuffer(pcmFormat: sourceAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(sourceAudioFile.length)) else {
-            print("Failed to create buffer for source file.")
+            print("Error [MediaMannager]: Failed to create buffer for source file.")
             return
         }
         
@@ -141,7 +133,7 @@ struct MediaMannager {
         // 채널 카운트가 다를 경우 변환
         if sourceBuffer.format.channelCount != format.channelCount {
             guard let convertedBuffer = convertChannelCount(buffer: sourceBuffer, to: format.channelCount) else {
-                print("Failed to convert buffer channel count.")
+                print("Error [MediaMannager]: Failed to convert buffer channel count.")
                 return
             }
             bufferToWrite = convertedBuffer
@@ -164,47 +156,8 @@ struct MediaMannager {
         do {
             try audioFile.write(from: bufferToWrite)
         } catch {
-            print("Error writing audio buffer to file: \(error)")
+            print("Error [MediaMannager]: writing audio buffer to file: \(error)")
             throw error
-        }
-    }
-
-    
-    //파일 존재하면 삭제
-    func deleteFile(URL: URL) {
-        let fileManager = FileManager.default
-        
-        // 기존 파일이 있다면 삭제
-        if fileManager.fileExists(atPath: URL.path) {
-            do {
-                try fileManager.removeItem(at: URL)
-            } catch {
-                print("기존 파일 삭제 오류: \(error)")
-            }
-        }
-    }
-    
-    //파일권한 쓰기 확인
-    func checkWriteable(path: String) {
-        let fileManager = FileManager.default
-
-        // 쓰기 권한 확인
-        if fileManager.isWritableFile(atPath: path) {
-            print("파일에 쓰기 권한이 있습니다.")
-        } else {
-            print("파일에 쓰기 권한이 없습니다.")
-        }
-    }
-    
-    //파일권한 읽기 확인
-    func checkReadable(path: String) {
-        let fileManager = FileManager.default
-
-        // 읽기 권한 확인
-        if fileManager.isReadableFile(atPath: path) {
-            print("파일에 읽기 권한이 있습니다.")
-        } else {
-            print("파일에 읽기 권한이 없습니다.")
         }
     }
 }

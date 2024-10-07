@@ -64,7 +64,7 @@ class LoadingViewController: UIViewController {
         playMusicXMLButton.isEnabled = false
         playMusicXMLButton.addTarget(self, action: #selector(playMusicXML), for: .touchUpInside)
         
-            // combine으로 계속 값 업데이트
+        // combine으로 계속 값 업데이트
         musicPlayer.$currentTime.sink { [weak self] time in
             self?.currentTimeLabel.text = "Current Time: \(time)"
         }.store(in: &cancellables)
@@ -79,7 +79,7 @@ class LoadingViewController: UIViewController {
                 musicPlayer.loadAudioFile(url: outputPathURL)
                 musicPlayer.play()
             } else {
-                print("Error: Audio file not found at path \(outputPathURL.path)")
+                print("Error [LoadingViewController]: Audio file not found at path \(outputPathURL.path)")
             }
         }
         isPlayingMusicXML.toggle()
@@ -88,7 +88,7 @@ class LoadingViewController: UIViewController {
     private func generateMusicXMLAudio() {
         // MusicXML file 로드
         guard let xmlPath = Bundle.main.url(forResource: "MahlFaGe4Sample", withExtension: "musicxml") else {
-            print("Error: Failed to find MusicXML file in bundle.")
+            print("Error [LoadingViewController]: Failed to find MusicXML file in bundle.")
             return
         }
 
@@ -103,7 +103,7 @@ class LoadingViewController: UIViewController {
                 playMusicXMLButton.isEnabled = true
                 
             } catch {
-                print("Error loading MusicXML data: \(error.localizedDescription)")
+                print("Error [LoadingViewController]: loading MusicXML data: \(error.localizedDescription)")
             }
         }
     }
