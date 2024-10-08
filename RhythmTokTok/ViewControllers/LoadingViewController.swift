@@ -97,7 +97,7 @@ class LoadingViewController: UIViewController {
                 let xmlData = try Data(contentsOf: xmlPath)
                 print("Successfully loaded MusicXML data.")
                 // 미디어 파일 만들기
-                let mediaMannager = MediaMannager()
+                let mediaMannager = MediaManager()
                 outputPathURL = try await mediaMannager.getMediaFile(xmlData: xmlData)
                 print("Completed. Media file path: \(outputPathURL?.path ?? "No file created")")
                 playMusicXMLButton.isEnabled = true

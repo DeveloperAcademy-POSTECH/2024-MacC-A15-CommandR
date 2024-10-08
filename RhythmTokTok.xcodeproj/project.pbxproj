@@ -167,9 +167,9 @@
 			children = (
 				02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */,
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
-				1EF8A0A42CB53DF100ADB783 /* Manager */,
+				1EF8A0A42CB53DF100ADB783 /* Managers */,
 				1E3E09142CB2987E00EE1868 /* Models */,
-				1EF8A0A52CB53E2700ADB783 /* View */,
+				1EF8A0A52CB53E2700ADB783 /* Views */,
 				1E3E09212CB2A34700EE1868 /* ViewControllers */,
 				1E3E093E2CB2AAC500EE1868 /* Resources */,
 				1EF8A0A82CB53EAF00ADB783 /* Utils */,
@@ -275,20 +275,20 @@
 			path = RhythmTokTok/Resources/Sound/Speech;
 			sourceTree = SOURCE_ROOT;
 		};
-		1EF8A0A42CB53DF100ADB783 /* Manager */ = {
+		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
 			);
-			path = Manager;
+			path = Managers;
 			sourceTree = "<group>";
 		};
-		1EF8A0A52CB53E2700ADB783 /* View */ = {
+		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1EF8A0A72CB53E9A00ADB783 /* Components */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		1EF8A0A62CB53E6B00ADB783 /* Enum */ = {
@@ -363,7 +363,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					02BFECE72CB10A13003CEC8A = {
 						CreatedOnToolsVersion = 15.4;
@@ -641,7 +641,6 @@
 		02BFED002CB10A15003CEC8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -672,7 +671,6 @@
 		02BFED012CB10A15003CEC8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
