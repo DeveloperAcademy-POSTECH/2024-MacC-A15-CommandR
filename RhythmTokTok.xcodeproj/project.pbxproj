@@ -20,6 +20,43 @@
 		02CFE1262CB1156D008454B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1252CB1156D008454B8 /* Assets.xcassets */; };
 		02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */; };
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */; };
+		1E3E09132CB295D800EE1868 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1E3E09122CB295D800EE1868 /* AudioKit */; };
+		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
+		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
+		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
+		1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E091B2CB29E5100EE1868 /* Pitch.swift */; };
+		1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */; };
+		1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */; };
+		1E3E09302CB2AAB400EE1868 /* re.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09272CB2AAB400EE1868 /* re.mp3 */; };
+		1E3E09312CB2AAB400EE1868 /* doh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09242CB2AAB400EE1868 /* doh.mp3 */; };
+		1E3E09322CB2AAB400EE1868 /* ra.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09252CB2AAB400EE1868 /* ra.mp3 */; };
+		1E3E09332CB2AAB400EE1868 /* do.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09222CB2AAB400EE1868 /* do.mp3 */; };
+		1E3E09342CB2AAB400EE1868 /* reh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09282CB2AAB400EE1868 /* reh.mp3 */; };
+		1E3E09352CB2AAB400EE1868 /* pah.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E092F2CB2AAB400EE1868 /* pah.mp3 */; };
+		1E3E09362CB2AAB400EE1868 /* sol.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E092B2CB2AAB400EE1868 /* sol.mp3 */; };
+		1E3E09372CB2AAB400EE1868 /* solh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E092C2CB2AAB400EE1868 /* solh.mp3 */; };
+		1E3E09382CB2AAB400EE1868 /* dohigh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09232CB2AAB400EE1868 /* dohigh.mp3 */; };
+		1E3E09392CB2AAB400EE1868 /* si.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E092D2CB2AAB400EE1868 /* si.mp3 */; };
+		1E3E093A2CB2AAB400EE1868 /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E092A2CB2AAB400EE1868 /* silence.mp3 */; };
+		1E3E093B2CB2AAB400EE1868 /* me.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09292CB2AAB400EE1868 /* me.mp3 */; };
+		1E3E093C2CB2AAB400EE1868 /* rah.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09262CB2AAB400EE1868 /* rah.mp3 */; };
+		1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E092E2CB2AAB400EE1868 /* pa.mp3 */; };
+		1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */; };
+		1E3E09422CB3ED5000EE1868 /* speechDo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09412CB3ED5000EE1868 /* speechDo.mp3 */; };
+		1E3E09452CB3EDA500EE1868 /* speechRe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09442CB3EDA500EE1868 /* speechRe.mp3 */; };
+		1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09462CB3EDD800EE1868 /* speechMe.mp3 */; };
+		1E3E09492CB3EE0600EE1868 /* speechPa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E09482CB3EE0600EE1868 /* speechPa.mp3 */; };
+		1E3E094B2CB3EE3D00EE1868 /* speechSol.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E094A2CB3EE3D00EE1868 /* speechSol.mp3 */; };
+		1E3E094D2CB3EE6700EE1868 /* speechRa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E094C2CB3EE6700EE1868 /* speechRa.mp3 */; };
+		1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */; };
+		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
+		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
+		1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */; };
+		1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */; };
+		1EF8A0BA2CB55A5B00ADB783 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B92CB55A5500ADB783 /* NotificationManager.swift */; };
+		1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Empty.swift */; };
+		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +65,7 @@
 			containerPortal = 02BFECE02CB10A13003CEC8A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 02CFE11E2CB1156C008454B8;
-			remoteInfo = "RhythmTokTokWatchApp";
+			remoteInfo = RhythmTokTokWatchApp;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -57,11 +94,47 @@
 		02BFECFA2CB10A15003CEC8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BFECFC2CB10A15003CEC8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02BFED032CB10B52003CEC8A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RhythmTokTokWatchApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTokWatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02CFE1212CB1156C008454B8 /* RhythmTokTokWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RhythmTokTokWatchApp.swift; sourceTree = "<group>"; };
 		02CFE1232CB1156C008454B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaMannager.swift; sourceTree = "<group>"; };
+		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
+		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicXMLParser.swift; sourceTree = "<group>"; };
+		1E3E091B2CB29E5100EE1868 /* Pitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pitch.swift; sourceTree = "<group>"; };
+		1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
+		1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		1E3E09222CB2AAB400EE1868 /* do.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = do.mp3; path = RhythmTokTok/Resources/Sound/do.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09232CB2AAB400EE1868 /* dohigh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = dohigh.mp3; path = RhythmTokTok/Resources/Sound/dohigh.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09242CB2AAB400EE1868 /* doh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = doh.mp3; path = RhythmTokTok/Resources/Sound/doh.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09252CB2AAB400EE1868 /* ra.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = ra.mp3; path = RhythmTokTok/Resources/Sound/ra.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09262CB2AAB400EE1868 /* rah.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = rah.mp3; path = RhythmTokTok/Resources/Sound/rah.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09272CB2AAB400EE1868 /* re.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = re.mp3; path = RhythmTokTok/Resources/Sound/re.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09282CB2AAB400EE1868 /* reh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = reh.mp3; path = RhythmTokTok/Resources/Sound/reh.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09292CB2AAB400EE1868 /* me.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = me.mp3; path = RhythmTokTok/Resources/Sound/me.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E092A2CB2AAB400EE1868 /* silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = silence.mp3; path = RhythmTokTok/Resources/Sound/silence.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E092B2CB2AAB400EE1868 /* sol.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = sol.mp3; path = RhythmTokTok/Resources/Sound/sol.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E092C2CB2AAB400EE1868 /* solh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = solh.mp3; path = RhythmTokTok/Resources/Sound/solh.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E092D2CB2AAB400EE1868 /* si.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = si.mp3; path = RhythmTokTok/Resources/Sound/si.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E092E2CB2AAB400EE1868 /* pa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pa.mp3; path = RhythmTokTok/Resources/Sound/pa.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E092F2CB2AAB400EE1868 /* pah.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = pah.mp3; path = RhythmTokTok/Resources/Sound/pah.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MahlFaGe4Sample.musicxml; sourceTree = "<group>"; };
+		1E3E09412CB3ED5000EE1868 /* speechDo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechDo.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechDo.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09442CB3EDA500EE1868 /* speechRe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechRe.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechRe.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09462CB3EDD800EE1868 /* speechMe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechMe.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechMe.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E09482CB3EE0600EE1868 /* speechPa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechPa.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechPa.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E094A2CB3EE3D00EE1868 /* speechSol.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechSol.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechSol.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E094C2CB3EE6700EE1868 /* speechRa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechRa.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechRa.mp3; sourceTree = SOURCE_ROOT; };
+		1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechSi.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechSi.mp3; sourceTree = SOURCE_ROOT; };
+		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
+		1EF8A0B92CB55A5500ADB783 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		1EF8A0BB2CB55A6300ADB783 /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
+		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E3E09132CB295D800EE1868 /* AudioKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +162,7 @@
 				02BFED032CB10B52003CEC8A /* .swiftlint.yml */,
 				02BFECEA2CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */,
+				1E3E09112CB295D800EE1868 /* Frameworks */,
 				02BFECE92CB10A13003CEC8A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,8 +180,14 @@
 			isa = PBXGroup;
 			children = (
 				02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */,
+				1EF8A0A92CB559B300ADB783 /* Temp */,
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
-				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
+				1EF8A0A42CB53DF100ADB783 /* Managers */,
+				1E3E09142CB2987E00EE1868 /* Models */,
+				1EF8A0A52CB53E2700ADB783 /* Views */,
+				1E3E09212CB2A34700EE1868 /* ViewControllers */,
+				1E3E093E2CB2AAC500EE1868 /* Resources */,
+				1EF8A0A82CB53EAF00ADB783 /* Utils */,
 				02BFECF12CB10A13003CEC8A /* Main.storyboard */,
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
 				02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */,
@@ -124,7 +205,7 @@
 				02CFE1252CB1156D008454B8 /* Assets.xcassets */,
 				02CFE1272CB1156D008454B8 /* Preview Content */,
 			);
-			path = "RhythmTokTokWatchApp";
+			path = RhythmTokTokWatchApp;
 			sourceTree = "<group>";
 		};
 		02CFE1272CB1156D008454B8 /* Preview Content */ = {
@@ -133,6 +214,182 @@
 				02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1E3E09112CB295D800EE1868 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1E3E09142CB2987E00EE1868 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E09152CB2988300EE1868 /* Measure.swift */,
+				1E3E09172CB298A900EE1868 /* Note.swift */,
+				1EF8A0A62CB53E6B00ADB783 /* Enum */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
+				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		1E3E093E2CB2AAC500EE1868 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
+				1E3E09432CB3ED5400EE1868 /* Sound */,
+			);
+			name = Resources;
+			path = RhythmTokTok/Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+		1E3E09432CB3ED5400EE1868 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E09222CB2AAB400EE1868 /* do.mp3 */,
+				1E3E09232CB2AAB400EE1868 /* dohigh.mp3 */,
+				1E3E09242CB2AAB400EE1868 /* doh.mp3 */,
+				1E3E09252CB2AAB400EE1868 /* ra.mp3 */,
+				1E3E092A2CB2AAB400EE1868 /* silence.mp3 */,
+				1E3E092B2CB2AAB400EE1868 /* sol.mp3 */,
+				1E3E092C2CB2AAB400EE1868 /* solh.mp3 */,
+				1E3E092D2CB2AAB400EE1868 /* si.mp3 */,
+				1E3E09502CB3EEA100EE1868 /* Speech */,
+				1E3E092E2CB2AAB400EE1868 /* pa.mp3 */,
+				1E3E092F2CB2AAB400EE1868 /* pah.mp3 */,
+				1E3E09262CB2AAB400EE1868 /* rah.mp3 */,
+				1E3E09272CB2AAB400EE1868 /* re.mp3 */,
+				1E3E09282CB2AAB400EE1868 /* reh.mp3 */,
+				1E3E09292CB2AAB400EE1868 /* me.mp3 */,
+			);
+			name = Sound;
+			path = RhythmTokTok/Resources/Sound;
+			sourceTree = SOURCE_ROOT;
+		};
+		1E3E09502CB3EEA100EE1868 /* Speech */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E09462CB3EDD800EE1868 /* speechMe.mp3 */,
+				1E3E09412CB3ED5000EE1868 /* speechDo.mp3 */,
+				1E3E09482CB3EE0600EE1868 /* speechPa.mp3 */,
+				1E3E094C2CB3EE6700EE1868 /* speechRa.mp3 */,
+				1E3E09442CB3EDA500EE1868 /* speechRe.mp3 */,
+				1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */,
+				1E3E094A2CB3EE3D00EE1868 /* speechSol.mp3 */,
+			);
+			name = Speech;
+			path = RhythmTokTok/Resources/Sound/Speech;
+			sourceTree = SOURCE_ROOT;
+		};
+		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		1EF8A0A52CB53E2700ADB783 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0A72CB53E9A00ADB783 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1EF8A0A62CB53E6B00ADB783 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		1EF8A0A72CB53E9A00ADB783 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		1EF8A0A82CB53EAF00ADB783 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
+				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		1EF8A0A92CB559B300ADB783 /* Temp */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0AF2CB559E100ADB783 /* Lyosha */,
+				1EF8A0AE2CB559DB00ADB783 /* Yusol */,
+				1EF8A0AD2CB559D300ADB783 /* Nonang */,
+				1EF8A0AC2CB559CE00ADB783 /* Bell */,
+				1EF8A0AB2CB559C500ADB783 /* Kkugy */,
+				1EF8A0AA2CB559C000ADB783 /* Wendy */,
+			);
+			path = Temp;
+			sourceTree = "<group>";
+		};
+		1EF8A0AA2CB559C000ADB783 /* Wendy */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */,
+			);
+			path = Wendy;
+			sourceTree = "<group>";
+		};
+		1EF8A0AB2CB559C500ADB783 /* Kkugy */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0BB2CB55A6300ADB783 /* Empty.swift */,
+			);
+			path = Kkugy;
+			sourceTree = "<group>";
+		};
+		1EF8A0AC2CB559CE00ADB783 /* Bell */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */,
+				1EF8A0B92CB55A5500ADB783 /* NotificationManager.swift */,
+			);
+			path = Bell;
+			sourceTree = "<group>";
+		};
+		1EF8A0AD2CB559D300ADB783 /* Nonang */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */,
+			);
+			path = Nonang;
+			sourceTree = "<group>";
+		};
+		1EF8A0AE2CB559DB00ADB783 /* Yusol */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0B32CB55A3300ADB783 /* ListView.swift */,
+			);
+			path = Yusol;
+			sourceTree = "<group>";
+		};
+		1EF8A0AF2CB559E100ADB783 /* Lyosha */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */,
+			);
+			path = Lyosha;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,8 +427,8 @@
 			);
 			dependencies = (
 			);
-			name = "RhythmTokTokWatchApp";
-			productName = "RhythmTokTokWatchApp";
+			name = RhythmTokTokWatchApp;
+			productName = RhythmTokTokWatchApp;
 			productReference = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -183,7 +440,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					02BFECE72CB10A13003CEC8A = {
 						CreatedOnToolsVersion = 15.4;
@@ -202,6 +459,9 @@
 				Base,
 			);
 			mainGroup = 02BFECDF2CB10A13003CEC8A;
+			packageReferences = (
+				1E3E09102CB2954C00EE1868 /* XCRemoteSwiftPackageReference "AudioKit" */,
+			);
 			productRefGroup = 02BFECE92CB10A13003CEC8A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -218,9 +478,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				02BFED042CB10B52003CEC8A /* .swiftlint.yml in Resources */,
+				1E3E094B2CB3EE3D00EE1868 /* speechSol.mp3 in Resources */,
 				02BFECF82CB10A15003CEC8A /* Assets.xcassets in Resources */,
 				02BFECFB2CB10A15003CEC8A /* Base in Resources */,
 				02BFECF32CB10A13003CEC8A /* Base in Resources */,
+				1E3E09302CB2AAB400EE1868 /* re.mp3 in Resources */,
+				1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */,
+				1E3E09312CB2AAB400EE1868 /* doh.mp3 in Resources */,
+				1E3E09322CB2AAB400EE1868 /* ra.mp3 in Resources */,
+				1E3E09332CB2AAB400EE1868 /* do.mp3 in Resources */,
+				1E3E09342CB2AAB400EE1868 /* reh.mp3 in Resources */,
+				1E3E09422CB3ED5000EE1868 /* speechDo.mp3 in Resources */,
+				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
+				1E3E09492CB3EE0600EE1868 /* speechPa.mp3 in Resources */,
+				1E3E09352CB2AAB400EE1868 /* pah.mp3 in Resources */,
+				1E3E09362CB2AAB400EE1868 /* sol.mp3 in Resources */,
+				1E3E09372CB2AAB400EE1868 /* solh.mp3 in Resources */,
+				1E3E09382CB2AAB400EE1868 /* dohigh.mp3 in Resources */,
+				1E3E09392CB2AAB400EE1868 /* si.mp3 in Resources */,
+				1E3E093A2CB2AAB400EE1868 /* silence.mp3 in Resources */,
+				1E3E093B2CB2AAB400EE1868 /* me.mp3 in Resources */,
+				1E3E093C2CB2AAB400EE1868 /* rah.mp3 in Resources */,
+				1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */,
+				1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */,
+				1E3E09452CB3EDA500EE1868 /* speechRe.mp3 in Resources */,
+				1E3E094D2CB3EE6700EE1868 /* speechRa.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,10 +543,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
+				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
+				1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */,
+				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
+				1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
+				1EF8A0BA2CB55A5B00ADB783 /* NotificationManager.swift in Sources */,
+				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
+				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
+				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
+				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
+				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
+				1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */,
+				1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */,
+				1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,12 +725,11 @@
 		02BFED002CB10A15003CEC8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7D79VTP9PN;
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -460,12 +755,11 @@
 		02BFED012CB10A15003CEC8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7D79VTP9PN;
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -496,7 +790,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 7D79VTP9PN;
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -527,7 +821,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 7D79VTP9PN;
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -581,6 +875,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1E3E09102CB2954C00EE1868 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1E3E09122CB295D800EE1868 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E3E09102CB2954C00EE1868 /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = AudioKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */ = {
