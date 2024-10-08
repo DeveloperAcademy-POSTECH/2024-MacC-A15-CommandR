@@ -167,12 +167,12 @@
 			children = (
 				02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */,
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
-				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
-				1E3E09212CB2A34700EE1868 /* Controllers */,
-				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
-				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
+				1EF8A0A42CB53DF100ADB783 /* Manager */,
+				1E3E09142CB2987E00EE1868 /* Models */,
+				1EF8A0A52CB53E2700ADB783 /* View */,
+				1E3E09212CB2A34700EE1868 /* ViewControllers */,
 				1E3E093E2CB2AAC500EE1868 /* Resources */,
-				1E3E09142CB2987E00EE1868 /* Model */,
+				1EF8A0A82CB53EAF00ADB783 /* Utils */,
 				02BFECF12CB10A13003CEC8A /* Main.storyboard */,
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
 				02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */,
@@ -208,23 +208,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1E3E09142CB2987E00EE1868 /* Model */ = {
+		1E3E09142CB2987E00EE1868 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				1E3E09152CB2988300EE1868 /* Measure.swift */,
-				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
 				1E3E09172CB298A900EE1868 /* Note.swift */,
+				1EF8A0A62CB53E6B00ADB783 /* Enum */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
-		1E3E09212CB2A34700EE1868 /* Controllers */ = {
+		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
 			);
-			path = Controllers;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		1E3E093E2CB2AAC500EE1868 /* Resources */ = {
@@ -274,6 +274,46 @@
 			name = Speech;
 			path = RhythmTokTok/Resources/Sound/Speech;
 			sourceTree = SOURCE_ROOT;
+		};
+		1EF8A0A42CB53DF100ADB783 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		1EF8A0A52CB53E2700ADB783 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1EF8A0A72CB53E9A00ADB783 /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1EF8A0A62CB53E6B00ADB783 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		1EF8A0A72CB53E9A00ADB783 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		1EF8A0A82CB53EAF00ADB783 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
+				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
