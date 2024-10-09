@@ -20,7 +20,6 @@
 		02CFE1262CB1156D008454B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1252CB1156D008454B8 /* Assets.xcassets */; };
 		02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */; };
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
@@ -56,6 +55,9 @@
 		1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Empty.swift */; };
 		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 		D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* ConnectivityManager.swift */; };
+		EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */; };
+		EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */; };
+		EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,7 +100,6 @@
 		02CFE1232CB1156C008454B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaMannager.swift; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicXMLParser.swift; sourceTree = "<group>"; };
@@ -134,6 +135,9 @@
 		1EF8A0BB2CB55A6300ADB783 /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		D36E430C2CB642630038994B /* ConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityManager.swift; sourceTree = "<group>"; };
+		EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGridViewController.swift; sourceTree = "<group>"; };
+		EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertManager.swift; sourceTree = "<group>"; };
+		EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
+				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
 			);
 			path = ViewControllers;
@@ -292,7 +297,8 @@
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				1E3E090E2CB294ED00EE1868 /* MediaMannager.swift */,
+				EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */,
+				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -556,7 +562,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */,
 				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
+				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
 				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
 				1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */,
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
@@ -570,8 +578,8 @@
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
-				1E3E090F2CB294F300EE1868 /* MediaMannager.swift in Sources */,
 				1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */,
+				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
 				1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -740,9 +748,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -759,6 +768,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -770,9 +780,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -789,6 +800,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -800,10 +812,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -817,6 +830,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -831,10 +845,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -848,6 +863,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

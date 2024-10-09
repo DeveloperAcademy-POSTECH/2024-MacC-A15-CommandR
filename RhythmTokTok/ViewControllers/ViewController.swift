@@ -51,27 +51,51 @@ class ViewController: UIViewController {
 
 extension ViewController {
     func setupUI() {
-        let button = UIButton(type: .system)
-        button.setTitle("로딩뷰", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(navigateToNewViewController), for: .touchUpInside)
-        view.addSubview(button)
+        // 기존 버튼
+        let loadingButton = UIButton(type: .system)
+        loadingButton.setTitle("로딩뷰", for: .normal)
+        loadingButton.translatesAutoresizingMaskIntoConstraints = false
+        loadingButton.addTarget(self, action: #selector(navigateToLoadingViewController), for: .touchUpInside)
+        view.addSubview(loadingButton)
         
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.textAlignment = .center
         view.addSubview(statusLabel)
         
+        // 새로운 "추가하기" 버튼
+        let addButton = UIButton(type: .system)
+        addButton.setTitle("추가하기", for: .normal)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.addTarget(self, action: #selector(navigateToAddGridViewController), for: .touchUpInside)
+        view.addSubview(addButton)
+        
         NSLayoutConstraint.activate([
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30),
+            loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             statusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            statusLabel.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20)
+            statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
+            
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20) // 기존 버튼 아래에 배치
+            
         ])
     }
     
     // NotificationCenter 관찰자 설정을 별도의 메서드로 분리
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateWatchAppStatus), name: .watchConnectivityStatusChanged, object: nil)
+    }
+    
+    // 기존 로딩 뷰로 이동하는 함수
+    @objc private func navigateToLoadingViewController() {
+        let loadingViewController = LoadingViewController()
+        present(loadingViewController, animated: true, completion: nil)
+    }
+    
+    // 새로운 AddGridViewController로 이동하는 함수
+    @objc private func navigateToAddGridViewController() {
+        let addGridViewController = AddGridViewController()
+        present(addGridViewController, animated: true)
     }
 }
