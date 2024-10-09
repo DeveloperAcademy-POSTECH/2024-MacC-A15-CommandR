@@ -53,7 +53,6 @@
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */; };
-		1EF8A0BA2CB55A5B00ADB783 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B92CB55A5500ADB783 /* NotificationManager.swift */; };
 		1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Empty.swift */; };
 		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 		D36E430D2CB642630038994B /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* WatchSessionManager.swift */; };
@@ -132,7 +131,6 @@
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
-		1EF8A0B92CB55A5500ADB783 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		1EF8A0BB2CB55A6300ADB783 /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		D36E430C2CB642630038994B /* WatchSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
@@ -201,8 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				02CFE1212CB1156C008454B8 /* RhythmTokTokWatchApp.swift */,
-				D36E430C2CB642630038994B /* WatchSessionManager.swift */,
-				02CFE1232CB1156C008454B8 /* ContentView.swift */,
+				D3ABDF692CB64ECE005CD01F /* View */,
+				D3ABDF682CB64EBF005CD01F /* Manager */,
 				02CFE1252CB1156D008454B8 /* Assets.xcassets */,
 				02CFE1272CB1156D008454B8 /* Preview Content */,
 			);
@@ -364,7 +362,6 @@
 			isa = PBXGroup;
 			children = (
 				1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */,
-				1EF8A0B92CB55A5500ADB783 /* NotificationManager.swift */,
 			);
 			path = Bell;
 			sourceTree = "<group>";
@@ -391,6 +388,22 @@
 				1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */,
 			);
 			path = Lyosha;
+			sourceTree = "<group>";
+		};
+		D3ABDF682CB64EBF005CD01F /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				D36E430C2CB642630038994B /* WatchSessionManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		D3ABDF692CB64ECE005CD01F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				02CFE1232CB1156C008454B8 /* ContentView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -549,7 +562,6 @@
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
 				1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
-				1EF8A0BA2CB55A5B00ADB783 /* NotificationManager.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */,
