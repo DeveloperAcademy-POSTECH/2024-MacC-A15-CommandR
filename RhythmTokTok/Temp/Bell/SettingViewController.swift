@@ -4,13 +4,11 @@
 //
 //  Created by Byeol Kim on 10/9/24.
 //
-
 import UIKit
 
 class SettingViewController: UIViewController {
     
     // MARK: - Properties
-    
     let settingView = SettingView()
     
     // 현재 선택된 소리 설정 버튼
@@ -18,9 +16,6 @@ class SettingViewController: UIViewController {
     
     // 현재 선택된 진동 가이드 버튼
     var selectedVibrationButton: UIButton?
-    
-    // 현재 선택된 글자 크기 버튼
-    var selectedFontSizeButton: UIButton?
     
     // MARK: - Lifecycle
     
@@ -51,11 +46,9 @@ class SettingViewController: UIViewController {
         settingView.vibrationOnButton.addTarget(self, action: #selector(vibrationButtonTapped(_:)), for: .touchUpInside)
         settingView.vibrationOffButton.addTarget(self, action: #selector(vibrationButtonTapped(_:)), for: .touchUpInside)
         
-        // 글자 크기 설정 버튼들에 액션 추가
-        settingView.fontSizeSmallButton.addTarget(self, action: #selector(fontSizeButtonTapped(_:)), for: .touchUpInside)
-        settingView.fontSizeMediumButton.addTarget(self, action: #selector(fontSizeButtonTapped(_:)), for: .touchUpInside)
-        settingView.fontSizeLargeButton.addTarget(self, action: #selector(fontSizeButtonTapped(_:)), for: .touchUpInside)
-        settingView.fontSizeExtraLargeButton.addTarget(self, action: #selector(fontSizeButtonTapped(_:)), for: .touchUpInside)
+        // 글자 크기 설정 슬라이더에 액션 추가
+        settingView.fontSizeSlider.addTarget(self, action: #selector(fontSizeSliderChanged(_:)), for: .valueChanged)
+        settingView.fontSizeSlider.addTarget(self, action: #selector(fontSizeSliderTouchEnded(_:)), for: [.touchUpInside, .touchUpOutside])
     }
     
     private func loadSettings() {
@@ -78,20 +71,9 @@ class SettingViewController: UIViewController {
             selectButton(settingView.vibrationOffButton)
         }
         
-        // 글자 크기 설정 로드 및 버튼 선택 상태 반영
+        // 글자 크기 설정 로드 및 슬라이더 위치 반영
         let fontSize = Settings.shared.fontSize
-        switch fontSize {
-        case 1:
-            selectButton(settingView.fontSizeSmallButton)
-        case 2:
-            selectButton(settingView.fontSizeMediumButton)
-        case 3:
-            selectButton(settingView.fontSizeLargeButton)
-        case 4:
-            selectButton(settingView.fontSizeExtraLargeButton)
-        default:
-            selectButton(settingView.fontSizeMediumButton)
-        }
+        settingView.fontSizeSlider.setValue(Float(fontSize), animated: false)
     }
     
     // MARK: - Action Methods
@@ -142,30 +124,22 @@ class SettingViewController: UIViewController {
         updateVibrationGuide()
     }
     
-    @objc private func fontSizeButtonTapped(_ sender: UIButton) {
-        // 이전에 선택된 글자 크기 버튼의 스타일 초기화
-        if let previousButton = selectedFontSizeButton {
-            deselectButton(previousButton)
-        }
-        
-        // 현재 선택된 버튼 스타일 변경
-        selectButton(sender)
+    @objc private func fontSizeSliderChanged(_ sender: UISlider) {
+        // 슬라이더가 움직이는 동안 값을 변경하더라도 스냅은 하지 않음.
+        let value = sender.value
+        print("슬라이더 움직이는 중 값: \(value)")
+    }
+    
+    @objc private func fontSizeSliderTouchEnded(_ sender: UISlider) {
+        // 터치가 끝났을 때 가장 가까운 1, 2, 3, 4로 스냅
+        let step: Float = 1.0
+        let roundedValue = round(sender.value / step) * step
+        sender.setValue(roundedValue, animated: true)
         
         // 설정 저장
-        switch sender {
-        case settingView.fontSizeSmallButton:
-            Settings.shared.fontSize = 1
-        case settingView.fontSizeMediumButton:
-            Settings.shared.fontSize = 2
-        case settingView.fontSizeLargeButton:
-            Settings.shared.fontSize = 3
-        case settingView.fontSizeExtraLargeButton:
-            Settings.shared.fontSize = 4
-        default:
-            break
-        }
+        let selectedFontSize = Int(roundedValue)
+        Settings.shared.fontSize = selectedFontSize
         print("글자 크기 설정: \(Settings.shared.fontSize)")
-        // 글자 크기 변경 시, NotificationCenter를 통해 알림이 전송됩니다.
     }
     
     // MARK: - Helper Methods
@@ -179,9 +153,6 @@ class SettingViewController: UIViewController {
             selectedSoundButton = button
         } else if button == settingView.vibrationOnButton || button == settingView.vibrationOffButton {
             selectedVibrationButton = button
-        } else if button == settingView.fontSizeSmallButton || button == settingView.fontSizeMediumButton ||
-                    button == settingView.fontSizeLargeButton || button == settingView.fontSizeExtraLargeButton {
-            selectedFontSizeButton = button
         }
     }
     
@@ -196,23 +167,18 @@ class SettingViewController: UIViewController {
         switch Settings.shared.soundSetting {
         case .note:
             print("소리 설정: 계이름으로 듣기")
-            // 실제 기능 구현 예: 음악 재생 방식을 계이름으로 듣기로 설정
         case .melody:
             print("소리 설정: 멜로디로 듣기")
-            // 실제 기능 구현 예: 음악 재생 방식을 멜로디로 듣기로 설정
         case .beat:
             print("소리 설정: 박자만 듣기")
-            // 실제 기능 구현 예: 음악 재생 방식을 박자만 듣기로 설정
         }
     }
     
     private func updateVibrationGuide() {
         if Settings.shared.watchVibrationGuide {
             print("Watch 진동 가이드 활성화")
-            // 실제 기능 구현 예: WatchManager를 통해 진동 가이드 활성화
         } else {
             print("Watch 진동 가이드 비활성화")
-            // 실제 기능 구현 예: WatchManager를 통해 진동 가이드 비활성화
         }
     }
 }
