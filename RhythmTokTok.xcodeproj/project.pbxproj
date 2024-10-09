@@ -21,7 +21,6 @@
 		02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */; };
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
-		1E3E090F2CB294F300EE1868 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E090E2CB294ED00EE1868 /* MediaManager.swift */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
@@ -57,6 +56,10 @@
 		1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Empty.swift */; };
 		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 		D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* ConnectivityManager.swift */; };
+		D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6A2CB6A325005CD01F /* SettingView.swift */; };
+		D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */; };
+		D3ABDF6F2CB6A395005CD01F /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6E2CB6A395005CD01F /* UserDefault.swift */; };
+		D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF702CB6B68C005CD01F /* Notification.swift */; };
 		EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */; };
 		EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */; };
 		EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */; };
@@ -103,7 +106,6 @@
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		02CFE1312CB68479008454B8 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
-		1E3E090E2CB294ED00EE1868 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicXMLParser.swift; sourceTree = "<group>"; };
@@ -139,6 +141,10 @@
 		1EF8A0BB2CB55A6300ADB783 /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
 		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		D36E430C2CB642630038994B /* ConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityManager.swift; sourceTree = "<group>"; };
+		D3ABDF6A2CB6A325005CD01F /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		D3ABDF6E2CB6A395005CD01F /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
+		D3ABDF702CB6B68C005CD01F /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGridViewController.swift; sourceTree = "<group>"; };
 		EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertManager.swift; sourceTree = "<group>"; };
 		EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
@@ -373,6 +379,10 @@
 			isa = PBXGroup;
 			children = (
 				1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */,
+				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
+				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
+				D3ABDF6E2CB6A395005CD01F /* UserDefault.swift */,
+				D3ABDF702CB6B68C005CD01F /* Notification.swift */,
 			);
 			path = Bell;
 			sourceTree = "<group>";
@@ -568,8 +578,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */,
+				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
 				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
+				D3ABDF6F2CB6A395005CD01F /* UserDefault.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
+				D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */,
 				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
 				1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */,
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
@@ -584,6 +597,7 @@
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */,
+				D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */,
 				1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */,
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
 				1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */,
@@ -757,7 +771,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6KQJH558XZ;
+				DEVELOPMENT_TEAM = F293KMT2AW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -789,7 +803,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6KQJH558XZ;
+				DEVELOPMENT_TEAM = F293KMT2AW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -822,7 +836,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 6KQJH558XZ;
+				DEVELOPMENT_TEAM = F293KMT2AW;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -855,7 +869,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = 6KQJH558XZ;
+				DEVELOPMENT_TEAM = F293KMT2AW;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;

@@ -8,11 +8,6 @@
 import WatchConnectivity
 import UIKit
 
-// 워치 연결 상태 변경 알림을 위한 Notification 이름 정의
-extension Notification.Name {
-    static let watchConnectivityStatusChanged = Notification.Name("watchConnectivityStatusChanged")
-}
-
 class WatchManager: NSObject, WCSessionDelegate {
     
     static let shared = WatchManager()
