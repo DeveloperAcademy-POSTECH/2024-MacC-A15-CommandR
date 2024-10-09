@@ -103,7 +103,7 @@ class LoadingViewController: UIViewController {
                 playMusicXMLButton.isEnabled = true
                 
             } catch {
-                print("Error [LoadingViewController]: loading MusicXML data: \(error.localizedDescription)")
+                ErrorHandler.handleError(error: error)
             }
         }
     }

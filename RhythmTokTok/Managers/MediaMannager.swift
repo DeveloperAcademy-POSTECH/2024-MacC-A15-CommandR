@@ -47,7 +47,7 @@ struct MediaManager {
             let audioFile = try AVAudioFile(forReading: url)
             return audioFile.processingFormat.channelCount
         } catch {
-            print("Error [MediaMannager]: reading audio file: \(error)")
+            ErrorHandler.handleError(error: error)
             return 1
         }
     }
@@ -76,7 +76,7 @@ struct MediaManager {
 //            print("Media file created at \(outputURL.path)")
             return outputURL
         } catch {
-            print("Error [MediaMannager]: creating audio file: \(error)")
+            ErrorHandler.handleError(error: error)
             throw error
         }
     }
@@ -155,7 +155,7 @@ struct MediaManager {
         do {
             try audioFile.write(from: bufferToWrite)
         } catch {
-            print("Error [MediaMannager]: writing audio buffer to file: \(error)")
+            ErrorHandler.handleError(error: error)
             throw error
         }
     }
