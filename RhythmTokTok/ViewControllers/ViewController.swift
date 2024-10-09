@@ -96,6 +96,6 @@ extension ViewController {
     // 새로운 AddGridViewController로 이동하는 함수
     @objc private func navigateToAddGridViewController() {
         let addGridViewController = AddGridViewController()
-        present(addGridViewController, animated: true, completion: nil)
+        present(addGridViewController, animated: true)
     }
 }
