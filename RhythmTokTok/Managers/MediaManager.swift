@@ -19,7 +19,6 @@ struct MediaManager {
         return outputURL
     }
     
-    
     func parseMusicXMLData(xmlData: Data) async -> [Measure]{
         
         let parser = MusicXMLParser()
@@ -115,7 +114,7 @@ struct MediaManager {
         }
         
         if let error = error {
-            print("Error [MediaManager]: during conversion: \(error)")
+            ErrorHandler.handleError(error: error)
             return nil
         }
         
