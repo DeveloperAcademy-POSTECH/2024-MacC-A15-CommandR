@@ -19,7 +19,6 @@ struct MediaManager {
         return outputURL
     }
     
-    
     func parseMusicXMLData(xmlData: Data) async -> [Measure]{
         
         let parser = MusicXMLParser()
