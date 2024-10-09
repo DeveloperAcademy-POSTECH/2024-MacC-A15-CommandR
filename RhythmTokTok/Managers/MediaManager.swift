@@ -36,7 +36,7 @@ struct MediaManager {
         if let pitchEnum = Pitch(rawValue: pitch) {
             return pitchEnum.fileURL
         } else {
-            print("Error [MediaMannager]:  Pitch not found in enum: \(pitch)")
+            print("Error [MediaManager]:  Pitch not found in enum: \(pitch)")
             return nil
         }
     }
@@ -46,7 +46,7 @@ struct MediaManager {
             let audioFile = try AVAudioFile(forReading: url)
             return audioFile.processingFormat.channelCount
         } catch {
-            print("Error [MediaMannager]: reading audio file: \(error)")
+            ErrorHandler.handleError(error: error)
             return 1
         }
     }
@@ -63,7 +63,7 @@ struct MediaManager {
 
             for note in notes {
                 guard let fileURL = filePath(for: note.pitch) else {
-                    print("Error [MediaMannager]: Audio file not found for pitch: \(note.pitch)")
+                    print("Error [MediaManager]: Audio file not found for pitch: \(note.pitch)")
                     continue
                 }
                 
@@ -75,7 +75,7 @@ struct MediaManager {
 //            print("Media file created at \(outputURL.path)")
             return outputURL
         } catch {
-            print("Error [MediaMannager]: creating audio file: \(error)")
+            ErrorHandler.handleError(error: error)
             throw error
         }
     }
@@ -83,20 +83,25 @@ struct MediaManager {
     // 채널 카운트를 변환하는 함수
     func convertChannelCount(buffer: AVAudioPCMBuffer, to targetChannelCount: AVAudioChannelCount) -> AVAudioPCMBuffer? {
         // 대상 포맷 생성
-        guard let targetFormat = AVAudioFormat(commonFormat: buffer.format.commonFormat, sampleRate: buffer.format.sampleRate, channels: targetChannelCount, interleaved: buffer.format.isInterleaved) else {
-            print("Error [MediaMannager]: Failed to create target format for channel conversion.")
+        guard let targetFormat = AVAudioFormat(
+            commonFormat: buffer.format.commonFormat,
+            sampleRate: buffer.format.sampleRate,
+            channels: targetChannelCount,
+            interleaved: buffer.format.isInterleaved)
+        else {
+            print("Error [MediaManager]: Failed to create target format for channel conversion.")
             return nil
         }
         
         // AVAudioConverter 생성
         guard let converter = AVAudioConverter(from: buffer.format, to: targetFormat) else {
-            print("Error [MediaMannager]: Failed to create AVAudioConverter.")
+            print("Error [MediaManager]: Failed to create AVAudioConverter.")
             return nil
         }
         
         // 변환된 버퍼 생성
         guard let convertedBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat, frameCapacity: buffer.frameCapacity) else {
-            print("Error [MediaMannager]: Failed to create converted buffer.")
+            print("Error [MediaManager]: Failed to create converted buffer.")
             return nil
         }
         
@@ -109,7 +114,7 @@ struct MediaManager {
         }
         
         if let error = error {
-            print("Error [MediaMannager]: during conversion: \(error)")
+            ErrorHandler.handleError(error: error)
             return nil
         }
         
@@ -120,7 +125,7 @@ struct MediaManager {
         let sourceAudioFile = try AVAudioFile(forReading: fileURL)
         
         guard let sourceBuffer = AVAudioPCMBuffer(pcmFormat: sourceAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(sourceAudioFile.length)) else {
-            print("Error [MediaMannager]: Failed to create buffer for source file.")
+            print("Error [MediaManager]: Failed to create buffer for source file.")
             return
         }
         
@@ -131,7 +136,7 @@ struct MediaManager {
         // 채널 카운트가 다를 경우 변환
         if sourceBuffer.format.channelCount != format.channelCount {
             guard let convertedBuffer = convertChannelCount(buffer: sourceBuffer, to: format.channelCount) else {
-                print("Error [MediaMannager]: Failed to convert buffer channel count.")
+                print("Error [MediaManager]: Failed to convert buffer channel count.")
                 return
             }
             bufferToWrite = convertedBuffer
@@ -154,7 +159,7 @@ struct MediaManager {
         do {
             try audioFile.write(from: bufferToWrite)
         } catch {
-            print("Error [MediaMannager]: writing audio buffer to file: \(error)")
+            ErrorHandler.handleError(error: error)
             throw error
         }
     }
