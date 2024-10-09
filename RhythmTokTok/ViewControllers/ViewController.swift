@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+
         setupUI()
         
         let _ = WatchManager.shared
@@ -77,8 +79,7 @@ extension ViewController {
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
             
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20) // 기존 버튼 아래에 배치
-            
+            addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20)
         ])
     }
     
