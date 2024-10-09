@@ -3,8 +3,7 @@
 //  RhythmTokTok
 //
 //  Created by sungkug_apple_developer_ac on 10/8/24.
-//
-// WatchManager.swift
+
 
 import WatchConnectivity
 import UIKit
@@ -25,7 +24,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     
     private func setupSession() {
         guard WCSession.isSupported() else {
-            print("Error [WatchManager]: Failed to WCSession 지원되지 않음")
+            print("Error [WatchManager]: WCSession 지원되지 않음")
             return
         }
         
@@ -43,7 +42,7 @@ class WatchManager: NSObject, WCSessionDelegate {
             print("iOS 앱에서 WCSession 활성화 완료")
         }
         if let error = error {
-            print("Error [WatchManager]: Failed to WCSession 활성화 실패 \(error.localizedDescription)")
+            print("Error [WatchManager]: WCSession 활성화 실패 - \(error.localizedDescription)")
         }
         
         // 상태 변경 알림 전송
