@@ -24,7 +24,7 @@ struct MediaManager {
     
     func getMIDIFile(xmlData: Data) async throws -> URL {
         let parsedMeasures = await parseMusicXMLData(xmlData: xmlData)
-        let  outputURL = try await createMIDIFile(from: parsedMeasures.flatMap { $0.notes })
+        let outputURL = try await createMIDIFile(from: parsedMeasures.flatMap { $0.notes })
         
         return outputURL
     }
@@ -185,48 +185,47 @@ struct MediaManager {
         // MusicTrack 추가
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
 
-        let ticksPerQuarterNote = 480 // MIDI에서의 사분음표당 틱 수 (기본 값: 480)
+        let ticksPerQuarterNote: Double = 240 // 사분음표당 틱 수를 240으로 줄임
 
         var currentTick: MusicTimeStamp = 0
 
         for note in notes {
-            print("note (ticks): \(note.duration)")
-
-            // 각 노트의 길이를 MIDI의 틱 단위로 변환
-            let adjustedTicks = note.duration / 12
-
-            // 쉼표인 경우 MIDI 이벤트를 추가하지 않고 시간만 증가
+            // 음계가 쉼표라면 해당 길이만큼 시간을 건너뜀
+            print("noet : \(note.pitch)")
             if note.pitch == "silence" {
-                currentTick += MusicTimeStamp(adjustedTicks)
+                let silenceTicks = note.duration / 12
+                currentTick += MusicTimeStamp(silenceTicks)
                 continue
             }
 
-            // 노트 온 이벤트 (noteOn)
+            // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
                 note: UInt8(note.pitchNoteNumber()), // pitch를 MIDI note number로 변환
                 velocity: 64, // 음의 강도
                 releaseVelocity: 0,
-                duration: 0 // duration은 noteOff로 처리
+                duration: 0 // duration은 사용되지 않음
             )
-            print("duration (in MIDI ticks, adjusted): \(adjustedTicks)")
 
             // 노트 온 이벤트를 트랙에 추가
             MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOnMessage)
 
-            // 현재 시간(tick) 갱신
-            currentTick += MusicTimeStamp(adjustedTicks)
+            // 노트의 길이를 MIDI 틱으로 변환
+            let noteDurationTicks = note.duration / 12
 
-            // 노트 오프 이벤트 (noteOff)
+            // 현재 시간 갱신 (노트의 길이만큼)
+            currentTick += MusicTimeStamp(noteDurationTicks)
+
+            // 노트 오프 이벤트 생성
             var noteOffMessage = MIDINoteMessage(
                 channel: 0,
                 note: UInt8(note.pitchNoteNumber()), // 동일한 pitch로 오프
                 velocity: 0, // 음을 끌 때는 velocity 0
                 releaseVelocity: 0,
-                duration: 0 // 오프 이벤트이므로 duration 필요 없음
+                duration: 0 // duration은 사용되지 않음
             )
 
-            // 노트 오프 이벤트를 트랙에 추가 (currentTick 이후에 추가)
+            // 노트 오프 이벤트를 트랙에 추가 (currentTick 시점에서)
             MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOffMessage)
         }
 
