@@ -7,13 +7,16 @@
 
 import Combine
 import UIKit
+import AVFAudio
 
 class LoadingViewController: UIViewController {
     private let musicPlayer = MusicPlayer()
     private var isPlayingMusicXML = false
-    private var outputPathURL: URL?
+    private var wavFilePathURL: URL?
+    private var midiFilePathURL: URL?
     private var cancellables = Set<AnyCancellable>()
-    
+    private var midiPlayer: AVMIDIPlayer? // MIDI 재생 플레이어
+
     //UI
     private let titleLabel = UILabel()
     private let currentTimeLabel = UILabel()
@@ -74,10 +77,11 @@ class LoadingViewController: UIViewController {
         if isPlayingMusicXML {
             musicPlayer.pause()
         } else {
-            guard let outputPathURL = outputPathURL else { return }
+            guard let outputPathURL = wavFilePathURL else { return }
             if FileManager.default.fileExists(atPath: outputPathURL.path) {
-                musicPlayer.loadAudioFile(url: outputPathURL)
-                musicPlayer.play()
+//                musicPlayer.loadAudioFile(url: outputPathURL)
+//                musicPlayer.play()
+                playMIDIFile(midiURL: midiFilePathURL!)
             } else {
                 ErrorHandler.handleError(errorMessage: "Audio file not found at path \(outputPathURL.path)")
             }
@@ -98,12 +102,30 @@ class LoadingViewController: UIViewController {
                 print("Successfully loaded MusicXML data.")
                 // 미디어 파일 만들기
                 let mediaManager = MediaManager()
-                outputPathURL = try await mediaManager.getMediaFile(xmlData: xmlData)
-                print("Completed. Media file path: \(outputPathURL?.path ?? "No file created")")
+                wavFilePathURL = try await mediaManager.getMediaFile(xmlData: xmlData)
+                midiFilePathURL = try await mediaManager.getMIDIFile(xmlData: xmlData)
+                print("Completed. Media file path: \(wavFilePathURL?.path ?? "No file created")")
                 playMusicXMLButton.isEnabled = true
             } catch {
                 ErrorHandler.handleError(error: error)
             }
+        }
+    }
+    
+    private func playMIDIFile(midiURL: URL) {
+        do {
+            let bankURL = Bundle.main.url(forResource: "Scc1", withExtension: "sf2")! // 사운드 폰트 파일 경로
+            
+            midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
+            midiPlayer?.prepareToPlay()
+            //bpm
+            midiPlayer?.rate = Float(2.5)
+
+            midiPlayer?.play()
+            
+            print("MIDI file is playing.")
+        } catch {
+            print("Error [LoadingViewController]: Failed to play MIDI file: \(error.localizedDescription)")
         }
     }
 }
