@@ -24,7 +24,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     
     private func setupSession() {
         guard WCSession.isSupported() else {
-            print("Error [ConnectivityManager]: Failed to WCSession 지원되지 않음")
+            ErrorHandler.handleError(errorMessage: "Failed to WCSession 지원되지 않음")
             return
         }
         
@@ -45,8 +45,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             }
         }
         if let error = error {
-            print("Error [ConnectivityManager]: Failed to watchOS 앱에서 WCSession 활성화 실패: \(error.localizedDescription)")
-            
+            ErrorHandler.handleError(errorMessage: "Failed to watchOS 앱에서 WCSession 활성화 실패: \(error.localizedDescription)")
         }
     }
     

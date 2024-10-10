@@ -60,7 +60,7 @@ struct PDFConvertManager {
             try data.write(to: fileURL, options: .atomic)
             return fileURL
         } catch {
-            print("Error[PDFConvertManager]: Failed to PDF 저장 실패: \(error)")
+            ErrorHandler.handleError(errorMessage: "Failed to PDF 저장 실패: \(error)")
             return nil
         }
     }
