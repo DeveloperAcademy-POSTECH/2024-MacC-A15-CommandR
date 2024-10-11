@@ -10,7 +10,6 @@
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
 		02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */; };
 		02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEF2CB10A13003CEC8A /* ViewController.swift */; };
-		02BFECF32CB10A13003CEC8A /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 02BFECF22CB10A13003CEC8A /* Base */; };
 		02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */; };
 		02BFECF82CB10A15003CEC8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BFECF72CB10A15003CEC8A /* Assets.xcassets */; };
 		02BFECFB2CB10A15003CEC8A /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 02BFECFA2CB10A15003CEC8A /* Base */; };
@@ -21,6 +20,7 @@
 		02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */; };
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
+		02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
@@ -94,7 +94,6 @@
 		02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		02BFECEF2CB10A13003CEC8A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		02BFECF22CB10A13003CEC8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		02BFECF52CB10A13003CEC8A /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		02BFECF72CB10A15003CEC8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02BFECFA2CB10A15003CEC8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -192,15 +191,14 @@
 			isa = PBXGroup;
 			children = (
 				02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */,
-				1EF8A0A92CB559B300ADB783 /* Temp */,
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
+				1EF8A0A92CB559B300ADB783 /* Temp */,
 				1EF8A0A42CB53DF100ADB783 /* Managers */,
 				1E3E09142CB2987E00EE1868 /* Models */,
 				1EF8A0A52CB53E2700ADB783 /* Views */,
 				1E3E09212CB2A34700EE1868 /* ViewControllers */,
 				1E3E093E2CB2AAC500EE1868 /* Resources */,
 				1EF8A0A82CB53EAF00ADB783 /* Utils */,
-				02BFECF12CB10A13003CEC8A /* Main.storyboard */,
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
 				02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */,
 				02BFECFC2CB10A15003CEC8A /* Info.plist */,
@@ -515,7 +513,6 @@
 				1E3E094B2CB3EE3D00EE1868 /* speechSol.mp3 in Resources */,
 				02BFECF82CB10A15003CEC8A /* Assets.xcassets in Resources */,
 				02BFECFB2CB10A15003CEC8A /* Base in Resources */,
-				02BFECF32CB10A13003CEC8A /* Base in Resources */,
 				1E3E09302CB2AAB400EE1868 /* re.mp3 in Resources */,
 				1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */,
 				1E3E09312CB2AAB400EE1868 /* doh.mp3 in Resources */,
@@ -609,6 +606,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */,
+				02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */,
 				02CFE1242CB1156C008454B8 /* ContentView.swift in Sources */,
 				02CFE1222CB1156C008454B8 /* RhythmTokTokWatchApp.swift in Sources */,
 			);
@@ -625,14 +623,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		02BFECF12CB10A13003CEC8A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				02BFECF22CB10A13003CEC8A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -771,12 +761,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
@@ -803,12 +793,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
@@ -836,7 +826,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -869,7 +859,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = F293KMT2AW;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
