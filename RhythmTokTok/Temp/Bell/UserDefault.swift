@@ -8,12 +8,6 @@
 
 import Foundation
 
-enum SoundSetting: String {
-    case note = "계이름으로 듣기"
-    case melody = "멜로디로 듣기"
-    case beat = "박자만 듣기"
-}
-
 class Settings {
     
     static let shared = Settings()
