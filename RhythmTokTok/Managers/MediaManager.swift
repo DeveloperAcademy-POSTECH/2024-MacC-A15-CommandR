@@ -6,16 +6,26 @@
 //
 
 import AVFoundation
+import AudioToolbox
 
 struct MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
-    private let quarterNoteDuration = 1.0 // 예: 1초를 의미할 경우
+    private let quarterNoteDuration = 24.0
     private var bpm = 60
     private var outputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.wav").path()
-    
+    private var midiOutputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
+
     func getMediaFile(xmlData: Data) async throws -> URL {
         let parsedMeasures = await parseMusicXMLData(xmlData: xmlData)
         let outputURL = try await createMediaFile(from: parsedMeasures.flatMap { $0.notes })
+
+        return outputURL
+    }
+    
+    func getMIDIFile(xmlData: Data) async throws -> URL {
+        let parsedMeasures = await parseMusicXMLData(xmlData: xmlData)
+        let outputURL = try await createMIDIFile(from: parsedMeasures.flatMap { $0.notes })
+        
         return outputURL
     }
     
@@ -162,5 +172,73 @@ struct MediaManager {
             ErrorHandler.handleError(error: error)
             throw error
         }
+    }
+
+    // MIDI 파일로 변환하는 기능
+    func createMIDIFile(from notes: [Note]) async throws -> URL {
+        var musicSequence: MusicSequence? = nil
+        var musicTrack: MusicTrack? = nil
+
+        // MusicSequence 생성
+        NewMusicSequence(&musicSequence)
+
+        // MusicTrack 추가
+        MusicSequenceNewTrack(musicSequence!, &musicTrack)
+
+        let ticksPerQuarterNote: Double = 240 // 사분음표당 틱 수를 240으로 줄임
+        var currentTick: MusicTimeStamp = 0
+
+        for note in notes {
+            // 음계가 쉼표라면 해당 길이만큼 시간을 건너뜀
+//            print("note : \(note.pitch)")
+            if note.pitch == "silence" {
+                let silenceTicks = note.duration / 12
+                currentTick += MusicTimeStamp(silenceTicks)
+                continue
+            }
+
+            // 노트 온 이벤트 생성
+            var noteOnMessage = MIDINoteMessage(
+                channel: 0,
+                note: UInt8(note.pitchNoteNumber()), // pitch를 MIDI note number로 변환
+                velocity: 64, // 음의 강도
+                releaseVelocity: 0,
+                duration: 0 // duration은 사용되지 않음
+            )
+
+            // 노트 온 이벤트를 트랙에 추가
+            MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOnMessage)
+
+            // 노트의 길이를 MIDI 틱으로 변환
+            let noteDurationTicks = note.duration / 12
+
+            // 현재 시간 갱신 (노트의 길이만큼)
+            currentTick += MusicTimeStamp(noteDurationTicks)
+
+            // 노트 오프 이벤트 생성
+            var noteOffMessage = MIDINoteMessage(
+                channel: 0,
+                note: UInt8(note.pitchNoteNumber()), // 동일한 pitch로 오프
+                velocity: 0, // 음을 끌 때는 velocity 0
+                releaseVelocity: 0,
+                duration: 0 // duration은 사용되지 않음
+            )
+
+            // 노트 오프 이벤트를 트랙에 추가 (currentTick 시점에서)
+            MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOffMessage)
+        }
+
+        // MIDI 파일 경로 설정
+        let midiFileURL = URL(fileURLWithPath: midiOutputPath)
+
+        // MusicSequence를 파일로 저장
+        let status = MusicSequenceFileCreate(musicSequence!, midiFileURL as CFURL, .midiType, .eraseFile, Int16(ticksPerQuarterNote))
+        
+        if status != noErr {
+            ErrorHandler.handleError(errorMessage: "Failed to create MIDI file. Error code: \(status)")
+            throw NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: nil)
+        }
+        print("MIDI file created at: \(midiFileURL)")
+        return midiFileURL
     }
 }
