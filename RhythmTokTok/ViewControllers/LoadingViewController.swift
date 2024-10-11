@@ -88,12 +88,12 @@ class LoadingViewController: UIViewController {
     
     @objc private func playMusicXML() {
         if isPlayingMusicXML {
-            musicPlayer.wavFilePause()
+            musicPlayer.pauseWav()
         } else {
             guard let outputPathURL = midiFilePathURL else { return }
             if FileManager.default.fileExists(atPath: outputPathURL.path) {
                 musicPlayer.loadAudioFile(url: outputPathURL)
-                musicPlayer.wavFilePlay()
+                musicPlayer.playWav()
             } else {
                 ErrorHandler.handleError(errorMessage: "Audio file not found at path \(outputPathURL.path)")
             }
@@ -109,7 +109,7 @@ class LoadingViewController: UIViewController {
             if FileManager.default.fileExists(atPath: outputPathURL.path) {
                 musicPlayer.playMIDI()
             } else {
-                print("Error [LoadingViewController]: Audio file not found at path \(outputPathURL.path)")
+                ErrorHandler.handleError(errorMessage: "Audio file not found at path \(outputPathURL.path)")
             }
         }
         isPlayingMIDIFile.toggle()
@@ -118,7 +118,7 @@ class LoadingViewController: UIViewController {
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
         guard let xmlPath = Bundle.main.url(forResource: "MahlFaGe4Sample", withExtension: "musicxml") else {
-            print("Error [LoadingViewController]: Failed to find MusicXML file in bundle.")
+            ErrorHandler.handleError(errorMessage: "Failed to find MusicXML file in bundle.")
             return
         }
 
@@ -136,7 +136,7 @@ class LoadingViewController: UIViewController {
                     playMusicXMLButton.isEnabled = true
                     print("WAV file created successfully: \(wavFilePathURL)")
                 } else {
-                    print("Error: wav file URL is nil.")
+                    ErrorHandler.handleError(errorMessage: "wav file URL is nil.")
                 }
 
                 midiFilePathURL = try await mediaManager.getMIDIFile(xmlData: xmlData)
@@ -145,7 +145,7 @@ class LoadingViewController: UIViewController {
                     playMIDIFileButton.isEnabled = true
                     print("MIDI file created successfully: \(midiFilePathURL)")
                 } else {
-                    print("Error: MIDI file URL is nil.")
+                    ErrorHandler.handleError(errorMessage: " MIDI file URL is nil.")
                 }
 
             } catch {

@@ -186,12 +186,11 @@ struct MediaManager {
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
 
         let ticksPerQuarterNote: Double = 240 // 사분음표당 틱 수를 240으로 줄임
-
         var currentTick: MusicTimeStamp = 0
 
         for note in notes {
             // 음계가 쉼표라면 해당 길이만큼 시간을 건너뜀
-            print("noet : \(note.pitch)")
+//            print("note : \(note.pitch)")
             if note.pitch == "silence" {
                 let silenceTicks = note.duration / 12
                 currentTick += MusicTimeStamp(silenceTicks)
@@ -236,7 +235,7 @@ struct MediaManager {
         let status = MusicSequenceFileCreate(musicSequence!, midiFileURL as CFURL, .midiType, .eraseFile, Int16(ticksPerQuarterNote))
         
         if status != noErr {
-            print("Error [MediaManager]: Failed to create MIDI file. Error code: \(status)")
+            ErrorHandler.handleError(errorMessage: "Failed to create MIDI file. Error code: \(status)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: nil)
         }
         print("MIDI file created at: \(midiFileURL)")

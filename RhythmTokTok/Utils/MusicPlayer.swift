@@ -40,7 +40,7 @@ class MusicPlayer: ObservableObject {
     }
     
     // wav 재생
-    func wavFilePlay() {
+    func playWav() {
         print("Playing audio...")
         player?.play()
         startTimer()
@@ -49,7 +49,7 @@ class MusicPlayer: ObservableObject {
     }
     
     // wav 일시정지
-    func wavFilePause() {
+    func pauseWav() {
         print("Pausing audio...")
         player?.pause()
         stopTimer()
@@ -64,7 +64,7 @@ class MusicPlayer: ObservableObject {
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             midiPlayer?.prepareToPlay()
         } catch {
-            print("Error [LoadingViewController]: Failed to set MIDI file: \(error.localizedDescription)")
+            ErrorHandler.handleError(errorMessage: "Failed to set MIDI file: \(error.localizedDescription)")
         }
     }
     
