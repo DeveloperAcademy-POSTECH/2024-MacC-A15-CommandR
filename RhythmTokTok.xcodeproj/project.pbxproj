@@ -50,8 +50,6 @@
 		1E3E094D2CB3EE6700EE1868 /* speechRa.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E094C2CB3EE6700EE1868 /* speechRa.mp3 */; };
 		1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */; };
 		1E54A8F02CB6D37C00753A3E /* Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */; };
-		1E54A8F22CB784FD00753A3E /* moonriver.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F12CB784FD00753A3E /* moonriver.xml */; };
-		1E54A8F42CB78A0E00753A3E /* moonriverPDF.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F32CB78A0E00753A3E /* moonriverPDF.xml */; };
 		1E54A8F82CB7D26900753A3E /* moon.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F72CB7D26900753A3E /* moon.xml */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
@@ -134,8 +132,6 @@
 		1E3E094C2CB3EE6700EE1868 /* speechRa.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechRa.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechRa.mp3; sourceTree = SOURCE_ROOT; };
 		1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechSi.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechSi.mp3; sourceTree = SOURCE_ROOT; };
 		1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Piano.sf2; path = RhythmTokTok/Resources/Piano.sf2; sourceTree = SOURCE_ROOT; };
-		1E54A8F12CB784FD00753A3E /* moonriver.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = moonriver.xml; path = RhythmTokTok/Resources/moonriver.xml; sourceTree = SOURCE_ROOT; };
-		1E54A8F32CB78A0E00753A3E /* moonriverPDF.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = moonriverPDF.xml; path = RhythmTokTok/Resources/moonriverPDF.xml; sourceTree = SOURCE_ROOT; };
 		1E54A8F72CB7D26900753A3E /* moon.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = moon.xml; path = RhythmTokTok/Resources/moon.xml; sourceTree = SOURCE_ROOT; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -259,8 +255,6 @@
 			children = (
 				1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */,
 				1E54A8F72CB7D26900753A3E /* moon.xml */,
-				1E54A8F32CB78A0E00753A3E /* moonriverPDF.xml */,
-				1E54A8F12CB784FD00753A3E /* moonriver.xml */,
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
 			);
@@ -515,7 +509,6 @@
 				02BFECFB2CB10A15003CEC8A /* Base in Resources */,
 				1E3E09302CB2AAB400EE1868 /* re.mp3 in Resources */,
 				1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */,
-				1E54A8F42CB78A0E00753A3E /* moonriverPDF.xml in Resources */,
 				1E3E09312CB2AAB400EE1868 /* doh.mp3 in Resources */,
 				1E3E09322CB2AAB400EE1868 /* ra.mp3 in Resources */,
 				1E3E09332CB2AAB400EE1868 /* do.mp3 in Resources */,
@@ -535,7 +528,6 @@
 				1E3E093C2CB2AAB400EE1868 /* rah.mp3 in Resources */,
 				1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */,
 				1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */,
-				1E54A8F22CB784FD00753A3E /* moonriver.xml in Resources */,
 				1E3E09452CB3EDA500EE1868 /* speechRe.mp3 in Resources */,
 				1E3E094D2CB3EE6700EE1868 /* speechRa.mp3 in Resources */,
 			);
