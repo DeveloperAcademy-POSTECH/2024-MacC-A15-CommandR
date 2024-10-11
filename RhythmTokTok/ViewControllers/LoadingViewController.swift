@@ -79,7 +79,7 @@ class LoadingViewController: UIViewController {
                 musicPlayer.loadAudioFile(url: outputPathURL)
                 musicPlayer.play()
             } else {
-                print("Error [LoadingViewController]: Audio file not found at path \(outputPathURL.path)")
+                ErrorHandler.handleError(errorMessage: "Audio file not found at path \(outputPathURL.path)")
             }
         }
         isPlayingMusicXML.toggle()
@@ -101,7 +101,6 @@ class LoadingViewController: UIViewController {
                 outputPathURL = try await mediaManager.getMediaFile(xmlData: xmlData)
                 print("Completed. Media file path: \(outputPathURL?.path ?? "No file created")")
                 playMusicXMLButton.isEnabled = true
-                
             } catch {
                 ErrorHandler.handleError(error: error)
             }
