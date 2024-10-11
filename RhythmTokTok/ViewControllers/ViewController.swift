@@ -79,7 +79,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func navigateToAddGridViewController() {
-        let addGridViewController = SettingViewController()
+        let addGridViewController = AddGridViewController()
         present(addGridViewController, animated: true)
     }
 }
