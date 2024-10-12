@@ -20,10 +20,11 @@ class SettingView: UIView {
     }()
     
     // 소리 설정 버튼들
-    let soundNoteButton: UIButton = createCustomButton(title: "계이름으로 듣기")
-    let soundMelodyButton: UIButton = createCustomButton(title: "멜로디로 듣기")
-    let soundBeatButton: UIButton = createCustomButton(title: "박자만 듣기")
-    
+    let soundButtons: [UIButton] = [
+        createCustomButton(title: "계이름으로 듣기"),
+        createCustomButton(title: "멜로디로 듣기"),
+        createCustomButton(title: "박자만 듣기")
+    ]
     // 진동 가이드 설정 라벨
     let vibrationLabel: UILabel = {
         let label = UILabel()
@@ -34,9 +35,10 @@ class SettingView: UIView {
     }()
     
     // 진동 가이드 설정 버튼들
-    let vibrationOnButton: UIButton = createCustomButton(title: "진동 가이드 받기")
-    let vibrationOffButton: UIButton = createCustomButton(title: "진동 가이드 받지 않기")
-    
+    let vibrationButtons: [UIButton] = [
+        createCustomButton(title: "진동 가이드 받기"),
+        createCustomButton(title: "진동 가이드 받지 않기")
+    ]
     // 글자 크기 설정 라벨
     let fontSizeLabel: UILabel = {
         let label = UILabel()
