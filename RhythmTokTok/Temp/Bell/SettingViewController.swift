@@ -39,12 +39,9 @@ class SettingViewController: UIViewController {
     }
     
     private func setupActions() {
-        for button in soundButtons {
-            button.addTarget(self, action: #selector(soundButtonTapped(_:)), for: .touchUpInside)
-        }
-        
-        for button in vibrationButtons {
-            button.addTarget(self, action: #selector(vibrationButtonTapped(_:)), for: .touchUpInside)
+        // 소리와 진동 버튼에 대한 액션 설정을 배열로 처리
+        for button in soundButtons + vibrationButtons {
+            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         }
         
         for button in settingView.fontSizeButtons {
@@ -74,40 +71,44 @@ class SettingViewController: UIViewController {
         selectFontSizeButton(tag: fontSize)
     }
     
-    @objc private func soundButtonTapped(_ sender: UIButton) {
-        if let previousButton = selectedSoundButton {
-            deselectButton(previousButton)
+    @objc private func buttonTapped(_ sender: UIButton) {
+        if soundButtons.contains(sender) {
+            // 이전에 선택된 버튼 해제
+            if let previousButton = selectedSoundButton {
+                deselectButton(previousButton)
+            }
+            selectButton(sender)
+            
+            // 소리 설정 업데이트
+            switch sender {
+            case settingView.soundNoteButton:
+                Settings.shared.soundSetting = .note
+            case settingView.soundMelodyButton:
+                Settings.shared.soundSetting = .melody
+            case settingView.soundBeatButton:
+                Settings.shared.soundSetting = .beat
+            default:
+                break
+            }
+            print("소리 설정 변경: \(Settings.shared.soundSetting.rawValue)")
+        } else if vibrationButtons.contains(sender) {
+            // 이전에 선택된 버튼 해제
+            if let previousButton = selectedVibrationButton {
+                deselectButton(previousButton)
+            }
+            selectButton(sender)
+            
+            // 진동 설정 업데이트
+            switch sender {
+            case settingView.vibrationOnButton:
+                Settings.shared.watchVibrationGuide = true
+            case settingView.vibrationOffButton:
+                Settings.shared.watchVibrationGuide = false
+            default:
+                break
+            }
+            print("Watch 진동 가이드 설정: \(Settings.shared.watchVibrationGuide ? "켜기" : "끄기")")
         }
-        selectButton(sender)
-        
-        switch sender {
-        case settingView.soundNoteButton:
-            Settings.shared.soundSetting = .note
-        case settingView.soundMelodyButton:
-            Settings.shared.soundSetting = .melody
-        case settingView.soundBeatButton:
-            Settings.shared.soundSetting = .beat
-        default:
-            break
-        }
-        print("소리 설정 변경: \(Settings.shared.soundSetting.rawValue)")
-    }
-    
-    @objc private func vibrationButtonTapped(_ sender: UIButton) {
-        if let previousButton = selectedVibrationButton {
-            deselectButton(previousButton)
-        }
-        selectButton(sender)
-        
-        switch sender {
-        case settingView.vibrationOnButton:
-            Settings.shared.watchVibrationGuide = true
-        case settingView.vibrationOffButton:
-            Settings.shared.watchVibrationGuide = false
-        default:
-            break
-        }
-        print("Watch 진동 가이드 설정: \(Settings.shared.watchVibrationGuide ? "켜기" : "끄기")")
     }
     
     @objc private func fontSizeButtonTapped(_ sender: UIButton) {
@@ -122,9 +123,9 @@ class SettingViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         
         // 그룹별 선택된 버튼 저장
-        if button == settingView.soundNoteButton || button == settingView.soundMelodyButton || button == settingView.soundBeatButton {
+        if soundButtons.contains(button) {
             selectedSoundButton = button
-        } else if button == settingView.vibrationOnButton || button == settingView.vibrationOffButton {
+        } else if vibrationButtons.contains(button) {
             selectedVibrationButton = button
         }
     }

@@ -20,9 +20,9 @@ class SettingView: UIView {
     }()
     
     // 소리 설정 버튼들
-    let soundNoteButton: UIButton = createOptionButton(title: "계이름으로 듣기")
-    let soundMelodyButton: UIButton = createOptionButton(title: "멜로디로 듣기")
-    let soundBeatButton: UIButton = createOptionButton(title: "박자만 듣기")
+    let soundNoteButton: UIButton = createCustomButton(title: "계이름으로 듣기")
+    let soundMelodyButton: UIButton = createCustomButton(title: "멜로디로 듣기")
+    let soundBeatButton: UIButton = createCustomButton(title: "박자만 듣기")
     
     // 진동 가이드 설정 라벨
     let vibrationLabel: UILabel = {
@@ -34,8 +34,8 @@ class SettingView: UIView {
     }()
     
     // 진동 가이드 설정 버튼들
-    let vibrationOnButton: UIButton = createOptionButton(title: "진동 가이드 받기")
-    let vibrationOffButton: UIButton = createOptionButton(title: "진동 가이드 받지 않기")
+    let vibrationOnButton: UIButton = createCustomButton(title: "진동 가이드 받기")
+    let vibrationOffButton: UIButton = createCustomButton(title: "진동 가이드 받지 않기")
     
     // 글자 크기 설정 라벨
     let fontSizeLabel: UILabel = {
@@ -48,11 +48,12 @@ class SettingView: UIView {
     
     // 글자 크기 설정 버튼들
     let fontSizeButtons: [UIButton] = [
-        createFontSizeButton(title: "작게", tag: 1),
-        createFontSizeButton(title: "보통", tag: 2),
-        createFontSizeButton(title: "크게", tag: 3),
-        createFontSizeButton(title: "아주 크게", tag: 4)
+        createCustomButton(title: "작게", tag: 1),
+        createCustomButton(title: "보통", tag: 2),
+        createCustomButton(title: "크게", tag: 3),
+        createCustomButton(title: "아주 크게", tag: 4)
     ]
+    
     
     let fontSizeDescriptionLabel: UILabel = {
         let label = UILabel()
@@ -110,20 +111,7 @@ class SettingView: UIView {
     
     // MARK: - Helper Methods
     
-    private static func createOptionButton(title: String) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        button.layer.cornerRadius = 10
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemBlue.cgColor
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        return button
-    }
-    
-    private static func createFontSizeButton(title: String, tag: Int) -> UIButton {
+    private static func createCustomButton(title: String, tag: Int = 0) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
