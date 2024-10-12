@@ -131,13 +131,13 @@ class LoadingViewController: UIViewController {
                 let mediaManager = MediaManager()
                 
                 // WAV 파일 및 MIDI 파일을 각각 동기적으로 생성
-                wavFilePathURL = try await mediaManager.getMediaFile(xmlData: xmlData)
-                if let wavFilePathURL = wavFilePathURL {
-                    playMusicXMLButton.isEnabled = true
-                    print("WAV file created successfully: \(wavFilePathURL)")
-                } else {
-                    ErrorHandler.handleError(errorMessage: "wav file URL is nil.")
-                }
+//                wavFilePathURL = try await mediaManager.getMediaFile(xmlData: xmlData)
+//                if let wavFilePathURL = wavFilePathURL {
+//                    playMusicXMLButton.isEnabled = true
+//                    print("WAV file created successfully: \(wavFilePathURL)")
+//                } else {
+//                    ErrorHandler.handleError(errorMessage: "wav file URL is nil.")
+//                }
 
                 midiFilePathURL = try await mediaManager.getMIDIFile(xmlData: xmlData)
                 if let midiFilePathURL = midiFilePathURL {

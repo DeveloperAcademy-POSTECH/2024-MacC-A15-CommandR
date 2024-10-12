@@ -9,6 +9,12 @@
 struct Note {
     var pitch: String
     var duration: Int
+    var octave: Int
+    var type: String
+    var voice: Int
+    var staff: Int
+    var startTime: Int  // 음표가 재생되기 시작하는 시간
+    var isRest: Bool = false
     
     // pitch 값을 MIDI 노트 번호로 변환하는 함수
     func pitchNoteNumber() -> Int {

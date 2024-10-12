@@ -16,25 +16,27 @@ struct MediaManager {
     private var midiOutputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
 
     func getMediaFile(xmlData: Data) async throws -> URL {
-        let parsedMeasures = await parseMusicXMLData(xmlData: xmlData)
-        let outputURL = try await createMediaFile(from: parsedMeasures.flatMap { $0.notes })
+        let parsedScore = await parseMusicXMLData(xmlData: xmlData)
+        //TODO: main part note만 따로 파싱방법 구상 해야됨
+        let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
+        let outputURL = try await createMediaFile(from: notes)
 
         return outputURL
     }
     
     func getMIDIFile(xmlData: Data) async throws -> URL {
-        let parsedMeasures = await parseMusicXMLData(xmlData: xmlData)
-        let outputURL = try await createMIDIFile(from: parsedMeasures.flatMap { $0.notes })
-        
+        let parsedScore = await parseMusicXMLData(xmlData: xmlData)
+        let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
+        let outputURL = try await createMIDIFile(from: notes)
+
         return outputURL
     }
     
-    func parseMusicXMLData(xmlData: Data) async -> [Measure]{
-        
+    func parseMusicXMLData(xmlData: Data) async -> Score {
         let parser = MusicXMLParser()
-        let measures = await parser.parseMusicXML(from: xmlData)
+        let score = await parser.parseMusicXML(from: xmlData)
         
-        return measures
+        return score
     }
     
     func filePath(for pitch: String) -> URL? {
@@ -78,11 +80,9 @@ struct MediaManager {
                 }
                 
                 let durationInSeconds = Double(note.duration) / Double(bpm) * 60.0 / quarterNoteDuration
-
                 try writeSample(fileURL: fileURL, duration: durationInSeconds, format: format!, audioFile: file)
             }
-            
-//            print("Media file created at \(outputURL.path)")
+            //print("Media file created at \(outputURL.path)")
             return outputURL
         } catch {
             ErrorHandler.handleError(error: error)
@@ -181,29 +181,23 @@ struct MediaManager {
 
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
-
         // MusicTrack 추가
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
 
-        let ticksPerQuarterNote: Double = 240 // 사분음표당 틱 수를 240으로 줄임
+        let ticksPerQuarterNote: Double = 240 // 사분음표당 틱 수
         var currentTick: MusicTimeStamp = 0
 
         for note in notes {
-            // 음계가 쉼표라면 해당 길이만큼 시간을 건너뜀
-//            print("note : \(note.pitch)")
-            if note.pitch == "silence" {
-                let silenceTicks = note.duration / 12
-                currentTick += MusicTimeStamp(silenceTicks)
-                continue
-            }
-
+            // 음표의 시작 시간을 currentTick으로 설정
+            let noteStartTick = MusicTimeStamp(note.startTime)
+            print("음 \(note.pitch)\(note.octave), 시작시간 \(note.startTime)")
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
                 note: UInt8(note.pitchNoteNumber()), // pitch를 MIDI note number로 변환
                 velocity: 64, // 음의 강도
                 releaseVelocity: 0,
-                duration: 0 // duration은 사용되지 않음
+                duration: 0
             )
 
             // 노트 온 이벤트를 트랙에 추가
@@ -213,7 +207,7 @@ struct MediaManager {
             let noteDurationTicks = note.duration / 12
 
             // 현재 시간 갱신 (노트의 길이만큼)
-            currentTick += MusicTimeStamp(noteDurationTicks)
+            currentTick = noteStartTick + MusicTimeStamp(noteDurationTicks)
 
             // 노트 오프 이벤트 생성
             var noteOffMessage = MIDINoteMessage(
