@@ -16,6 +16,17 @@ class SettingViewController: UIViewController {
     // 현재 선택된 진동 가이드 버튼
     var selectedVibrationButton: UIButton?
     
+    // 소리 설정 버튼들
+    var soundButtons: [UIButton] {
+        return [settingView.soundNoteButton, settingView.soundMelodyButton, settingView.soundBeatButton]
+    }
+    
+    // 진동 가이드 설정 버튼들
+    var vibrationButtons: [UIButton] {
+        return [settingView.vibrationOnButton, settingView.vibrationOffButton]
+    }
+    
+    
     override func loadView() {
         self.view = settingView
     }
@@ -28,16 +39,14 @@ class SettingViewController: UIViewController {
     }
     
     private func setupActions() {
-        // 소리 설정 버튼들에 액션 추가
-        settingView.soundNoteButton.addTarget(self, action: #selector(soundButtonTapped(_:)), for: .touchUpInside)
-        settingView.soundMelodyButton.addTarget(self, action: #selector(soundButtonTapped(_:)), for: .touchUpInside)
-        settingView.soundBeatButton.addTarget(self, action: #selector(soundButtonTapped(_:)), for: .touchUpInside)
+        for button in soundButtons {
+            button.addTarget(self, action: #selector(soundButtonTapped(_:)), for: .touchUpInside)
+        }
         
-        // 진동 가이드 설정 버튼들에 액션 추가
-        settingView.vibrationOnButton.addTarget(self, action: #selector(vibrationButtonTapped(_:)), for: .touchUpInside)
-        settingView.vibrationOffButton.addTarget(self, action: #selector(vibrationButtonTapped(_:)), for: .touchUpInside)
+        for button in vibrationButtons {
+            button.addTarget(self, action: #selector(vibrationButtonTapped(_:)), for: .touchUpInside)
+        }
         
-        // 글자 크기 설정 버튼들에 액션 추가
         for button in settingView.fontSizeButtons {
             button.addTarget(self, action: #selector(fontSizeButtonTapped(_:)), for: .touchUpInside)
         }
