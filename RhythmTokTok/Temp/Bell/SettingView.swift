@@ -81,8 +81,8 @@ class SettingView: UIView {
         backgroundColor = .white
         
         // 소리 설정과 진동 가이드 스택뷰
-        let soundStackView = createVerticalStackView(arrangedSubviews: [soundNoteButton, soundMelodyButton, soundBeatButton])
-        let vibrationStackView = createVerticalStackView(arrangedSubviews: [vibrationOnButton, vibrationOffButton])
+        let soundStackView = createVerticalStackView(arrangedSubviews: soundButtons)
+        let vibrationStackView = createVerticalStackView(arrangedSubviews: vibrationButtons)
         
         // 글자 크기 설정 스택뷰
         let fontSizeStackView = createHorizontalStackView(arrangedSubviews: fontSizeButtons)

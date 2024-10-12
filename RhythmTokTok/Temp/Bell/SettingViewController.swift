@@ -18,12 +18,12 @@ class SettingViewController: UIViewController {
     
     // 소리 설정 버튼들
     var soundButtons: [UIButton] {
-        return [settingView.soundNoteButton, settingView.soundMelodyButton, settingView.soundBeatButton]
+        return settingView.soundButtons
     }
     
     // 진동 가이드 설정 버튼들
     var vibrationButtons: [UIButton] {
-        return [settingView.vibrationOnButton, settingView.vibrationOffButton]
+        return settingView.vibrationButtons
     }
     
     
@@ -53,18 +53,18 @@ class SettingViewController: UIViewController {
         let soundSetting = Settings.shared.soundSetting
         switch soundSetting {
         case .note:
-            selectButton(settingView.soundNoteButton)
+            selectButton(settingView.soundButtons[0])
         case .melody:
-            selectButton(settingView.soundMelodyButton)
+            selectButton(settingView.soundButtons[1])
         case .beat:
-            selectButton(settingView.soundBeatButton)
+            selectButton(settingView.soundButtons[2])
         }
         
         let vibrationGuide = Settings.shared.watchVibrationGuide
         if vibrationGuide {
-            selectButton(settingView.vibrationOnButton)
+            selectButton(settingView.vibrationButtons[0])
         } else {
-            selectButton(settingView.vibrationOffButton)
+            selectButton(settingView.vibrationButtons[1])
         }
         
         let fontSize = Settings.shared.fontSize
@@ -80,15 +80,17 @@ class SettingViewController: UIViewController {
             selectButton(sender)
             
             // 소리 설정 업데이트
-            switch sender {
-            case settingView.soundNoteButton:
-                Settings.shared.soundSetting = .note
-            case settingView.soundMelodyButton:
-                Settings.shared.soundSetting = .melody
-            case settingView.soundBeatButton:
-                Settings.shared.soundSetting = .beat
-            default:
-                break
+            if let index = soundButtons.firstIndex(of: sender) {
+                switch index {
+                case 0:
+                    Settings.shared.soundSetting = .note
+                case 1:
+                    Settings.shared.soundSetting = .melody
+                case 2:
+                    Settings.shared.soundSetting = .beat
+                default:
+                    break
+                }
             }
             print("소리 설정 변경: \(Settings.shared.soundSetting.rawValue)")
         } else if vibrationButtons.contains(sender) {
@@ -99,13 +101,15 @@ class SettingViewController: UIViewController {
             selectButton(sender)
             
             // 진동 설정 업데이트
-            switch sender {
-            case settingView.vibrationOnButton:
-                Settings.shared.watchVibrationGuide = true
-            case settingView.vibrationOffButton:
-                Settings.shared.watchVibrationGuide = false
-            default:
-                break
+            if let index = vibrationButtons.firstIndex(of: sender) {
+                switch index {
+                case 0:
+                    Settings.shared.watchVibrationGuide = true
+                case 1:
+                    Settings.shared.watchVibrationGuide = false
+                default:
+                    break
+                }
             }
             print("Watch 진동 가이드 설정: \(Settings.shared.watchVibrationGuide ? "켜기" : "끄기")")
         }
