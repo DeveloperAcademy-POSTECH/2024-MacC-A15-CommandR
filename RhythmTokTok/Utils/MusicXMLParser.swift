@@ -38,7 +38,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 measureTotal + measure.notes.count
             }
         }
-
+        
         print("Parsing finished. Total parts: \(score.parts.count), Total Notes: \(totalNotes)")
         continuation?.resume(returning: score)
         continuation = nil
@@ -47,15 +47,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
         
-        // `divisions` 값 파싱
-        if elementName == "divisions", let divisions = Int(attributeDict["divisions"] ?? "") {
-            print("element: \(elementName), divisions: \(divisions)")
-            score.divisions = divisions // Score에 divisions 값 저장
-        }
-        
         // 모든 `part`를 파싱하도록 수정
         if elementName == "part", let partId = attributeDict["id"] {
-            print("element: \(elementName)")
             // 파트 추가: 새로운 Part 객체를 생성하고 Score에 추가
             let newPart = Part(id: partId, measures: [])
             currentPartId = partId
@@ -64,7 +57,6 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         
         // 각 파트 내에서 마디(measure) 파싱
         if elementName == "measure", let measureNumberString = attributeDict["number"], let measureNumber = Int(measureNumberString) {
-            print("element: \(elementName), number: \(measureNumberString)")
             // 이전 마디의 currentTimes
             let previousTimes = score.parts.last?.measures.last?.currentTimes ?? [1: 0, 2: 0]
             
@@ -73,19 +65,21 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
 
         // 노트(note) 태그를 만났을 때
         if elementName == "note" {
-            print("element: \(elementName)")
             currentNote = Note(pitch: "", duration: 0, octave: 0, type: "", voice: 0, staff: 0, startTime: 0)
         }
         
         // 쉼표 처리: `rest` 태그를 만났을 때
         if elementName == "rest", let _ = currentNote {
-            print("element: \(elementName) (rest)")
             currentNote?.isRest = true // 쉼표 여부를 나타내는 플래그 설정
         }
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
         let trimmedString = string.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Divisions 값 파싱
+        if currentElement == "divisions", let divisionValue = Int(trimmedString) {
+            score.divisions = divisionValue // Score에 divisions 값 저장
+        }
         
         if currentElement == "step", let _ = currentNote {
             currentNote?.pitch = trimmedString
@@ -109,7 +103,6 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         if currentElement == "staff", let staff = Int(trimmedString), var note = currentNote {
-            print("staff:\(staff)")
             note.staff = staff
             currentNote = note
         }
@@ -123,13 +116,11 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         if elementName == "measure", let measure = currentMeasure {
-            print("close element: \(elementName)")
             score.addMeasure(to: currentPartId!, measure: measure)
             currentMeasure = nil
         }
         
         if elementName == "part" {
-            print("close part: \(currentPartId ?? "unknown")")
             currentPartId = nil // 파트가 끝났으므로 currentPartId를 nil로 설정
         }
         

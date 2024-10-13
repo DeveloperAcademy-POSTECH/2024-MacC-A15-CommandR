@@ -141,7 +141,7 @@ class LoadingViewController: UIViewController {
 
                 midiFilePathURL = try await mediaManager.getMIDIFile(xmlData: xmlData)
                 if let midiFilePathURL = midiFilePathURL {
-                    musicPlayer.setMIDIFile(midiURL: midiFilePathURL)
+                    musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                     playMIDIFileButton.isEnabled = true
                     print("MIDI file created successfully: \(midiFilePathURL)")
                 } else {
