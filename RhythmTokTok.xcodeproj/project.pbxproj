@@ -51,6 +51,7 @@
 		1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */; };
 		1E54A8F02CB6D37C00753A3E /* Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */; };
 		1E54A8F82CB7D26900753A3E /* moon.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F72CB7D26900753A3E /* moon.xml */; };
+		1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */; };
@@ -133,6 +134,8 @@
 		1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechSi.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechSi.mp3; sourceTree = SOURCE_ROOT; };
 		1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Piano.sf2; path = RhythmTokTok/Resources/Piano.sf2; sourceTree = SOURCE_ROOT; };
 		1E54A8F72CB7D26900753A3E /* moon.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = moon.xml; path = RhythmTokTok/Resources/moon.xml; sourceTree = SOURCE_ROOT; };
+		1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayHapticView.swift; sourceTree = "<group>"; };
+		1E54A9002CBBBCEC00753A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -206,6 +209,7 @@
 		02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */ = {
 			isa = PBXGroup;
 			children = (
+				1E54A9002CBBBCEC00753A3E /* Info.plist */,
 				02CFE1212CB1156C008454B8 /* RhythmTokTokWatchApp.swift */,
 				D3ABDF692CB64ECE005CD01F /* View */,
 				D3ABDF682CB64EBF005CD01F /* Manager */,
@@ -415,6 +419,7 @@
 			isa = PBXGroup;
 			children = (
 				02CFE1232CB1156C008454B8 /* ContentView.swift */,
+				1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -601,6 +606,7 @@
 				02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */,
 				02CFE1242CB1156C008454B8 /* ContentView.swift in Sources */,
 				02CFE1222CB1156C008454B8 /* RhythmTokTokWatchApp.swift in Sources */,
+				1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,6 +828,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cmdr.RhythmTokTok;
@@ -855,6 +862,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cmdr.RhythmTokTok;
