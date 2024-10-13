@@ -6,20 +6,21 @@
 //
 // ViewController.swift
 
-
 import UIKit
 import WatchConnectivity
 import AVFoundation
+import UniformTypeIdentifiers
 
 class ViewController: UIViewController {
     
     let statusLabel = UILabel()
+    var selectedFileURL: URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-
+        
         setupUI()
         
         let _ = WatchManager.shared
@@ -68,7 +69,7 @@ extension ViewController {
         let addButton = UIButton(type: .system)
         addButton.setTitle("추가하기", for: .normal)
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.addTarget(self, action: #selector(navigateToAddGridViewController), for: .touchUpInside)
+        addButton.addTarget(self, action: #selector(selectPDFButtonTapped), for: .touchUpInside)
         view.addSubview(addButton)
         
         NSLayoutConstraint.activate([
@@ -94,9 +95,38 @@ extension ViewController {
         present(loadingViewController, animated: true, completion: nil)
     }
     
-    // 새로운 AddGridViewController로 이동하는 함수
-    @objc private func navigateToAddGridViewController() {
-        let addGridViewController = AddGridViewController()
-        present(addGridViewController, animated: true)
+    // PDF 파일 선택 버튼 액션
+    @objc func selectPDFButtonTapped() {
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.allowsMultipleSelection = false
+        self.present(documentPicker, animated: true, completion: nil)
+    }
+
+    // PDF 파일을 미리 보기하고 확인할 수 있는 뷰로 이동
+    func showPDFConfirmationView(with fileURL: URL) {
+        let pdfViewController = PDFConfirmationViewController()
+        pdfViewController.fileURL = fileURL
+        self.present(pdfViewController, animated: true, completion: nil) // 모달로 띄우기
+    }
+}
+
+// PDF 파일 선택에 사용되는 extension
+extension ViewController: UIDocumentPickerDelegate {
+    
+    // 파일을 선택한 후 호출되는 메소드
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let selectedFileURL = urls.first else {
+            return
+        }
+        
+        // 선택된 파일 URL을 저장하고 확인 화면으로 이동
+        self.selectedFileURL = selectedFileURL
+        self.showPDFConfirmationView(with: selectedFileURL)
+    }
+    
+    // 취소 버튼을 누르면 호출되는 메소드
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        print("사용자가 파일 선택을 취소했습니다.")
     }
 }
