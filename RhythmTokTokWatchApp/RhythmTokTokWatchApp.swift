@@ -14,7 +14,7 @@ struct RhythmTokTokWatchApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PlayHapticView()
                 .environmentObject(connectivityManager)
         }
     }
