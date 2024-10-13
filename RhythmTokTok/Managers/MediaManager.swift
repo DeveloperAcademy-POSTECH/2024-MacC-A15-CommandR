@@ -184,10 +184,16 @@ struct MediaManager {
         // MusicTrack 추가
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
 
-        let ticksPerQuarterNote: Double = 240 // 사분음표당 틱 수
+        let ticksPerQuarterNote: Double = 24 // 사분음표당 틱 수
         var currentTick: MusicTimeStamp = 0
 
         for note in notes {
+            if note.isRest {
+                print("쉼표: \(note.duration) ticks, 시작시간 \(note.startTime)")
+                let restDurationTicks = note.duration / 12
+                currentTick += MusicTimeStamp(restDurationTicks)
+                continue // 쉼표는 MIDI 이벤트를 생성하지 않으므로 다음 음표로 넘어감
+            }
             // 음표의 시작 시간을 currentTick으로 설정
             let noteStartTick = MusicTimeStamp(note.startTime)
             print("음 \(note.pitch)\(note.octave), 시작시간 \(note.startTime)")
@@ -204,7 +210,7 @@ struct MediaManager {
             MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOnMessage)
 
             // 노트의 길이를 MIDI 틱으로 변환
-            let noteDurationTicks = note.duration / 12
+            let noteDurationTicks = note.duration /*/ 12*/
 
             // 현재 시간 갱신 (노트의 길이만큼)
             currentTick = noteStartTick + MusicTimeStamp(noteDurationTicks)

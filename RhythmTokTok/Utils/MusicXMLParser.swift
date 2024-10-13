@@ -58,7 +58,10 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         // 각 파트 내에서 마디(measure) 파싱
         if elementName == "measure", let measureNumberString = attributeDict["number"], let measureNumber = Int(measureNumberString) {
             print("element: \(elementName), number: \(measureNumberString)")
-            currentMeasure = Measure(number: measureNumber, notes: [], currentTimes: [1: 0, 2: 0])  // 두 개의 스태프 관리
+            // 이전 마디의 currentTimes
+            let previousTimes = score.parts.last?.measures.last?.currentTimes ?? [1: 0, 2: 0]
+            
+            currentMeasure = Measure(number: measureNumber, notes: [], currentTimes: previousTimes)  // 두 개의 스태프 관리
         }
 
         // 노트(note) 태그를 만났을 때
@@ -99,6 +102,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         if currentElement == "staff", let staff = Int(trimmedString), var note = currentNote {
+            print("staff:\(staff)")
             note.staff = staff
             currentNote = note
         }

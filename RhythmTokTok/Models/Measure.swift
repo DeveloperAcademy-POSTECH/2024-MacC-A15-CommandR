@@ -17,6 +17,7 @@ struct Measure {
         let staff = note.staff
         // 해당 스태프의 현재 시간을 가져옴 (없으면 0)
         let currentStaffTime = currentTimes[staff] ?? 0
+        print("현재 계산중인 시작시간, 파트 : \(staff), 시간: \(currentStaffTime)")
         updatedNote.startTime = currentStaffTime
 
         // 음표를 추가

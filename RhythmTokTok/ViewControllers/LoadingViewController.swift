@@ -117,7 +117,7 @@ class LoadingViewController: UIViewController {
     
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
-        guard let xmlPath = Bundle.main.url(forResource: "MahlFaGe4Sample", withExtension: "musicxml") else {
+        guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
             ErrorHandler.handleError(errorMessage: "Failed to find MusicXML file in bundle.")
             return
         }
