@@ -11,7 +11,8 @@ import AudioToolbox
 struct MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
-    private var tempoBPM: Double = 120.0
+    //TODO: 나중에 템포 설정하는 함수 만들어서 연결하기
+    private var tempoBPM: Double = 100.0
     private var outputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.wav").path()
     private var midiOutputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
 
@@ -23,7 +24,7 @@ struct MediaManager {
 
         return outputURL
     }
-    
+    //TODO: 나중에 파트별로 나누어서 관리할 수 있게 만들기
     func getMIDIFile(xmlData: Data) async throws -> URL {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }

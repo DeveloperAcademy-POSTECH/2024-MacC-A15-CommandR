@@ -16,7 +16,7 @@ class LoadingViewController: UIViewController {
     private var midiFilePathURL: URL?
     private var cancellables = Set<AnyCancellable>()
     private var isPlayingMIDIFile = false
-    private var currentBPM = 120 // bpm 조절 설정
+    private var currentBPM = 100 // bpm 조절 설정
     
     //UI
     private let titleLabel = UILabel()
@@ -115,8 +115,7 @@ class LoadingViewController: UIViewController {
         
         // MIDI 파일 재생 여부에 따른 처리
         if isPlayingMIDIFile {
-            print("Resuming MIDI file...")
-            musicPlayer.resumeMIDI() // 일시정지된 위치에서 재개
+            musicPlayer.pauseMIDI() // 일시정지
         } else {
             print("Playing MIDI file from start...")
             musicPlayer.playMIDI() // 처음부터 재생

@@ -17,8 +17,8 @@ class MusicPlayer: ObservableObject {
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0
     var musicSequence: MusicSequence?
-
-
+    
+    
     init() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
@@ -59,15 +59,6 @@ class MusicPlayer: ObservableObject {
     
     ///MARK: - MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
-//        do {
-//            let bankURL = Bundle.main.url(forResource: "Piano", withExtension: "sf2")! // 사운드 폰트 파일 경로
-//            
-//            guard let midiURL else { return }
-//            midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
-//            midiPlayer?.prepareToPlay()
-//        } catch {
-//            ErrorHandler.handleError(errorMessage: "Failed to set MIDI file: \(error.localizedDescription)")
-//        }
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
         
@@ -86,7 +77,7 @@ class MusicPlayer: ObservableObject {
         // AVMIDIPlayer 초기화
         do {
             let bankURL = Bundle.main.url(forResource: "Piano", withExtension: "sf2")! // 사운드 폰트 파일 경로
-
+            
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             midiPlayer?.prepareToPlay()
         } catch {
@@ -94,40 +85,15 @@ class MusicPlayer: ObservableObject {
         }
     }
     
-    // 템포 변경을 위한 메서드
-    func setMIDITempo(_ bpm: Double) {
-        guard let musicSequence = musicSequence else { return }
-        
-        var tempoTrack: MusicTrack?
-        
-        // 시퀀스의 템포 트랙 가져오기
-        MusicSequenceGetTempoTrack(musicSequence, &tempoTrack)
-        
-        if let tempoTrack = tempoTrack {
-            // 템포 이벤트 추가 (시간 0부터 템포를 변경)
-            let secondsPerQuarterNote = 60.0 / bpm
-            let startTime: MusicTimeStamp = 0
-            let endTime: MusicTimeStamp = 1_000_000 // 매우 큰 값으로 트랙의 끝까지 커버
-            
-            MusicTrackClear(tempoTrack, startTime, endTime)
-            MusicTrackNewExtendedTempoEvent(tempoTrack, 0, secondsPerQuarterNote)
-        }
-    }
-    
     // MIDI 파일 실행
     func playMIDI() {
-        // BPM 조정
-//        midiPlayer?.rate = Float(2)
         if let midiPlayer = midiPlayer {
-//            setMIDITempo(120)
             // 이전에 일시 정지된 위치에서 재개
-            midiPlayer.rate = 1.0
             midiPlayer.currentPosition = lastPosition
             // 재생 시작
             midiPlayer.play {
                 print("MIDI playback completed.")
             }
-            print("MIDI file is playing at BPM.")
         }
     }
     
@@ -138,10 +104,9 @@ class MusicPlayer: ObservableObject {
         // 현재 재생 시간을 저장
         lastPosition = midiPlayer.currentPosition
         midiPlayer.stop()
-        
         print("MIDI playback paused at \(lastPosition) seconds.")
     }
-
+    
     // MIDI 파일 재개
     func resumeMIDI() {
         guard let midiPlayer = midiPlayer else { return }
@@ -149,7 +114,6 @@ class MusicPlayer: ObservableObject {
         // 저장된 위치에서 다시 재생
         midiPlayer.currentPosition = lastPosition
         midiPlayer.play()
-        
         print("MIDI playback resumed from \(lastPosition) seconds.")
     }
     
