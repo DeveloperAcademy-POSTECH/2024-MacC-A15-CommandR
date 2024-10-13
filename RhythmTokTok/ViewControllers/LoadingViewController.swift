@@ -17,7 +17,7 @@ class LoadingViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     private var isPlayingMIDIFile = false
     private var currentBPM = 120 // bpm 조절 설정
-
+    
     //UI
     private let titleLabel = UILabel()
     private let currentTimeLabel = UILabel()
@@ -76,7 +76,7 @@ class LoadingViewController: UIViewController {
     private func setupActions() {
         playMusicXMLButton.isEnabled = false
         playMusicXMLButton.addTarget(self, action: #selector(playMusicXML), for: .touchUpInside)
-
+        
         playMIDIFileButton.isEnabled = false
         playMIDIFileButton.addTarget(self, action: #selector(playMIDIFile), for: .touchUpInside)
         
@@ -102,16 +102,27 @@ class LoadingViewController: UIViewController {
     }
     
     @objc private func playMIDIFile() {
-        if isPlayingMIDIFile {
-            musicPlayer.resumeMIDI()
-        } else {
-            guard let outputPathURL = midiFilePathURL else { return }
-            if FileManager.default.fileExists(atPath: outputPathURL.path) {
-                musicPlayer.playMIDI()
-            } else {
-                ErrorHandler.handleError(errorMessage: "Audio file not found at path \(outputPathURL.path)")
-            }
+        guard let outputPathURL = midiFilePathURL else {
+            ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+            return
         }
+        
+        // MIDI 파일이 존재하는지 확인
+        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
+            ErrorHandler.handleError(errorMessage: "MIDI file not found at path \(outputPathURL.path)")
+            return
+        }
+        
+        // MIDI 파일 재생 여부에 따른 처리
+        if isPlayingMIDIFile {
+            print("Resuming MIDI file...")
+            musicPlayer.resumeMIDI() // 일시정지된 위치에서 재개
+        } else {
+            print("Playing MIDI file from start...")
+            musicPlayer.playMIDI() // 처음부터 재생
+        }
+        
+        // 재생 상태 토글
         isPlayingMIDIFile.toggle()
     }
     
@@ -121,7 +132,7 @@ class LoadingViewController: UIViewController {
             ErrorHandler.handleError(errorMessage: "Failed to find MusicXML file in bundle.")
             return
         }
-
+        
         Task {
             do {
                 let xmlData = try Data(contentsOf: xmlPath)
@@ -130,26 +141,23 @@ class LoadingViewController: UIViewController {
                 // MediaManager 인스턴스 생성
                 let mediaManager = MediaManager()
                 
-                // WAV 파일 및 MIDI 파일을 각각 동기적으로 생성
-//                wavFilePathURL = try await mediaManager.getMediaFile(xmlData: xmlData)
-//                if let wavFilePathURL = wavFilePathURL {
-//                    playMusicXMLButton.isEnabled = true
-//                    print("WAV file created successfully: \(wavFilePathURL)")
-//                } else {
-//                    ErrorHandler.handleError(errorMessage: "wav file URL is nil.")
-//                }
-
+                // MIDI 파일을 동기적으로 생성
                 midiFilePathURL = try await mediaManager.getMIDIFile(xmlData: xmlData)
+                
+                // MIDI 파일 URL 확인 및 파일 로드
                 if let midiFilePathURL = midiFilePathURL {
+                    print("MIDI file created successfully: \(midiFilePathURL)")
+                    // MIDI 파일 로드
                     musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                     playMIDIFileButton.isEnabled = true
-                    print("MIDI file created successfully: \(midiFilePathURL)")
+                    print("MIDI file successfully loaded and ready to play.")
                 } else {
-                    ErrorHandler.handleError(errorMessage: " MIDI file URL is nil.")
+                    print("Error: MIDI file URL is nil.")
+                    ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
                 }
-
+                
             } catch {
-                ErrorHandler.handleError(error: error)
+                ErrorHandler.handleError(errorMessage: "Error creating or loading MIDI file: \(error.localizedDescription)")
             }
         }
     }
