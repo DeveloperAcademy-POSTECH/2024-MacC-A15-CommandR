@@ -71,7 +71,7 @@ class MusicPlayer: ObservableObject {
     // MIDI 파일 실행
     func playMIDI() {
         // BPM 조정
-        midiPlayer?.rate = Float(1)
+        midiPlayer?.rate = Float(2)
         
         // 이전에 일시 정지된 위치에서 재개
         midiPlayer?.currentPosition = lastPosition

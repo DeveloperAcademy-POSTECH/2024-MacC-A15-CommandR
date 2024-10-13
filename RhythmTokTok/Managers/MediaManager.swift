@@ -183,35 +183,30 @@ struct MediaManager {
         // MusicTrack 추가
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
 
-        var currentTick: MusicTimeStamp = 0
-
         for note in notes {
             if note.isRest {
                 print("쉼표: \(note.duration) ticks, 시작시간 \(note.startTime)")
-                let restDurationTicks = note.duration
-                currentTick += MusicTimeStamp(restDurationTicks)
                 continue // 쉼표는 MIDI 이벤트를 생성하지 않으므로 다음 음표로 넘어감
             }
-            // 음표의 시작 시간을 currentTick으로 설정
+
+            // 음표의 시작 시간을 note.startTime으로 설정
             let noteStartTick = MusicTimeStamp(note.startTime)
             print("음 \(note.pitch)\(note.octave), 시작시간 \(note.startTime)")
+
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
                 note: UInt8(note.pitchNoteNumber()), // pitch를 MIDI note number로 변환
-                velocity: 64, // 음의 강도
+                velocity: 64, // 음의 강도 (나중에 수정 가능)
                 releaseVelocity: 0,
                 duration: 0
             )
 
             // 노트 온 이벤트를 트랙에 추가
-            MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOnMessage)
+            MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick, &noteOnMessage)
 
             // 노트의 길이를 MIDI 틱으로 변환
             let noteDurationTicks = note.duration
-
-            // 현재 시간 갱신 (노트의 길이만큼)
-            currentTick = noteStartTick + MusicTimeStamp(noteDurationTicks)
 
             // 노트 오프 이벤트 생성
             var noteOffMessage = MIDINoteMessage(
@@ -222,8 +217,8 @@ struct MediaManager {
                 duration: 0 // duration은 사용되지 않음
             )
 
-            // 노트 오프 이벤트를 트랙에 추가 (currentTick 시점에서)
-            MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOffMessage)
+            // 노트 오프 이벤트를 트랙에 추가 (note의 시작시간 + duration 시점에서)
+            MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick + MusicTimeStamp(noteDurationTicks), &noteOffMessage)
         }
 
         // MIDI 파일 경로 설정
