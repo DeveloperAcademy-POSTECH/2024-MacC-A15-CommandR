@@ -10,7 +10,6 @@ import AudioToolbox
 
 struct MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
-    private let quarterNoteDuration = 24.0
     private var bpm = 60
     private var outputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.wav").path()
     private var midiOutputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
@@ -27,7 +26,7 @@ struct MediaManager {
     func getMIDIFile(xmlData: Data) async throws -> URL {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
-        let outputURL = try await createMIDIFile(from: notes)
+        let outputURL = try await createMIDIFile(from: notes, division: parsedScore.divisions)
 
         return outputURL
     }
@@ -79,7 +78,7 @@ struct MediaManager {
                     continue
                 }
                 
-                let durationInSeconds = Double(note.duration) / Double(bpm) * 60.0 / quarterNoteDuration
+                let durationInSeconds = Double(note.duration) / Double(bpm) * 60.0 / 24
                 try writeSample(fileURL: fileURL, duration: durationInSeconds, format: format!, audioFile: file)
             }
             //print("Media file created at \(outputURL.path)")
@@ -175,7 +174,7 @@ struct MediaManager {
     }
 
     // MIDI 파일로 변환하는 기능
-    func createMIDIFile(from notes: [Note]) async throws -> URL {
+    func createMIDIFile(from notes: [Note], division: Int) async throws -> URL {
         var musicSequence: MusicSequence? = nil
         var musicTrack: MusicTrack? = nil
 
@@ -184,13 +183,12 @@ struct MediaManager {
         // MusicTrack 추가
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
 
-        let ticksPerQuarterNote: Double = 24 // 사분음표당 틱 수
         var currentTick: MusicTimeStamp = 0
 
         for note in notes {
             if note.isRest {
                 print("쉼표: \(note.duration) ticks, 시작시간 \(note.startTime)")
-                let restDurationTicks = note.duration / 12
+                let restDurationTicks = note.duration
                 currentTick += MusicTimeStamp(restDurationTicks)
                 continue // 쉼표는 MIDI 이벤트를 생성하지 않으므로 다음 음표로 넘어감
             }
@@ -210,7 +208,7 @@ struct MediaManager {
             MusicTrackNewMIDINoteEvent(musicTrack!, currentTick, &noteOnMessage)
 
             // 노트의 길이를 MIDI 틱으로 변환
-            let noteDurationTicks = note.duration /*/ 12*/
+            let noteDurationTicks = note.duration
 
             // 현재 시간 갱신 (노트의 길이만큼)
             currentTick = noteStartTick + MusicTimeStamp(noteDurationTicks)
@@ -232,7 +230,7 @@ struct MediaManager {
         let midiFileURL = URL(fileURLWithPath: midiOutputPath)
 
         // MusicSequence를 파일로 저장
-        let status = MusicSequenceFileCreate(musicSequence!, midiFileURL as CFURL, .midiType, .eraseFile, Int16(ticksPerQuarterNote))
+        let status = MusicSequenceFileCreate(musicSequence!, midiFileURL as CFURL, .midiType, .eraseFile, Int16(division))
         
         if status != noErr {
             ErrorHandler.handleError(errorMessage: "Failed to create MIDI file. Error code: \(status)")

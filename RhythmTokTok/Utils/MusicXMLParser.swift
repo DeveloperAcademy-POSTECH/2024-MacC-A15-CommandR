@@ -46,6 +46,13 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
+        
+        // `divisions` 값 파싱
+        if elementName == "divisions", let divisions = Int(attributeDict["divisions"] ?? "") {
+            print("element: \(elementName), divisions: \(divisions)")
+            score.divisions = divisions // Score에 divisions 값 저장
+        }
+        
         // 모든 `part`를 파싱하도록 수정
         if elementName == "part", let partId = attributeDict["id"] {
             print("element: \(elementName)")

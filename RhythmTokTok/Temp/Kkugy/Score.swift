@@ -8,6 +8,7 @@
 // 악보를 관리하는 객체
 class Score {
     var parts: [Part] = []
+    var divisions: Int = 1  // 사음음표 기준 틱 값
     
     // 파트 추가
     func addPart(_ part: Part) {
@@ -17,7 +18,6 @@ class Score {
     // 특정 파트에 마디 추가
     func addMeasure(to partID: String, measure: Measure) {
         if let partIndex = parts.firstIndex(where: { $0.id == partID }) {
-            print("--------------------------------\(measure.notes.count)")
             parts[partIndex].measures.append(measure)
         }
     }
