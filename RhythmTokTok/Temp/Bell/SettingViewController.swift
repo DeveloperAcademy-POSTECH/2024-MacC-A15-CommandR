@@ -26,7 +26,6 @@ class SettingViewController: UIViewController {
         return settingView.vibrationButtons
     }
     
-    
     override func loadView() {
         self.view = settingView
     }
@@ -50,7 +49,7 @@ class SettingViewController: UIViewController {
     }
     
     private func loadSettings() {
-        let soundSetting = Settings.shared.soundSetting
+        let soundSetting = UserSettingData.shared.soundSetting
         switch soundSetting {
         case .note:
             selectButton(settingView.soundButtons[0])
@@ -60,14 +59,14 @@ class SettingViewController: UIViewController {
             selectButton(settingView.soundButtons[2])
         }
         
-        let vibrationGuide = Settings.shared.watchVibrationGuide
+        let vibrationGuide = UserSettingData.shared.watchVibrationGuide
         if vibrationGuide {
             selectButton(settingView.vibrationButtons[0])
         } else {
             selectButton(settingView.vibrationButtons[1])
         }
         
-        let fontSize = Settings.shared.fontSize
+        let fontSize = UserSettingData.shared.fontSize
         selectFontSizeButton(tag: fontSize)
     }
     
@@ -83,16 +82,16 @@ class SettingViewController: UIViewController {
             if let index = soundButtons.firstIndex(of: sender) {
                 switch index {
                 case 0:
-                    Settings.shared.soundSetting = .note
+                    UserSettingData.shared.soundSetting = .note
                 case 1:
-                    Settings.shared.soundSetting = .melody
+                    UserSettingData.shared.soundSetting = .melody
                 case 2:
-                    Settings.shared.soundSetting = .beat
+                    UserSettingData.shared.soundSetting = .beat
                 default:
                     break
                 }
             }
-            print("소리 설정 변경: \(Settings.shared.soundSetting.rawValue)")
+            print("소리 설정 변경: \(UserSettingData.shared.soundSetting.rawValue)")
         } else if vibrationButtons.contains(sender) {
             // 이전에 선택된 버튼 해제
             if let previousButton = selectedVibrationButton {
@@ -104,20 +103,20 @@ class SettingViewController: UIViewController {
             if let index = vibrationButtons.firstIndex(of: sender) {
                 switch index {
                 case 0:
-                    Settings.shared.watchVibrationGuide = true
+                    UserSettingData.shared.watchVibrationGuide = true
                 case 1:
-                    Settings.shared.watchVibrationGuide = false
+                    UserSettingData.shared.watchVibrationGuide = false
                 default:
                     break
                 }
             }
-            print("Watch 진동 가이드 설정: \(Settings.shared.watchVibrationGuide ? "켜기" : "끄기")")
+            print("Watch 진동 가이드 설정: \(UserSettingData.shared.watchVibrationGuide ? "켜기" : "끄기")")
         }
     }
     
     @objc private func fontSizeButtonTapped(_ sender: UIButton) {
         let selectedFontSize = sender.tag
-        Settings.shared.fontSize = selectedFontSize
+        UserSettingData.shared.fontSize = selectedFontSize
         selectFontSizeButton(tag: selectedFontSize)
         print("글자 크기 설정: \(selectedFontSize)")
     }

@@ -8,9 +8,9 @@
 
 import Foundation
 
-class Settings {
+class UserSettingData {
     
-    static let shared = Settings()
+    static let shared = UserSettingData()
     
     private let soundSettingKey = "soundSetting"
     private let watchVibrationGuideKey = "watchVibrationGuide"

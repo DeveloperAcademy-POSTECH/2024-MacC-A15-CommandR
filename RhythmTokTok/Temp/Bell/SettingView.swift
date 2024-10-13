@@ -8,6 +8,15 @@ import UIKit
 
 class SettingView: UIView {
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     // MARK: - UI 요소
     
     // 소리 설정 라벨
@@ -25,6 +34,7 @@ class SettingView: UIView {
         createCustomButton(title: "멜로디로 듣기"),
         createCustomButton(title: "박자만 듣기")
     ]
+    
     // 진동 가이드 설정 라벨
     let vibrationLabel: UILabel = {
         let label = UILabel()
@@ -39,6 +49,7 @@ class SettingView: UIView {
         createCustomButton(title: "진동 가이드 받기"),
         createCustomButton(title: "진동 가이드 받지 않기")
     ]
+    
     // 글자 크기 설정 라벨
     let fontSizeLabel: UILabel = {
         let label = UILabel()
@@ -56,7 +67,6 @@ class SettingView: UIView {
         createCustomButton(title: "아주 크게", tag: 4)
     ]
     
-    
     let fontSizeDescriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "선호하는 글자 크기로 조절 됩니다."
@@ -64,17 +74,6 @@ class SettingView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    // MARK: - 초기화
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
-    }
     
     // MARK: - UI 설정
     private func setupUI() {

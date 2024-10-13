@@ -32,6 +32,7 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             let isWatchAppReachable = WatchManager.shared.isWatchAppReachable
             print("ViewController: updateWatchAppStatus - isWatchAppReachable = \(isWatchAppReachable)")
+            
             if isWatchAppReachable {
                 self.statusLabel.text = "워치 앱 켜짐"
                 self.statusLabel.textColor = UIColor.systemGreen
@@ -41,6 +42,7 @@ class ViewController: UIViewController {
             }
         }
     }
+    
     func setupUI() {
         let loadingButton = UIButton(type: .system)
         loadingButton.setTitle("로딩뷰", for: .normal)
