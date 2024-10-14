@@ -44,7 +44,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         continuation = nil
     }
     
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
+                qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
         currentElement = elementName
         
         // 모든 `part`를 파싱하도록 수정
@@ -56,7 +57,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         // 각 파트 내에서 마디(measure) 파싱
-        if elementName == "measure", let measureNumberString = attributeDict["number"], let measureNumber = Int(measureNumberString) {
+        if elementName == "measure", let measureNumberString = attributeDict["number"],
+           let measureNumber = Int(measureNumberString) {
             // 이전 마디의 currentTimes
             let previousTimes = score.parts.last?.measures.last?.currentTimes ?? [1: 0, 2: 0]
             
@@ -69,7 +71,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         // 쉼표 처리: `rest` 태그를 만났을 때
-        if elementName == "rest", let _ = currentNote {
+        if elementName == "rest", currentNote != nil {
             currentNote?.isRest = true // 쉼표 여부를 나타내는 플래그 설정
         }
     }
@@ -81,15 +83,15 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             score.divisions = divisionValue // Score에 divisions 값 저장
         }
         
-        if currentElement == "step", let _ = currentNote {
+        if currentElement == "step", currentNote != nil {
             currentNote?.pitch = trimmedString
         }
         
-        if currentElement == "octave", let _ = currentNote, let octave = Int(trimmedString) {
+        if currentElement == "octave", currentNote != nil, let octave = Int(trimmedString) {
             currentNote?.octave = octave
         }
         
-        if currentElement == "duration", let _ = currentNote, let duration = Int(trimmedString) {
+        if currentElement == "duration", currentNote != nil, let duration = Int(trimmedString) {
             currentNote?.duration = duration
         }
         
@@ -98,7 +100,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             currentNote = note
         }
         
-        if currentElement == "type", let _ = currentNote {
+        if currentElement == "type", currentNote != nil {
             currentNote?.type = trimmedString
         }
         
@@ -117,7 +119,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
     }
     
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    func parser(_ parser: XMLParser, didEndElement elementName: String,
+                namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "note", let note = currentNote, currentMeasure != nil {
             // 마디에 음표 추가
             currentMeasure?.addNote(note)

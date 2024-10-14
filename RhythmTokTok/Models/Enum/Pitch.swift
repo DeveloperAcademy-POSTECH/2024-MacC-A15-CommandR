@@ -7,6 +7,7 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 enum Pitch: String {
     case C4, D4, E4, F4, G4, A4, B4, C5
     case D1, E1, F1, G1, A1, B1
@@ -35,3 +36,4 @@ enum Pitch: String {
         return Bundle.main.url(forResource: fileName, withExtension: "mp3")
     }
 }
+// swiftlint:enable identifier_name

@@ -18,7 +18,6 @@ class MusicPlayer: ObservableObject {
     private var lastPosition: TimeInterval = 0
     var musicSequence: MusicSequence?
     
-    
     init() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
@@ -57,7 +56,7 @@ class MusicPlayer: ObservableObject {
         stopTimer()
     }
     
-    ///MARK: - MIDI 파일 관리
+    // MARK: - MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
@@ -70,7 +69,7 @@ class MusicPlayer: ObservableObject {
             if status == noErr {
                 print("MIDI file successfully loaded into MusicSequence.")
             } else {
-                print("Error loading MIDI file: \(status)")
+                ErrorHandler.handleError(errorMessage: "Error loading MIDI file: \(status)")
             }
         }
         
@@ -81,7 +80,7 @@ class MusicPlayer: ObservableObject {
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             midiPlayer?.prepareToPlay()
         } catch {
-            print("Error initializing AVMIDIPlayer: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: error)
         }
     }
     

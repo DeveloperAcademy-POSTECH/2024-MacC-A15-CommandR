@@ -11,25 +11,27 @@ import AudioToolbox
 struct MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
-    //TODO: 나중에 템포 설정하는 함수 만들어서 연결하기
+    // TODO: 나중에 템포 설정하는 함수 만들어서 연결하기
     private var tempoBPM: Double = 100.0
-    private var outputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.wav").path()
-    private var midiOutputPath = FileManager.default.temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
+    private var outputPath = FileManager.default
+        .temporaryDirectory.appendingPathComponent("output2.wav").path()
+    private var midiOutputPath = FileManager.default
+        .temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
 
     func getMediaFile(xmlData: Data) async throws -> URL {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
-        //TODO: main part note만 따로 파싱방법 구상 해야됨
+        // TODO: main part note만 따로 파싱방법 구상 해야됨
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
         let outputURL = try await createMediaFile(from: notes)
 
         return outputURL
     }
-    //TODO: 나중에 파트별로 나누어서 관리할 수 있게 만들기
+    // TODO: 나중에 파트별로 나누어서 관리할 수 있게 만들기
     func getMIDIFile(xmlData: Data) async throws -> URL {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
         let outputURL = try await createMIDIFile(from: notes, division: Double(parsedScore.divisions))
-
+        
         return outputURL
     }
     
@@ -71,7 +73,8 @@ struct MediaManager {
             let firstNoteFileURL = filePath(for: notes[0].pitch)!
             let channelCount = getChannelCount(of: firstNoteFileURL)
             let sampleRate = 44100.0
-            let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: sampleRate, channels: channelCount, interleaved: false)
+            let format = AVAudioFormat(commonFormat: .pcmFormatFloat32,
+                                       sampleRate: sampleRate, channels: channelCount, interleaved: false)
             let file = try AVAudioFile(forWriting: outputURL, settings: format!.settings)
 
             for note in notes {
@@ -83,7 +86,7 @@ struct MediaManager {
                 let durationInSeconds = Double(note.duration) / Double(tempoBPM) * 60.0 / 24
                 try writeSample(fileURL: fileURL, duration: durationInSeconds, format: format!, audioFile: file)
             }
-            //print("Media file created at \(outputURL.path)")
+            
             return outputURL
         } catch {
             ErrorHandler.handleError(error: error)
@@ -92,7 +95,8 @@ struct MediaManager {
     }
     
     // 채널 카운트를 변환하는 함수
-    func convertChannelCount(buffer: AVAudioPCMBuffer, to targetChannelCount: AVAudioChannelCount) -> AVAudioPCMBuffer? {
+    func convertChannelCount(buffer: AVAudioPCMBuffer,
+                             to targetChannelCount: AVAudioChannelCount) -> AVAudioPCMBuffer? {
         // 대상 포맷 생성
         guard let targetFormat = AVAudioFormat(
             commonFormat: buffer.format.commonFormat,
@@ -111,7 +115,8 @@ struct MediaManager {
         }
         
         // 변환된 버퍼 생성
-        guard let convertedBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat, frameCapacity: buffer.frameCapacity) else {
+        guard let convertedBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat,
+                                                     frameCapacity: buffer.frameCapacity) else {
             ErrorHandler.handleError(errorMessage: "Failed to create converted buffer.")
             return nil
         }
@@ -135,7 +140,8 @@ struct MediaManager {
     func writeSample(fileURL: URL, duration: Double, format: AVAudioFormat, audioFile: AVAudioFile) throws {
         let sourceAudioFile = try AVAudioFile(forReading: fileURL)
         
-        guard let sourceBuffer = AVAudioPCMBuffer(pcmFormat: sourceAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(sourceAudioFile.length)) else {
+        guard let sourceBuffer = AVAudioPCMBuffer(pcmFormat: sourceAudioFile.processingFormat,
+                                                  frameCapacity: AVAudioFrameCount(sourceAudioFile.length)) else {
             ErrorHandler.handleError(errorMessage: "Failed to create buffer for source file.")
             return
         }
@@ -177,9 +183,9 @@ struct MediaManager {
 
     // MIDI 파일로 변환하는 기능
     func createMIDIFile(from notes: [Note], division: Double) async throws -> URL {
-        var musicSequence: MusicSequence? = nil
-        var musicTrack: MusicTrack? = nil
-        var tempoTrack: MusicTrack? = nil
+        var musicSequence: MusicSequence?
+        var musicTrack: MusicTrack?
+        var tempoTrack: MusicTrack?
         
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
@@ -236,9 +242,9 @@ struct MediaManager {
         
         // MIDI 파일 경로 설정
         let midiFileURL = URL(fileURLWithPath: midiOutputPath)
-        
         // MusicSequence를 파일로 저장
-        let status = MusicSequenceFileCreate(musicSequence!, midiFileURL as CFURL, .midiType, .eraseFile, Int16(standardDivision))
+        let status = MusicSequenceFileCreate(musicSequence!, midiFileURL as CFURL,
+                                             .midiType, .eraseFile, Int16(standardDivision))
         
         if status != noErr {
             ErrorHandler.handleError(errorMessage: "Failed to create MIDI file. Error code: \(status)")

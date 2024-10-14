@@ -6,7 +6,6 @@
 //
 // ViewController.swift
 
-
 import UIKit
 import WatchConnectivity
 import AVFoundation
@@ -22,7 +21,7 @@ class ViewController: UIViewController {
 
         setupUI()
         
-        let _ = WatchManager.shared
+        _ = WatchManager.shared
         updateWatchAppStatus()
         setupObservers()
     }
@@ -85,7 +84,8 @@ extension ViewController {
     
     // NotificationCenter 관찰자 설정을 별도의 메서드로 분리
     func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWatchAppStatus), name: .watchConnectivityStatusChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWatchAppStatus),
+                                               name: .watchConnectivityStatusChanged, object: nil)
     }
     
     // 기존 로딩 뷰로 이동하는 함수

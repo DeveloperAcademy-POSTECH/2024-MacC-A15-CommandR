@@ -18,7 +18,7 @@ class LoadingViewController: UIViewController {
     private var isPlayingMIDIFile = false
     private var currentBPM = 100 // bpm 조절 설정
     
-    //UI
+    // UI
     private let titleLabel = UILabel()
     private let currentTimeLabel = UILabel()
     private let playMusicXMLButton = UIButton(type: .system)
@@ -151,12 +151,11 @@ class LoadingViewController: UIViewController {
                     playMIDIFileButton.isEnabled = true
                     print("MIDI file successfully loaded and ready to play.")
                 } else {
-                    print("Error: MIDI file URL is nil.")
                     ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
                 }
                 
             } catch {
-                ErrorHandler.handleError(errorMessage: "Error creating or loading MIDI file: \(error.localizedDescription)")
+                ErrorHandler.handleError(error: error)
             }
         }
     }
