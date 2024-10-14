@@ -57,6 +57,8 @@ class SettingViewController: UIViewController {
             selectButton(settingView.soundButtons[1])
         case .beat:
             selectButton(settingView.soundButtons[2])
+        case .mute:
+            selectButton(settingView.soundButtons[3])
         }
         
         let vibrationGuide = UserSettingData.shared.watchVibrationGuide
@@ -87,6 +89,8 @@ class SettingViewController: UIViewController {
                     UserSettingData.shared.soundSetting = .melody
                 case 2:
                     UserSettingData.shared.soundSetting = .beat
+                case 3:
+                    UserSettingData.shared.soundSetting = .mute
                 default:
                     break
                 }
