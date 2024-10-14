@@ -39,9 +39,16 @@ struct MediaManager {
         return outputURL
     }
     
-    func getPartMIDIFile(part: Part, divisions: Int) async throws -> URL {
-        let notes = part.measures.flatMap { $0.notes }
+    func getPartMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
+        var notes: [Note] = []
+        
+        if isChordEnabled {
+            notes = part.measures.flatMap { $0.notes.filter { $0.staff == 1 } }
+        } else {
+            notes = part.measures.flatMap { $0.notes }
+        }
         let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
+        print("part staff: \(part.measures)")
         
         return outputURL
     }

@@ -26,7 +26,10 @@ class LoadingViewController: UIViewController {
     private let currentTimeLabel = UILabel()
     private let playMusicXMLButton = UIButton(type: .system)
     private let playMIDIFileButton = UIButton(type: .roundedRect)
+    private let chordEnableToggleButton = UIButton(type: .system)
     
+    var isChordEnabled: Bool = false // 화음 활성화 여부를 저장하는 변수
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // UIPickerView 설정
@@ -34,7 +37,6 @@ class LoadingViewController: UIViewController {
         pickerView.delegate = self
         pickerView.dataSource = self
         pickerView.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(pickerView)
         
         // UIPickerView 레이아웃 설정
@@ -44,6 +46,27 @@ class LoadingViewController: UIViewController {
             pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
             pickerView.heightAnchor.constraint(equalToConstant: 200)
         ])
+        
+        chordEnableToggleButton.setTitle("화음 활성화", for: .normal)
+        chordEnableToggleButton.translatesAutoresizingMaskIntoConstraints = false
+        chordEnableToggleButton.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
+        
+        // 버튼 스타일 설정 (선택 사항)
+        chordEnableToggleButton.setTitleColor(.white, for: .normal)
+        chordEnableToggleButton.backgroundColor = .systemBlue
+        chordEnableToggleButton.layer.cornerRadius = 10
+
+        // 버튼을 뷰에 추가
+        view.addSubview(chordEnableToggleButton)
+        
+        // 버튼 레이아웃 설정
+        NSLayoutConstraint.activate([
+            chordEnableToggleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            chordEnableToggleButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            chordEnableToggleButton.widthAnchor.constraint(equalToConstant: 200),
+            chordEnableToggleButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
         setupUI()
         setupActions()
         generateMusicXMLAudio()
@@ -104,6 +127,21 @@ class LoadingViewController: UIViewController {
         }.store(in: &cancellables)
     }
     
+    @objc func toggleButtonTapped() {
+        isChordEnabled.toggle() // 화음 활성화 여부 토글
+
+        // 버튼 상태에 따라 UI 업데이트
+        if isChordEnabled {
+            chordEnableToggleButton.setTitle("화음 비활성화", for: .normal)
+            chordEnableToggleButton.backgroundColor = .systemRed
+            print("Chord is now enabled")
+        } else {
+            chordEnableToggleButton.setTitle("화음 활성화", for: .normal)
+            chordEnableToggleButton.backgroundColor = .systemBlue
+            print("Chord is now disabled")
+        }
+    }
+    
     @objc private func playMusicXML() {
         if isPlayingMusicXML {
             musicPlayer.pauseWav()
@@ -138,7 +176,6 @@ class LoadingViewController: UIViewController {
             print("Playing MIDI file from start...")
             musicPlayer.playMIDI() // 처음부터 재생
         }
-        
         // 재생 상태 토글
         isPlayingMIDIFile.toggle()
     }
@@ -181,7 +218,8 @@ class LoadingViewController: UIViewController {
             
             // 선택 파트가 있으면 그 부분만 MIDI File로 변환, MIDI 파일을 동기적으로 생성
             if selectedPart != nil {
-                midiFilePathURL = try await mediaManager.getPartMIDIFile(part: selectedPart!, divisions: score.divisions)
+                midiFilePathURL = try await mediaManager.getPartMIDIFile(part: selectedPart!,
+                                                                         divisions: score.divisions, isChordEnabled: isChordEnabled)
             } else {
                 midiFilePathURL = try await mediaManager.getTotalPartMIDIFile(parsedScore: score)
             }
