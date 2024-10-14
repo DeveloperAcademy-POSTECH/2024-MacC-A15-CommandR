@@ -106,6 +106,15 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             note.staff = staff
             currentNote = note
         }
+        
+        if currentElement == "alter", let alter = Int(trimmedString), var note = currentNote {
+            if alter == 1 {
+                note.accidental = .sharp
+            } else if alter == -1 {
+                note.accidental = .flat
+            }
+            currentNote = note
+        }
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
