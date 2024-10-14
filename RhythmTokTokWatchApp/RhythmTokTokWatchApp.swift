@@ -14,8 +14,17 @@ struct RhythmTokTokWatchApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(connectivityManager)
+            TabView {
+                ContentView()
+                    .environmentObject(connectivityManager)
+                    .tabItem {
+                        Label("워치연결확인", systemImage: "applewatch")
+                    }
+                PlayHapticView()
+                    .tabItem {
+                        Label("햅틱실행", systemImage: "wave.3.right")
+                    }
+            }
         }
     }
 }
