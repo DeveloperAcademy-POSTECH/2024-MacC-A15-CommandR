@@ -8,6 +8,7 @@
 import UIKit
 import WatchConnectivity
 import AVFoundation
+import Lottie
 
 class ViewController: UIViewController {
     
@@ -60,18 +61,27 @@ class ViewController: UIViewController {
         addButton.addTarget(self, action: #selector(navigateToAddGridViewController), for: .touchUpInside)
         view.addSubview(addButton)
         
+        let loadingViewButton = UIButton(type: .system)
+        loadingViewButton.setTitle("로띠뷰가기", for: .normal)
+        loadingViewButton.translatesAutoresizingMaskIntoConstraints = false
+        loadingViewButton.addTarget(self, action: #selector(navigateToLottieViewController), for: .touchUpInside)
+        view.addSubview(loadingViewButton)
+
         NSLayoutConstraint.activate([
             loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             statusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20)
+            addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
+            loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingViewButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20)
         ])
     }
     
     func setupObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWatchAppStatus), name: .watchConnectivityStatusChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWatchAppStatus),
+                                               name: .watchConnectivityStatusChanged, object: nil)
         print("ViewController: setupObservers - 알림 옵저버 추가됨")
     }
     
@@ -82,6 +92,11 @@ class ViewController: UIViewController {
     
     @objc private func navigateToAddGridViewController() {
         let addGridViewController = SettingViewController()
+        present(addGridViewController, animated: true)
+    }
+    
+    @objc private func navigateToLottieViewController() {
+        let addGridViewController = LottieViewController()
         present(addGridViewController, animated: true)
     }
 }
