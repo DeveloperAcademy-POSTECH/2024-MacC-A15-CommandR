@@ -26,17 +26,22 @@ struct MediaManager {
     }
     
     func getMediaFile(parsedScore: Score) async throws -> URL {
-//        let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
         let outputURL = try await createMediaFile(from: notes)
 
         return outputURL
     }
-    // TODO: 나중에 파트별로 나누어서 관리할 수 있게 만들기
-    func getMIDIFile(parsedScore: Score) async throws -> URL {
-//        let parsedScore = await parseMusicXMLData(xmlData: xmlData)
+
+    func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
         let outputURL = try await createMIDIFile(from: notes, division: Double(parsedScore.divisions))
+        
+        return outputURL
+    }
+    
+    func getPartMIDIFile(part: Part, divisions: Int) async throws -> URL {
+        let notes = part.measures.flatMap { $0.notes }
+        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
         
         return outputURL
     }

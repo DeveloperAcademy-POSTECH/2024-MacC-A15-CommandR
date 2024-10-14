@@ -175,10 +175,16 @@ class LoadingViewController: UIViewController {
         let mediaManager = MediaManager()
         
         do {
-            // 버튼 값 초기화
+            // 버튼 값, MIDI File URL 초기화
             playMIDIFileButton.isEnabled = false
-            // MIDI 파일을 동기적으로 생성
-            midiFilePathURL = try await mediaManager.getMIDIFile(parsedScore: score)
+            midiFilePathURL = nil
+            
+            // 선택 파트가 있으면 그 부분만 MIDI File로 변환, MIDI 파일을 동기적으로 생성
+            if selectedPart != nil {
+                midiFilePathURL = try await mediaManager.getPartMIDIFile(part: selectedPart!, divisions: score.divisions)
+            } else {
+                midiFilePathURL = try await mediaManager.getTotalPartMIDIFile(parsedScore: score)
+            }
             
             // MIDI 파일 URL 확인 및 파일 로드
             if let midiFilePathURL = midiFilePathURL {
@@ -222,11 +228,17 @@ extension LoadingViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         guard let currenrScore else { return }
         
         if row == 0 {
+            selectedPart = nil
             print("All Parts selected")
-            // "All Parts" 선택 시 처리할 로직
+            Task {
+                await createMIDIFile(score: currenrScore)
+            }
         } else {
             selectedPart = currenrScore.parts[row - 1]
             print("Selected part: \(selectedPart?.id ?? "인식실패")")
+            Task {
+                await createMIDIFile(score: currenrScore)
+            }
         }
     }
 }
