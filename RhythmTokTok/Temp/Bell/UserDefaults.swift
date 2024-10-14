@@ -5,7 +5,6 @@
 //  Created by Byeol Kim on 10/9/24.
 //
 
-
 import Foundation
 
 class UserSettingData {
