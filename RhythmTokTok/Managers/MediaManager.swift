@@ -18,17 +18,23 @@ struct MediaManager {
     private var midiOutputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
 
-    func getMediaFile(xmlData: Data) async throws -> URL {
+    
+    func getScore(xmlData: Data) async throws -> Score {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
-        // TODO: main part note만 따로 파싱방법 구상 해야됨
+        
+        return parsedScore
+    }
+    
+    func getMediaFile(parsedScore: Score) async throws -> URL {
+//        let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
         let outputURL = try await createMediaFile(from: notes)
 
         return outputURL
     }
     // TODO: 나중에 파트별로 나누어서 관리할 수 있게 만들기
-    func getMIDIFile(xmlData: Data) async throws -> URL {
-        let parsedScore = await parseMusicXMLData(xmlData: xmlData)
+    func getMIDIFile(parsedScore: Score) async throws -> URL {
+//        let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
         let outputURL = try await createMIDIFile(from: notes, division: Double(parsedScore.divisions))
         

@@ -9,8 +9,7 @@ import AVFoundation
 
 // MusicXML 파싱 클래스
 class MusicXMLParser: NSObject, XMLParserDelegate {
-    
-    var score = Score()           // Score 객체로 파싱된 데이터를 저장
+    private var score = Score()           // Score 객체로 파싱된 데이터를 저장
     private var currentMeasure: Measure?
     private var currentNote: Note?
     private var currentElement: String = ""

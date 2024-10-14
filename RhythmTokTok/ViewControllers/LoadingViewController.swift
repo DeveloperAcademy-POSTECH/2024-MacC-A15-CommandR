@@ -10,6 +10,7 @@ import UIKit
 import AVFAudio
 
 class LoadingViewController: UIViewController {
+    private var pickerView: UIPickerView!
     private let musicPlayer = MusicPlayer()
     private var isPlayingMusicXML = false
     private var wavFilePathURL: URL?
@@ -17,6 +18,8 @@ class LoadingViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     private var isPlayingMIDIFile = false
     private var currentBPM = 100 // bpm 조절 설정
+    private var currenrScore: Score? // 현재 악보 score
+    private var selectedPart: Part? // 픽커에서 선택된 파트
     
     // UI
     private let titleLabel = UILabel()
@@ -26,6 +29,21 @@ class LoadingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // UIPickerView 설정
+        pickerView = UIPickerView()
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(pickerView)
+        
+        // UIPickerView 레이아웃 설정
+        NSLayoutConstraint.activate([
+            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pickerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            pickerView.heightAnchor.constraint(equalToConstant: 200)
+        ])
         setupUI()
         setupActions()
         generateMusicXMLAudio()
@@ -125,6 +143,11 @@ class LoadingViewController: UIViewController {
         isPlayingMIDIFile.toggle()
     }
     
+    private func updateScore(score: Score) {
+        currenrScore = score
+        pickerView.reloadAllComponents() // 데이터를 받아오면 Picker 업데이트
+    }
+    
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
         guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
@@ -136,13 +159,14 @@ class LoadingViewController: UIViewController {
             do {
                 let xmlData = try Data(contentsOf: xmlPath)
                 print("Successfully loaded MusicXML data.")
-                
-                // MediaManager 인스턴스 생성
                 let mediaManager = MediaManager()
-                
+                let parser = MusicXMLParser()
+                let score = await parser.parseMusicXML(from: xmlData)
+
+                updateScore(score: score)
                 // MIDI 파일을 동기적으로 생성
-                midiFilePathURL = try await mediaManager.getMIDIFile(xmlData: xmlData)
-                
+                midiFilePathURL = try await mediaManager.getMIDIFile(parsedScore: score)
+
                 // MIDI 파일 URL 확인 및 파일 로드
                 if let midiFilePathURL = midiFilePathURL {
                     print("MIDI file created successfully: \(midiFilePathURL)")
@@ -157,6 +181,41 @@ class LoadingViewController: UIViewController {
             } catch {
                 ErrorHandler.handleError(error: error)
             }
+        }
+    }
+}
+
+extension LoadingViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+
+    // UIPickerViewDataSource 프로토콜
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1 // UIPickerView의 열 수
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let currenrScore else { return 0 }
+        
+        return currenrScore.parts.count + 1// parts의 갯수만큼 행을 설정
+    }
+    
+    // UIPickerViewDelegate 프로토콜
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let currenrScore else { return "" }
+        
+        if row == 0 { return "전체" }
+        return currenrScore.parts[row - 1].id // 각 파트의 이름을 보여줌
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // 선택된 파트에 대한 처리
+        guard let currenrScore else { return }
+        
+        if row == 0 {
+            print("All Parts selected")
+            // "All Parts" 선택 시 처리할 로직
+        } else {
+            selectedPart = currenrScore.parts[row - 1]
+            print("Selected part: \(selectedPart?.id ?? "인식실패")")
         }
     }
 }
