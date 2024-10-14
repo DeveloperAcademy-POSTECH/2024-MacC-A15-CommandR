@@ -11,6 +11,7 @@ struct PlayHapticView: View {
     @State private var backgroundSessionManager = HapticScheduleManager()
     @State private var tempo: Double = 120.0  // 템포 초기값 (BPM)
 
+    // 나중에 여기에 실행할 햅틱 대입해주면 됨
     let exampleBeatTimes: [Double] = [0.5/*쉼표 1.0 추가*/, 0.5, 1.0, 0.5, 0.5,
                                1.0, 1.0, 3.0/*쉼표 1.0 추가*/,
                                0.5, 0.5, 1.0, 0.5, 0.5,
@@ -66,7 +67,6 @@ struct PlayHapticView: View {
             .padding()
         }
     }
-
 }
 
 #Preview {
