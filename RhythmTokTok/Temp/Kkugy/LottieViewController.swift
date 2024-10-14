@@ -24,7 +24,7 @@ class LottieViewController: UIViewController {
         guard let animationView = animationView else { return }
         
         // 애니메이션 뷰 크기 및 위치 설정
-        animationView.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+        animationView.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
         animationView.center = view.center
         
         // 애니메이션 재생 옵션 설정
