@@ -8,6 +8,9 @@
 	</array>
 	<key>WKBackgroundModes</key>
 	<array>
+		<string>audio</string>
+		<string>haptics</string>
+		<string>self-care</string>
 		<string>workout-processing</string>
 	</array>
 </dict>

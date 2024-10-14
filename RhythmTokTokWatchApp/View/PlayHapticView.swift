@@ -6,16 +6,49 @@
 //
 
 import SwiftUI
-import UserNotifications
-import WatchKit
 
 struct PlayHapticView: View {
-    @State private var isTimerRunning = false
-    @State private var endDate: Date?
-    @State private var countdownTimer: Timer?
-    @State private var remainingTime: TimeInterval = 0
+    @State private var backgroundSessionManager = HapticScheduleManager()
+    @State private var tempo: Double = 120.0  // 템포 초기값 (BPM)
 
-    let totalTime: TimeInterval = 60 * 5 // 5분
+    let exampleBeatTimes: [Double] = [0.5/*쉼표 1.0 추가*/, 0.5, 1.0, 0.5, 0.5,
+                               1.0, 1.0, 3.0/*쉼표 1.0 추가*/,
+                               0.5, 0.5, 1.0, 0.5, 0.5,
+                               1.0, 1.0, 2.0/*쉽표 1.0추가*/,
+                               1.5/*쉼표 1.0 추가*/, 0.5, 1.0, 0.5, 0.5,
+                               1.0, 1.0, 1.0, 1.0,
+                               2.0, 2.0,
+                               4.0,
+                               //도돌이표A
+                               0.5/*쉼표 1.0 추가*/, 0.5, 1.0, 0.5, 0.5,
+                               1.0, 1.0, 3.0/*쉼표 1.0 추가*/,
+                               0.5, 0.5, 1.0, 0.5, 0.5,
+                               1.0, 1.0, 2.0/*쉽표 1.0추가*/,
+                               1.5/*쉼표 1.0 추가*/, 0.5, 1.0, 0.5, 0.5,
+                               1.0, 1.0, 1.0, 1.0,
+                               2.0, 2.0,
+                               4.0,
+                               //도돌이표A
+                               1.0, 1.0, 1.0, 1.0,
+                               1.0, 0.5, 0.5, 0.5, 0.5, 1.0,
+                               1.0, 1.0, 1.0, 1.0,
+                               1.0, 0.5, 0.5, 0.5, 0.5, 1.0,
+                               1.0, 1.0, 1.0, 1.0,
+                               1.0, 0.5, 0.5, 1.0, 1.0,
+                               5.0/*쉼표 2.0 추가 + 쉼표 1.0 추가*/,
+                               1.0, 0.5, 0.5, 1.0,
+                               // 도돌이표 B
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0,
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0,
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0,
+                               // 도돌이표 B
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0,
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0,
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2.0/*쉼표 1.0 추가*/,
+                               // 도돌이표 B
+                               1.0, 1.0, 1.0]
 
     var body: some View {
         VStack {
@@ -23,71 +56,17 @@ struct PlayHapticView: View {
                 .font(.title)
                 .padding()
             
-            Text("\(timeRemaining())")
-                .font(.system(size: 11))
-                .padding()
-            
             Button(action: {
-                if isTimerRunning {
-                    stopTimer()
-                } else {
-                    startTimer()
-                }
+                backgroundSessionManager.starHaptic(beatTime: exampleBeatTimes)
+                
             }) {
-                Text(isTimerRunning ? "타이머 중지" : "타이머 시작")
+                Text("햅틱 시작")
                     .font(.headline)
             }
             .padding()
         }
     }
-    
-    func startTimer() {
-        endDate = Date().addingTimeInterval(totalTime)
-        remainingTime = totalTime
-        isTimerRunning = true
 
-        // 1초마다 타이머가 작동하여 매 초마다 실행
-        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            timerTick()
-        }
-    }
-    
-    func stopTimer() {
-        countdownTimer?.invalidate()
-        countdownTimer = nil
-        isTimerRunning = false
-        remainingTime = 0
-        endDate = nil
-    }
-    
-    func timerTick() {
-        guard let endDate = endDate else { return }
-        let currentTime = Date()
-        
-        // 남은 시간을 계산
-        remainingTime = endDate.timeIntervalSince(currentTime)
-        
-        // 타이머가 종료될 경우
-        if remainingTime <= 0 {
-            stopTimer()
-        }
-        
-        // 주기적으로 실행할 작업들 (1초마다)
-        runScheduledTasks()
-    }
-    
-    // 원하는 작업들을 주기적으로 실행
-    func runScheduledTasks() {
-        print("현재 남은 시간: \(Int(remainingTime))초")
-        // 여기에 주기적으로 실행하고 싶은 코드를 추가
-    }
-    
-    // 남은 시간 표시
-    func timeRemaining() -> String {
-        let minutes = Int(remainingTime) / 60
-        let seconds = Int(remainingTime) % 60
-        return String(format: "%02d:%02d", minutes, seconds)
-    }
 }
 
 #Preview {
