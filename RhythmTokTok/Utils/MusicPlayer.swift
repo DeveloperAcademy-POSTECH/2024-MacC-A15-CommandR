@@ -87,8 +87,8 @@ class MusicPlayer: ObservableObject {
     // MIDI 파일 실행
     func playMIDI() {
         if let midiPlayer = midiPlayer {
-            // 이전에 일시 정지된 위치에서 재개
-            midiPlayer.currentPosition = lastPosition
+//            // 이전에 일시 정지된 위치에서 재개
+//            midiPlayer.currentPosition = lastPosition
             // 재생 시작
             midiPlayer.play {
                 print("MIDI playback completed.")
