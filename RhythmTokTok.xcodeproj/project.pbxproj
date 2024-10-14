@@ -53,6 +53,7 @@
 		1E54A8F82CB7D26900753A3E /* moon.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F72CB7D26900753A3E /* moon.xml */; };
 		1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
+		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */; };
@@ -165,6 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,6 +512,7 @@
 			);
 			mainGroup = 02BFECDF2CB10A13003CEC8A;
 			packageReferences = (
+				1ED9FEB82CBD55F400472C51 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 02BFECE92CB10A13003CEC8A /* Products */;
 			projectDirPath = "";
@@ -783,7 +786,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
@@ -815,7 +818,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
@@ -848,7 +851,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -882,7 +885,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -938,6 +941,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1ED9FEB82CBD55F400472C51 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1ED9FEB92CBD568000472C51 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1ED9FEB82CBD55F400472C51 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */ = {

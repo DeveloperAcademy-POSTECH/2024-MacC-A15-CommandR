@@ -8,6 +8,7 @@
 import UIKit
 import WatchConnectivity
 import AVFoundation
+import Lottie
 
 class ViewController: UIViewController {
     
