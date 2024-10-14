@@ -32,41 +32,6 @@ class LoadingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // UIPickerView 설정
-        pickerView = UIPickerView()
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        pickerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(pickerView)
-        
-        // UIPickerView 레이아웃 설정
-        NSLayoutConstraint.activate([
-            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pickerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            pickerView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        chordEnableToggleButton.setTitle("화음 활성화", for: .normal)
-        chordEnableToggleButton.translatesAutoresizingMaskIntoConstraints = false
-        chordEnableToggleButton.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
-        
-        // 버튼 스타일 설정 (선택 사항)
-        chordEnableToggleButton.setTitleColor(.white, for: .normal)
-        chordEnableToggleButton.backgroundColor = .systemBlue
-        chordEnableToggleButton.layer.cornerRadius = 10
-
-        // 버튼을 뷰에 추가
-        view.addSubview(chordEnableToggleButton)
-        
-        // 버튼 레이아웃 설정
-        NSLayoutConstraint.activate([
-            chordEnableToggleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            chordEnableToggleButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            chordEnableToggleButton.widthAnchor.constraint(equalToConstant: 200),
-            chordEnableToggleButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
         setupUI()
         setupActions()
         generateMusicXMLAudio()
@@ -95,6 +60,20 @@ class LoadingViewController: UIViewController {
         playMIDIFileButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(playMIDIFileButton)
         
+        // UIPickerView 설정
+        pickerView = UIPickerView()
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(pickerView)
+        
+        chordEnableToggleButton.setTitle("화음 활성화", for: .normal)
+        chordEnableToggleButton.translatesAutoresizingMaskIntoConstraints = false
+        chordEnableToggleButton.setTitleColor(.white, for: .normal)
+        chordEnableToggleButton.backgroundColor = .systemBlue
+        chordEnableToggleButton.layer.cornerRadius = 10
+        view.addSubview(chordEnableToggleButton)
+    
         setupConstraints()
     }
     
@@ -109,8 +88,23 @@ class LoadingViewController: UIViewController {
             playMusicXMLButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playMusicXMLButton.topAnchor.constraint(equalTo: currentTimeLabel.bottomAnchor, constant: 20),
             
+            chordEnableToggleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            chordEnableToggleButton.topAnchor.constraint(equalTo: playMusicXMLButton.bottomAnchor, constant: 40),
+            chordEnableToggleButton.widthAnchor.constraint(equalToConstant: 200),
+            chordEnableToggleButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pickerView.topAnchor.constraint(equalTo: chordEnableToggleButton.bottomAnchor, constant: 20),
+            pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            pickerView.heightAnchor.constraint(equalToConstant: 200),
+
             playMIDIFileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playMIDIFileButton.topAnchor.constraint(equalTo: playMusicXMLButton.bottomAnchor, constant: 40)
+            playMIDIFileButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 20)
+        ])
+        
+        // UIPickerView 레이아웃 설정
+        NSLayoutConstraint.activate([
+        
         ])
     }
     
@@ -121,6 +115,8 @@ class LoadingViewController: UIViewController {
         playMIDIFileButton.isEnabled = false
         playMIDIFileButton.addTarget(self, action: #selector(playMIDIFile), for: .touchUpInside)
         
+        chordEnableToggleButton.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
+
         // combine으로 계속 값 업데이트
         musicPlayer.$currentTime.sink { [weak self] time in
             self?.currentTimeLabel.text = "Current Time: \(time)"
@@ -139,6 +135,11 @@ class LoadingViewController: UIViewController {
             chordEnableToggleButton.setTitle("화음 활성화", for: .normal)
             chordEnableToggleButton.backgroundColor = .systemBlue
             print("Chord is now disabled")
+        }
+        if let currenrScore {
+            Task {
+                await createMIDIFile(score: currenrScore)
+            }
         }
     }
     
@@ -219,7 +220,8 @@ class LoadingViewController: UIViewController {
             // 선택 파트가 있으면 그 부분만 MIDI File로 변환, MIDI 파일을 동기적으로 생성
             if selectedPart != nil {
                 midiFilePathURL = try await mediaManager.getPartMIDIFile(part: selectedPart!,
-                                                                         divisions: score.divisions, isChordEnabled: isChordEnabled)
+                                                                         divisions: score.divisions,
+                                                                         isChordEnabled: isChordEnabled)
             } else {
                 midiFilePathURL = try await mediaManager.getTotalPartMIDIFile(parsedScore: score)
             }
