@@ -65,4 +65,67 @@ class WatchManager: NSObject, WCSessionDelegate {
             NotificationCenter.default.post(name: .watchConnectivityStatusChanged, object: nil)
         }
     }
-}
+    
+    func sendMessageToWatch(title: String, startTime: Date, vibrationSequence: [Int]) {
+        guard WCSession.default.isReachable else {
+            print("워치가 연결되지 않음")
+            return
+        }
+        
+        // 데이터를 dictionary로 만들고 JSON으로 직렬화
+        let dateFormatter = ISO8601DateFormatter()
+        let message: [String: Any] = [
+            "title": title,
+            "startTime": dateFormatter.string(from: startTime),
+            "vibrationSequence": vibrationSequence
+        ]
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: message, options: [])
+            if let jsonString = String(data: data, encoding: .utf8) {
+                // 워치로 메시지 전송
+                WCSession.default.sendMessage(["message": jsonString], replyHandler: { response in
+                    print("워치로부터의 응답: \(response)")
+                }, errorHandler: { error in
+                    print("메시지 전송 오류: \(error)")
+                })
+            }
+        } catch {
+            print("JSON 직렬화 오류: \(error)")
+        }
+    }
+    
+    func sendSampleMessageToWatch() {
+         guard WCSession.default.isReachable else {
+             ErrorHandler.handleError(errorMessage: "워치가 연결되지 않음")
+             return
+         }
+         
+         // 샘플 데이터 생성
+         let sampleTitle = "테스트 알림"
+         let sampleStartTime = Date()
+         let sampleVibrationSequence = [1, 2, 3, 4, 5]
+         
+         // 데이터를 dictionary로 만들고 JSON으로 직렬화
+         let dateFormatter = ISO8601DateFormatter()
+         let message: [String: Any] = [
+             "title": sampleTitle,
+             "startTime": dateFormatter.string(from: sampleStartTime),
+             "vibrationSequence": sampleVibrationSequence
+         ]
+         
+         do {
+             let data = try JSONSerialization.data(withJSONObject: message, options: [])
+             if let jsonString = String(data: data, encoding: .utf8) {
+                 // 워치로 메시지 전송
+                 WCSession.default.sendMessage(["message": jsonString], replyHandler: { response in
+                     print("워치로부터의 응답: \(response)")
+                 }, errorHandler: { error in
+                     ErrorHandler.handleError(errorMessage: "메시지 전송 오류: \(error.localizedDescription)")
+                 })
+             }
+         } catch {
+             ErrorHandler.handleError(errorMessage: "JSON 직렬화 오류: \(error)")
+         }
+     }
+ }

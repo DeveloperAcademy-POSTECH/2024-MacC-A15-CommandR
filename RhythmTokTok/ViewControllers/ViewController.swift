@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-
+        
         setupUI()
         setupObservers()
         updateWatchAppStatus()
@@ -60,13 +60,22 @@ class ViewController: UIViewController {
         addButton.addTarget(self, action: #selector(navigateToAddGridViewController), for: .touchUpInside)
         view.addSubview(addButton)
         
+        // 새로운 "메세지 보내기" 버튼 추가
+        let sendMessageButton = UIButton(type: .system)
+        sendMessageButton.setTitle("메세지 보내기", for: .normal)
+        sendMessageButton.translatesAutoresizingMaskIntoConstraints = false
+        sendMessageButton.addTarget(self, action: #selector(sendMessageToWatch), for: .touchUpInside)
+        view.addSubview(sendMessageButton)
+        
         NSLayoutConstraint.activate([
             loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             statusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20)
+            addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
+            sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sendMessageButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20)
         ])
     }
     
@@ -83,5 +92,9 @@ class ViewController: UIViewController {
     @objc private func navigateToAddGridViewController() {
         let addGridViewController = SettingViewController()
         present(addGridViewController, animated: true)
+    }
+    
+    @objc private func sendMessageToWatch() {
+        WatchManager.shared.sendSampleMessageToWatch()
     }
 }
