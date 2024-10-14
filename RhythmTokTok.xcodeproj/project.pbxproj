@@ -54,6 +54,8 @@
 		1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
+		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
+		1ED9FEBF2CBD573D00472C51 /* Loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBE2CBD573D00472C51 /* Loading.json */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */; };
@@ -144,6 +146,8 @@
 		1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayHapticView.swift; sourceTree = "<group>"; };
 		1E54A9002CBBBCEC00753A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
+		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
+		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -274,6 +278,7 @@
 				1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */,
 				1E54A8F72CB7D26900753A3E /* moon.xml */,
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
+				1ED9FEBD2CBD571300472C51 /* Lotties */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
 			);
 			name = Resources;
@@ -317,6 +322,14 @@
 			name = Speech;
 			path = RhythmTokTok/Resources/Sound/Speech;
 			sourceTree = SOURCE_ROOT;
+		};
+		1ED9FEBD2CBD571300472C51 /* Lotties */ = {
+			isa = PBXGroup;
+			children = (
+				1ED9FEBE2CBD573D00472C51 /* Loading.json */,
+			);
+			path = Lotties;
+			sourceTree = "<group>";
 		};
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
@@ -385,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				1EF8A0BB2CB55A6300ADB783 /* Empty.swift */,
+				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
 			);
 			path = Kkugy;
 			sourceTree = "<group>";
@@ -555,6 +569,7 @@
 				1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */,
 				1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */,
 				1E3E09452CB3EDA500EE1868 /* speechRe.mp3 in Resources */,
+				1ED9FEBF2CBD573D00472C51 /* Loading.json in Resources */,
 				1E3E094D2CB3EE6700EE1868 /* speechRa.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -617,6 +632,7 @@
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */,
+				1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */,
 				D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */,
 				1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */,
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
