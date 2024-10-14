@@ -159,28 +159,39 @@ class LoadingViewController: UIViewController {
             do {
                 let xmlData = try Data(contentsOf: xmlPath)
                 print("Successfully loaded MusicXML data.")
-                let mediaManager = MediaManager()
                 let parser = MusicXMLParser()
                 let score = await parser.parseMusicXML(from: xmlData)
 
                 updateScore(score: score)
-                // MIDI 파일을 동기적으로 생성
-                midiFilePathURL = try await mediaManager.getMIDIFile(parsedScore: score)
-
-                // MIDI 파일 URL 확인 및 파일 로드
-                if let midiFilePathURL = midiFilePathURL {
-                    print("MIDI file created successfully: \(midiFilePathURL)")
-                    // MIDI 파일 로드
-                    musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
-                    playMIDIFileButton.isEnabled = true
-                    print("MIDI file successfully loaded and ready to play.")
-                } else {
-                    ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
-                }
+                await createMIDIFile(score: score)
                 
             } catch {
                 ErrorHandler.handleError(error: error)
             }
+        }
+    }
+    
+    func createMIDIFile(score: Score) async {
+        let mediaManager = MediaManager()
+        
+        do {
+            // 버튼 값 초기화
+            playMIDIFileButton.isEnabled = false
+            // MIDI 파일을 동기적으로 생성
+            midiFilePathURL = try await mediaManager.getMIDIFile(parsedScore: score)
+            
+            // MIDI 파일 URL 확인 및 파일 로드
+            if let midiFilePathURL = midiFilePathURL {
+                print("MIDI file created successfully: \(midiFilePathURL)")
+                // MIDI 파일 로드
+                musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+                playMIDIFileButton.isEnabled = true
+                print("MIDI file successfully loaded and ready to play.")
+            } else {
+                ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+            }
+        } catch {
+            ErrorHandler.handleError(error: error)
         }
     }
 }
