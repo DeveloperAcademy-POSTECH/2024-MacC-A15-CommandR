@@ -85,7 +85,7 @@ class ViewController: UIViewController {
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
             sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            sendMessageButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20)
+            sendMessageButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20)
         ])
@@ -124,7 +124,7 @@ class ViewController: UIViewController {
     }
   
     @objc private func navigateToLottieViewController() {
-        let addGridViewController = LottieViewController()
+        let addGridViewController = MusicPracticeViewController()
         present(addGridViewController, animated: true)
     }
     
