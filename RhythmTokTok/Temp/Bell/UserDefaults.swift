@@ -5,7 +5,6 @@
 //  Created by Byeol Kim on 10/9/24.
 //
 
-
 import Foundation
 
 class UserSettingData {
@@ -25,7 +24,7 @@ class UserSettingData {
                let setting = SoundSetting(rawValue: value) {
                 return setting
             }
-            return .note // 기본값
+            return .voice // 기본값
         }
         set {
             UserDefaults.standard.set(newValue.rawValue, forKey: soundSettingKey)
