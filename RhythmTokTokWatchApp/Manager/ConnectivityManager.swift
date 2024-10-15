@@ -35,9 +35,9 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
     
     // MARK: - WCSessionDelegate 메서드
-    
     // 세션 활성화 완료 시 호출
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState,
+                 error: Error?) {
         if activationState == .activated {
             print("watchOS 앱에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
@@ -45,7 +45,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             }
         }
         if let error = error {
-            ErrorHandler.handleError(errorMessage: "Failed to watchOS 앱에서 WCSession 활성화 실패: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: error)
         }
     }
     

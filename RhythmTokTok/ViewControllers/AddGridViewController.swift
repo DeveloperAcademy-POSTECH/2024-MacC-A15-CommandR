@@ -73,7 +73,8 @@ class AddGridViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     // 이미지 선택 후 처리
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             imageView.image = selectedImage
             convertButton.isHidden = false
@@ -95,7 +96,7 @@ class AddGridViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // PDF 보기
     @objc func showPDF() {
-        guard let pdfURL = pdfURL else { return }
+        guard pdfURL != nil else { return }
         
         let previewController = QLPreviewController()
         previewController.dataSource = self

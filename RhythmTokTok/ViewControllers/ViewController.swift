@@ -20,6 +20,8 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
 
         setupUI()
+      
+        _ = WatchManager.shared
         setupObservers()
         updateWatchAppStatus()
     }
@@ -82,6 +84,7 @@ class ViewController: UIViewController {
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateWatchAppStatus),
                                                name: .watchConnectivityStatusChanged, object: nil)
+
         print("ViewController: setupObservers - 알림 옵저버 추가됨")
     }
     
