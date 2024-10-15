@@ -51,7 +51,7 @@ class SettingViewController: UIViewController {
     private func loadSettings() {
         let soundSetting = UserSettingData.shared.soundSetting
         switch soundSetting {
-        case .note:
+        case .voice:
             selectButton(settingView.soundButtons[0])
         case .melody:
             selectButton(settingView.soundButtons[1])
@@ -84,7 +84,7 @@ class SettingViewController: UIViewController {
             if let index = soundButtons.firstIndex(of: sender) {
                 switch index {
                 case 0:
-                    UserSettingData.shared.soundSetting = .note
+                    UserSettingData.shared.soundSetting = .voice
                 case 1:
                     UserSettingData.shared.soundSetting = .melody
                 case 2:
