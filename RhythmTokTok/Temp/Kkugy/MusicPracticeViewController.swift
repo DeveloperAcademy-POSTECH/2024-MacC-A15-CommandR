@@ -144,13 +144,13 @@ class MusicPracticeViewController: UIViewController {
     // 버튼이 클릭될 때 호출되는 함수
     @objc private func playButtonTapped() {
         guard let outputPathURL = midiFilePathURL else {
-            ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+            ErrorHandler.handleError(error: "MIDI file URL is nil.")
             return
         }
         
         // MIDI 파일이 존재하는지 확인
         if !FileManager.default.fileExists(atPath: outputPathURL.path) {
-            ErrorHandler.handleError(errorMessage: "MIDI file not found at path \(outputPathURL.path)")
+            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
             return
         }
         print("check")
@@ -169,7 +169,7 @@ class MusicPracticeViewController: UIViewController {
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
         guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
-            ErrorHandler.handleError(errorMessage: "Failed to find MusicXML file in bundle.")
+            ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
             return
         }
         // 시작 버튼 비활성화
@@ -208,19 +208,28 @@ class MusicPracticeViewController: UIViewController {
                 // 햅틱 시퀀스 관리
                 let hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
                                   divisions: score.divisions)
-                
+                // 워치로 곡 선택 메시지 전송
+                sendHapticSequenceToWatch(hapticSequence: hapticSequence)
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                 playPauseButton.isEnabled = true
                 print("MIDI file successfully loaded and ready to play.")
             } else {
-                ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+                ErrorHandler.handleError(error: "MIDI file URL is nil.")
             }
         } catch {
             ErrorHandler.handleError(error: error)
         }
     }
     
+    // 워치로 곡 선택 메시지 전송
+    func sendHapticSequenceToWatch(hapticSequence: [Double]) {
+        // 임시 송 타이틀
+        // TODO: score안의 타이틀 값 연결해줘야됨
+        let songTitle = "Moon River - Kkugy"
+        
+        WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
+    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate

@@ -68,7 +68,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     // MARK: - 워치로 메시지 보내는 부분
     
     // 1. 곡 선택 시 워치로 메시지 전송 (리스트뷰에서 곡을 선택할 때 작동)
-    func sendSongSelectionToWatch(isSelectedSong: Bool, songTitle: String) {
+    func sendSongSelectionToWatch(songTitle: String, hapticSequence: [Double]) {
         guard WCSession.default.isReachable else {
             print("워치가 연결되지 않음")
             return
@@ -77,18 +77,19 @@ class WatchManager: NSObject, WCSessionDelegate {
         self.selectedSongTitle = songTitle
         
         let message: [String: Any] = [
-            "isSelectedSong": isSelectedSong,
-            "songTitle": songTitle
+//            "isSelectedSong": isSelectedSong,
+            "songTitle": songTitle,
+            "hapticSequence" : hapticSequence
         ]
         
         WCSession.default.sendMessage(message, replyHandler: { response in
             if let responseMessage = response["response"] as? String {
                 print("워치로부터 응답 받음: \(responseMessage)")
             } else {
-                ErrorHandler.handleError(errorMessage: "응답 메시지 형식 오류")
+                ErrorHandler.handleError(error: "응답 메시지 형식 오류")
             }
         }, errorHandler: { error in
-            ErrorHandler.handleError(errorMessage: "메시지 전송 오류: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         })
     }
     
@@ -124,7 +125,7 @@ class WatchManager: NSObject, WCSessionDelegate {
             if let additionalDataString = convertToJSONString(data: additionalData) {
                 message["additionalData"] = additionalDataString
             } else {
-                ErrorHandler.handleError(errorMessage: "추가 데이터 변환 실패")
+                ErrorHandler.handleError(error: "추가 데이터 변환 실패")
             }
         }
         
@@ -132,10 +133,10 @@ class WatchManager: NSObject, WCSessionDelegate {
             if let responseMessage = response["response"] as? String {
                 print("워치로부터 응답 받음: \(responseMessage)")
             } else {
-                ErrorHandler.handleError(errorMessage: "응답 메시지 형식 오류")
+                ErrorHandler.handleError(error: "응답 메시지 형식 오류")
             }
         }, errorHandler: { error in
-            ErrorHandler.handleError(errorMessage: "메시지 전송 오류: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         })
     }
     

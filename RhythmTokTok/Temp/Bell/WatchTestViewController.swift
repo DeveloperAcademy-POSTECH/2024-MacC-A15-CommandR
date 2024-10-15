@@ -74,8 +74,7 @@ class WatchTestViewController: UIViewController {
             print("선택된 곡이 없습니다.")
             return
         }
-        let isSelectedSong = true
-        WatchManager.shared.sendSongSelectionToWatch(isSelectedSong: isSelectedSong, songTitle: songTitle)
+        WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: [0.0, 1.0, 3.0])
     }
     
     @objc private func sendPlayStatusPlay() {

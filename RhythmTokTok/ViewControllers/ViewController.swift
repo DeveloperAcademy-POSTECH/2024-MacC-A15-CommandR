@@ -78,6 +78,12 @@ class ViewController: UIViewController {
         loadingViewButton.addTarget(self, action: #selector(navigateToLottieViewController), for: .touchUpInside)
         view.addSubview(loadingViewButton)
         
+        let sendMessageButton = UIButton(type: .system)
+        sendMessageButton.setTitle("워치메시지보내기", for: .normal)
+        sendMessageButton.translatesAutoresizingMaskIntoConstraints = false
+        sendMessageButton.addTarget(self, action: #selector(navigateToWatchTestViewController), for: .touchUpInside)
+        view.addSubview(sendMessageButton)
+        
         let practiceViewButton = UIButton(type: .system)
         practiceViewButton.setTitle("연습뷰가기", for: .normal)
         practiceViewButton.translatesAutoresizingMaskIntoConstraints = false
@@ -149,25 +155,6 @@ class ViewController: UIViewController {
     @objc func navigateToMusicPracticeViewController() {
         let musicPracticeViewController = MusicPracticeViewController()
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
-    }
-    
-    @objc private func sendMessageToWatch() {
-        if selectedSongTitle == nil {
-            selectedSongTitle = "꽃을 든 남자 - 이백호"  // 테스트용 곡 제목 설정
-        }
-        guard let songTitle = selectedSongTitle else {
-            print("선택된 곡이 없습니다.")
-            return
-        }
-        let isSelectedSong = true
-        WatchManager.shared.sendSongSelectionToWatch(isSelectedSong: isSelectedSong, songTitle: songTitle)
-    }
-    
-    // 곡을 선택하는 메서드 예시
-    func selectSong(title: String) {
-        self.selectedSongTitle = title
-        // 곡이 선택되었으므로 워치로 메시지 전송
-        sendMessageToWatch()
     }
 }
 
