@@ -22,7 +22,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     // WCSession 설정
     private func setupSession() {
         guard WCSession.isSupported() else {
-            print("WCSession 지원되지 않음")
+            ErrorHandler.handleError(errorMessage: "WCSession 지원되지 않음")
             return
         }
         
@@ -40,7 +40,7 @@ class WatchManager: NSObject, WCSessionDelegate {
             print("iPhone에서 WCSession 활성화 완료")
         }
         if let error = error {
-            print("WCSession 활성화 실패 - \(error.localizedDescription)")
+            ErrorHandler.handleError(errorMessage: "WCSession 활성화 실패 - \(error.localizedDescription)")
         }
         updateWatchAppReachability(session)
     }
@@ -92,14 +92,14 @@ class WatchManager: NSObject, WCSessionDelegate {
                     if let responseMessage = response["response"] as? String {
                         print("워치로부터 응답 받음: \(responseMessage)")
                     } else {
-                        print("응답 메시지 형식 오류")
+                        ErrorHandler.handleError(errorMessage: "응답 메시지 형식 오류")
                     }
                 }, errorHandler: { error in
-                    print("메시지 전송 오류: \(error.localizedDescription)")
+                    ErrorHandler.handleError(errorMessage: "메시지 전송 오류: \(error.localizedDescription)")
                 })
             }
         } catch {
-            print("JSON 직렬화 오류: \(error.localizedDescription)")
+            ErrorHandler.handleError(errorMessage: "JSON 직렬화 오류: \(error.localizedDescription)")
         }
     }
     
