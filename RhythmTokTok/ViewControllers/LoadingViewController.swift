@@ -101,11 +101,6 @@ class LoadingViewController: UIViewController {
             playMIDIFileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playMIDIFileButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 20)
         ])
-        
-        // UIPickerView 레이아웃 설정
-        NSLayoutConstraint.activate([
-        
-        ])
     }
     
     private func setupActions() {

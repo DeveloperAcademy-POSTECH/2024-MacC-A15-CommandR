@@ -41,7 +41,7 @@ struct MediaManager {
     func getPartMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
         var notes: [Note] = []
         
-        if isChordEnabled {
+        if !isChordEnabled {
             notes = part.measures.flatMap { $0.notes.filter { $0.staff == 1 } }
         } else {
             notes = part.measures.flatMap { $0.notes }
@@ -65,12 +65,12 @@ struct MediaManager {
     func createHapticSequence(from notes: [Note], division: Double) {
         var haptics: [Double] = []
         
-        print("햅틱 만들기전 확인 틱 기준: \(division)")
+//        print("햅틱 만들기전 확인 틱 기준: \(division)")
         for note in notes {
             if note.pitch.isEmpty {
                 continue
             }
-            print("햅틱 만들기전 확인 음: \(note.pitch), 음가: \(note.duration), 시작 틱: \(note.startTime)")
+//            print("햅틱 만들기전 확인 음: \(note.pitch), 음가: \(note.duration), 시작 틱: \(note.startTime)")
             let startTimeInSeconds = (Double(note.startTime) / division) * 60 / tempoBPM
             haptics.append(startTimeInSeconds)
         }

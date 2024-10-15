@@ -39,14 +39,6 @@ class PlayPauseButton: UIButton {
         config.cornerStyle = .medium // 라운드 코너 스타일
         // 버튼 설정 적용
         self.configuration = config
-        // 클릭 시 이벤트 설정
-        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-    }
-
-    // 버튼이 클릭될 때 호출되는 함수
-    @objc private func buttonTapped() {
-        isPlaying.toggle() // 재생/일시정지 상태 변경
-        // TODO: 실행 로직 연결
     }
 
     // 버튼의 이미지를 재생/일시정지 상태에 맞게 업데이트

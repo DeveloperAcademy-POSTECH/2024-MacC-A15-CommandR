@@ -8,11 +8,8 @@
 import UIKit
 
 class MusicPracticeViewController: UIViewController {
-    // 커스텀 네비게이션 바 선언
     let practicNavBar = PracticeNavigationBar()
-    // MusicPracticeTitleView 선언
     let musicPracticeTitleView = MusicPracticeTitleView()
-    // 테이블뷰 선언
     let tableView = UITableView()
     // TODO: 여기에 줄 진행 정도 비율 계산 로직 연결 필요
     let progressData: [CGFloat] = [1.0, 1.0, 1.0, 1.0, 0.4]
@@ -38,6 +35,13 @@ class MusicPracticeViewController: UIViewController {
         button.isHidden = false // 나중에 이값으로 활성화 관리
         return button
     }()
+    
+    // 악보 관리용
+    private var midiFilePathURL: URL?
+    private var isPlayingMIDIFile = false
+    private let musicPlayer = MusicPlayer()
+    // TODO: 나중에 여기로 score값 연결
+    var currenrScore: Score? // 현재 악보 score
 
     override func loadView() {
         // 루트 뷰를 설정할 컨테이너 뷰 생성
@@ -62,8 +66,10 @@ class MusicPracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        generateMusicXMLAudio()
         setupUI()
         setupConstraints()
+        setupActions()
     }
     
     private func setupUI() {
@@ -128,6 +134,89 @@ class MusicPracticeViewController: UIViewController {
             resumeButton.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
+    
+    private func setupActions() {
+        // 클릭 시 이벤트 설정
+        playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+    }
+    
+    // MARK: Button 액션
+    // 버튼이 클릭될 때 호출되는 함수
+    @objc private func playButtonTapped() {
+        guard let outputPathURL = midiFilePathURL else {
+            ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+            return
+        }
+        
+        // MIDI 파일이 존재하는지 확인
+        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
+            ErrorHandler.handleError(errorMessage: "MIDI file not found at path \(outputPathURL.path)")
+            return
+        }
+        print("check")
+        // MIDI 파일 재생 여부에 따른 처리
+        if playPauseButton.isPlaying {
+            musicPlayer.pauseMIDI() // 일시정지
+        } else {
+            print("Playing MIDI file from start...")
+            musicPlayer.playMIDI() // 처음부터 재생
+        }
+        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
+    }
+    
+    // MARK: MIDI 파일, 햅틱 시퀀스 관리
+    // 테스트를 위해 임시 변환 여기서 실행
+    private func generateMusicXMLAudio() {
+        // MusicXML 파일 로드
+        guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
+            ErrorHandler.handleError(errorMessage: "Failed to find MusicXML file in bundle.")
+            return
+        }
+        // 시작 버튼 비활성화
+        playPauseButton.isEnabled = false
+        
+        Task {
+            do {
+                let xmlData = try Data(contentsOf: xmlPath)
+                print("Successfully loaded MusicXML data.")
+                let parser = MusicXMLParser()
+                let score = await parser.parseMusicXML(from: xmlData)
+
+                currenrScore = score
+                await createMIDIFile(score: score)
+                
+            } catch {
+                ErrorHandler.handleError(error: error)
+            }
+        }
+    }
+    
+    private func createMIDIFile(score: Score) async {
+        let mediaManager = MediaManager()
+        
+        do {
+            // MIDI File URL 초기화
+            midiFilePathURL = nil
+            
+            // TODO: 사용할 파트 어떻게 정할지 구상 필요
+            midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
+                                                                         divisions: score.divisions,
+                                                                     isChordEnabled: false)
+            // MIDI 파일 URL 확인 및 파일 로드
+            if let midiFilePathURL = midiFilePathURL {
+                print("MIDI file created successfully: \(midiFilePathURL)")
+                // MIDI 파일 로드
+                musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+                playPauseButton.isEnabled = true
+                print("MIDI file successfully loaded and ready to play.")
+            } else {
+                ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+            }
+        } catch {
+            ErrorHandler.handleError(error: error)
+        }
+    }
+    
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
