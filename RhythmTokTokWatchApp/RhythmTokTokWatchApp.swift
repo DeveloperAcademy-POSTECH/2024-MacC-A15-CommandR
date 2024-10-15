@@ -15,7 +15,7 @@ struct RhythmTokTokWatchApp: App {
     var body: some Scene {
         WindowGroup {
             TabView {
-                ContentView()
+                WatchWaitingView()
                     .environmentObject(connectivityManager)
                     .tabItem {
                         Label("워치연결확인", systemImage: "applewatch")
