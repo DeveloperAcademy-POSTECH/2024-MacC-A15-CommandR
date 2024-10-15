@@ -19,7 +19,7 @@ extension ScoreEntity {
     @NSManaged public var id: String?
     @NSManaged public var createdAt: Date?
     @NSManaged public var title: String?
-    @NSManaged public var bpm: Int16
+    @NSManaged public var bpm: Int
     @NSManaged public var notes: NSOrderedSet?
 
 }

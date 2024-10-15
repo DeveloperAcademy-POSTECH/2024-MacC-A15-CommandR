@@ -23,7 +23,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     // 워치 측에서 WCSession 설정
     private func setupSession() {
         guard WCSession.isSupported() else {
-            ErrorHandler.handleError(errorMessage: "WCSession 지원되지 않음")
+            ErrorHandler.handleError(error: "WCSession 지원되지 않음")
             return
         }
         
@@ -44,7 +44,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             }
         }
         if let error = error {
-            ErrorHandler.handleError(errorMessage: "WCSession 활성화 실패 - \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
         }
     }
     
@@ -58,7 +58,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     // 아이폰으로부터 메시지를 받았을 때 호출
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         guard let jsonString = message["message"] as? String else {
-            ErrorHandler.handleError(errorMessage: "메시지 형식 오류")
+            ErrorHandler.handleError(error: "메시지 형식 오류")
             return
         }
         
@@ -80,7 +80,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                     
                 }
             } catch {
-                ErrorHandler.handleError(errorMessage: "JSON 파싱 오류: \(error.localizedDescription)")
+                ErrorHandler.handleError(error: "JSON 파싱 오류: \(error.localizedDescription)")
             }
         }
     }

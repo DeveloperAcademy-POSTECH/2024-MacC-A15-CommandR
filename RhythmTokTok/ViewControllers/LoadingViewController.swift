@@ -152,7 +152,7 @@ class LoadingViewController: UIViewController {
                 musicPlayer.loadAudioFile(url: outputPathURL)
                 musicPlayer.playWav()
             } else {
-                ErrorHandler.handleError(errorMessage: "Audio file not found at path \(outputPathURL.path)")
+                ErrorHandler.handleError(error: "Audio file not found at path \(outputPathURL.path)")
             }
         }
         isPlayingMusicXML.toggle()
@@ -160,13 +160,13 @@ class LoadingViewController: UIViewController {
     
     @objc private func playMIDIFile() {
         guard let outputPathURL = midiFilePathURL else {
-            ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+            ErrorHandler.handleError(error: "MIDI file URL is nil.")
             return
         }
         
         // MIDI 파일이 존재하는지 확인
         if !FileManager.default.fileExists(atPath: outputPathURL.path) {
-            ErrorHandler.handleError(errorMessage: "MIDI file not found at path \(outputPathURL.path)")
+            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
             return
         }
         
@@ -189,7 +189,7 @@ class LoadingViewController: UIViewController {
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
         guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
-            ErrorHandler.handleError(errorMessage: "Failed to find MusicXML file in bundle.")
+            ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
             return
         }
         
@@ -234,7 +234,7 @@ class LoadingViewController: UIViewController {
                 playMIDIFileButton.isEnabled = true
                 print("MIDI file successfully loaded and ready to play.")
             } else {
-                ErrorHandler.handleError(errorMessage: "MIDI file URL is nil.")
+                ErrorHandler.handleError(error: "MIDI file URL is nil.")
             }
         } catch {
             ErrorHandler.handleError(error: error)

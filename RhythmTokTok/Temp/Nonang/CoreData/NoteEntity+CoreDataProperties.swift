@@ -16,18 +16,18 @@ extension NoteEntity {
         return NSFetchRequest<NoteEntity>(entityName: "NoteEntity")
     }
 
-    @NSManaged public var accidental: Int16
+    @NSManaged public var accidental: Int
     @NSManaged public var isRest: Bool
-    @NSManaged public var startTime: Int64
-    @NSManaged public var staff: Int64
+    @NSManaged public var startTime: Int
+    @NSManaged public var staff: Int
     @NSManaged public var id: String?
-    @NSManaged public var measure: Int16
-    @NSManaged public var part: Int16
-    @NSManaged public var duration: Int16
+    @NSManaged public var measure: Int
+    @NSManaged public var part: Int
+    @NSManaged public var duration: Int
     @NSManaged public var pitch: String?
-    @NSManaged public var octave: Int16
+    @NSManaged public var octave: Int
     @NSManaged public var type: String?
-    @NSManaged public var voice: Int16
+    @NSManaged public var voice: Int
     @NSManaged public var score: ScoreEntity?
 
 }

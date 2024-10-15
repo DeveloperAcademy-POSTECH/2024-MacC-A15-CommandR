@@ -10,7 +10,6 @@
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
 		02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */; };
 		02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEF2CB10A13003CEC8A /* ViewController.swift */; };
-		02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */; };
 		02BFECF82CB10A15003CEC8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BFECF72CB10A15003CEC8A /* Assets.xcassets */; };
 		02BFECFB2CB10A15003CEC8A /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 02BFECFA2CB10A15003CEC8A /* Base */; };
 		02BFED042CB10B52003CEC8A /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 02BFED032CB10B52003CEC8A /* .swiftlint.yml */; };
@@ -69,6 +68,13 @@
 		D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */; };
 		D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */; };
 		D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF702CB6B68C005CD01F /* Notification.swift */; };
+		EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */; };
+		EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */; };
+		EE7B28A02CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */; };
+		EE7B28A12CBE58D500325725 /* ScoreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289D2CBE58D500325725 /* ScoreEntity+CoreDataClass.swift */; };
+		EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */; };
+		EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */; };
+		EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A52CBE5CC200325725 /* ScoreManager.swift */; };
 		EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */; };
 		EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */; };
 		EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */; };
@@ -104,7 +110,6 @@
 		02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		02BFECEF2CB10A13003CEC8A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		02BFECF52CB10A13003CEC8A /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		02BFECF72CB10A15003CEC8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02BFECFA2CB10A15003CEC8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BFECFC2CB10A15003CEC8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -163,6 +168,13 @@
 		D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D3ABDF702CB6B68C005CD01F /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
+		EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EE7B289D2CBE58D500325725 /* ScoreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		EE7B28A52CBE5CC200325725 /* ScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
 		EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGridViewController.swift; sourceTree = "<group>"; };
 		EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertManager.swift; sourceTree = "<group>"; };
 		EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
@@ -223,7 +235,6 @@
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
 				02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */,
 				02BFECFC2CB10A15003CEC8A /* Info.plist */,
-				02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */,
 			);
 			path = RhythmTokTok;
 			sourceTree = "<group>";
@@ -401,10 +412,9 @@
 		1EF8A0AB2CB559C500ADB783 /* Kkugy */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1E54A8FA2CBA8EE100753A3E /* Score.swift */,
 				1E54A8FC2CBA8F3500753A3E /* Part.swift */,
-				1EF8A0BB2CB55A6300ADB783 /* Empty.swift */,
+				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
 			);
 			path = Kkugy;
@@ -426,6 +436,8 @@
 		1EF8A0AD2CB559D300ADB783 /* Nonang */ = {
 			isa = PBXGroup;
 			children = (
+				EE7B28A52CBE5CC200325725 /* ScoreManager.swift */,
+				EE7B28882CBE50F700325725 /* CoreData */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 			);
 			path = Nonang;
@@ -463,6 +475,19 @@
 				1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		EE7B28882CBE50F700325725 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */,
+				EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */,
+				EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */,
+				EE7B289D2CBE58D500325725 /* ScoreEntity+CoreDataClass.swift */,
+				EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */,
+				EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -619,21 +644,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */,
+				EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */,
+				EE7B28A02CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift in Sources */,
+				EE7B28A12CBE58D500325725 /* ScoreEntity+CoreDataClass.swift in Sources */,
+				EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
+				EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */,
 				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
 				D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
+				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
 				D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */,
 				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
 				1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */,
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
-				1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */,
 				1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
-				02BFECF62CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
+				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
@@ -988,12 +1018,12 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */ = {
+		EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				02BFECF52CB10A13003CEC8A /* RhythmTokTok.xcdatamodel */,
+				EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */,
 			);
-			currentVersion = 02BFECF52CB10A13003CEC8A /* RhythmTokTok.xcdatamodel */;
+			currentVersion = EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */;
 			path = RhythmTokTok.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
