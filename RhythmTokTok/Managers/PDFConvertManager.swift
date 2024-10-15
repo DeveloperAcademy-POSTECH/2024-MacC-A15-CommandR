@@ -106,7 +106,8 @@ struct PDFConvertManager {
     }
 
     // 이미지 회전 변환 처리 함수
-    static func applyRotation(for orientation: UIImage.Orientation, size: CGSize, currentTransform: CGAffineTransform) -> CGAffineTransform {
+    static func applyRotation(for orientation: UIImage.Orientation, size: CGSize,
+                              currentTransform: CGAffineTransform) -> CGAffineTransform {
         var transform = currentTransform
         
         switch orientation {
@@ -127,7 +128,8 @@ struct PDFConvertManager {
     }
 
     // 이미지 반전 처리 함수
-    static func applyMirroring(for orientation: UIImage.Orientation, size: CGSize, currentTransform: CGAffineTransform) -> CGAffineTransform {
+    static func applyMirroring(for orientation: UIImage.Orientation, size: CGSize,
+                               currentTransform: CGAffineTransform) -> CGAffineTransform {
         var transform = currentTransform
         
         switch orientation {
