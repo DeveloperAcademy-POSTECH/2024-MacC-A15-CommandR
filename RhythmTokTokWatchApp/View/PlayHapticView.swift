@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlayHapticView: View {
-    @State private var HapticManager = HapticScheduleManager()
+    @State private var hapticManager = HapticScheduleManager()
     @State private var tempo: Double = 120.0  // 템포 초기값 (BPM)
     @State private var isPlay = false
 
@@ -60,9 +60,9 @@ struct PlayHapticView: View {
             
             Button(action: {
                 if isPlay {
-                    HapticManager.stopHaptic()
+                    hapticManager.stopHaptic()
                 } else {
-                    HapticManager.starHaptic(beatTime: exampleBeatTimes)
+                    hapticManager.starHaptic(beatTime: exampleBeatTimes)
                 }
                 
                 isPlay.toggle()

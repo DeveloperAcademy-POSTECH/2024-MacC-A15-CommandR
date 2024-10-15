@@ -95,8 +95,8 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         
         // 배치 내에서 타이머 실행
         var playtime = 0.0
-        for i in startIndex..<endIndex {
-            let beatTime = beatTimes[i]
+        for index in startIndex..<endIndex {
+            let beatTime = beatTimes[index]
             let interval = convertBeatTime(beatTime: beatTime)
             print("현재 타이머 실행 시간: \(playtime), 이전 타이머와의 간격: \(interval)초")
 
