@@ -51,6 +51,7 @@ struct PlayHapticView: View {
                                0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2.0/*쉼표 1.0 추가*/,
                                // 도돌이표 B
                                1.0, 1.0, 1.0]
+    var testHaptic: [Double] = [0.0, 1.8, 2.4, 3.6, 4.5, 4.8, 5.1, 5.25, 6.45, 7.05, 7.95, 8.25, 8.55, 8.85, 10.05, 10.65, 12.45, 13.65]
 
     var body: some View {
         VStack {
@@ -62,7 +63,7 @@ struct PlayHapticView: View {
                 if isPlay {
                     hapticManager.stopHaptic()
                 } else {
-                    hapticManager.starHaptic(beatTime: exampleBeatTimes)
+                    hapticManager.starHaptic(beatTime: testHaptic)
                 }
                 
                 isPlay.toggle()
