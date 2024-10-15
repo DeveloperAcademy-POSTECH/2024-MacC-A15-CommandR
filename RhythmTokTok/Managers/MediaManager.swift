@@ -87,7 +87,7 @@ struct MediaManager {
         if let pitchEnum = Pitch(rawValue: pitch) {
             return pitchEnum.fileURL
         } else {
-            ErrorHandler.handleError(errorMessage: "Pitch not found in enum: \(pitch)")
+            ErrorHandler.handleError(error: "Pitch not found in enum: \(pitch)")
             return nil
         }
     }
@@ -115,7 +115,7 @@ struct MediaManager {
 
             for note in notes {
                 guard let fileURL = filePath(for: note.pitch) else {
-                    ErrorHandler.handleError(errorMessage: "Audio file not found for pitch: \(note.pitch)")
+                    ErrorHandler.handleError(error: "Audio file not found for pitch: \(note.pitch)")
                     continue
                 }
                 
@@ -140,20 +140,20 @@ struct MediaManager {
             channels: targetChannelCount,
             interleaved: buffer.format.isInterleaved)
         else {
-            ErrorHandler.handleError(errorMessage: "Failed to create target format for channel conversion.")
+            ErrorHandler.handleError(error: "Failed to create target format for channel conversion.")
             return nil
         }
         
         // AVAudioConverter 생성
         guard let converter = AVAudioConverter(from: buffer.format, to: targetFormat) else {
-            ErrorHandler.handleError(errorMessage: "Failed to create AVAudioConverter.")
+            ErrorHandler.handleError(error: "Failed to create AVAudioConverter.")
             return nil
         }
         
         // 변환된 버퍼 생성
         guard let convertedBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat,
                                                      frameCapacity: buffer.frameCapacity) else {
-            ErrorHandler.handleError(errorMessage: "Failed to create converted buffer.")
+            ErrorHandler.handleError(error: "Failed to create converted buffer.")
             return nil
         }
         
@@ -178,7 +178,7 @@ struct MediaManager {
         
         guard let sourceBuffer = AVAudioPCMBuffer(pcmFormat: sourceAudioFile.processingFormat,
                                                   frameCapacity: AVAudioFrameCount(sourceAudioFile.length)) else {
-            ErrorHandler.handleError(errorMessage: "Failed to create buffer for source file.")
+            ErrorHandler.handleError(error: "Failed to create buffer for source file.")
             return
         }
         
@@ -189,7 +189,7 @@ struct MediaManager {
         // 채널 카운트가 다를 경우 변환
         if sourceBuffer.format.channelCount != format.channelCount {
             guard let convertedBuffer = convertChannelCount(buffer: sourceBuffer, to: format.channelCount) else {
-                ErrorHandler.handleError(errorMessage: "Failed to convert buffer channel count.")
+                ErrorHandler.handleError(error: "Failed to convert buffer channel count.")
                 return
             }
             bufferToWrite = convertedBuffer
@@ -284,7 +284,7 @@ struct MediaManager {
                                              .midiType, .eraseFile, Int16(standardDivision))
         
         if status != noErr {
-            ErrorHandler.handleError(errorMessage: "Failed to create MIDI file. Error code: \(status)")
+            ErrorHandler.handleError(error: "Failed to create MIDI file. Error code: \(status)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: nil)
         }
         print("MIDI file created at: \(midiFileURL)")
