@@ -130,11 +130,9 @@ class LoadingViewController: UIViewController {
         if isChordEnabled {
             chordEnableToggleButton.setTitle("화음 비활성화", for: .normal)
             chordEnableToggleButton.backgroundColor = .systemRed
-            print("Chord is now enabled")
         } else {
             chordEnableToggleButton.setTitle("화음 활성화", for: .normal)
             chordEnableToggleButton.backgroundColor = .systemBlue
-            print("Chord is now disabled")
         }
         if let currenrScore {
             Task {

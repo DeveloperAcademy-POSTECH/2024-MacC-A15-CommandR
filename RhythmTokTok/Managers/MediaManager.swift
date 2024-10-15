@@ -18,7 +18,6 @@ struct MediaManager {
     private var midiOutputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
 
-    
     func getScore(xmlData: Data) async throws -> Score {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         
@@ -48,19 +47,38 @@ struct MediaManager {
             notes = part.measures.flatMap { $0.notes }
         }
         let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
-        print("part staff: \(part.measures)")
+        // TODO: 메인 note만 햅틱 만들게 해야됨
+        createHapticSequence(from: notes, division: Double(divisions))
         
         return outputURL
     }
     
-    func parseMusicXMLData(xmlData: Data) async -> Score {
+    // MARK: - XML 파싱 부분
+    private func parseMusicXMLData(xmlData: Data) async -> Score {
         let parser = MusicXMLParser()
         let score = await parser.parseMusicXML(from: xmlData)
         
         return score
     }
     
-    func filePath(for pitch: String) -> URL? {
+    // MARK: - 햅틱 시퀀스 생성 부분
+    func createHapticSequence(from notes: [Note], division: Double) {
+        var haptics: [Double] = []
+        
+        print("햅틱 만들기전 확인 틱 기준: \(division)")
+        for note in notes {
+            if note.pitch.isEmpty {
+                continue
+            }
+            print("햅틱 만들기전 확인 음: \(note.pitch), 음가: \(note.duration), 시작 틱: \(note.startTime)")
+            let startTimeInSeconds = (Double(note.startTime) / division) * 60 / tempoBPM
+            haptics.append(startTimeInSeconds)
+        }
+        print("최종 햅틱 배열: \(haptics)")
+    }
+
+    // MARK: - WAV 파일 생성 부분
+    private func filePath(for pitch: String) -> URL? {
         // pitch가 비어있을 경우 `silence`를 반환
         if pitch.isEmpty {
             return Pitch.silence.fileURL
@@ -74,7 +92,7 @@ struct MediaManager {
         }
     }
     
-    func getChannelCount(of url: URL) -> AVAudioChannelCount {
+    private func getChannelCount(of url: URL) -> AVAudioChannelCount {
         do {
             let audioFile = try AVAudioFile(forReading: url)
             return audioFile.processingFormat.channelCount
@@ -84,7 +102,7 @@ struct MediaManager {
         }
     }
     
-    func createMediaFile(from notes: [Note]) async throws -> URL {
+    private func createMediaFile(from notes: [Note]) async throws -> URL {
         let outputURL = URL(fileURLWithPath: outputPath)
 
         do {
@@ -113,8 +131,8 @@ struct MediaManager {
     }
     
     // 채널 카운트를 변환하는 함수
-    func convertChannelCount(buffer: AVAudioPCMBuffer,
-                             to targetChannelCount: AVAudioChannelCount) -> AVAudioPCMBuffer? {
+    private func convertChannelCount(buffer: AVAudioPCMBuffer,
+                                     to targetChannelCount: AVAudioChannelCount) -> AVAudioPCMBuffer? {
         // 대상 포맷 생성
         guard let targetFormat = AVAudioFormat(
             commonFormat: buffer.format.commonFormat,
@@ -155,7 +173,7 @@ struct MediaManager {
         return convertedBuffer
     }
     
-    func writeSample(fileURL: URL, duration: Double, format: AVAudioFormat, audioFile: AVAudioFile) throws {
+    private func writeSample(fileURL: URL, duration: Double, format: AVAudioFormat, audioFile: AVAudioFile) throws {
         let sourceAudioFile = try AVAudioFile(forReading: fileURL)
         
         guard let sourceBuffer = AVAudioPCMBuffer(pcmFormat: sourceAudioFile.processingFormat,
@@ -199,8 +217,9 @@ struct MediaManager {
         }
     }
 
+    // MARK: - MIDI 파일 생성 부분
     // MIDI 파일로 변환하는 기능
-    func createMIDIFile(from notes: [Note], division: Double) async throws -> URL {
+    private func createMIDIFile(from notes: [Note], division: Double) async throws -> URL {
         var musicSequence: MusicSequence?
         var musicTrack: MusicTrack?
         var tempoTrack: MusicTrack?
