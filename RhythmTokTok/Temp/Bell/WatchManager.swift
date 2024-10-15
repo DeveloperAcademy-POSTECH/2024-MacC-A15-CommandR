@@ -93,7 +93,6 @@ class WatchManager: NSObject, WCSessionDelegate {
     }
     
     // 2. 재생 상태 변경 시 워치로 메시지 전송 (연습뷰에서 재생 관련 버튼 조작시 작동)
-    
     func sendPlayStatusToWatch(status: String) {
         guard WCSession.default.isReachable else {
             print("워치가 연결되지 않음")

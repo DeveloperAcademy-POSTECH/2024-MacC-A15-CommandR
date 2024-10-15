@@ -41,7 +41,7 @@ struct WatchPlayView: View {
             MarqueeTextView(
                 text: "\(connectivityManager.selectedSongTitle)",
                 font: .title2,
-                animate: connectivityManager.playStatus == "play"
+                isAnimating: connectivityManager.playStatus == "play"
             )
             .padding()
         }

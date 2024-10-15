@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  RhythmTokTokWatchWatchApp
 //
-//  Created by 백록담 on 10/5/24.
+//  Created by Byeol Kim on 10/5/24.
 //
 
 // ContentView.swift
@@ -21,7 +21,6 @@ struct WatchWaitingView: View {
             
             if connectivityManager.isSelectedSong {
                 WatchPlayView()
-                    .environmentObject(connectivityManager)
             } else {
                 VStack(alignment: .leading) {
                     Text("아이폰에서")

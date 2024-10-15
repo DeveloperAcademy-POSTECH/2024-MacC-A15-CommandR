@@ -10,12 +10,11 @@ import SwiftUI
 struct MarqueeTextView: View {
     let text: String
     let font: Font
-    let animate: Bool
+    let isAnimating: Bool
 
     @State private var textWidth: CGFloat = 0
     @State private var containerWidth: CGFloat = 0
     @State private var animationOffset: CGFloat = 0
-
     @State private var animationTimer: Timer?
 
     var body: some View {
@@ -40,11 +39,11 @@ struct MarqueeTextView: View {
                         )
                         .offset(x: animationOffset)
                         .onAppear {
-                            if animate {
+                            if isAnimating {
                                 startAnimation()
                             }
                         }
-                        .onChange(of: animate) { _, newValue in
+                        .onChange(of: isAnimating) { _, newValue in
                             if newValue {
                                 startAnimation()
                             } else {
@@ -55,9 +54,8 @@ struct MarqueeTextView: View {
                 .frame(width: containerWidth, alignment: .leading)
                 .clipped()
 
-                Spacer() // 하단 공간을 채워서 중앙 배치
+                Spacer()
             }
-            .frame(height: geometry.size.height)
         }
     }
 
@@ -102,6 +100,6 @@ struct MarqueeTextView: View {
     }
 
     private func resetAnimation() {
-        animationOffset = animate && textWidth > containerWidth ? containerWidth : 0
+        animationOffset = isAnimating && textWidth > containerWidth ? containerWidth : 0
     }
 }
