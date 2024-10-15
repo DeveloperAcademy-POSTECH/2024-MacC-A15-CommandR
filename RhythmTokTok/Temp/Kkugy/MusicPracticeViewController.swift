@@ -12,7 +12,10 @@ class MusicPracticeViewController: UIViewController {
     let practicNavBar = PracticeNavigationBar()
     // MusicPracticeTitleView 선언
     let musicPracticeTitleView = MusicPracticeTitleView()
-    
+    // 테이블뷰 선언
+    let tableView = UITableView()
+    let progressData: [CGFloat] = [0.1, 0.4, 0.6, 0.8, 1.0] // TODO: 여기에 줄 진행 정도 비율 계산 로직 연결 필요
+
     // Divider 역할을 할 선
     let divider: UIView = {
         let view = UIView()
@@ -45,6 +48,13 @@ class MusicPracticeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // 테이블 뷰 설정
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(ProgressButtonTableViewCell.self, forCellReuseIdentifier: "ProgressButtonCell")
+        view.addSubview(tableView)
+
         musicPracticeTitleView.titleLabel.text = "MoonRiver" // TODO: 여기에 제목 연결
         musicPracticeTitleView.pageLabel.text = "0/0장" // TODO: 여기에 페이지 내용 만들 함수 연결
         
@@ -70,7 +80,33 @@ class MusicPracticeViewController: UIViewController {
             divider.topAnchor.constraint(equalTo: musicPracticeTitleView.bottomAnchor, constant: 16),
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 1)  // 1pt 너비로 가로선 추가
+            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
+            
+            // 테이블뷰
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: divider.topAnchor, constant: 24),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+}
+
+extension MusicPracticeViewController: UITableViewDataSource, UITableViewDelegate {
+    // MARK: - UITableViewDataSource
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return progressData.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProgressButtonCell", for: indexPath) as! ProgressButtonTableViewCell
+        let progress = progressData[indexPath.row]
+        cell.configure(progress: progress)
+        return cell
+    }
+
+    // MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Progress button at row \(indexPath.row) clicked")
+        // TODO: 여기에 버튼 클릭 시 해당 줄부터 연주되게 만들기
     }
 }

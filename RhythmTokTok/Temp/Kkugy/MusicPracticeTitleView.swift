@@ -35,13 +35,6 @@ class MusicPracticeTitleView: UIView {
         return label
     }()
     
-    let actionButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Press Me", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     let titleHStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -71,7 +64,6 @@ class MusicPracticeTitleView: UIView {
         
         // UI 요소 추가
         addSubview(titleHStackView) // 타이틀 스택
-        addSubview(actionButton)
         
         // 레이아웃 설정
         NSLayoutConstraint.activate([
@@ -80,9 +72,6 @@ class MusicPracticeTitleView: UIView {
             titleHStackView.topAnchor.constraint(equalTo: topAnchor),
             titleHStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             titleHStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            
-            actionButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            actionButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
         ])
     }
 }
