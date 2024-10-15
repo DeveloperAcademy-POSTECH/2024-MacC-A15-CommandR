@@ -12,11 +12,9 @@ class MusicPracticeViewController: UIViewController {
     let practicNavBar = PracticeNavigationBar()
     // MusicPracticeTitleView 선언
     let musicPracticeTitleView = MusicPracticeTitleView()
-    let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
     // 테이블뷰 선언
     let tableView = UITableView()
     let progressData: [CGFloat] = [1.0, 1.0, 1.0, 1.0, 0.4] // TODO: 여기에 줄 진행 정도 비율 계산 로직 연결 필요
-
     // Divider 역할을 할 선
     let divider: UIView = {
         let view = UIView()
@@ -24,7 +22,22 @@ class MusicPracticeViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+    let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
+    let resumeButton: UIButton = {
+        let button = UIButton(type: .system)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular)
+        let image = UIImage(systemName: "stop.fill", withConfiguration: configuration)
+        button.tintColor = .white
+        button.setImage(image, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .gray08
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
+        button.isHidden = false // 나중에 이값으로 활성화 관리
+        return button
+    }()
+
     override func loadView() {
         // 루트 뷰를 설정할 컨테이너 뷰 생성
         let containerView = UIView()
@@ -68,6 +81,8 @@ class MusicPracticeViewController: UIViewController {
         // 버튼을 뷰에 추가
         playPauseButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(playPauseButton)
+        // resume 버튼 추가
+        view.addSubview(resumeButton)
     }
     
     private func setupConstraints() {
@@ -98,10 +113,18 @@ class MusicPracticeViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             // 플레이버튼
-            playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), // 수평 중앙
-            playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20), // 안전 영역 하단에서 20pt 위로 설정
-            playPauseButton.heightAnchor.constraint(equalToConstant: 80), // 버튼의 높이
-            playPauseButton.widthAnchor.constraint(equalToConstant: 160)
+            playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                    constant: -20),
+            playPauseButton.heightAnchor.constraint(equalToConstant: 80),
+            playPauseButton.widthAnchor.constraint(equalToConstant: 160),
+            
+            // 정지버튼
+            resumeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                    constant: -20),
+            resumeButton.trailingAnchor.constraint(equalTo: playPauseButton.leadingAnchor, constant: -8),
+            resumeButton.heightAnchor.constraint(equalToConstant: 80),
+            resumeButton.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
 }
