@@ -205,6 +205,10 @@ class MusicPracticeViewController: UIViewController {
             // MIDI 파일 URL 확인 및 파일 로드
             if let midiFilePathURL = midiFilePathURL {
                 print("MIDI file created successfully: \(midiFilePathURL)")
+                // 햅틱 시퀀스 관리
+                let hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
+                                  divisions: score.divisions)
+                
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                 playPauseButton.isEnabled = true
