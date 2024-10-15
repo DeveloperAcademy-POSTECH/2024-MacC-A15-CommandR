@@ -60,7 +60,6 @@
 		1ED9FEBF2CBD573D00472C51 /* Loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBE2CBD573D00472C51 /* Loading.json */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
-		1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */; };
 		1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */; };
 		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
@@ -73,6 +72,7 @@
 		EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */; };
 		EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */; };
 		EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */; };
+		EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,7 +154,6 @@
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
-		1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
 		1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accidental.swift; sourceTree = "<group>"; };
 		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
@@ -167,6 +166,7 @@
 		EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGridViewController.swift; sourceTree = "<group>"; };
 		EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertManager.swift; sourceTree = "<group>"; };
 		EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
+		EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,7 +426,7 @@
 		1EF8A0AD2CB559D300ADB783 /* Nonang */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */,
+				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 			);
 			path = Nonang;
 			sourceTree = "<group>";
@@ -637,6 +637,7 @@
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
+				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
