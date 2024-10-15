@@ -84,21 +84,33 @@ class ViewController: UIViewController {
         practiceViewButton.addTarget(self, action: #selector(navigateToMusicPracticeViewController), for: .touchUpInside)
         view.addSubview(practiceViewButton)
 
+        let listViewButton = UIButton(type: .system)
+        listViewButton.setTitle("리스트뷰가기", for: .normal)
+        listViewButton.translatesAutoresizingMaskIntoConstraints = false
+        listViewButton.addTarget(self, action: #selector(navigateToListViewController), for: .touchUpInside)
+        view.addSubview(listViewButton)
+
         NSLayoutConstraint.activate([
             loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
             statusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
+
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
+
             watchTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             watchTestButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
-            sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            sendMessageButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20),
+
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20),
+            loadingViewButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20),
+
             practiceViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20)
+            practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20),
+
+            listViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            listViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20)
         ])
     }
     
@@ -128,10 +140,10 @@ class ViewController: UIViewController {
     }
 
     // PDF 파일을 미리 보기하고 확인할 수 있는 뷰로 이동
-    func showPDFConfirmationView(with fileURL: URL) {
-        let pdfViewController = CheckPDFViewController()
-        pdfViewController.fileURL = fileURL
-        self.present(pdfViewController, animated: true, completion: nil) // 모달로 띄우기
+    func navigateToCheckPDFViewController(with fileURL: URL) {
+        let checkPDFViewController = CheckPDFViewController()
+        checkPDFViewController.fileURL = fileURL
+        self.present(checkPDFViewController, animated: true, completion: nil) // 모달로 띄우기
     }
   
     @objc private func navigateToLottieViewController() {
@@ -149,6 +161,12 @@ class ViewController: UIViewController {
     @objc func navigateToMusicPracticeViewController() {
         let musicPracticeViewController = MusicPracticeViewController()
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
+    }
+    
+    //화면 표시용 테스트 버튼
+    @objc private func navigateToListViewController() {
+        let vc = ScoreListViewController()
+        present(vc, animated: true)
     }
     
     @objc private func sendMessageToWatch() {
@@ -183,7 +201,7 @@ extension ViewController: UIDocumentPickerDelegate {
         
         // 선택된 파일 URL을 저장하고 확인 화면으로 이동
         self.selectedFileURL = selectedFileURL
-        self.showPDFConfirmationView(with: selectedFileURL)
+        self.navigateToCheckPDFViewController(with: selectedFileURL)
     }
     
     // 취소 버튼을 누르면 호출되는 메소드

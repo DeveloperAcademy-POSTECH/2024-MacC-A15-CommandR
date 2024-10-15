@@ -86,6 +86,9 @@
 		D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */; };
 		D3D6D1B92CBE8B6300D22886 /* MarqueeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */; };
 		D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */; };
+		EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */; };
+		EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */; };
+		EE7B28B02CBE8F5D00325725 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AF2CBE8F4500325725 /* CustomTableViewCell.swift */; };
 		EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */; };
 		EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */; };
 		EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */; };
@@ -197,6 +200,9 @@
 		D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayView.swift; sourceTree = "<group>"; };
 		D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeTextView.swift; sourceTree = "<group>"; };
 		D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTestViewController.swift; sourceTree = "<group>"; };
+		EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListView.swift; sourceTree = "<group>"; };
+		EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListViewController.swift; sourceTree = "<group>"; };
+		EE7B28AF2CBE8F4500325725 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGridViewController.swift; sourceTree = "<group>"; };
 		EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertManager.swift; sourceTree = "<group>"; };
 		EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
@@ -469,6 +475,9 @@
 			children = (
 				EE7B28A52CBE5CC200325725 /* ScoreManager.swift */,
 				EE7B28882CBE50F700325725 /* CoreData */,
+				EE7B28AF2CBE8F4500325725 /* CustomTableViewCell.swift */,
+				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
+				EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 			);
 			path = Nonang;
@@ -706,6 +715,7 @@
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
+				EE7B28B02CBE8F5D00325725 /* CustomTableViewCell.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
 				1ED9FEC72CBE4B2F00472C51 /* MusicPracticeViewController.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
@@ -717,8 +727,10 @@
 				1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */,
 				1ED9FECF2CBE8ED000472C51 /* PlayPauseButton.swift in Sources */,
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
+				EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */,
 				1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */,
 				1ED9FECD2CBE797C00472C51 /* ProgressTableViewCell.swift in Sources */,
+				EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
