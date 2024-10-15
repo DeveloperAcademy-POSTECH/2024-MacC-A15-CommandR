@@ -51,13 +51,17 @@
 		1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */; };
 		1E54A8F02CB6D37C00753A3E /* Piano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */; };
 		1E54A8F82CB7D26900753A3E /* moon.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F72CB7D26900753A3E /* moon.xml */; };
+		1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FA2CBA8EE100753A3E /* Score.swift */; };
+		1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FC2CBA8F3500753A3E /* Part.swift */; };
 		1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
+		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
+		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
+		1ED9FEBF2CBD573D00472C51 /* Loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBE2CBD573D00472C51 /* Loading.json */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
-		1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */; };
-		1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Empty.swift */; };
+		1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */; };
 		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 		D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* ConnectivityManager.swift */; };
 		D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */; };
@@ -68,6 +72,7 @@
 		EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */; };
 		EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */; };
 		EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */; };
+		EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,14 +145,17 @@
 		1E3E094E2CB3EE9F00EE1868 /* speechSi.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = speechSi.mp3; path = RhythmTokTok/Resources/Sound/Speech/speechSi.mp3; sourceTree = SOURCE_ROOT; };
 		1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = Piano.sf2; path = RhythmTokTok/Resources/Piano.sf2; sourceTree = SOURCE_ROOT; };
 		1E54A8F72CB7D26900753A3E /* moon.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = moon.xml; path = RhythmTokTok/Resources/moon.xml; sourceTree = SOURCE_ROOT; };
+		1E54A8FA2CBA8EE100753A3E /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
+		1E54A8FC2CBA8F3500753A3E /* Part.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Part.swift; sourceTree = "<group>"; };
 		1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayHapticView.swift; sourceTree = "<group>"; };
 		1E54A9002CBBBCEC00753A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
+		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
+		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
-		1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
-		1EF8A0BB2CB55A6300ADB783 /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
+		1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accidental.swift; sourceTree = "<group>"; };
 		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		D36E430C2CB642630038994B /* ConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityManager.swift; sourceTree = "<group>"; };
 		D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetting.swift; sourceTree = "<group>"; };
@@ -158,6 +166,7 @@
 		EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGridViewController.swift; sourceTree = "<group>"; };
 		EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertManager.swift; sourceTree = "<group>"; };
 		EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
+		EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +282,7 @@
 				1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */,
 				1E54A8F72CB7D26900753A3E /* moon.xml */,
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
+				1ED9FEBD2CBD571300472C51 /* Lotties */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
 			);
 			name = Resources;
@@ -315,6 +326,14 @@
 			name = Speech;
 			path = RhythmTokTok/Resources/Sound/Speech;
 			sourceTree = SOURCE_ROOT;
+		};
+		1ED9FEBD2CBD571300472C51 /* Lotties */ = {
+			isa = PBXGroup;
+			children = (
+				1ED9FEBE2CBD573D00472C51 /* Loading.json */,
+			);
+			path = Lotties;
+			sourceTree = "<group>";
 		};
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
@@ -382,7 +401,11 @@
 		1EF8A0AB2CB559C500ADB783 /* Kkugy */ = {
 			isa = PBXGroup;
 			children = (
+				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
+				1E54A8FA2CBA8EE100753A3E /* Score.swift */,
+				1E54A8FC2CBA8F3500753A3E /* Part.swift */,
 				1EF8A0BB2CB55A6300ADB783 /* Empty.swift */,
+				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
 			);
 			path = Kkugy;
 			sourceTree = "<group>";
@@ -403,7 +426,7 @@
 		1EF8A0AD2CB559D300ADB783 /* Nonang */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0B52CB55A3D00ADB783 /* FileManager.swift */,
+				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 			);
 			path = Nonang;
 			sourceTree = "<group>";
@@ -510,6 +533,7 @@
 			);
 			mainGroup = 02BFECDF2CB10A13003CEC8A;
 			packageReferences = (
+				1ED9FEB82CBD55F400472C51 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 02BFECE92CB10A13003CEC8A /* Products */;
 			projectDirPath = "";
@@ -552,6 +576,7 @@
 				1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */,
 				1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */,
 				1E3E09452CB3EDA500EE1868 /* speechRe.mp3 in Resources */,
+				1ED9FEBF2CBD573D00472C51 /* Loading.json in Resources */,
 				1E3E094D2CB3EE6700EE1868 /* speechRa.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -603,6 +628,7 @@
 				1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */,
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
 				1EF8A0B62CB55A4100ADB783 /* FileManager.swift in Sources */,
+				1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
@@ -611,13 +637,16 @@
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
+				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
+				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */,
+				1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */,
 				D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */,
 				1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */,
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
-				1EF8A0BC2CB55A7A00ADB783 /* Empty.swift in Sources */,
+				1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -938,6 +967,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1ED9FEB82CBD55F400472C51 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1ED9FEB92CBD568000472C51 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1ED9FEB82CBD55F400472C51 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		02BFECF42CB10A13003CEC8A /* RhythmTokTok.xcdatamodeld */ = {

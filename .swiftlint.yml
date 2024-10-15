@@ -16,3 +16,5 @@ opt_in_rules:
     - empty_string
 excluded:
     - .github
+    - RhythmTokTok/AppDelegate.swift
+    - RhythmTokTok/SceneDelegate.swift

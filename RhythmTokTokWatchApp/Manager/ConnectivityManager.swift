@@ -34,8 +34,9 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
     
     // MARK: - WCSessionDelegate 메서드
-    
-    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState,
+                 error: Error?) {
         if activationState == .activated {
             print("watchOS에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
