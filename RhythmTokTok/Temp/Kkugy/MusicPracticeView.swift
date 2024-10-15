@@ -17,6 +17,14 @@ class MusicPracticeView: UIView {
         return view
     }()
     
+    // Divider 역할을 할 선
+    let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightGray // 선의 색상
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Welcome!"
@@ -70,15 +78,22 @@ class MusicPracticeView: UIView {
         titleHStackView.addArrangedSubview(pageLabel)
 
         // UI 요소 추가
-        addSubview(titleHStackView)
+        addSubview(titleHStackView) // 타이틀 스택
+        addSubview(divider) // divider
         addSubview(actionButton)
         
         // 레이아웃 설정
         NSLayoutConstraint.activate([
+            // 타이틀 스택
             titleHStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleHStackView.topAnchor.constraint(equalTo: topAnchor, constant: 66),
             titleHStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             titleHStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            
+            // divider
+            divider.topAnchor.constraint(equalTo: titleHStackView.bottomAnchor, constant: 16),
+            divider.widthAnchor.constraint(equalTo: titleHStackView.widthAnchor), // 타이틀 스택뷰 길이만큼 차지하게 설정
+            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
             
             actionButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             actionButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20)
