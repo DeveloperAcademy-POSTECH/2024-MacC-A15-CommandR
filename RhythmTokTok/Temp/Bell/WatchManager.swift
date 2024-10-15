@@ -23,7 +23,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     // WCSession 설정
     private func setupSession() {
         guard WCSession.isSupported() else {
-            ErrorHandler.handleError(errorMessage: "WCSession 지원되지 않음")
+            ErrorHandler.handleError(error: "WCSession 지원되지 않음")
             return
         }
         
@@ -40,7 +40,7 @@ class WatchManager: NSObject, WCSessionDelegate {
             print("iPhone에서 WCSession 활성화 완료")
         }
         if let error = error {
-            ErrorHandler.handleError(errorMessage: "WCSession 활성화 실패 - \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
         }
         updateWatchAppReachability(session)
     }

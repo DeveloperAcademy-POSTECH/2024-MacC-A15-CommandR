@@ -8,7 +8,7 @@
 import UIKit
 import PDFKit
 
-class PDFConfirmationViewController: UIViewController {
+class CheckPDFViewController: UIViewController {
     
     var fileURL: URL?
     var pdfView: PDFView!

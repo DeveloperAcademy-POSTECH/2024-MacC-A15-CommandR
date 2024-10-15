@@ -69,7 +69,7 @@ class MusicPlayer: ObservableObject {
             if status == noErr {
                 print("MIDI file successfully loaded into MusicSequence.")
             } else {
-                ErrorHandler.handleError(errorMessage: "Error loading MIDI file: \(status)")
+                ErrorHandler.handleError(error: "Error loading MIDI file: \(status)")
             }
         }
         
