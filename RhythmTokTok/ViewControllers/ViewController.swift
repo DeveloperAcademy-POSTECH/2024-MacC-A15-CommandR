@@ -118,7 +118,7 @@ class ViewController: UIViewController {
 
     // PDF 파일을 미리 보기하고 확인할 수 있는 뷰로 이동
     func showPDFConfirmationView(with fileURL: URL) {
-        let pdfViewController = PDFConfirmationViewController()
+        let pdfViewController = CheckPDFViewController()
         pdfViewController.fileURL = fileURL
         self.present(pdfViewController, animated: true, completion: nil) // 모달로 띄우기
     }
