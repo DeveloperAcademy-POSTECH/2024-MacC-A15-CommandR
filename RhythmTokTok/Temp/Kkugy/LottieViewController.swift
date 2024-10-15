@@ -19,7 +19,7 @@ class LottieViewController: UIViewController {
         view.backgroundColor = .white
         
         // Lottie 애니메이션 뷰 설정
-        animationView = LottieAnimationView(name: "Loading") // animationFile은 Lottie JSON 파일명
+        animationView = LottieAnimationView(name: "change") // animationFile은 Lottie JSON 파일명
         
         guard let animationView = animationView else { return }
         
