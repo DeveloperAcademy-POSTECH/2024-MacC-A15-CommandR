@@ -14,7 +14,8 @@ class MusicPracticeViewController: UIViewController {
     let musicPracticeTitleView = MusicPracticeTitleView()
     // 테이블뷰 선언
     let tableView = UITableView()
-    let progressData: [CGFloat] = [1.0, 1.0, 1.0, 1.0, 0.4] // TODO: 여기에 줄 진행 정도 비율 계산 로직 연결 필요
+    // TODO: 여기에 줄 진행 정도 비율 계산 로직 연결 필요
+    let progressData: [CGFloat] = [1.0, 1.0, 1.0, 1.0, 0.4]
     // Divider 역할을 할 선
     let divider: UIView = {
         let view = UIView()
@@ -73,9 +74,10 @@ class MusicPracticeViewController: UIViewController {
         tableView.register(ProgressButtonTableViewCell.self, forCellReuseIdentifier: "ProgressButtonCell")
         view.addSubview(tableView)
         tableView.separatorStyle = .none // 구분선 없애기
-        
-        musicPracticeTitleView.titleLabel.text = "MoonRiver" // TODO: 여기에 제목 연결
-        musicPracticeTitleView.pageLabel.text = "0/0장" // TODO: 여기에 페이지 내용 만들 함수 연결
+        // TODO: 여기에 제목 연결
+        musicPracticeTitleView.titleLabel.text = "MoonRiver"
+        // TODO: 여기에 페이지 내용 만들 함수 연결
+        musicPracticeTitleView.pageLabel.text = "0/0장"
         
         // 버튼을 뷰에 추가
         playPauseButton.translatesAutoresizingMaskIntoConstraints = false
@@ -138,7 +140,8 @@ extension MusicPracticeViewController: UITableViewDataSource, UITableViewDelegat
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProgressButtonCell", for: indexPath) as! ProgressButtonTableViewCell
         let progress = progressData[indexPath.row]
         cell.configure(progress: progress)
-        cell.setTitle(buttonName: "\(indexPath.row)") // TODO: 장 줄 네임 연결
+        // TODO: 장 줄 네임 연결
+        cell.setTitle(buttonName: "\(indexPath.row)")
         return cell
     }
 
