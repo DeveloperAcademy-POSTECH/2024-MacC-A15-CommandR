@@ -44,7 +44,7 @@ struct MarqueeTextView: View {
                                 startAnimation()
                             }
                         }
-                        .onChange(of: animate) { newValue in
+                        .onChange(of: animate) { _, newValue in
                             if newValue {
                                 startAnimation()
                             } else {

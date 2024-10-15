@@ -150,7 +150,8 @@ class WatchManager: NSObject, WCSessionDelegate {
     
     // iPhone이 워치로부터 메시지를 받았을 때 호출되는 메서드
     // 현재는 사용되지 않지만 추후 워치로부터 메세지를 받을 때 사용할 것.
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
+    func session(_ session: WCSession, didReceiveMessage message: [String: Any],
+                 replyHandler: @escaping ([String: Any]) -> Void) {
         print("iPhone이 워치로부터 메시지 수신: \(message)")
         replyHandler(["response": "iPhone이 메시지를 잘 받았습니다."])
     }
