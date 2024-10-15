@@ -6,8 +6,8 @@
 //
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 @objc(NoteEntity)
 public class NoteEntity: NSManagedObject {

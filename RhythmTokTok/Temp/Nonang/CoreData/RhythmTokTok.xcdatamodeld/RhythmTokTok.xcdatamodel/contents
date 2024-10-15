@@ -7,7 +7,7 @@
         <attribute name="isRest" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="measure" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="octave" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="part" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="part" optional="YES" attributeType="String"/>
         <attribute name="pitch" optional="YES" attributeType="String"/>
         <attribute name="staff" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="startTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

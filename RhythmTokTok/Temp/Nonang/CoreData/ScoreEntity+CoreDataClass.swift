@@ -6,8 +6,8 @@
 //
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 @objc(ScoreEntity)
 public class ScoreEntity: NSManagedObject {

@@ -6,9 +6,8 @@
 //
 //
 
-import Foundation
 import CoreData
-
+import Foundation
 
 extension NoteEntity {
 
@@ -22,7 +21,7 @@ extension NoteEntity {
     @NSManaged public var staff: Int
     @NSManaged public var id: String?
     @NSManaged public var measure: Int
-    @NSManaged public var part: Int
+    @NSManaged public var part: String
     @NSManaged public var duration: Int
     @NSManaged public var pitch: String?
     @NSManaged public var octave: Int
