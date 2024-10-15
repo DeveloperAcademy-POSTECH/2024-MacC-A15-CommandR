@@ -77,6 +77,12 @@ class ViewController: UIViewController {
         loadingViewButton.translatesAutoresizingMaskIntoConstraints = false
         loadingViewButton.addTarget(self, action: #selector(navigateToLottieViewController), for: .touchUpInside)
         view.addSubview(loadingViewButton)
+        
+        let practiceViewButton = UIButton(type: .system)
+        practiceViewButton.setTitle("연습뷰가기", for: .normal)
+        practiceViewButton.translatesAutoresizingMaskIntoConstraints = false
+        practiceViewButton.addTarget(self, action: #selector(navigateToMusicPracticeViewController), for: .touchUpInside)
+        view.addSubview(practiceViewButton)
 
         NSLayoutConstraint.activate([
             loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -87,8 +93,12 @@ class ViewController: UIViewController {
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
             watchTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             watchTestButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
+            sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sendMessageButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20),
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingViewButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20)
+            loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20),
+            practiceViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20)
         ])
     }
     
@@ -128,7 +138,7 @@ class ViewController: UIViewController {
         let addGridViewController = LottieViewController()
         present(addGridViewController, animated: true)
     }
-    
+   
     @objc private func navigateToWatchTestViewController() {
         let watchTestVC = WatchTestViewController()
         watchTestVC.modalPresentationStyle = .fullScreen // 필요에 따라 스타일 설정
@@ -136,6 +146,11 @@ class ViewController: UIViewController {
     }
     
     // 필요한 인수를 제공하여 메서드 호출 수정
+    @objc func navigateToMusicPracticeViewController() {
+        let musicPracticeViewController = MusicPracticeViewController()
+        navigationController?.pushViewController(musicPracticeViewController, animated: true)
+    }
+    
     @objc private func sendMessageToWatch() {
         if selectedSongTitle == nil {
             selectedSongTitle = "꽃을 든 남자 - 이백호"  // 테스트용 곡 제목 설정
