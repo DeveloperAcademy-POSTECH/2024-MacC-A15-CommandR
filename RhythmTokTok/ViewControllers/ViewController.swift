@@ -65,6 +65,12 @@ class ViewController: UIViewController {
         addButton.addTarget(self, action: #selector(selectPDFButtonTapped), for: .touchUpInside)
         view.addSubview(addButton)
         
+        let sendMessageButton = UIButton(type: .system)
+        sendMessageButton.setTitle("메세지 보내기", for: .normal)
+        sendMessageButton.translatesAutoresizingMaskIntoConstraints = false
+        sendMessageButton.addTarget(self, action: #selector(sendMessageToWatch), for: .touchUpInside)
+        view.addSubview(sendMessageButton)
+        
         let loadingViewButton = UIButton(type: .system)
         loadingViewButton.setTitle("로띠뷰가기", for: .normal)
         loadingViewButton.translatesAutoresizingMaskIntoConstraints = false
@@ -78,8 +84,10 @@ class ViewController: UIViewController {
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
+            sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sendMessageButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20)
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingViewButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20)
+            loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20)
         ])
     }
     
@@ -118,6 +126,10 @@ class ViewController: UIViewController {
     @objc private func navigateToLottieViewController() {
         let addGridViewController = LottieViewController()
         present(addGridViewController, animated: true)
+    }
+    
+    @objc private func sendMessageToWatch() {
+        WatchManager.shared.sendSampleMessageToWatch()
     }
 }
 
