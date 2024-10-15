@@ -68,6 +68,8 @@ class WatchManager: NSObject, WCSessionDelegate {
         }
     }
     
+    //MARK: - 워치로 메세지 보내는 부분 시작
+    
     // iPhone -> Watch로 메시지 전송
     func sendMessageToWatch(title: String, startTime: Date, vibrationSequence: [Double]) {
         guard WCSession.default.isReachable else {
