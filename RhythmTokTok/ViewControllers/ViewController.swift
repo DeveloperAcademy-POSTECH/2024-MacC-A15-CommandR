@@ -103,9 +103,9 @@ class ViewController: UIViewController {
         self.present(documentPicker, animated: true, completion: nil)
     }
   
-    @objc private func navigateToAddGridViewController() {
-        let addGridViewController = SettingViewController()
-        present(addGridViewController, animated: true)
+    @objc private func navigateToSettingViewController() {
+        let settingViewController = SettingViewController()
+        present(settingViewController, animated: true)
     }
 
     // PDF 파일을 미리 보기하고 확인할 수 있는 뷰로 이동
@@ -138,6 +138,5 @@ extension ViewController: UIDocumentPickerDelegate {
     // 취소 버튼을 누르면 호출되는 메소드
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         print("사용자가 파일 선택을 취소했습니다.")
-
     }
 }
