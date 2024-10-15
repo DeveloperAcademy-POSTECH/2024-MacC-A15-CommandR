@@ -15,14 +15,15 @@ class ViewController: UIViewController {
     
     let statusLabel = UILabel()
     var selectedFileURL: URL?
-    
+    var selectedSongTitle: String?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         
         setupUI()
-      
+        
         _ = WatchManager.shared
         setupObservers()
         updateWatchAppStatus()
@@ -65,11 +66,11 @@ class ViewController: UIViewController {
         addButton.addTarget(self, action: #selector(selectPDFButtonTapped), for: .touchUpInside)
         view.addSubview(addButton)
         
-        let sendMessageButton = UIButton(type: .system)
-        sendMessageButton.setTitle("메세지 보내기", for: .normal)
-        sendMessageButton.translatesAutoresizingMaskIntoConstraints = false
-        sendMessageButton.addTarget(self, action: #selector(sendMessageToWatch), for: .touchUpInside)
-        view.addSubview(sendMessageButton)
+        let watchTestButton = UIButton(type: .system)
+        watchTestButton.setTitle("워치 테스트 화면", for: .normal)
+        watchTestButton.translatesAutoresizingMaskIntoConstraints = false
+        watchTestButton.addTarget(self, action: #selector(navigateToWatchTestViewController), for: .touchUpInside)
+        view.addSubview(watchTestButton)
         
         let loadingViewButton = UIButton(type: .system)
         loadingViewButton.setTitle("로띠뷰가기", for: .normal)
@@ -90,8 +91,10 @@ class ViewController: UIViewController {
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
+            watchTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            watchTestButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
             sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            sendMessageButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
+            sendMessageButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20),
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20),
             practiceViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -135,16 +138,39 @@ class ViewController: UIViewController {
         let addGridViewController = LottieViewController()
         present(addGridViewController, animated: true)
     }
+   
+    @objc private func navigateToWatchTestViewController() {
+        let watchTestVC = WatchTestViewController()
+        watchTestVC.modalPresentationStyle = .fullScreen // 필요에 따라 스타일 설정
+        present(watchTestVC, animated: true, completion: nil)
+    }
     
+    // 필요한 인수를 제공하여 메서드 호출 수정
     @objc func navigateToMusicPracticeViewController() {
         let musicPracticeViewController = MusicPracticeViewController()
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     
     @objc private func sendMessageToWatch() {
-        WatchManager.shared.sendSampleMessageToWatch()
+        if selectedSongTitle == nil {
+            selectedSongTitle = "꽃을 든 남자 - 이백호"  // 테스트용 곡 제목 설정
+        }
+        guard let songTitle = selectedSongTitle else {
+            print("선택된 곡이 없습니다.")
+            return
+        }
+        let isSelectedSong = true
+        WatchManager.shared.sendSongSelectionToWatch(isSelectedSong: isSelectedSong, songTitle: songTitle)
+    }
+    
+    // 곡을 선택하는 메서드 예시
+    func selectSong(title: String) {
+        self.selectedSongTitle = title
+        // 곡이 선택되었으므로 워치로 메시지 전송
+        sendMessageToWatch()
     }
 }
+
 
 // PDF 파일 선택에 사용되는 extension
 extension ViewController: UIDocumentPickerDelegate {
