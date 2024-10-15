@@ -37,7 +37,6 @@ class PlayPauseButton: UIButton {
         config.baseBackgroundColor = .blue05 // 버튼 배경색
         config.imagePadding = 10 // 이미지와 텍스트 간격
         config.cornerStyle = .medium // 라운드 코너 스타일
-
         // 버튼 설정 적용
         self.configuration = config
         // 클릭 시 이벤트 설정
@@ -58,7 +57,6 @@ class PlayPauseButton: UIButton {
             setImage(UIImage(systemName: "pause.fill"), for: .normal)
             setTitle("일시정지", for: .normal)
             config.baseBackgroundColor = .gray13
-
         } else {
             setImage(UIImage(systemName: "play.fill"), for: .normal)
             setTitle("재생", for: .normal)
@@ -67,7 +65,6 @@ class PlayPauseButton: UIButton {
         config.baseForegroundColor = .white
         config.imagePadding = 10
         config.cornerStyle = .medium
-
         self.configuration = config
     }
 }

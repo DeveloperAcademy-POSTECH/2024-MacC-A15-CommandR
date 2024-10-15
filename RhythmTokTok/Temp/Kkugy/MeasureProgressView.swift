@@ -62,7 +62,6 @@ class MeasureProgressView: UIView {
         progressIndicatorImageView.image = UIImage(named: "progressCursor")
         progressIndicatorImageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(progressIndicatorImageView)
-        
         addSubview(titleHeader)
         addSubview(titleLabel)
 
