@@ -117,7 +117,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             batchTimer.schedule(deadline: .now() + nextBatchDelay, leeway: .milliseconds(50))
             batchTimer.setEventHandler {
                 DispatchQueue.main.async {
-                    print("나머지 실행: \(endIndex)부터")
                     self.scheduleNextBatch(batchSize: batchSize) // 재귀로 다음 배치 실행
                 }
             }
