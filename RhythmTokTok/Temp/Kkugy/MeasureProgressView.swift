@@ -82,7 +82,7 @@ class MeasureProgressView: UIView {
             titleHeader.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             titleHeader.centerYAnchor.constraint(equalTo: centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: titleHeader.trailingAnchor, constant: 8),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 

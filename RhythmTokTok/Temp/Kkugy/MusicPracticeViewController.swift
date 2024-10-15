@@ -12,6 +12,7 @@ class MusicPracticeViewController: UIViewController {
     let practicNavBar = PracticeNavigationBar()
     // MusicPracticeTitleView 선언
     let musicPracticeTitleView = MusicPracticeTitleView()
+    let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
     // 테이블뷰 선언
     let tableView = UITableView()
     let progressData: [CGFloat] = [1.0, 1.0, 1.0, 1.0, 0.4] // TODO: 여기에 줄 진행 정도 비율 계산 로직 연결 필요
@@ -47,7 +48,12 @@ class MusicPracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
+        setupUI()
+        setupConstraints()
+    }
+    
+    private func setupUI() {
         // 테이블 뷰 설정
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
@@ -55,11 +61,13 @@ class MusicPracticeViewController: UIViewController {
         tableView.register(ProgressButtonTableViewCell.self, forCellReuseIdentifier: "ProgressButtonCell")
         view.addSubview(tableView)
         tableView.separatorStyle = .none // 구분선 없애기
-
+        
         musicPracticeTitleView.titleLabel.text = "MoonRiver" // TODO: 여기에 제목 연결
         musicPracticeTitleView.pageLabel.text = "0/0장" // TODO: 여기에 페이지 내용 만들 함수 연결
         
-        setupConstraints()
+        // 버튼을 뷰에 추가
+        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(playPauseButton)
     }
     
     private func setupConstraints() {
@@ -87,7 +95,13 @@ class MusicPracticeViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             tableView.topAnchor.constraint(equalTo: divider.topAnchor, constant: 24),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            // 플레이버튼
+            playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), // 수평 중앙
+            playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20), // 안전 영역 하단에서 20pt 위로 설정
+            playPauseButton.heightAnchor.constraint(equalToConstant: 80), // 버튼의 높이
+            playPauseButton.widthAnchor.constraint(equalToConstant: 160)
         ])
     }
 }
