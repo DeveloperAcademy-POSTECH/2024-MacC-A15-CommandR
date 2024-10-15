@@ -401,10 +401,9 @@
 		1EF8A0AB2CB559C500ADB783 /* Kkugy */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1E54A8FA2CBA8EE100753A3E /* Score.swift */,
 				1E54A8FC2CBA8F3500753A3E /* Part.swift */,
-				1EF8A0BB2CB55A6300ADB783 /* Empty.swift */,
+				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
 			);
 			path = Kkugy;
