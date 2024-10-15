@@ -76,6 +76,12 @@ class ViewController: UIViewController {
         loadingViewButton.translatesAutoresizingMaskIntoConstraints = false
         loadingViewButton.addTarget(self, action: #selector(navigateToLottieViewController), for: .touchUpInside)
         view.addSubview(loadingViewButton)
+        
+        let practiceViewButton = UIButton(type: .system)
+        practiceViewButton.setTitle("연습뷰가기", for: .normal)
+        practiceViewButton.translatesAutoresizingMaskIntoConstraints = false
+        practiceViewButton.addTarget(self, action: #selector(navigateToMusicPracticeViewController), for: .touchUpInside)
+        view.addSubview(practiceViewButton)
 
         NSLayoutConstraint.activate([
             loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -85,9 +91,11 @@ class ViewController: UIViewController {
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
             sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            sendMessageButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20)
+            sendMessageButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20)
+            loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20),
+            practiceViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20)
         ])
     }
     
@@ -126,6 +134,11 @@ class ViewController: UIViewController {
     @objc private func navigateToLottieViewController() {
         let addGridViewController = LottieViewController()
         present(addGridViewController, animated: true)
+    }
+    
+    @objc func navigateToMusicPracticeViewController() {
+        let musicPracticeViewController = MusicPracticeViewController()
+        navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     
     @objc private func sendMessageToWatch() {
