@@ -13,6 +13,7 @@ class ScoreManager {
     
     let context = CoreDataStack.shared.context
     
+    //Entity - Model 매핑
     func addScoreWithNotes(scoreData: Score) {
         
         // 새로운 ScoreEntity 생성

@@ -8,6 +8,7 @@
 import CoreData
 
 class CoreDataStack {
+    // context 관리용 stack
     
     // Core Data persistent container 설정 (영구 저장용 컨테이너)
     static let shared = CoreDataStack()
@@ -34,7 +35,6 @@ class CoreDataStack {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                fatalError("Unable to save managed object context: \(nserror)")
                 ErrorHandler.handleError(error: nserror)
             }
         }
