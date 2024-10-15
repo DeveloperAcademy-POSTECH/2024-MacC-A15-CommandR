@@ -11,14 +11,14 @@ import WatchKit
 
 class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     private var session: WKExtendedRuntimeSession?
-    private var timers: [DispatchSourceTimer] = [] //햅틱 타임스케쥴러 관리 배열
+    private var timers: [DispatchSourceTimer] = [] // 햅틱 타임스케쥴러 관리 배열
     private var isHapticActive = false // 시작여부 관리
     private var currentBatchIndex = 0 // 현재 실행 중인 배치 인덱스
     private var hapticType: WKHapticType = .start
     private var beatTimes: [Double] = []
 
-    //MARK: WKExtendedRuntimeSession 로직
-    //백그라운드에서 햅틱 적용을 위해 WKExtendedRuntimeSession 사용
+    // MARK: WKExtendedRuntimeSession 로직
+    // 백그라운드에서 햅틱 적용을 위해 WKExtendedRuntimeSession 사용
     private func startExtendedSession() {
         session = WKExtendedRuntimeSession()
         session?.delegate = self
@@ -38,19 +38,21 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         print("Extended session will expire soon")
     }
     
-    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: (any Error)?) {
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession,
+                                didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason,
+                                error: (any Error)?) {
         print("Extended session invalidated")
     }
     
-    //MARK: Haptic 관리 로직
-    //리듬 햅틱 시작
+    // MARK: Haptic 관리 로직
+    // 리듬 햅틱 시작
     func starHaptic(beatTime: [Double]) {
         isHapticActive = false // 시작여부 초기화
         setBeatTime(beatTime: beatTime)
         startExtendedSession()
     }
     
-    //햅틱 타입 설정
+    // 햅틱 타입 설정
     func setHapticType(type: WKHapticType) {
         hapticType = type
     }
@@ -59,7 +61,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         beatTimes = beatTime
     }
     
-    //메트로놈 로직
+    // 메트로놈 로직
     private func startHapticWithTempo(tempo: Double) {
         stopHaptic()  // 이전 타이머가 있으면 정지
 
@@ -88,7 +90,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         scheduleNextBatch(batchSize: batchSize) // 첫 번째 배치 실행
     }
     
-    //timer가 밀리는 것 같아서 특정 갯수로 나눠서 진행시켜봄, 타이머 설정이 많아지면 앱성는에 문제가 있음
+    // timer가 밀리는 것 같아서 특정 갯수로 나눠서 진행시켜봄, 타이머 설정이 많아지면 앱성는에 문제가 있음
     func scheduleNextBatch(batchSize: Int) {
         let startIndex = currentBatchIndex * batchSize
         let endIndex = min(startIndex + batchSize, beatTimes.count)
