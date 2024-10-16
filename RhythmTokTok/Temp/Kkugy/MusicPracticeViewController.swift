@@ -20,6 +20,7 @@ class MusicPracticeViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    let bpmButton = BPMButton()
     let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
     let stopButton: UIButton = {
         let button = UIButton(type: .system)
@@ -54,7 +55,6 @@ class MusicPracticeViewController: UIViewController {
         containerView.addSubview(musicPracticeTitleView)
         musicPracticeTitleView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(divider) // divider
-
         // 루트 뷰 설정
         self.view = containerView
     }
@@ -85,7 +85,8 @@ class MusicPracticeViewController: UIViewController {
         musicPracticeTitleView.titleLabel.text = "MoonRiver"
         // TODO: 여기에 페이지 내용 만들 함수 연결
         musicPracticeTitleView.pageLabel.text = "0/0장"
-        
+        bpmButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bpmButton)
         // 버튼을 뷰에 추가
         playPauseButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(playPauseButton)
@@ -114,10 +115,15 @@ class MusicPracticeViewController: UIViewController {
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
             
+            // BPM 버튼
+            bpmButton.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 24),
+            bpmButton.heightAnchor.constraint(equalToConstant: 48),
+            bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            
             // 테이블뷰
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            tableView.topAnchor.constraint(equalTo: divider.topAnchor, constant: 24),
+            tableView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 24),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             // 플레이버튼
@@ -139,6 +145,7 @@ class MusicPracticeViewController: UIViewController {
     private func setupActions() {
         // 클릭 시 이벤트 설정
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
     }
@@ -201,6 +208,11 @@ class MusicPracticeViewController: UIViewController {
         musicPlayer.stopMIDI()
         playPauseButton.isPlaying = false
         stopButton.isHidden = true
+    }
+    
+    @objc private func presentBPMModal() {
+        let setBPMViewController = SetBPMViewController()
+        present(setBPMViewController, animated: true, completion: nil)
     }
 
     // MARK: MIDI 파일, 햅틱 시퀀스 관리
