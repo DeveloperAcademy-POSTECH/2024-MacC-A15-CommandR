@@ -105,7 +105,7 @@ class WatchManager: NSObject, WCSessionDelegate {
         
         if status == "play" {
             guard let startTime else {
-                ErrorHandler.handleError(error: "예약 시간이 설정 되어있지 않음")
+                ErrorHandler.handleError(error: "예약 시간이 설정되어 있지 않음")
                 return
             }
             // 추가 데이터를 딕셔너리로 구성

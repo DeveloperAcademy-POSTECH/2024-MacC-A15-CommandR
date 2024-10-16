@@ -70,6 +70,7 @@ class MusicPracticeViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupActions()
+        updateWatchAppStatus()
     }
     
     private func setupUI() {
@@ -139,6 +140,19 @@ class MusicPracticeViewController: UIViewController {
         // 클릭 시 이벤트 설정
         playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+    }
+    
+    // 워치 앱 상태 업데이트 메서드
+    @objc func updateWatchAppStatus() {
+        DispatchQueue.main.async {
+            let isWatchAppReachable = WatchManager.shared.isWatchAppReachable
+            
+            if isWatchAppReachable {
+                self.practicNavBar.setWatchImage(isConnected: true)
+            } else {
+                self.practicNavBar.setWatchImage(isConnected: false)
+            }
+        }
     }
     
     // MARK: Button 액션
