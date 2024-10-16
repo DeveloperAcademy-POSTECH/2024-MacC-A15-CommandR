@@ -138,6 +138,7 @@ class MusicPracticeViewController: UIViewController {
     
     private func setupActions() {
         // 클릭 시 이벤트 설정
+        practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
     }
@@ -156,6 +157,11 @@ class MusicPracticeViewController: UIViewController {
     }
     
     // MARK: Button 액션
+    @objc private func backButtonTapped() {
+        // 뒤로 가기 동작
+        navigationController?.popViewController(animated: true)
+    }
+    
     @objc private func playButtonTapped() {
         guard let outputPathURL = midiFilePathURL else {
             ErrorHandler.handleError(error: "MIDI file URL is nil.")

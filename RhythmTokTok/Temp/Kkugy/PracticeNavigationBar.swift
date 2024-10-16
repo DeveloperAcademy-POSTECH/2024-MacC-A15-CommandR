@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 class PracticeNavigationBar: UIView {
 
     let leftButtonStackView: UIStackView = {
