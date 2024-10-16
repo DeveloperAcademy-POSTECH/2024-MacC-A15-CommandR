@@ -31,8 +31,9 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         print("Extended session started")
         if !isHapticActive {
             let currentTimestamp = Date().timeIntervalSince1970
-            let delay = currentTimestamp - startTimeInterval
+            let delay = startTimeInterval - currentTimestamp
             // 햅틱 시작 예약
+            print("delay 시간 : \(delay)")
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.startHapticWithHardCodedBeats(batchSize: 20)
             }

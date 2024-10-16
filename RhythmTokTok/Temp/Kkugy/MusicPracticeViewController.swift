@@ -159,10 +159,12 @@ class MusicPracticeViewController: UIViewController {
         } else {
             print("Playing MIDI file from start...")
             let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970 // 현재 시간으로부터 4초 후
-
+            
             sendPlayStatusToWatch(startTimeInterVal: futureTime)
+            
+            let delay = futureTime - Date().timeIntervalSince1970
             // 예약 시간에 재생
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.musicPlayer.playMIDI() // 처음부터 재생
             }
         }
