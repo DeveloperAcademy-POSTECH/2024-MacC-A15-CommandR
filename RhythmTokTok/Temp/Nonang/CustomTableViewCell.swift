@@ -11,15 +11,15 @@ class CustomTableViewCell: UITableViewCell {
     // identifier를 static 상수로 정의
         static let identifier = "CustomTableViewCell"
     
-    // 백그라운드 뷰로 사용할 둥근 사각형 뷰
-    let roundedBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 12
-        view.layer.masksToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    // 둥근 모서리 배경을 위한 뷰
+        let roundedBackgroundView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .white  // 흰색 배경
+            view.layer.cornerRadius = 12   // 둥근 모서리
+            view.layer.masksToBounds = true
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
     
     // 레이블을 포함하는 컨텐츠 뷰
     let titleLabel: UILabel = {
@@ -33,12 +33,13 @@ class CustomTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        // 셀의 기본 selectionStyle을 none으로 설정
-        selectionStyle = .none
+        // 셀 자체의 배경을 투명하게 설정 (테이블 뷰의 배경색을 그대로 보이도록)
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         
-        // 둥근 사각형 뷰를 추가
+        // 둥근 배경 뷰 추가
         contentView.addSubview(roundedBackgroundView)
-        contentView.addSubview(titleLabel)
+        roundedBackgroundView.addSubview(titleLabel)
         
         // 오토레이아웃 설정
         NSLayoutConstraint.activate([
