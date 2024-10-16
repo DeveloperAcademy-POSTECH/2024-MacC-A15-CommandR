@@ -110,7 +110,7 @@ class ViewController: UIViewController {
             practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20),
 
             listViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            listViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20)
+            listViewButton.topAnchor.constraint(equalTo: practiceViewButton.bottomAnchor, constant: 20)
         ])
     }
     
@@ -165,8 +165,8 @@ class ViewController: UIViewController {
     
     //화면 표시용 테스트 버튼
     @objc private func navigateToListViewController() {
-        let vc = ScoreListViewController()
-        present(vc, animated: true)
+        let scoreListViewController = ScoreListViewController()
+        navigationController?.pushViewController(scoreListViewController, animated: true)
     }
     
     @objc private func sendMessageToWatch() {

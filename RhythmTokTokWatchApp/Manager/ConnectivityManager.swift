@@ -82,16 +82,16 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                             print("추가 데이터 수신 - 제목: \(title), 시작시간: \(startTime), 진동시퀀스: \(vibrationSequence)")
                             // 여기서 원하는 로직을 구현하세요.
                         } else {
-                            ErrorHandler.handleError(errorMessage: "시작 시간 변환 실패")
+                            ErrorHandler.handleError(error: "시작 시간 변환 실패")
                         }
                     }
                 } else {
-                    ErrorHandler.handleError(errorMessage: "JSON 파싱 실패")
+                    ErrorHandler.handleError(error: "JSON 파싱 실패")
                 }
             }
             replyHandler(["response": "재생 상태 수신 완료"])
         } else {
-            ErrorHandler.handleError(errorMessage: "알 수 없는 메시지 형식")
+            ErrorHandler.handleError(error: "알 수 없는 메시지 형식")
             replyHandler(["response": "메시지 형식 오류"])
         }
     }

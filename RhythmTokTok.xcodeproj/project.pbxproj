@@ -76,6 +76,9 @@
 		D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */; };
 		D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */; };
 		D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF702CB6B68C005CD01F /* Notification.swift */; };
+		D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */; };
+		D3D6D1B92CBE8B6300D22886 /* MarqueeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */; };
+		D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */; };
 		EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */; };
 		EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */; };
 		EE7B28A02CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */; };
@@ -83,9 +86,6 @@
 		EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */; };
 		EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */; };
 		EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A52CBE5CC200325725 /* ScoreManager.swift */; };
-		D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */; };
-		D3D6D1B92CBE8B6300D22886 /* MarqueeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */; };
-		D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */; };
 		EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */; };
 		EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */; };
 		EE7B28B02CBE8F5D00325725 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AF2CBE8F4500325725 /* CustomTableViewCell.swift */; };
@@ -190,6 +190,9 @@
 		D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D3ABDF702CB6B68C005CD01F /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayView.swift; sourceTree = "<group>"; };
+		D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeTextView.swift; sourceTree = "<group>"; };
+		D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTestViewController.swift; sourceTree = "<group>"; };
 		EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -197,9 +200,6 @@
 		EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		EE7B28A52CBE5CC200325725 /* ScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
-		D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayView.swift; sourceTree = "<group>"; };
-		D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeTextView.swift; sourceTree = "<group>"; };
-		D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTestViewController.swift; sourceTree = "<group>"; };
 		EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListView.swift; sourceTree = "<group>"; };
 		EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListViewController.swift; sourceTree = "<group>"; };
 		EE7B28AF2CBE8F4500325725 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
