@@ -65,6 +65,7 @@
 		1ED9FECF2CBE8ED000472C51 /* PlayPauseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FECE2CBE8EB800472C51 /* PlayPauseButton.swift */; };
 		1ED9FED12CBF654400472C51 /* BPMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FED02CBF653800472C51 /* BPMButton.swift */; };
 		1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FED22CBF826900472C51 /* SetBPMViewController.swift */; };
+		1ED9FED72CBF8BAC00472C51 /* canon.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FED62CBF8BAC00472C51 /* canon.xml */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */; };
@@ -178,6 +179,7 @@
 		1ED9FECE2CBE8EB800472C51 /* PlayPauseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayPauseButton.swift; sourceTree = "<group>"; };
 		1ED9FED02CBF653800472C51 /* BPMButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMButton.swift; sourceTree = "<group>"; };
 		1ED9FED22CBF826900472C51 /* SetBPMViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetBPMViewController.swift; sourceTree = "<group>"; };
+		1ED9FED62CBF8BAC00472C51 /* canon.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = canon.xml; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			children = (
 				1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */,
 				1E54A8F72CB7D26900753A3E /* moon.xml */,
+				1ED9FED62CBF8BAC00472C51 /* canon.xml */,
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
 				1ED9FEBD2CBD571300472C51 /* Lotties */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
@@ -624,6 +627,7 @@
 				1E3E09322CB2AAB400EE1868 /* ra.mp3 in Resources */,
 				1E3E09332CB2AAB400EE1868 /* do.mp3 in Resources */,
 				1E54A8F02CB6D37C00753A3E /* Piano.sf2 in Resources */,
+				1ED9FED72CBF8BAC00472C51 /* canon.xml in Resources */,
 				1E3E09342CB2AAB400EE1868 /* reh.mp3 in Resources */,
 				1E3E09422CB3ED5000EE1868 /* speechDo.mp3 in Resources */,
 				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
@@ -894,7 +898,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
@@ -926,7 +930,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
@@ -959,7 +963,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -993,7 +997,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;

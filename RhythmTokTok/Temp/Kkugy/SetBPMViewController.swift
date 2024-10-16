@@ -12,7 +12,7 @@ class SetBPMViewController: UIViewController {
     
     private let bpmLabel: UILabel = {
         let label = UILabel()
-        label.text = "현재 BPM: 100"
+        label.text = "현재 BPM: 120"
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -38,7 +38,7 @@ class SetBPMViewController: UIViewController {
         return button
     }()
     
-    private var currentBPM: Int = 100
+    private var currentBPM: Int = 120
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -219,7 +219,7 @@ class MusicPracticeViewController: UIViewController {
     // 테스트를 위해 임시 변환 여기서 실행
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
-        guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
+        guard let xmlPath = Bundle.main.url(forResource: "canon", withExtension: "xml") else {
             ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
             return
         }
