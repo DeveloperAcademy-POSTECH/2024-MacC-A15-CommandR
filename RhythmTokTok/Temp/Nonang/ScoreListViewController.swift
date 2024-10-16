@@ -34,7 +34,7 @@ class ScoreListViewController: UIViewController {
         
         // 테이블 뷰 설정
         setupTableView()
-
+        
         // 하단 버튼 액션 연결
         scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
@@ -47,7 +47,7 @@ class ScoreListViewController: UIViewController {
         appearance.backgroundColor = .white  // 네비게이션 바 배경색 흰색 설정
         appearance.shadowColor = .clear  // 하단의 그림자 제거 (선 제거)
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black] // 텍스트 색상 설정
-
+        
         // 기본 Appearance 설정
         navigationController?.navigationBar.standardAppearance = appearance
         // 스크롤 시 적용할 Appearance 설정
@@ -72,13 +72,17 @@ class ScoreListViewController: UIViewController {
         scoreListView.tableView.delegate = self
         scoreListView.tableView.dataSource = self
         scoreListView.tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.identifier)
-
+        
         // 셀 사이의 separator 제거
         scoreListView.tableView.separatorStyle = .none
     }
     
     @objc func didTapSearch() {
         print("Search tapped")
+        //MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
+        
+        let viewController = ViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     @objc func didTapSettings() {
@@ -105,6 +109,12 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return musicList.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+//            let detailViewController = MemoDetailViewController(memo: memo)
+//            navigationController?.pushViewController(detailViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

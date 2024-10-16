@@ -9,17 +9,17 @@ import UIKit
 class CustomTableViewCell: UITableViewCell {
     
     // identifier를 static 상수로 정의
-        static let identifier = "CustomTableViewCell"
+    static let identifier = "CustomTableViewCell"
     
     // 둥근 모서리 배경을 위한 뷰
-        let roundedBackgroundView: UIView = {
-            let view = UIView()
-            view.backgroundColor = .white  // 흰색 배경
-            view.layer.cornerRadius = 12   // 둥근 모서리
-            view.layer.masksToBounds = true
-            view.translatesAutoresizingMaskIntoConstraints = false
-            return view
-        }()
+    let roundedBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white  // 흰색 배경
+        view.layer.cornerRadius = 12   // 둥근 모서리
+        view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     // 레이블을 포함하는 컨텐츠 뷰
     let titleLabel: UILabel = {
@@ -58,6 +58,19 @@ class CustomTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // 셀 선택 시 배경 색상을 변경하는 함수
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        if selected {
+            // 선택되었을 때 효과 (둥근 배경 색상을 변경)
+            roundedBackgroundView.backgroundColor = UIColor.systemGray3
+        } else {
+            // 선택 해제되었을 때 원래 상태로 복원
+            roundedBackgroundView.backgroundColor = UIColor.white
+        }
     }
     
     // 셀에 데이터를 설정하는 함수

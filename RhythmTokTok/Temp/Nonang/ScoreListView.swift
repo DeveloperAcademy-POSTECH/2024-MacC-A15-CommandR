@@ -63,7 +63,7 @@ class ScoreListView: UIView {
         // 테이블뷰 헤더로 타이틀 설정
         let headerView = UIView()
         headerView.addSubview(tableHeaderLabel)
-        headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 40)
+        headerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 60)
         tableView.tableHeaderView = headerView
         
         // 하단 버튼 추가
