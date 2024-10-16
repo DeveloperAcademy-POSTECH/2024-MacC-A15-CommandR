@@ -77,9 +77,8 @@ class WatchManager: NSObject, WCSessionDelegate {
         self.selectedSongTitle = songTitle
         
         let message: [String: Any] = [
-//            "isSelectedSong": isSelectedSong,
             "songTitle": songTitle,
-            "hapticSequence" : hapticSequence
+            "hapticSequence": hapticSequence
         ]
         
         WCSession.default.sendMessage(message, replyHandler: { response in
@@ -94,7 +93,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     }
     
     // 2. 재생 상태 변경 시 워치로 메시지 전송 (연습뷰에서 재생 관련 버튼 조작시 작동)
-    func sendPlayStatusToWatch(status: String) {
+    func sendPlayStatusToWatch(status: String, startTime: TimeInterval) {
         guard WCSession.default.isReachable else {
             print("워치가 연결되지 않음")
             return
@@ -104,21 +103,14 @@ class WatchManager: NSObject, WCSessionDelegate {
             "playStatus": status
         ]
         
-        if status == "play" {
-            // selectedSongTitle이 nil인지 확인하고 사용
-            let title = selectedSongTitle ?? "제목 없음"
-            let startTime = Date()
-            let vibrationSequence: [Double] = [0.5, 1.0, 0.5]
-            
+        if status == "play" {            
             // Date를 문자열로 변환 (ISO8601 형식)
-            let dateFormatter = ISO8601DateFormatter()
-            let startTimeString = dateFormatter.string(from: startTime)
-            
+//            let dateFormatter = ISO8601DateFormatter()
+//            let startTimeString = dateFormatter.string(from: startTime)
+//            
             // 추가 데이터를 딕셔너리로 구성
             let additionalData: [String: Any] = [
-                "title": title,
-                "startTime": startTimeString,
-                "vibrationSequence": vibrationSequence
+                "startTime": startTime
             ]
             
             // 딕셔너리를 JSON 문자열로 변환

@@ -153,13 +153,18 @@ class MusicPracticeViewController: UIViewController {
             ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
             return
         }
-        print("check")
         // MIDI 파일 재생 여부에 따른 처리
         if playPauseButton.isPlaying {
             musicPlayer.pauseMIDI() // 일시정지
         } else {
             print("Playing MIDI file from start...")
-            musicPlayer.playMIDI() // 처음부터 재생
+            let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970 // 현재 시간으로부터 4초 후
+
+            sendPlayStatusToWatch(startTimeInterVal: futureTime)
+            // 예약 시간에 재생
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                self.musicPlayer.playMIDI() // 처음부터 재생
+            }
         }
         playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
     }
@@ -197,7 +202,6 @@ class MusicPracticeViewController: UIViewController {
         do {
             // MIDI File URL 초기화
             midiFilePathURL = nil
-            
             // TODO: 사용할 파트 어떻게 정할지 구상 필요
             midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
                                                                          divisions: score.divisions,
@@ -222,6 +226,7 @@ class MusicPracticeViewController: UIViewController {
         }
     }
     
+    // MARK: 워치 통신 부분
     // 워치로 곡 선택 메시지 전송
     func sendHapticSequenceToWatch(hapticSequence: [Double]) {
         // 임시 송 타이틀
@@ -229,6 +234,10 @@ class MusicPracticeViewController: UIViewController {
         let songTitle = "Moon River - Kkugy"
         
         WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
+    }
+    // 워치로 실행 예약 메시지 전송
+    func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
+        WatchManager.shared.sendPlayStatusToWatch(status: "play", startTime: startTimeInterVal)
     }
 }
 

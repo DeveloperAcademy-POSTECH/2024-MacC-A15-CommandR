@@ -11,12 +11,13 @@ import WatchConnectivity
 import Combine
 
 class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
-    
+    // 햅틱 관리용 매니저
+    private var hapticManager = HapticScheduleManager()
     @Published var isConnected: Bool = false
     @Published var isSelectedSong: Bool = false
     @Published var selectedSongTitle: String = ""
     @Published var playStatus: String = "준비"
-    @Published var hapticSequence: [Double] = []
+    @Published var hapticSequence: [Double] = [] //hapticSequence
 
     override init() {
         super.init()
@@ -50,9 +51,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
-        print("워치에서 메시지 수신: \(message)")
-        
+    func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {        
         // 1. 곡 선택 메시지 (리스트뷰에서 곡을 선택했을 때 작동)
         if let songTitle = message["songTitle"] as? String,
            let hapticSequence = message["hapticSequence"] as? [Double] {
@@ -76,17 +75,12 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             if playStatus == "play", let additionalDataString = message["additionalData"] as? String {
                 if let additionalData = convertFromJSONString(jsonString: additionalDataString) {
                     // 추가 데이터에서 필요한 정보를 추출
-                    if let title = additionalData["title"] as? String,
-                       let startTimeString = additionalData["startTime"] as? String,
-                       let vibrationSequence = additionalData["vibrationSequence"] as? [Double] {
-                        let dateFormatter = ISO8601DateFormatter()
-                        if let startTime = dateFormatter.date(from: startTimeString) {
-
-                            print("추가 데이터 수신 - 제목: \(title), 시작시간: \(startTime), 진동시퀀스: \(vibrationSequence)")
-                            // 여기서 원하는 로직을 구현하세요.
-                        } else {
-                            ErrorHandler.handleError(error: "시작 시간 변환 실패")
-                        }
+                    if let startTime = additionalData["startTime"] as? TimeInterval {
+                        print("추가 데이터 수신 - 시작시간: \(startTime)")
+                        // 햅틱 시퀀스 시작 예약
+                        hapticManager.starHaptic(beatTime: hapticSequence, startTimeInterval: startTime)
+                    } else {
+                        ErrorHandler.handleError(error: "시작 시간 변환 실패")
                     }
                 } else {
                     ErrorHandler.handleError(error: "JSON 파싱 실패")

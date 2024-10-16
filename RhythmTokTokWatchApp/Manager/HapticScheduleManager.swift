@@ -16,6 +16,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     private var currentBatchIndex = 0 // 현재 실행 중인 배치 인덱스
     private var hapticType: WKHapticType = .start
     private var beatTimes: [Double] = []
+    private var startTimeInterval: TimeInterval = 0
 
     // MARK: WKExtendedRuntimeSession 로직
     // 백그라운드에서 햅틱 적용을 위해 WKExtendedRuntimeSession 사용
@@ -29,7 +30,12 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
         print("Extended session started")
         if !isHapticActive {
-            startHapticWithHardCodedBeats(batchSize: 20)
+            let currentTimestamp = Date().timeIntervalSince1970
+            let delay = currentTimestamp - startTimeInterval
+            // 햅틱 시작 예약
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                self.startHapticWithHardCodedBeats(batchSize: 20)
+            }
         }
     }
 
@@ -45,9 +51,10 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     
     // MARK: Haptic 관리 로직
     // 리듬 햅틱 시작
-    func starHaptic(beatTime: [Double]) {
+    func starHaptic(beatTime: [Double], startTimeInterval: TimeInterval) {
         isHapticActive = false // 시작여부 초기화
         setBeatTime(beatTime: beatTime)
+        self.startTimeInterval = startTimeInterval
         startExtendedSession()
     }
     

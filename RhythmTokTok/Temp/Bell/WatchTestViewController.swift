@@ -78,14 +78,14 @@ class WatchTestViewController: UIViewController {
     }
     
     @objc private func sendPlayStatusPlay() {
-        WatchManager.shared.sendPlayStatusToWatch(status: "play")
+//        WatchManager.shared.sendPlayStatusToWatch(status: "play")
     }
     
     @objc private func sendPlayStatusPause() {
-        WatchManager.shared.sendPlayStatusToWatch(status: "pause")
+//        WatchManager.shared.sendPlayStatusToWatch(status: "pause")
     }
     
     @objc private func sendPlayStatusStop() {
-        WatchManager.shared.sendPlayStatusToWatch(status: "stop")
+//        WatchManager.shared.sendPlayStatusToWatch(status: "stop")
     }
 }
