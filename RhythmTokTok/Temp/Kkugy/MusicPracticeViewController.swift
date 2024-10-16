@@ -21,7 +21,7 @@ class MusicPracticeViewController: UIViewController {
         return view
     }()
     let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
-    let resumeButton: UIButton = {
+    let stopButton: UIButton = {
         let button = UIButton(type: .system)
         let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular)
         let image = UIImage(systemName: "stop.fill", withConfiguration: configuration)
@@ -32,7 +32,7 @@ class MusicPracticeViewController: UIViewController {
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
-        button.isHidden = false // 나중에 이값으로 활성화 관리
+        button.isHidden = true
         return button
     }()
     
@@ -89,7 +89,7 @@ class MusicPracticeViewController: UIViewController {
         playPauseButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(playPauseButton)
         // resume 버튼 추가
-        view.addSubview(resumeButton)
+        view.addSubview(stopButton)
     }
     
     private func setupConstraints() {
@@ -127,21 +127,21 @@ class MusicPracticeViewController: UIViewController {
             playPauseButton.widthAnchor.constraint(equalToConstant: 160),
             
             // 정지버튼
-            resumeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            stopButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                                                     constant: -20),
-            resumeButton.trailingAnchor.constraint(equalTo: playPauseButton.leadingAnchor, constant: -8),
-            resumeButton.heightAnchor.constraint(equalToConstant: 80),
-            resumeButton.widthAnchor.constraint(equalToConstant: 80)
+            stopButton.trailingAnchor.constraint(equalTo: playPauseButton.leadingAnchor, constant: -8),
+            stopButton.heightAnchor.constraint(equalToConstant: 80),
+            stopButton.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
     
     private func setupActions() {
         // 클릭 시 이벤트 설정
         playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
     }
     
     // MARK: Button 액션
-    // 버튼이 클릭될 때 호출되는 함수
     @objc private func playButtonTapped() {
         guard let outputPathURL = midiFilePathURL else {
             ErrorHandler.handleError(error: "MIDI file URL is nil.")
@@ -155,22 +155,34 @@ class MusicPracticeViewController: UIViewController {
         }
         // MIDI 파일 재생 여부에 따른 처리
         if playPauseButton.isPlaying {
-            musicPlayer.pauseMIDI() // 일시정지
+            // 재생 중일 때 일시정지
+            sendPauseStatusToWatch()
+            // MIDI 일시정지
+            musicPlayer.pauseMIDI()
         } else {
-            print("Playing MIDI file from start...")
-            let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970 // 현재 시간으로부터 4초 후
-            
+            // 현재 시간으로부터 4초 후, 평균 워치지연시간 0.14
+            let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
+            // 워치로 play 예약 메시지 전송
             sendPlayStatusToWatch(startTimeInterVal: futureTime)
             
             let delay = futureTime - Date().timeIntervalSince1970
             // 예약 시간에 재생
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                self.musicPlayer.playMIDI() // 처음부터 재생
+                // MIDI 재생
+                self.musicPlayer.playMIDI()
             }
+            stopButton.isHidden = false
         }
         playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
     }
     
+    @objc private func stopButtonTapped() {
+        sendStopStatusToWatch()
+        musicPlayer.stopMIDI()
+        playPauseButton.isPlaying = false
+        stopButton.isHidden = true
+    }
+
     // MARK: MIDI 파일, 햅틱 시퀀스 관리
     // 테스트를 위해 임시 변환 여기서 실행
     private func generateMusicXMLAudio() {
@@ -237,9 +249,20 @@ class MusicPracticeViewController: UIViewController {
         
         WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
     }
+    
     // 워치로 실행 예약 메시지 전송
     func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
         WatchManager.shared.sendPlayStatusToWatch(status: "play", startTime: startTimeInterVal)
+    }
+    
+    // 워치로 일시정지 예약 메시지 전송
+    func sendPauseStatusToWatch() {
+        WatchManager.shared.sendPlayStatusToWatch(status: "pause", startTime: 0)
+    }
+    
+    // 워치로 멈추고 처음으로 대기 메시지 전송
+    func sendStopStatusToWatch() {
+        WatchManager.shared.sendPlayStatusToWatch(status: "stop", startTime: 0)
     }
 }
 

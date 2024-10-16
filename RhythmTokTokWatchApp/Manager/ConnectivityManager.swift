@@ -51,7 +51,8 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {        
+    func session(_ session: WCSession, didReceiveMessage message: [String: Any],
+                 replyHandler: @escaping ([String: Any]) -> Void) {
         // 1. 곡 선택 메시지 (리스트뷰에서 곡을 선택했을 때 작동)
         if let songTitle = message["songTitle"] as? String,
            let hapticSequence = message["hapticSequence"] as? [Double] {
@@ -85,7 +86,15 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 } else {
                     ErrorHandler.handleError(error: "JSON 파싱 실패")
                 }
+            } else if playStatus == "pause" {
+                // 햅틱 시퀀스 시작 예약
+                // TODO: 햅틱 일시 정지시 어떻게 멈추고 재개할건지 구상 필요
+                hapticManager.stopHaptic()
+            } else if playStatus == "stop" {
+                // 햅틱 시퀀스 타이머 해제
+                hapticManager.stopHaptic()
             }
+            
             replyHandler(["response": "재생 상태 수신 완료"])
         } else {
             ErrorHandler.handleError(error: "알 수 없는 메시지 형식")

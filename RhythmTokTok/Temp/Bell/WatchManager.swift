@@ -93,9 +93,9 @@ class WatchManager: NSObject, WCSessionDelegate {
     }
     
     // 2. 재생 상태 변경 시 워치로 메시지 전송 (연습뷰에서 재생 관련 버튼 조작시 작동)
-    func sendPlayStatusToWatch(status: String, startTime: TimeInterval) {
+    func sendPlayStatusToWatch(status: String, startTime: TimeInterval?) {
         guard WCSession.default.isReachable else {
-            print("워치가 연결되지 않음")
+            ErrorHandler.handleError(error: "워치가 연결되지 않았음")
             return
         }
         
@@ -103,11 +103,11 @@ class WatchManager: NSObject, WCSessionDelegate {
             "playStatus": status
         ]
         
-        if status == "play" {            
-            // Date를 문자열로 변환 (ISO8601 형식)
-//            let dateFormatter = ISO8601DateFormatter()
-//            let startTimeString = dateFormatter.string(from: startTime)
-//            
+        if status == "play" {
+            guard let startTime else {
+                ErrorHandler.handleError(error: "예약 시간이 설정 되어있지 않음")
+                return
+            }
             // 추가 데이터를 딕셔너리로 구성
             let additionalData: [String: Any] = [
                 "startTime": startTime

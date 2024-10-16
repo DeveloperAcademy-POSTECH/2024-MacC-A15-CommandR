@@ -71,7 +71,7 @@ class MusicPracticeTitleView: UIView {
             titleHStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleHStackView.topAnchor.constraint(equalTo: topAnchor),
             titleHStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            titleHStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            titleHStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
         ])
     }
 }
