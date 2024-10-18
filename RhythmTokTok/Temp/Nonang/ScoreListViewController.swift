@@ -16,7 +16,7 @@ class ScoreListViewController: UIViewController {
         return view as? ScoreListView
     }
     
-    // 데이터
+    // TODO: 추후에 Score 객체 배열 연결 필요
     let musicList = [
         "꽃을 든 남자 - 이백호",
         "사랑의 배터리 - 홍진영",
@@ -71,12 +71,13 @@ class ScoreListViewController: UIViewController {
         // 테이블 뷰 기본 컴포넌트 연결
         scoreListView.tableView.delegate = self
         scoreListView.tableView.dataSource = self
-        scoreListView.tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.identifier)
+        scoreListView.tableView.register(ListItemCellView.self, forCellReuseIdentifier: ListItemCellView.identifier)
         
         // 셀 사이의 separator 제거
         scoreListView.tableView.separatorStyle = .none
     }
     
+    // TODO: 검색 기능 추가 예정
     @objc func didTapSearch() {
         print("Search tapped")
         //MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
@@ -85,6 +86,7 @@ class ScoreListViewController: UIViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
+    // TODO: 세팅 기능 추가 예정
     @objc func didTapSettings() {
         print("Settings tapped")
     }
@@ -101,7 +103,6 @@ class ScoreListViewController: UIViewController {
     override func loadView() {
         view = ScoreListView()
     }
-    
 }
 
 // UITableViewDelegate, UITableViewDataSource 구현
@@ -118,7 +119,7 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.identifier, for: indexPath) as? CustomTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListItemCellView.identifier, for: indexPath) as? ListItemCellView else {
             return UITableViewCell()
         }
         cell.configure(with: musicList[indexPath.row])

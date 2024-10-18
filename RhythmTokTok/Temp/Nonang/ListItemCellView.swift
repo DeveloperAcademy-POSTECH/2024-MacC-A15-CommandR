@@ -1,15 +1,15 @@
 //
-//  CustomTableViewCell.swift
+//  ListItemCellView.swift
 //  RhythmTokTok
 //
 //  Created by Kyuhee hong on 10/15/24.
 //
 import UIKit
 
-class CustomTableViewCell: UITableViewCell {
+class ListItemCellView: UITableViewCell {
     
     // identifier를 static 상수로 정의
-    static let identifier = "CustomTableViewCell"
+    static let identifier = "ListItemCellView"
     
     // 둥근 모서리 배경을 위한 뷰
     let roundedBackgroundView: UIView = {
