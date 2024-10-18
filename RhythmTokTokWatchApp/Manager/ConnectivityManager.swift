@@ -63,14 +63,14 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 self.isSelectedSong = !songTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(songTitle)")
             }
-            
             // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
-            else if let playStatus = applicationContext["playStatus"] as? String {
-                self.playStatus = playStatus
-                print("재생 상태 업데이트: \(playStatus)")
+            else if let playStatusString = applicationContext["playStatus"] as? String,
+                    let playStatus = PlayStatus(rawValue: playStatusString) {
+                self.playStatus = playStatus.rawValue
+                print("재생 상태 업데이트: \(playStatus.rawValue)")
                 
                 switch playStatus {
-                case "play":
+                case .play:
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
                         // 햅틱 시퀀스 시작 예약
@@ -78,13 +78,11 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                     } else {
                         ErrorHandler.handleError(error: "시작 시간 누락")
                     }
-                case "pause", "stop":
+                case .pause, .stop:
                     self.hapticManager.stopHaptic()
-                default:
-                    ErrorHandler.handleError(error: "알 수 없는 재생 상태: \(playStatus)")
                 }
             } else {
-                ErrorHandler.handleError(error: "알 수 없는 메시지 형식")
+                ErrorHandler.handleError(error: "알 수 없는 재생 상태")
             }
         }
     }

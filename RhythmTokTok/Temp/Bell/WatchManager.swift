@@ -118,7 +118,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     }
     
     // 2. 연습뷰에서 [재생 상태]를 보냄. 재생인 경우 [시작시간] 보냄. (연습뷰에서 재생 관련 버튼 조작시 작동)
-    func sendPlayStatusToWatch(status: String, startTime: TimeInterval?) {
+    func sendPlayStatusToWatch(status: PlayStatus, startTime: TimeInterval?) {
         // 워치가 연결되어 있는지 확인 (페어링 및 앱 설치 여부)
         guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
             ErrorHandler.handleError(error: "워치가 연결되지 않았거나 앱이 설치되어 있지 않음")
@@ -126,10 +126,10 @@ class WatchManager: NSObject, WCSessionDelegate {
         }
         
         var message: [String: Any] = [
-            "playStatus": status
+            "playStatus": status.rawValue
         ]
         
-        if status == "play" {
+        if status == .play {
             guard let startTime = startTime else {
                 ErrorHandler.handleError(error: "예약 시간이 설정되어 있지 않음")
                 return
