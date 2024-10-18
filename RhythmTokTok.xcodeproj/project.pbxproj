@@ -180,6 +180,7 @@
 		1ED9FED02CBF653800472C51 /* BPMButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMButton.swift; sourceTree = "<group>"; };
 		1ED9FED22CBF826900472C51 /* SetBPMViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetBPMViewController.swift; sourceTree = "<group>"; };
 		1ED9FED62CBF8BAC00472C51 /* canon.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = canon.xml; sourceTree = "<group>"; };
+		1ED9FED82CBF95D200472C51 /* RhythmTokTok.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTok.entitlements; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
@@ -251,6 +252,7 @@
 		02BFECEA2CB10A13003CEC8A /* RhythmTokTok */ = {
 			isa = PBXGroup;
 			children = (
+				1ED9FED82CBF95D200472C51 /* RhythmTokTok.entitlements */,
 				02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */,
 				02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */,
 				1EF8A0A92CB559B300ADB783 /* Temp */,
@@ -895,6 +897,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RhythmTokTok/RhythmTokTok.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -902,6 +905,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your workout data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -927,6 +932,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RhythmTokTok/RhythmTokTok.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -934,6 +940,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your workout data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -969,6 +977,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cmdr.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1003,6 +1012,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cmdr.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (

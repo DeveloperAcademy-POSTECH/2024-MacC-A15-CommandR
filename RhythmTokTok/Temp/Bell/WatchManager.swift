@@ -4,6 +4,7 @@
 //
 //  Created by sungkug_apple_developer_ac on 10/8/24.
 
+import HealthKit
 import WatchConnectivity
 import UIKit
 
@@ -12,7 +13,12 @@ class WatchManager: NSObject, WCSessionDelegate {
     static let shared = WatchManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
     var selectedSongTitle: String?
+    // 런치 용도
+    let healthStore = HKHealthStore()
+    let allTypes = Set([HKObjectType.workoutType()])
+    let configuration = HKWorkoutConfiguration()
     
+    // TODO: isPaired로 관리 가능한지 확인 부탁드려요
     @Published var isWatchAppReachable: Bool = false
     
     private override init() {
@@ -34,7 +40,6 @@ class WatchManager: NSObject, WCSessionDelegate {
     }
     
     // MARK: - WCSessionDelegate 메서드
-    
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if activationState == .activated {
             print("iPhone에서 WCSession 활성화 완료")
@@ -65,10 +70,52 @@ class WatchManager: NSObject, WCSessionDelegate {
         }
     }
     
-    // MARK: - 워치로 메시지 보내는 부분
+    // MARK: - 워치 런치
+    func launchWatch() async -> Bool {
+        // 비동기적으로 권한 요청
+        return await withCheckedContinuation { continuation in
+            healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { (success, error) in
+                if !success {
+                    // 권한 요청 실패 시 처리
+                    ErrorHandler.handleError(error: error ?? "unknown error")
+                    continuation.resume(returning: false) // 실패 시 false 반환
+                    return
+                }
+
+                // 설정 적용
+                self.configuration.activityType = .running
+                self.configuration.locationType = .outdoor
+
+                Task {
+                    do {
+                        try await self.healthStore.startWatchApp(toHandle: self.configuration)
+                        print("런치 성공")
+                        WCSession.default.activate()
+                        print("시작")
+                        continuation.resume(returning: true) // 성공 시 true 반환
+                    } catch {
+                        // 오류 처리
+                        ErrorHandler.handleError(error: error)
+                        continuation.resume(returning: false) // 실패 시 false 반환
+                    }
+                }
+            }
+        }
+    }
     
+    // TODO: 워치가 백그라운드일 때 메시지 받아서 업데이트 할 수 있게 userInfo로 전달하게 만들어야됨, 기존 play,pause,stop등을 userinfo로도 만들고 watch활성화 여부에 맞춰서 하는게 좋을 것 같음
+    func sendBackgroundDataToWatch() {
+        if WCSession.default.isPaired && WCSession.default.isWatchAppInstalled {
+            let userInfo = ["songtitle": "test"]
+            WCSession.default.transferUserInfo(userInfo)
+            print("Background data transfer initiated.")
+        }
+    }
+
+    // MARK: - 워치로 메시지 보내는 부분
     // 1. 곡 선택 시 워치로 메시지 전송 (리스트뷰에서 곡을 선택할 때 작동)
     func sendSongSelectionToWatch(songTitle: String, hapticSequence: [Double]) {
+        print("확인\(isWatchAppReachable)")
         guard WCSession.default.isReachable else {
             print("워치가 연결되지 않음")
             return

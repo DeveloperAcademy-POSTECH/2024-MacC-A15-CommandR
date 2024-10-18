@@ -49,7 +49,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
                                 error: (any Error)?) {
         print("Extended session invalidated")
     }
-    
+        
     // MARK: Haptic 관리 로직
     // 리듬 햅틱 시작
     func starHaptic(beatTime: [Double], startTimeInterval: TimeInterval) {

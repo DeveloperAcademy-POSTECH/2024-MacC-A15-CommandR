@@ -10,9 +10,7 @@ import UIKit
 class MusicPracticeViewController: UIViewController {
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
-    let tableView = UITableView()
-    // TODO: 여기에 줄 진행 정도 비율 계산 로직 연결 필요
-    let progressData: [CGFloat] = [1.0, 1.0, 1.0, 1.0, 0.4]
+//    let tableView = UITableView() 기존 테이블 제거 -> 악보 줄 뷰로 대체
     // Divider 역할을 할 선
     let divider: UIView = {
         let view = UIView()
@@ -74,13 +72,13 @@ class MusicPracticeViewController: UIViewController {
     }
     
     private func setupUI() {
-        // 테이블 뷰 설정
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(ProgressButtonTableViewCell.self, forCellReuseIdentifier: "ProgressButtonCell")
-        view.addSubview(tableView)
-        tableView.separatorStyle = .none // 구분선 없애기
+        // 테이블 뷰 설정 제거 -> 악보 줄 뷰로 대체
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
+//        tableView.dataSource = self
+//        tableView.delegate = self
+//        tableView.register(ProgressButtonTableViewCell.self, forCellReuseIdentifier: "ProgressButtonCell")
+//        view.addSubview(tableView)
+//        tableView.separatorStyle = .none // 구분선 없애기
         // TODO: 여기에 제목 연결
         musicPracticeTitleView.titleLabel.text = "MoonRiver"
         // TODO: 여기에 페이지 내용 만들 함수 연결
@@ -120,12 +118,12 @@ class MusicPracticeViewController: UIViewController {
             bpmButton.heightAnchor.constraint(equalToConstant: 48),
             bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            // 테이블뷰
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            tableView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 24),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+            // 테이블뷰 제거 -> 악보 줄 뷰로 대체
+//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+//            tableView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 24),
+//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            
             // 플레이버튼
             playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
@@ -152,13 +150,24 @@ class MusicPracticeViewController: UIViewController {
     
     // 워치 앱 상태 업데이트 메서드
     @objc func updateWatchAppStatus() {
-        DispatchQueue.main.async {
-            let isWatchAppReachable = WatchManager.shared.isWatchAppReachable
-            
-            if isWatchAppReachable {
-                self.practicNavBar.setWatchImage(isConnected: true)
+        Task {
+            let isLaunched = await WatchManager.shared.launchWatch()
+
+            if isLaunched {
+                let isWatchAppReachable = WatchManager.shared.isWatchAppReachable
+                DispatchQueue.main.async {
+                    if isWatchAppReachable {
+                        self.practicNavBar.setWatchImage(isConnected: true)
+                    } else {
+                        self.practicNavBar.setWatchImage(isConnected: false)
+                    }
+                }
             } else {
-                self.practicNavBar.setWatchImage(isConnected: false)
+                DispatchQueue.main.async {
+                    // 워치 런칭 실패 시 처리
+                    ErrorHandler.handleError(error: "Failed to launch the Watch app.")
+                    self.practicNavBar.setWatchImage(isConnected: false)
+                }
             }
         }
     }
@@ -166,6 +175,7 @@ class MusicPracticeViewController: UIViewController {
     // MARK: Button 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
+        WatchManager.shared.sendSongSelectionToWatch(songTitle: "", hapticSequence: [])
         navigationController?.popViewController(animated: true)
     }
     
@@ -189,21 +199,21 @@ class MusicPracticeViewController: UIViewController {
         } else {
             // 현재 시간으로부터 4초 후, 평균 워치지연시간 0.14
             let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
-            // 워치로 play 예약 메시지 전송
             sendPlayStatusToWatch(startTimeInterVal: futureTime)
-            
             let delay = futureTime - Date().timeIntervalSince1970
             // 예약 시간에 재생
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 // MIDI 재생
-                self.musicPlayer.playMIDI()
-            }
+            self.musicPlayer.playMIDI(delay: delay - 0.21)
+//            }
             stopButton.isHidden = false
+            // 워치로 play 예약 메시지 전송
         }
         playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
     }
     
     @objc private func stopButtonTapped() {
+//        WatchManager.shared.launchWatch()
         sendStopStatusToWatch()
         musicPlayer.stopMIDI()
         playPauseButton.isPlaying = false
@@ -219,7 +229,7 @@ class MusicPracticeViewController: UIViewController {
     // 테스트를 위해 임시 변환 여기서 실행
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
-        guard let xmlPath = Bundle.main.url(forResource: "canon", withExtension: "xml") else {
+        guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
             ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
             return
         }
@@ -258,8 +268,10 @@ class MusicPracticeViewController: UIViewController {
                 // 햅틱 시퀀스 관리
                 let hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
                                   divisions: score.divisions)
+    
                 // 워치로 곡 선택 메시지 전송
-                sendHapticSequenceToWatch(hapticSequence: hapticSequence)
+                await sendHapticSequenceToWatch(hapticSequence: hapticSequence)
+                
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                 playPauseButton.isEnabled = true
@@ -274,12 +286,16 @@ class MusicPracticeViewController: UIViewController {
     
     // MARK: 워치 통신 부분
     // 워치로 곡 선택 메시지 전송
-    func sendHapticSequenceToWatch(hapticSequence: [Double]) {
-        // 임시 송 타이틀
-        // TODO: score안의 타이틀 값 연결해줘야됨
-        let songTitle = "Moon River - Kkugy"
-        
-        WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
+    func sendHapticSequenceToWatch(hapticSequence: [Double]) async {
+        let isLaunched = await WatchManager.shared.launchWatch()
+
+        if isLaunched {
+            // 임시 송 타이틀
+            // TODO: score안의 타이틀 값 연결해줘야됨
+            let songTitle = "Moon River - Kkugy"
+            WatchManager.shared.sendBackgroundDataToWatch()
+            WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
+        }
     }
     
     // 워치로 실행 예약 메시지 전송
@@ -298,23 +314,23 @@ class MusicPracticeViewController: UIViewController {
     }
 }
 
-// MARK: - UITableViewDataSource, UITableViewDelegate
-extension MusicPracticeViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return progressData.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProgressButtonCell", for: indexPath) as! ProgressButtonTableViewCell
-        let progress = progressData[indexPath.row]
-        cell.configure(progress: progress)
-        // TODO: 장 줄 네임 연결
-        cell.setTitle(buttonName: "\(indexPath.row)")
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Progress button at row \(indexPath.row) clicked")
-        // TODO: 여기에 버튼 클릭 시 해당 줄부터 연주되게 만들기
-    }
-}
+// MARK: - UITableViewDataSource, UITableViewDelegate 기존 프로그래스 버튼 테이블 제거 -> 악보 줄 뷰로 대체
+//extension MusicPracticeViewController: UITableViewDataSource, UITableViewDelegate {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return progressData.count
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "ProgressButtonCell", for: indexPath) as! ProgressButtonTableViewCell
+//        let progress = progressData[indexPath.row]
+//        cell.configure(progress: progress)
+//        // TODO: 장 줄 네임 연결
+//        cell.setTitle(buttonName: "\(indexPath.row)")
+//        return cell
+//    }
+//
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        print("Progress button at row \(indexPath.row) clicked")
+//        // TODO: 여기에 버튼 클릭 시 해당 줄부터 연주되게 만들기
+//    }
+//}

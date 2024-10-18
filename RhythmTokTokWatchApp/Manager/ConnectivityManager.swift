@@ -37,7 +37,6 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     }
     
     // MARK: - WCSessionDelegate 메서드
-    
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState,
                  error: Error?) {
         if activationState == .activated {
@@ -51,6 +50,26 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
+    // TODO: 워치가 백그라운드일 때 메시지 받아서 업데이트 할 수 있게 userInfo로 전달하게 만들어야됨, 기존 play,pause,stop등을 userinfo로도 만들고 watch활성화 여부에 맞춰서 하는게 좋을 것 같음
+    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
+        if let command = userInfo["songtitle"] as? String {
+            if command == "test" {
+                print("Received background data: startWorkout command")
+                // 백그라운드에서 받은 데이터를 처리
+                DispatchQueue.main.async {
+                    self.selectedSongTitle = "TEST"
+                    self.hapticSequence = []
+                    if self.selectedSongTitle.isEmpty {
+                        self.isSelectedSong = false
+                    } else {
+                        self.isSelectedSong = true
+                    }
+                    print("곡 선택 완료, 곡 제목: \(self.selectedSongTitle)")
+                }
+            }
+        }
+    }
+    
     func session(_ session: WCSession, didReceiveMessage message: [String: Any],
                  replyHandler: @escaping ([String: Any]) -> Void) {
         // 1. 곡 선택 메시지 (리스트뷰에서 곡을 선택했을 때 작동)
@@ -59,7 +78,11 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             DispatchQueue.main.async {
                 self.selectedSongTitle = songTitle
                 self.hapticSequence = hapticSequence
-                self.isSelectedSong = true
+                if songTitle.isEmpty {
+                    self.isSelectedSong = false
+                } else {
+                    self.isSelectedSong = true
+                }
                 print("곡 선택 완료, 곡 제목: \(songTitle)")
             }
             replyHandler(["response": "곡 선택 수신 완료"])

@@ -168,7 +168,7 @@ class LoadingViewController: UIViewController {
             musicPlayer.pauseMIDI() // 일시정지
         } else {
             print("Playing MIDI file from start...")
-            musicPlayer.playMIDI() // 처음부터 재생
+            musicPlayer.playMIDI(delay: 0) // 처음부터 재생
         }
         // 재생 상태 토글
         isPlayingMIDIFile.toggle()
