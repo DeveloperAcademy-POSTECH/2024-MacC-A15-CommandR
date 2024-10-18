@@ -90,21 +90,33 @@ class ViewController: UIViewController {
         practiceViewButton.addTarget(self, action: #selector(navigateToMusicPracticeViewController), for: .touchUpInside)
         view.addSubview(practiceViewButton)
 
+        let listViewButton = UIButton(type: .system)
+        listViewButton.setTitle("리스트뷰가기", for: .normal)
+        listViewButton.translatesAutoresizingMaskIntoConstraints = false
+        listViewButton.addTarget(self, action: #selector(navigateToListViewController), for: .touchUpInside)
+        view.addSubview(listViewButton)
+
         NSLayoutConstraint.activate([
             loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
             statusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
+
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
+
             watchTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             watchTestButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
-            sendMessageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            sendMessageButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20),
+
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingViewButton.topAnchor.constraint(equalTo: sendMessageButton.bottomAnchor, constant: 20),
+            loadingViewButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20),
+
             practiceViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20)
+            practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20),
+
+            listViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            listViewButton.topAnchor.constraint(equalTo: practiceViewButton.bottomAnchor, constant: 20)
         ])
     }
     
@@ -134,10 +146,10 @@ class ViewController: UIViewController {
     }
 
     // PDF 파일을 미리 보기하고 확인할 수 있는 뷰로 이동
-    func showPDFConfirmationView(with fileURL: URL) {
-        let pdfViewController = CheckPDFViewController()
-        pdfViewController.fileURL = fileURL
-        self.present(pdfViewController, animated: true, completion: nil) // 모달로 띄우기
+    func navigateToCheckPDFViewController(with fileURL: URL) {
+        let checkPDFViewController = CheckPDFViewController()
+        checkPDFViewController.fileURL = fileURL
+        self.present(checkPDFViewController, animated: true, completion: nil) // 모달로 띄우기
     }
   
     @objc private func navigateToLottieViewController() {
@@ -156,6 +168,31 @@ class ViewController: UIViewController {
         let musicPracticeViewController = MusicPracticeViewController()
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
+    
+    //화면 표시용 테스트 버튼
+    @objc private func navigateToListViewController() {
+        let scoreListViewController = ScoreListViewController()
+        navigationController?.pushViewController(scoreListViewController, animated: true)
+    }
+    
+    @objc private func sendMessageToWatch() {
+        if selectedSongTitle == nil {
+            selectedSongTitle = "꽃을 든 남자 - 이백호"  // 테스트용 곡 제목 설정
+        }
+        guard let songTitle = selectedSongTitle else {
+            print("선택된 곡이 없습니다.")
+            return
+        }
+        let isSelectedSong = true
+        WatchManager.shared.sendSongSelectionToWatch(isSelectedSong: isSelectedSong, songTitle: songTitle)
+    }
+    
+    // 곡을 선택하는 메서드 예시
+    func selectSong(title: String) {
+        self.selectedSongTitle = title
+        // 곡이 선택되었으므로 워치로 메시지 전송
+        sendMessageToWatch()
+    }
 }
 
 
@@ -170,7 +207,7 @@ extension ViewController: UIDocumentPickerDelegate {
         
         // 선택된 파일 URL을 저장하고 확인 화면으로 이동
         self.selectedFileURL = selectedFileURL
-        self.showPDFConfirmationView(with: selectedFileURL)
+        self.navigateToCheckPDFViewController(with: selectedFileURL)
     }
     
     // 취소 버튼을 누르면 호출되는 메소드

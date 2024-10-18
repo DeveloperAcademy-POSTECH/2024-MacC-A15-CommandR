@@ -15,9 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        let viewController = ViewController()
+        let scoreListViewController = ScoreListViewController()
         //네비게이션 뷰로 연결
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let navigationController = UINavigationController(rootViewController: scoreListViewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
