@@ -298,20 +298,20 @@ class MusicPracticeViewController: UIViewController {
     }
     
     // 워치로 실행 예약 메시지 전송
-    func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
-        WatchManager.shared.sendPlayStatusToWatch(status: "play", startTime: startTimeInterVal)
-    }
-    
-    // 워치로 일시정지 예약 메시지 전송
-    func sendPauseStatusToWatch() {
-        WatchManager.shared.sendPlayStatusToWatch(status: "pause", startTime: 0)
-    }
-    
-    // 워치로 멈추고 처음으로 대기 메시지 전송
-    func sendStopStatusToWatch() {
-        WatchManager.shared.sendPlayStatusToWatch(status: "stop", startTime: 0)
-    }
-}
+      func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
+          WatchManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
+      }
+      
+      // 워치로 일시정지 예약 메시지 전송
+      func sendPauseStatusToWatch() {
+          WatchManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
+      }
+      
+      // 워치로 멈추고 처음으로 대기 메시지 전송
+      func sendStopStatusToWatch() {
+          WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+      }
+  }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate 기존 프로그래스 버튼 테이블 제거 -> 악보 줄 뷰로 대체
 //extension MusicPracticeViewController: UITableViewDataSource, UITableViewDelegate {
