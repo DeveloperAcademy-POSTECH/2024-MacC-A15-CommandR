@@ -74,7 +74,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
                         // 햅틱 시퀀스 시작 예약
-                        self.hapticManager.starHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
+                        self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
                     } else {
                         ErrorHandler.handleError(error: "시작 시간 누락")
                     }
