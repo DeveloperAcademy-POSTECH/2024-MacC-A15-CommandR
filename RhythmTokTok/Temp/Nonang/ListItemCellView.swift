@@ -14,14 +14,14 @@ class ListItemCellView: UITableViewCell {
     // 둥근 모서리 배경을 위한 뷰
     let roundedBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white  // 흰색 배경
+        view.backgroundColor = .white  // 기본 배경색
         view.layer.cornerRadius = 12   // 둥근 모서리
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    // 레이블을 포함하는 컨텐츠 뷰
+    // 레이블
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -33,9 +33,14 @@ class ListItemCellView: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        // 셀 자체의 배경을 투명하게 설정 (테이블 뷰의 배경색을 그대로 보이도록)
+        // 셀과 contentView의 배경을 투명하게 설정
         backgroundColor = .clear
         contentView.backgroundColor = .clear
+        
+        // selectedBackgroundView를 투명한 뷰로 설정하여 기본 선택 배경 제거
+        let selectedBackground = UIView()
+        selectedBackground.backgroundColor = .clear
+        selectedBackgroundView = selectedBackground
         
         // 둥근 배경 뷰 추가
         contentView.addSubview(roundedBackgroundView)
@@ -60,21 +65,30 @@ class ListItemCellView: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // 셀 선택 시 배경 색상을 변경하는 함수
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        if selected {
-            // 선택되었을 때 효과 (둥근 배경 색상을 변경)
-            roundedBackgroundView.backgroundColor = UIColor.systemGray3
-        } else {
-            // 선택 해제되었을 때 원래 상태로 복원
-            roundedBackgroundView.backgroundColor = UIColor.white
-        }
-    }
-    
     // 셀에 데이터를 설정하는 함수
     func configure(with title: String) {
         titleLabel.text = title
     }
+    
+   // ---
+    
+    // 선택 및 하이라이트 상태에 따른 배경색 변경
+        override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+            super.setHighlighted(highlighted, animated: animated)
+            updateBackgroundColor()
+        }
+
+        override func setSelected(_ selected: Bool, animated: Bool) {
+            super.setSelected(selected, animated: animated)
+            updateBackgroundColor()
+        }
+
+        // 배경색 업데이트 메서드
+        private func updateBackgroundColor() {
+            if isHighlighted || isSelected {
+                roundedBackgroundView.backgroundColor = UIColor.lightGray  // 선택되었을 때의 색상
+            } else {
+                roundedBackgroundView.backgroundColor = UIColor.white  // 기본 색상
+            }
+        }
 }
