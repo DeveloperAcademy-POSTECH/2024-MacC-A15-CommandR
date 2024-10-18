@@ -65,7 +65,7 @@ struct PlayHapticView: View {
                 if isPlay {
                     hapticManager.stopHaptic()
                 } else {
-                    hapticManager.starHaptic(beatTime: testHaptic)
+                    hapticManager.starHaptic(beatTime: testHaptic, startTimeInterval: Date().timeIntervalSince1970)
                 }
                 
                 isPlay.toggle()

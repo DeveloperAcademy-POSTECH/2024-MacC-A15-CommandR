@@ -17,7 +17,7 @@ class LoadingViewController: UIViewController {
     private var midiFilePathURL: URL?
     private var cancellables = Set<AnyCancellable>()
     private var isPlayingMIDIFile = false
-    private var currentBPM = 100 // bpm 조절 설정
+    private var currentBPM = 120 // bpm 조절 설정
     private var currenrScore: Score? // 현재 악보 score
     private var selectedPart: Part? // 픽커에서 선택된 파트
     
@@ -101,11 +101,6 @@ class LoadingViewController: UIViewController {
             playMIDIFileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playMIDIFileButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 20)
         ])
-        
-        // UIPickerView 레이아웃 설정
-        NSLayoutConstraint.activate([
-        
-        ])
     }
     
     private func setupActions() {
@@ -173,7 +168,7 @@ class LoadingViewController: UIViewController {
             musicPlayer.pauseMIDI() // 일시정지
         } else {
             print("Playing MIDI file from start...")
-            musicPlayer.playMIDI() // 처음부터 재생
+            musicPlayer.playMIDI(delay: 0) // 처음부터 재생
         }
         // 재생 상태 토글
         isPlayingMIDIFile.toggle()
