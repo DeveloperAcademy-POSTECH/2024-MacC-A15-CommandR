@@ -18,12 +18,9 @@ class ScoreListViewController: UIViewController {
     
     // TODO: 추후에 Score 객체 배열 연결 필요
     let musicList = [
-        "꽃을 든 남자 - 이백호",
-        "사랑의 배터리 - 홍진영",
-        "꽃밭에서 / 아코디언",
-        "울어라 열풍아~~",
-        "갈대의 순정... 조순재",
-        "생일 축하곡 - 손주 생일을 위해"
+        "Moon River",
+        "만남",
+        "붉은노을 - 이문세"
     ]
     
     override func viewDidLoad() {
@@ -68,16 +65,14 @@ class ScoreListViewController: UIViewController {
     
     // TODO: 검색 기능 추가 예정
     @objc func didTapSearch() {
-        print("Search tapped")
         //MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
-        
         let viewController = ViewController()
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    // TODO: 세팅 기능 추가 예정
     @objc func didTapSettings() {
-        print("Settings tapped")
+        let settingViewController = SettingViewController()
+        navigationController?.pushViewController(settingViewController, animated: true)
     }
     
     // PDF 파일 선택 버튼 액션
@@ -103,8 +98,9 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-//            let detailViewController = MemoDetailViewController(memo: memo)
-//            navigationController?.pushViewController(detailViewController, animated: true)
+        
+        let musicPracticeViewController = MusicPracticeViewController(scoreTitle: musicList[indexPath.row])
+        navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

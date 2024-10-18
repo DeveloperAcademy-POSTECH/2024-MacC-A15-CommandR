@@ -8,6 +8,17 @@
 import UIKit
 
 class MusicPracticeViewController: UIViewController {
+    var scoreTitle: String
+       
+       init(scoreTitle: String) {
+           self.scoreTitle = scoreTitle
+           super.init(nibName: nil, bundle: nil)
+       }
+       
+       required init?(coder: NSCoder) {
+           fatalError("init(coder:) has not been implemented")
+       }
+    
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
 //    let tableView = UITableView() 기존 테이블 제거 -> 악보 줄 뷰로 대체
@@ -62,6 +73,12 @@ class MusicPracticeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // 다른 화면으로 이동할 때 네비게이션 바를 다시 표시하도록 설정
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         generateMusicXMLAudio()
@@ -80,7 +97,7 @@ class MusicPracticeViewController: UIViewController {
 //        view.addSubview(tableView)
 //        tableView.separatorStyle = .none // 구분선 없애기
         // TODO: 여기에 제목 연결
-        musicPracticeTitleView.titleLabel.text = "MoonRiver"
+        musicPracticeTitleView.titleLabel.text = scoreTitle
         // TODO: 여기에 페이지 내용 만들 함수 연결
         musicPracticeTitleView.pageLabel.text = "0/0장"
         bpmButton.translatesAutoresizingMaskIntoConstraints = false

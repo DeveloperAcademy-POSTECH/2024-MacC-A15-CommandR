@@ -9,7 +9,17 @@ import UIKit
 
 class ScoreListView: UIView {
     
-    // 테이블뷰 선언
+    // 테이블 라벨 선언
+    let tableHeaderLabel: UILabel = {
+        let label = UILabel()
+        label.text = "악보 목록"
+        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.textAlignment = .left  // 좌측 정렬
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    // 테이블 선언
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -17,20 +27,10 @@ class ScoreListView: UIView {
         return tableView
     }()
     
-    // 제목 라벨 선언
-    let tableHeaderLabel: UILabel = {
-        let label = UILabel()
-        label.text = "악보 목록"
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.textAlignment = .left  // 좌측 정렬
-        label.frame = CGRect(x: 16, y: 15, width: UIScreen.main.bounds.width - 32, height: 30)
-        return label
-    }()
-    
     // 하단 버튼 선언
     let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("악보 추가하기", for: .normal)
+        button.setTitle(" 악보 추가하기", for: .normal)
         button.setImage(UIImage(systemName: "document"), for: .normal)
         button.tintColor = .white
         button.backgroundColor = UIColor.systemBlue
@@ -52,22 +52,20 @@ class ScoreListView: UIView {
     // 뷰 구성
     private func setupView() {
         backgroundColor = UIColor.systemGray6
-
-        // 테이블뷰 헤더 설정
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 60))
-        headerView.addSubview(tableHeaderLabel)
-        tableView.tableHeaderView = headerView
-
-        // 테이블뷰 설정
-        addSubview(tableView)
         
-        // 하단 버튼 추가
+        addSubview(tableHeaderLabel)
+        addSubview(tableView)
         addSubview(addButton)
         
         // Auto Layout 설정
         NSLayoutConstraint.activate([
-            // 테이블 뷰 레이아웃
-            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            // 헤더 레이블 레이아웃
+            tableHeaderLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            tableHeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            tableHeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+
+            // 테이블뷰 레이아웃
+            tableView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -77,6 +75,6 @@ class ScoreListView: UIView {
             addButton.heightAnchor.constraint(equalToConstant: 56),
             addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             addButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
-          ])
-         }
+        ])
+    }
 }
