@@ -12,7 +12,7 @@ struct MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
     // TODO: 나중에 템포 설정하는 함수 만들어서 연결하기
-    private var tempoBPM: Double = 100.0
+    private var tempoBPM: Double = 120.0
     private var outputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("output2.wav").path()
     private var midiOutputPath = FileManager.default
@@ -41,15 +41,14 @@ struct MediaManager {
     func getPartMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
         var notes: [Note] = []
         
-        if isChordEnabled {
+        // 현재 무조건적으로 if 문 타게 해놨음
+        if !isChordEnabled {
             notes = part.measures.flatMap { $0.notes.filter { $0.staff == 1 } }
         } else {
             notes = part.measures.flatMap { $0.notes }
         }
         let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
-        // TODO: 메인 note만 햅틱 만들게 해야됨
-        createHapticSequence(from: notes, division: Double(divisions))
-        
+
         return outputURL
     }
     
@@ -62,19 +61,28 @@ struct MediaManager {
     }
     
     // MARK: - 햅틱 시퀀스 생성 부분
-    func createHapticSequence(from notes: [Note], division: Double) {
+    func createHapticSequence(from notes: [Note], division: Double) -> [Double] {
         var haptics: [Double] = []
         
-        print("햅틱 만들기전 확인 틱 기준: \(division)")
+//        print("햅틱 만들기전 확인 틱 기준: \(division)")
         for note in notes {
             if note.pitch.isEmpty {
                 continue
             }
-            print("햅틱 만들기전 확인 음: \(note.pitch), 음가: \(note.duration), 시작 틱: \(note.startTime)")
+//            print("햅틱 만들기전 확인 음: \(note.pitch), 음가: \(note.duration), 시작 틱: \(note.startTime)")
             let startTimeInSeconds = (Double(note.startTime) / division) * 60 / tempoBPM
             haptics.append(startTimeInSeconds)
         }
         print("최종 햅틱 배열: \(haptics)")
+        return haptics
+    }
+    
+    func getHapticSequence(part: Part, divisions: Int) async throws -> [Double] {
+        let notes = part.measures.flatMap { $0.notes.filter { $0.staff == 1 } }
+        // TODO: 메인 note만 햅틱 만들게 해야됨
+        let hapticSequence = createHapticSequence(from: notes, division: Double(divisions))
+        
+        return hapticSequence
     }
 
     // MARK: - WAV 파일 생성 부분

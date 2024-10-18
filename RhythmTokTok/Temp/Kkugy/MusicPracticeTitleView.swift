@@ -29,7 +29,8 @@ class MusicPracticeTitleView: UIView {
     let pageLabel: UILabel = {
         let label = UILabel()
         label.text = "0/0장"
-        label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        label.textColor = .gray08
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -71,7 +72,7 @@ class MusicPracticeTitleView: UIView {
             titleHStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleHStackView.topAnchor.constraint(equalTo: topAnchor),
             titleHStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            titleHStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            titleHStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
         ])
     }
 }

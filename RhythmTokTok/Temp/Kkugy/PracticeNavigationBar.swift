@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 class PracticeNavigationBar: UIView {
 
     let leftButtonStackView: UIStackView = {
@@ -21,7 +22,7 @@ class PracticeNavigationBar: UIView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 10
+        stackView.spacing = 25
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -36,7 +37,6 @@ class PracticeNavigationBar: UIView {
     
     let watchConnectImageView: UIImageView = {
         let imageView = UIImageView()
-        
         let image = UIImage(systemName: "applewatch.slash")?.withRenderingMode(.alwaysTemplate)
         imageView.image = image
         imageView.tintColor = .red
@@ -46,8 +46,8 @@ class PracticeNavigationBar: UIView {
     
     let settingButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-        button.tintColor = .black // 원하는 색상으로 변경
+        button.setImage(UIImage(named: "settingButton"), for: .normal)
+        button.tintColor = .black
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -83,7 +83,28 @@ class PracticeNavigationBar: UIView {
             // 오른쪽 버튼 스택
             rightButtonStackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             rightButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            rightButtonStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            rightButtonStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            // 버튼 크기 설정
+            watchConnectImageView.widthAnchor.constraint(equalToConstant: 23),
+            watchConnectImageView.heightAnchor.constraint(equalToConstant: 30),
+            watchConnectImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+
+            settingButton.widthAnchor.constraint(equalToConstant: 24),
+            settingButton.heightAnchor.constraint(equalToConstant: 24),
+            settingButton.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+    }
+    
+    func setWatchImage(isConnected: Bool) {
+        if isConnected {
+            watchConnectImageView.image = UIImage(systemName: "applewatch.watchface")?
+                .withRenderingMode(.alwaysTemplate)
+            watchConnectImageView.tintColor = .green
+        } else {
+            watchConnectImageView.image = UIImage(systemName: "applewatch.slash")?
+                .withRenderingMode(.alwaysTemplate)
+            watchConnectImageView.tintColor = .red
+        }
     }
 }

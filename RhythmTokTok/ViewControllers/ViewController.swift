@@ -78,6 +78,12 @@ class ViewController: UIViewController {
         loadingViewButton.addTarget(self, action: #selector(navigateToLottieViewController), for: .touchUpInside)
         view.addSubview(loadingViewButton)
         
+        let sendMessageButton = UIButton(type: .system)
+        sendMessageButton.setTitle("워치메시지보내기", for: .normal)
+        sendMessageButton.translatesAutoresizingMaskIntoConstraints = false
+        sendMessageButton.addTarget(self, action: #selector(navigateToWatchTestViewController), for: .touchUpInside)
+        view.addSubview(sendMessageButton)
+        
         let practiceViewButton = UIButton(type: .system)
         practiceViewButton.setTitle("연습뷰가기", for: .normal)
         practiceViewButton.translatesAutoresizingMaskIntoConstraints = false

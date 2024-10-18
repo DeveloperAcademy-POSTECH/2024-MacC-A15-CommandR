@@ -10,6 +10,8 @@
 	<array>
 		<string>self-care</string>
 		<string>workout-processing</string>
+		<string>background-fetch</string>
+		<string>remote-notification</string>
 	</array>
 </dict>
 </plist>
