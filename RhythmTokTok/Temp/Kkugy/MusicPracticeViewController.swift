@@ -293,7 +293,6 @@ class MusicPracticeViewController: UIViewController {
             // 임시 송 타이틀
             // TODO: score안의 타이틀 값 연결해줘야됨
             let songTitle = "Moon River - Kkugy"
-            WatchManager.shared.sendBackgroundDataToWatch()
             WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
         }
     }

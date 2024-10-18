@@ -50,24 +50,57 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
-    // TODO: 워치가 백그라운드일 때 메시지 받아서 업데이트 할 수 있게 userInfo로 전달하게 만들어야됨, 기존 play,pause,stop등을 userinfo로도 만들고 watch활성화 여부에 맞춰서 하는게 좋을 것 같음
-    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
-        if let command = userInfo["songtitle"] as? String {
-            if command == "test" {
-                print("Received background data: startWorkout command")
-                // 백그라운드에서 받은 데이터를 처리
-                DispatchQueue.main.async {
-                    self.selectedSongTitle = "TEST"
-                    self.hapticSequence = []
-                    if self.selectedSongTitle.isEmpty {
-                        self.isSelectedSong = false
-                    } else {
-                        self.isSelectedSong = true
-                    }
-                    print("곡 선택 완료, 곡 제목: \(self.selectedSongTitle)")
+    // MARK - 백드라운드에서 동작 로직
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+        // 1. 곡 선택 메시지 (리스트뷰에서 곡을 선택했을 때 작동)
+        if let songTitle = applicationContext["songTitle"] as? String,
+           let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
+            DispatchQueue.main.async {
+                self.selectedSongTitle = songTitle
+                self.hapticSequence = hapticSequence
+                if songTitle.isEmpty {
+                    self.isSelectedSong = false
+                } else {
+                    self.isSelectedSong = true
                 }
+                print("곡 선택 완료, 곡 제목: \(songTitle)")
             }
         }
+        
+        // 2. 재생 상태 메시지 (연습뷰에서 재생 관련 버튼을 조작했을 때 작동)
+        else if let playStatus = applicationContext["playStatus"] as? String {
+            DispatchQueue.main.async {
+                self.playStatus = playStatus
+                print("재생 상태 업데이트: \(playStatus)")
+            }
+            
+            // 추가 데이터 처리
+            if playStatus == "play", let additionalDataString = applicationContext["additionalData"] as? String {
+                if let additionalData = convertFromJSONString(jsonString: additionalDataString) {
+                    // 추가 데이터에서 필요한 정보를 추출
+                    if let startTime = additionalData["startTime"] as? TimeInterval {
+                        print("추가 데이터 수신 - 시작시간: \(startTime)")
+                        // 햅틱 시퀀스 시작 예약
+                        hapticManager.starHaptic(beatTime: hapticSequence, startTimeInterval: startTime)
+                    } else {
+                        ErrorHandler.handleError(error: "시작 시간 변환 실패")
+                    }
+                } else {
+                    ErrorHandler.handleError(error: "JSON 파싱 실패")
+                }
+            } else if playStatus == "pause" {
+                // 햅틱 시퀀스 시작 예약
+                // TODO: 햅틱 일시 정지시 어떻게 멈추고 재개할건지 구상 필요
+                hapticManager.stopHaptic()
+            } else if playStatus == "stop" {
+                // 햅틱 시퀀스 타이머 해제
+                hapticManager.stopHaptic()
+            }
+            
+        } else {
+            ErrorHandler.handleError(error: "알 수 없는 메시지 형식")
+        }
+
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String: Any],

@@ -89,9 +89,6 @@ class WatchManager: NSObject, WCSessionDelegate {
                 Task {
                     do {
                         try await self.healthStore.startWatchApp(toHandle: self.configuration)
-                        print("런치 성공")
-                        WCSession.default.activate()
-                        print("시작")
                         continuation.resume(returning: true) // 성공 시 true 반환
                     } catch {
                         // 오류 처리
@@ -102,41 +99,32 @@ class WatchManager: NSObject, WCSessionDelegate {
             }
         }
     }
-    
-    // TODO: 워치가 백그라운드일 때 메시지 받아서 업데이트 할 수 있게 userInfo로 전달하게 만들어야됨, 기존 play,pause,stop등을 userinfo로도 만들고 watch활성화 여부에 맞춰서 하는게 좋을 것 같음
-    func sendBackgroundDataToWatch() {
-        if WCSession.default.isPaired && WCSession.default.isWatchAppInstalled {
-            let userInfo = ["songtitle": "test"]
-            WCSession.default.transferUserInfo(userInfo)
-            print("Background data transfer initiated.")
-        }
-    }
 
     // MARK: - 워치로 메시지 보내는 부분
     // 1. 곡 선택 시 워치로 메시지 전송 (리스트뷰에서 곡을 선택할 때 작동)
     func sendSongSelectionToWatch(songTitle: String, hapticSequence: [Double]) {
-        print("확인\(isWatchAppReachable)")
-        guard WCSession.default.isReachable else {
-            print("워치가 연결되지 않음")
-            return
-        }
-        
         self.selectedSongTitle = songTitle
-        
+        // TODO: 워치가 백그라운드일 때 메시지 받아서 업데이트 할 수 있게 updateApplicationContext로 전달하게 만들어야됨, 기존 play,pause,stop등을 updateApplicationContext로 만들고 watch활성화 여부에 맞춰서 하는게 좋을 것 같음
         let message: [String: Any] = [
             "songTitle": songTitle,
             "hapticSequence": hapticSequence
         ]
         
-        WCSession.default.sendMessage(message, replyHandler: { response in
-            if let responseMessage = response["response"] as? String {
-                print("워치로부터 응답 받음: \(responseMessage)")
-            } else {
-                ErrorHandler.handleError(error: "응답 메시지 형식 오류")
-            }
-        }, errorHandler: { error in
+        do {
+            try WCSession.default.updateApplicationContext(message)
+        } catch {
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
-        })
+        }
+        
+//        WCSession.default.sendMessage(message, replyHandler: { response in
+//            if let responseMessage = response["response"] as? String {
+//                print("워치로부터 응답 받음: \(responseMessage)")
+//            } else {
+//                ErrorHandler.handleError(error: "응답 메시지 형식 오류")
+//            }
+//        }, errorHandler: { error in
+//            ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
+//        })
     }
     
     // 2. 재생 상태 변경 시 워치로 메시지 전송 (연습뷰에서 재생 관련 버튼 조작시 작동)
