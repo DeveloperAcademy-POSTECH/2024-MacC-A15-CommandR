@@ -54,7 +54,8 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            // 1. 곡 선택 후 [제목],[햅틱시퀀스] 받음
+            
+            // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
             if let songTitle = applicationContext["songTitle"] as? String,
                let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
                 self.selectedSongTitle = songTitle
@@ -62,12 +63,14 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 self.isSelectedSong = !songTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(songTitle)")
             }
-            // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작시간] 받음.
+            
+            // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
             else if let playStatus = applicationContext["playStatus"] as? String {
                 self.playStatus = playStatus
                 print("재생 상태 업데이트: \(playStatus)")
                 
-                if playStatus == "play" {
+                switch playStatus {
+                case "play":
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
                         // 햅틱 시퀀스 시작 예약
@@ -75,10 +78,10 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                     } else {
                         ErrorHandler.handleError(error: "시작 시간 누락")
                     }
-                } else if playStatus == "pause" {
+                case "pause", "stop":
                     self.hapticManager.stopHaptic()
-                } else if playStatus == "stop" {
-                    self.hapticManager.stopHaptic()
+                default:
+                    ErrorHandler.handleError(error: "알 수 없는 재생 상태: \(playStatus)")
                 }
             } else {
                 ErrorHandler.handleError(error: "알 수 없는 메시지 형식")
