@@ -5,8 +5,8 @@
 //  Created by sungkug_apple_developer_ac on 10/8/24.
 
 import HealthKit
-import WatchConnectivity
 import UIKit
+import WatchConnectivity
 
 class WatchManager: NSObject, WCSessionDelegate {
     
@@ -139,21 +139,12 @@ class WatchManager: NSObject, WCSessionDelegate {
         ]
         
         if status == "play" {
-            guard let startTime else {
+            guard let startTime = startTime else {
                 ErrorHandler.handleError(error: "예약 시간이 설정되어 있지 않음")
                 return
             }
-            // 추가 데이터를 딕셔너리로 구성
-            let additionalData: [String: Any] = [
-                "startTime": startTime
-            ]
-            
-            // 딕셔너리를 JSON 문자열로 변환
-            if let additionalDataString = convertToJSONString(data: additionalData) {
-                message["additionalData"] = additionalDataString
-            } else {
-                ErrorHandler.handleError(error: "추가 데이터 변환 실패")
-            }
+            // startTime을 메시지 딕셔너리에 직접 추가
+            message["startTime"] = startTime
         }
         
         WCSession.default.sendMessage(message, replyHandler: { response in
@@ -166,7 +157,6 @@ class WatchManager: NSObject, WCSessionDelegate {
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         })
     }
-    
     // JSON 문자열로 변환하는 유틸리티 메서드 추가
     private func convertToJSONString(data: [String: Any]) -> String? {
         if let jsonData = try? JSONSerialization.data(withJSONObject: data, options: []) {
