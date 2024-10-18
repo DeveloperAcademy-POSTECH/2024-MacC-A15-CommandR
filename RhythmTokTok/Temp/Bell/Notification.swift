@@ -10,4 +10,5 @@ import Foundation
 extension Notification.Name {
     static let watchConnectivityStatusChanged = Notification.Name("watchConnectivityStatusChanged")
     static let fontSizeChanged = Notification.Name("fontSizeChanged")
+    static let bpmChanged = Notification.Name("bpmChanged") // BPM 변경 알림 추가
 }

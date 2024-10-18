@@ -89,32 +89,32 @@ class ViewController: UIViewController {
         practiceViewButton.translatesAutoresizingMaskIntoConstraints = false
         practiceViewButton.addTarget(self, action: #selector(navigateToMusicPracticeViewController), for: .touchUpInside)
         view.addSubview(practiceViewButton)
-
+        
         let listViewButton = UIButton(type: .system)
         listViewButton.setTitle("리스트뷰가기", for: .normal)
         listViewButton.translatesAutoresizingMaskIntoConstraints = false
         listViewButton.addTarget(self, action: #selector(navigateToListViewController), for: .touchUpInside)
         view.addSubview(listViewButton)
-
+        
         NSLayoutConstraint.activate([
             loadingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-
+            
             statusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             statusLabel.topAnchor.constraint(equalTo: loadingButton.bottomAnchor, constant: 20),
-
+            
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 20),
-
+            
             watchTestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             watchTestButton.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
-
+            
             loadingViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingViewButton.topAnchor.constraint(equalTo: watchTestButton.bottomAnchor, constant: 20),
-
+            
             practiceViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             practiceViewButton.topAnchor.constraint(equalTo: loadingViewButton.bottomAnchor, constant: 20),
-
+            
             listViewButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             listViewButton.topAnchor.constraint(equalTo: practiceViewButton.bottomAnchor, constant: 20)
         ])
@@ -123,7 +123,7 @@ class ViewController: UIViewController {
     func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateWatchAppStatus),
                                                name: .watchConnectivityStatusChanged, object: nil)
-
+        
         print("ViewController: setupObservers - 알림 옵저버 추가됨")
     }
     
@@ -131,7 +131,7 @@ class ViewController: UIViewController {
         let loadingViewController = LoadingViewController()
         present(loadingViewController, animated: true, completion: nil)
     }
-  
+    
     // PDF 파일 선택 버튼 액션
     @objc func selectPDFButtonTapped() {
         let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)
@@ -139,24 +139,24 @@ class ViewController: UIViewController {
         documentPicker.allowsMultipleSelection = false
         self.present(documentPicker, animated: true, completion: nil)
     }
-  
+    
     @objc private func navigateToSettingViewController() {
         let settingViewController = SettingViewController()
         present(settingViewController, animated: true)
     }
-
+    
     // PDF 파일을 미리 보기하고 확인할 수 있는 뷰로 이동
     func navigateToCheckPDFViewController(with fileURL: URL) {
         let checkPDFViewController = CheckPDFViewController()
         checkPDFViewController.fileURL = fileURL
         self.present(checkPDFViewController, animated: true, completion: nil) // 모달로 띄우기
     }
-  
+    
     @objc private func navigateToLottieViewController() {
         let addGridViewController = LottieViewController()
         present(addGridViewController, animated: true)
     }
-   
+    
     @objc private func navigateToWatchTestViewController() {
         let watchTestVC = WatchTestViewController()
         watchTestVC.modalPresentationStyle = .fullScreen // 필요에 따라 스타일 설정
@@ -169,7 +169,7 @@ class ViewController: UIViewController {
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     
-    //화면 표시용 테스트 버튼
+    // 화면 표시용 테스트 버튼
     @objc private func navigateToListViewController() {
         let scoreListViewController = ScoreListViewController()
         navigationController?.pushViewController(scoreListViewController, animated: true)
@@ -184,7 +184,7 @@ class ViewController: UIViewController {
             return
         }
         let isSelectedSong = true
-        WatchManager.shared.sendSongSelectionToWatch(isSelectedSong: isSelectedSong, songTitle: songTitle)
+        WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: [1.0])
     }
     
     // 곡을 선택하는 메서드 예시
