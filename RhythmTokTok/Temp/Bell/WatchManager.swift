@@ -101,7 +101,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     }
     
     // MARK: - 워치로 메시지 보내는 부분
-    // 1. 곡 선택 시 워치로 메시지 전송 (리스트뷰에서 곡을 선택할 때 작동)
+    // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendSongSelectionToWatch(songTitle: String, hapticSequence: [Double]) {
         self.selectedSongTitle = songTitle
         let message: [String: Any] = [
@@ -117,7 +117,7 @@ class WatchManager: NSObject, WCSessionDelegate {
         }
     }
     
-    // 2. 재생 상태 변경 시 워치로 메시지 전송 (연습뷰에서 재생 관련 버튼 조작시 작동)
+    // 2. 연습뷰에서 [재생 상태]를 보냄. 재생인 경우 [시작시간] 보냄. (연습뷰에서 재생 관련 버튼 조작시 작동)
     func sendPlayStatusToWatch(status: String, startTime: TimeInterval?) {
         // 워치가 연결되어 있는지 확인 (페어링 및 앱 설치 여부)
         guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {

@@ -17,7 +17,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var isSelectedSong: Bool = false
     @Published var selectedSongTitle: String = ""
     @Published var playStatus: String = "준비"
-    @Published var hapticSequence: [Double] = [] // hapticSequence
+    @Published var hapticSequence: [Double] = []
     
     override init() {
         super.init()
@@ -54,7 +54,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            // 1. 곡 선택 메시지 처리
+            // 1. 곡 선택 후 [제목],[햅틱시퀀스] 받음
             if let songTitle = applicationContext["songTitle"] as? String,
                let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
                 self.selectedSongTitle = songTitle
@@ -62,7 +62,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 self.isSelectedSong = !songTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(songTitle)")
             }
-            // 2. 재생 상태 메시지 처리
+            // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작시간] 받음.
             else if let playStatus = applicationContext["playStatus"] as? String {
                 self.playStatus = playStatus
                 print("재생 상태 업데이트: \(playStatus)")
