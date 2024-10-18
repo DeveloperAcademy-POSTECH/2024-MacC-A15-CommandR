@@ -17,8 +17,8 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var isSelectedSong: Bool = false
     @Published var selectedSongTitle: String = ""
     @Published var playStatus: String = "준비"
-    @Published var hapticSequence: [Double] = [] //hapticSequence
-
+    @Published var hapticSequence: [Double] = []
+    
     override init() {
         super.init()
         setupSession()
@@ -50,121 +50,40 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
-    // MARK - 백드라운드에서 동작 로직
+    // MARK: - iPhone으로부터 Application Context 수신
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
-        // 1. 곡 선택 메시지 (리스트뷰에서 곡을 선택했을 때 작동)
-        if let songTitle = applicationContext["songTitle"] as? String,
-           let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
+            if let songTitle = applicationContext["songTitle"] as? String,
+               let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
                 self.selectedSongTitle = songTitle
                 self.hapticSequence = hapticSequence
-                if songTitle.isEmpty {
-                    self.isSelectedSong = false
-                } else {
-                    self.isSelectedSong = true
-                }
+                self.isSelectedSong = !songTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(songTitle)")
             }
-        }
-        
-        // 2. 재생 상태 메시지 (연습뷰에서 재생 관련 버튼을 조작했을 때 작동)
-        else if let playStatus = applicationContext["playStatus"] as? String {
-            DispatchQueue.main.async {
-                self.playStatus = playStatus
-                print("재생 상태 업데이트: \(playStatus)")
-            }
-            
-            // 추가 데이터 처리
-            if playStatus == "play", let additionalDataString = applicationContext["additionalData"] as? String {
-                if let additionalData = convertFromJSONString(jsonString: additionalDataString) {
-                    // 추가 데이터에서 필요한 정보를 추출
-                    if let startTime = additionalData["startTime"] as? TimeInterval {
-                        print("추가 데이터 수신 - 시작시간: \(startTime)")
+            // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
+            else if let playStatusString = applicationContext["playStatus"] as? String,
+                    let playStatus = PlayStatus(rawValue: playStatusString) {
+                self.playStatus = playStatus.rawValue
+                print("재생 상태 업데이트: \(playStatus.rawValue)")
+                
+                switch playStatus {
+                case .play:
+                    if let startTime = applicationContext["startTime"] as? TimeInterval {
+                        print("시작 시간 수신: \(startTime)")
                         // 햅틱 시퀀스 시작 예약
-                        hapticManager.starHaptic(beatTime: hapticSequence, startTimeInterval: startTime)
+                        self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
                     } else {
-                        ErrorHandler.handleError(error: "시작 시간 변환 실패")
+                        ErrorHandler.handleError(error: "시작 시간 누락")
                     }
-                } else {
-                    ErrorHandler.handleError(error: "JSON 파싱 실패")
+                case .pause, .stop:
+                    self.hapticManager.stopHaptic()
                 }
-            } else if playStatus == "pause" {
-                // 햅틱 시퀀스 시작 예약
-                // TODO: 햅틱 일시 정지시 어떻게 멈추고 재개할건지 구상 필요
-                hapticManager.stopHaptic()
-            } else if playStatus == "stop" {
-                // 햅틱 시퀀스 타이머 해제
-                hapticManager.stopHaptic()
+            } else {
+                ErrorHandler.handleError(error: "알 수 없는 재생 상태")
             }
-            
-        } else {
-            ErrorHandler.handleError(error: "알 수 없는 메시지 형식")
         }
-
-    }
-    
-    func session(_ session: WCSession, didReceiveMessage message: [String: Any],
-                 replyHandler: @escaping ([String: Any]) -> Void) {
-        // 1. 곡 선택 메시지 (리스트뷰에서 곡을 선택했을 때 작동)
-        if let songTitle = message["songTitle"] as? String,
-           let hapticSequence = message["hapticSequence"] as? [Double] {
-            DispatchQueue.main.async {
-                self.selectedSongTitle = songTitle
-                self.hapticSequence = hapticSequence
-                if songTitle.isEmpty {
-                    self.isSelectedSong = false
-                } else {
-                    self.isSelectedSong = true
-                }
-                print("곡 선택 완료, 곡 제목: \(songTitle)")
-            }
-            replyHandler(["response": "곡 선택 수신 완료"])
-        }
-        
-        // 2. 재생 상태 메시지 (연습뷰에서 재생 관련 버튼을 조작했을 때 작동)
-        else if let playStatus = message["playStatus"] as? String {
-            DispatchQueue.main.async {
-                self.playStatus = playStatus
-                print("재생 상태 업데이트: \(playStatus)")
-            }
-            
-            // 추가 데이터 처리
-            if playStatus == "play", let additionalDataString = message["additionalData"] as? String {
-                if let additionalData = convertFromJSONString(jsonString: additionalDataString) {
-                    // 추가 데이터에서 필요한 정보를 추출
-                    if let startTime = additionalData["startTime"] as? TimeInterval {
-                        print("추가 데이터 수신 - 시작시간: \(startTime)")
-                        // 햅틱 시퀀스 시작 예약
-                        hapticManager.starHaptic(beatTime: hapticSequence, startTimeInterval: startTime)
-                    } else {
-                        ErrorHandler.handleError(error: "시작 시간 변환 실패")
-                    }
-                } else {
-                    ErrorHandler.handleError(error: "JSON 파싱 실패")
-                }
-            } else if playStatus == "pause" {
-                // 햅틱 시퀀스 시작 예약
-                // TODO: 햅틱 일시 정지시 어떻게 멈추고 재개할건지 구상 필요
-                hapticManager.stopHaptic()
-            } else if playStatus == "stop" {
-                // 햅틱 시퀀스 타이머 해제
-                hapticManager.stopHaptic()
-            }
-            
-            replyHandler(["response": "재생 상태 수신 완료"])
-        } else {
-            ErrorHandler.handleError(error: "알 수 없는 메시지 형식")
-            replyHandler(["response": "메시지 형식 오류"])
-        }
-    }
-    
-    // JSON 문자열을 딕셔너리로 변환하는 유틸리티 메서드 추가
-    private func convertFromJSONString(jsonString: String) -> [String: Any]? {
-        if let jsonData = jsonString.data(using: .utf8),
-           let jsonObject = try? JSONSerialization.jsonObject(with: jsonData, options: []),
-           let dictionary = jsonObject as? [String: Any] {
-            return dictionary
-        }
-        return nil
     }
 }

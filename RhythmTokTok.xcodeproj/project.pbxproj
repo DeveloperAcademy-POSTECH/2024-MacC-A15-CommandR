@@ -73,6 +73,8 @@
 		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 		729220562CBE48DB008C8FCF /* change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* change.json */; };
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
+		D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34EEB612CC2A80F007BE568 /* PlayStatus.swift */; };
+		D34EEB632CC2A8ED007BE568 /* PlayStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34EEB612CC2A80F007BE568 /* PlayStatus.swift */; };
 		D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* ConnectivityManager.swift */; };
 		D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */; };
 		D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6A2CB6A325005CD01F /* SettingView.swift */; };
@@ -191,6 +193,7 @@
 		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
+		D34EEB612CC2A80F007BE568 /* PlayStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayStatus.swift; sourceTree = "<group>"; };
 		D36E430C2CB642630038994B /* ConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityManager.swift; sourceTree = "<group>"; };
 		D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetting.swift; sourceTree = "<group>"; };
 		D3ABDF6A2CB6A325005CD01F /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -473,6 +476,7 @@
 				1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */,
 				D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
+				D34EEB612CC2A80F007BE568 /* PlayStatus.swift */,
 				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
 				D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */,
 				D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */,
@@ -726,6 +730,7 @@
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
+				D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */,
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
@@ -760,6 +765,7 @@
 				D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */,
 				1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */,
 				1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */,
+				D34EEB632CC2A8ED007BE568 /* PlayStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

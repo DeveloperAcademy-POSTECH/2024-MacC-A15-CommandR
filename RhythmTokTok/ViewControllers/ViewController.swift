@@ -184,7 +184,7 @@ class ViewController: UIViewController {
             return
         }
         let isSelectedSong = true
-        WatchManager.shared.sendSongSelectionToWatch(isSelectedSong: isSelectedSong, songTitle: songTitle)
+//        WatchManager.shared.sendSongSelectionToWatch(isSelectedSong: isSelectedSong, songTitle: songTitle)
     }
     
     // 곡을 선택하는 메서드 예시
