@@ -85,10 +85,10 @@ class WatchManager: NSObject, WCSessionDelegate {
             if let responseMessage = response["response"] as? String {
                 print("워치로부터 응답 받음: \(responseMessage)")
             } else {
-                ErrorHandler.handleError(errorMessage: "응답 메시지 형식 오류")
+                ErrorHandler.handleError(error: "응답 메시지 형식 오류")
             }
         }, errorHandler: { error in
-            ErrorHandler.handleError(errorMessage: "메시지 전송 오류: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         })
     }
     
@@ -124,7 +124,7 @@ class WatchManager: NSObject, WCSessionDelegate {
             if let additionalDataString = convertToJSONString(data: additionalData) {
                 message["additionalData"] = additionalDataString
             } else {
-                ErrorHandler.handleError(errorMessage: "추가 데이터 변환 실패")
+                ErrorHandler.handleError(error: "추가 데이터 변환 실패")
             }
         }
         
@@ -132,10 +132,10 @@ class WatchManager: NSObject, WCSessionDelegate {
             if let responseMessage = response["response"] as? String {
                 print("워치로부터 응답 받음: \(responseMessage)")
             } else {
-                ErrorHandler.handleError(errorMessage: "응답 메시지 형식 오류")
+                ErrorHandler.handleError(error: "응답 메시지 형식 오류")
             }
         }, errorHandler: { error in
-            ErrorHandler.handleError(errorMessage: "메시지 전송 오류: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         })
     }
     
