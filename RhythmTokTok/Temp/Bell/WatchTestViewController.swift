@@ -65,10 +65,10 @@ class WatchTestViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    // 버튼 액션 메서드들
     @objc private func sendSongSelectionToWatch() {
         if selectedSongTitle == nil {
-            selectedSongTitle = "꽃을 든 남자 - 이백호"  // 테스트용 곡 제목 설정
+            // 테스트용 곡 제목 설정
+            selectedSongTitle = "꽃을 든 남자 - 이백호"
         }
         guard let songTitle = selectedSongTitle else {
             print("선택된 곡이 없습니다.")
@@ -78,14 +78,14 @@ class WatchTestViewController: UIViewController {
     }
     
     @objc private func sendPlayStatusPlay() {
-//        WatchManager.shared.sendPlayStatusToWatch(status: "play")
+        WatchManager.shared.sendPlayStatusToWatch(status: .play, startTime: Date().timeIntervalSince1970)
     }
     
     @objc private func sendPlayStatusPause() {
-//        WatchManager.shared.sendPlayStatusToWatch(status: "pause")
+        WatchManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
     }
     
     @objc private func sendPlayStatusStop() {
-//        WatchManager.shared.sendPlayStatusToWatch(status: "stop")
+        WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
     }
 }

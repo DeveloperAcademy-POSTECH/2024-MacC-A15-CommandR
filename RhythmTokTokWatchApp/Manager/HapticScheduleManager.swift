@@ -52,7 +52,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         
     // MARK: Haptic 관리 로직
     // 리듬 햅틱 시작
-    func starHaptic(beatTime: [Double], startTimeInterval: TimeInterval) {
+    func startHaptic(beatTime: [Double], startTimeInterval: TimeInterval) {
         isHapticActive = false // 시작여부 초기화
         setBeatTime(beatTime: beatTime)
         self.startTimeInterval = startTimeInterval
