@@ -25,6 +25,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var bottomMargin: Double = 0 // 왼쪽 여백
     private var currentWidth: Double = 0 // 현재 계산된 줄 길이
     private var currentLine: Int = 1 // 현재 줄
+    private var newSystem = false // 다음 줄 다음 페이지 표시 태그
+
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
 
@@ -58,9 +60,18 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
         currentElement = elementName
         
+        // 페이지 레이아웃 설정 값 범위
         if elementName == "page-layout" {
             isPageLayout = true
          }
+        
+        // MusicXML 내 새로운 줄, 새로운 페이지 표시 태그가 실제 악보와 차이가 커서 바로 사용할 수 없음
+        if currentElement == "print" {
+            if let newSystemValue = attributeDict["new-system"], newSystemValue == "yes" {
+                print("############ 시스템 설정 할거임 ###########")
+                newSystem = true
+            }
+        }
         
         // 모든 `part`를 파싱하도록 수정
         if elementName == "part", let partId = attributeDict["id"] {
@@ -101,64 +112,78 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
         let trimmedString = string.trimmingCharacters(in: .whitespacesAndNewlines)
-        // Divisions 값 파싱
-        if currentElement == "divisions", let divisionValue = Int(trimmedString) {
-            score.divisions = divisionValue // Score에 divisions 값 저장
-        }
         
-        if currentElement == "step", currentNote != nil {
+        // Note 관련 정보 파싱
+        parseNoteAttributes(trimmedString)
+        
+        // Page layout 및 system layout 관련 정보 파싱
+        if let currentScale = Double(trimmedString), isPageLayout || newSystem {
+            parseLayoutAttributes(currentScale)
+        }
+    }
+
+    private func parseNoteAttributes(_ trimmedString: String) {
+        switch currentElement {
+        case "divisions":
+            if let divisionValue = Int(trimmedString) {
+                score.divisions = divisionValue
+            }
+        case "step":
             currentNote?.pitch = trimmedString
-        }
-        
-        if currentElement == "octave", currentNote != nil, let octave = Int(trimmedString) {
-            currentNote?.octave = octave
-        }
-        
-        if currentElement == "duration", currentNote != nil, let duration = Int(trimmedString) {
-            currentNote?.duration = duration
-        }
-        
-        if currentElement == "voice", let voice = Int(trimmedString), var note = currentNote {
-            note.voice = voice
-            currentNote = note
-        }
-        
-        if currentElement == "type", currentNote != nil {
+        case "octave":
+            if let octave = Int(trimmedString) {
+                currentNote?.octave = octave
+            }
+        case "duration":
+            if let duration = Int(trimmedString) {
+                currentNote?.duration = duration
+            }
+        case "voice":
+            if let voice = Int(trimmedString), var note = currentNote {
+                note.voice = voice
+                currentNote = note
+            }
+        case "type":
             currentNote?.type = trimmedString
-        }
-        
-        if currentElement == "staff", let staff = Int(trimmedString), var note = currentNote {
-            note.staff = staff
-            currentNote = note
-        }
-        
-        if currentElement == "alter", let alter = Int(trimmedString), var note = currentNote {
-            if alter == 1 {
-                note.accidental = .sharp
-            } else if alter == -1 {
-                note.accidental = .flat
+        case "staff":
+            if let staff = Int(trimmedString), var note = currentNote {
+                note.staff = staff
+                currentNote = note
             }
-            currentNote = note
+        case "alter":
+            if let alter = Int(trimmedString), var note = currentNote {
+                note.accidental = alter == 1 ? .sharp : .flat
+                currentNote = note
+            }
+        default:
+            break
         }
-         
-        if let currentScale = Double(trimmedString), isPageLayout {
-            
-            switch currentElement {
-            case "page-height":
-                scoreHeight = currentScale
-            case "page-width":
-                scoreWidth = currentScale
-            case "left-margin":
+    }
+
+    private func parseLayoutAttributes(_ currentScale: Double) {
+        switch currentElement {
+        case "page-height":
+            scoreHeight = currentScale
+        case "page-width":
+            scoreWidth = currentScale
+        case "left-margin":
+            if isPageLayout {
                 leftMargin = currentScale
-            case "right-margin":
-                rightMargin = currentScale
-            case "top-margin":
-                topMargin = currentScale
-            case "bottom-margin":
-                bottomMargin = currentScale
-            default:
-                break
+            } else if newSystem {
+                currentWidth += currentScale
             }
+        case "right-margin":
+            if isPageLayout {
+                rightMargin = currentScale
+            } else if newSystem {
+                currentWidth += currentScale
+            }
+        case "top-margin":
+            topMargin = currentScale
+        case "bottom-margin":
+            bottomMargin = currentScale
+        default:
+            break
         }
     }
     
@@ -171,6 +196,10 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             scoreHeight -= bottomMargin
             isPageLayout = false
          }
+        
+        if currentElement == "print" {
+            newSystem = false
+        }
         
         if elementName == "note", let note = currentNote, currentMeasure != nil {
             // 마디에 음표 추가
