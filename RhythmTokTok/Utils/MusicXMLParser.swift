@@ -14,6 +14,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var currentNote: Note?
     private var currentElement: String = ""
     private var currentVoice: String = "" // 현재 `voice` 값 저장
+    private var currentPartId: String? // 파싱할 `part`의 `id` 값
     // 줄 계산을 위한 값
     private var isPageLayout: Bool = false
     private var scoreWidth: Double = 0 // 악보 가로 길이
@@ -22,11 +23,10 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var rightMargin: Double = 0 // 왼쪽 여백
     private var topMargin: Double = 0 // 왼쪽 여백
     private var bottomMargin: Double = 0 // 왼쪽 여백
-    private var currentWidth: Int = 0 // 현재 계산된 줄 길이
-    
-    private var currentPartId: String? // 파싱할 `part`의 `id` 값
+    private var currentWidth: Double = 0 // 현재 계산된 줄 길이
+    private var currentLine: Int = 1 // 현재 줄
     private var xmlData: Data?
-    private var continuation: CheckedContinuation<Score, Never>?  // Score 타입으로 변경
+    private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
 
     // `async` 메서드로 비동기 파싱 수행
     func parseMusicXML(from xmlData: Data) async -> Score {
@@ -72,7 +72,16 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         
         // 각 파트 내에서 마디(measure) 파싱
         if elementName == "measure", let measureNumberString = attributeDict["number"],
-           let measureNumber = Int(measureNumberString) {
+           let measureNumber = Int(measureNumberString), let measureWidthString = attributeDict["width"],
+           let measureWidth = Double(measureWidthString) {
+            // 현재 마디 길이를 더한 값이 악보 길이보다 크면 다음 줄로 계산
+            if scoreWidth > currentWidth + measureWidth {
+                currentWidth += measureWidth
+            } else {
+                print("~~~~~~~~~~~~~~~~~~~~~~~~~~구분선~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                currentLine += 1
+                currentWidth = measureWidth
+            }
             // 이전 마디의 currentTimes
             let previousTimes = score.parts.last?.measures.last?.currentTimes ?? [1: 0, 2: 0]
             
@@ -136,22 +145,16 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             
             switch currentElement {
             case "page-height":
-                print("height \(currentScale)")
                 scoreHeight = currentScale
             case "page-width":
-                print("width \(currentScale)")
                 scoreWidth = currentScale
             case "left-margin":
-                print("Lmargin")
                 leftMargin = currentScale
             case "right-margin":
-                print("Rmargin")
                 rightMargin = currentScale
             case "top-margin":
-                print("Tmargin")
                 topMargin = currentScale
             case "bottom-margin":
-                print("Bmargin")
                 bottomMargin = currentScale
             default:
                 break
@@ -176,6 +179,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         if elementName == "measure", let measure = currentMeasure {
+            print("현재 마디 포함 길이: \(currentWidth), 악보 전체 길이: \(scoreWidth)")
+            print("현재 마디 줄: \(currentLine), 마디 포함 음수: \(measure.notes.count)")
             score.addMeasure(to: currentPartId!, measure: measure)
             currentMeasure = nil
         }
