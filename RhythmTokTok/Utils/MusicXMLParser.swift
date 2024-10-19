@@ -26,6 +26,10 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var currentWidth: Double = 0 // 현재 계산된 줄 길이
     private var currentLine: Int = 1 // 현재 줄
     private var newSystem = false // 다음 줄 다음 페이지 표시 태그
+    private var currentLocationBarLine: String = "" // barLine 왼/오른쪽 확인용
+    private var hasRepeat = false // 도돌이표 작업을 포함한 barLine인지 확인용
+    private var isNextLine = false // 바라인으로 마무리 여부 확인용
+    private var firstMeasureOffset: Double = 50 // 임시 첫마디 길이 보정값
 
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
@@ -67,10 +71,20 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         
         // MusicXML 내 새로운 줄, 새로운 페이지 표시 태그가 실제 악보와 차이가 커서 바로 사용할 수 없음
         if currentElement == "print" {
-            if let newSystemValue = attributeDict["new-system"], newSystemValue == "yes" {
-                print("############ 시스템 설정 할거임 ###########")
-                newSystem = true
+            print("############ 시스템 설정 할거임 ###########")
+            newSystem = true
+        }
+        
+        // barline 태그가 시작될 때
+        if elementName == "barline" {
+            if let location = attributeDict["location"] {
+                currentLocationBarLine = location
             }
+        }
+        
+        // repeat 태그가 발견되면 플래그를 true로 설정
+        if elementName == "repeat" {
+            hasRepeat = true
         }
         
         // 모든 `part`를 파싱하도록 수정
@@ -91,7 +105,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             } else {
                 print("~~~~~~~~~~~~~~~~~~~~~~~~~~구분선~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 currentLine += 1
-                currentWidth = measureWidth
+                currentWidth = measureWidth + firstMeasureOffset // 첫마디 보정값 적용
             }
             // 이전 마디의 currentTimes
             let previousTimes = score.parts.last?.measures.last?.currentTimes ?? [1: 0, 2: 0]
@@ -201,6 +215,18 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             newSystem = false
         }
         
+        // TODO: 나중에 도돌이표 처리를 위한 로직 필요
+        // barline 태그가 끝났을 때
+        if elementName == "barline" {
+            if currentLocationBarLine == "right", !hasRepeat {
+                // repeat 태그가 없는 경우, 바라인이 오른쪽에 위치할 때 다음 줄 처리
+                isNextLine = true
+            }
+            // 값 초기화
+            currentLocationBarLine = ""
+            hasRepeat = false
+        }
+        
         if elementName == "note", let note = currentNote, currentMeasure != nil {
             // 마디에 음표 추가
             currentMeasure?.addNote(note)
@@ -209,9 +235,16 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         
         if elementName == "measure", let measure = currentMeasure {
             print("현재 마디 포함 길이: \(currentWidth), 악보 전체 길이: \(scoreWidth)")
-            print("현재 마디 줄: \(currentLine), 마디 포함 음수: \(measure.notes.count)")
+            print("현재 마디 번호: \(measure.number),현재 마디 줄: \(currentLine), 마디 포함 음수: \(measure.notes.count)")
             score.addMeasure(to: currentPartId!, measure: measure)
             currentMeasure = nil
+            // 바라인이 들어가서 끝난 마디면 다음 마디부터 다음 라인 적용되게 만듦
+            if isNextLine {
+                print("||||||||||||||||||||||||")
+                currentLine += 1
+                currentWidth = 0
+                isNextLine = false
+            }
         }
         
         if elementName == "part" {
