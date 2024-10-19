@@ -8,8 +8,31 @@
 import SwiftUI
 
 struct ScoreView: View {
+    var measureCounts: [Int] {
+        return [3, 4, 5, 3]
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ForEach (measureCounts, id: \.self) { measureCount in
+            HStack(spacing: 0) {
+                ForEach(0..<measureCount) { _ in
+                    Button{
+                        
+                    } label : {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.red, Color.blue]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(maxWidth: .infinity,  maxHeight: 50)
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
     }
 }
 
