@@ -69,6 +69,7 @@
 		1ED9FEE22CC26E6000472C51 /* red.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEE12CC26E6000472C51 /* red.xml */; };
 		1ED9FEE32CC26E6000472C51 /* mannam-f 2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEE02CC26E6000472C51 /* mannam-f 2.xml */; };
 		1ED9FEE42CC26E6000472C51 /* mannam.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEDF2CC26E6000472C51 /* mannam.xml */; };
+		1ED9FEE62CC3A19000472C51 /* width.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEE52CC3A19000472C51 /* width.swift */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */; };
@@ -192,6 +193,7 @@
 		1ED9FEDF2CC26E6000472C51 /* mannam.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = mannam.xml; sourceTree = "<group>"; };
 		1ED9FEE02CC26E6000472C51 /* mannam-f 2.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "mannam-f 2.xml"; sourceTree = "<group>"; };
 		1ED9FEE12CC26E6000472C51 /* red.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = red.xml; sourceTree = "<group>"; };
+		1ED9FEE52CC3A19000472C51 /* width.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = width.swift; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
+				1ED9FEE52CC3A19000472C51 /* width.swift */,
 				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
 				02CFE1312CB68479008454B8 /* ErrorHandler.swift */,
 			);
@@ -721,6 +724,7 @@
 				EE7B28A12CBE58D500325725 /* ScoreEntity+CoreDataClass.swift in Sources */,
 				EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
+				1ED9FEE62CC3A19000472C51 /* width.swift in Sources */,
 				EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */,
 				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
 				D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */,

@@ -15,6 +15,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var currentElement: String = ""
     private var currentVoice: String = "" // 현재 `voice` 값 저장
     private var currentPartId: String? // 파싱할 `part`의 `id` 값
+    // TODO: 나중에 변수 최적화 필요, 나중에 ML로 인식하는게 젤 정확할 듯
     // 줄 계산을 위한 값
     private var isPageLayout: Bool = false
     private var scoreWidth: Double = 0 // 악보 가로 길이
@@ -24,12 +25,14 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var topMargin: Double = 0 // 왼쪽 여백
     private var bottomMargin: Double = 0 // 왼쪽 여백
     private var currentWidth: Double = 0 // 현재 계산된 줄 길이
+    private var currentMeasureWidth: Double = 0 // 현재 마디 길이
     private var currentLine: Int = 1 // 현재 줄
     private var newSystem = false // 다음 줄 다음 페이지 표시 태그
     private var currentLocationBarLine: String = "" // barLine 왼/오른쪽 확인용
     private var hasRepeat = false // 도돌이표 작업을 포함한 barLine인지 확인용
     private var isNextLine = false // 바라인으로 마무리 여부 확인용
-    private var firstMeasureOffset: Double = 50 // 임시 첫마디 길이 보정값
+    private var noteCountToMeasureMaxLength: [Int: Double] = [0: 0]// 음표 갯수별 최대가로 길이관리
+    private var noteCountToMeasureMinLength: [Int: Double] = [0: 0]// 음표 갯수별 최소가로 길이관리
 
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
@@ -99,14 +102,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         if elementName == "measure", let measureNumberString = attributeDict["number"],
            let measureNumber = Int(measureNumberString), let measureWidthString = attributeDict["width"],
            let measureWidth = Double(measureWidthString) {
-            // 현재 마디 길이를 더한 값이 악보 길이보다 크면 다음 줄로 계산
-            if scoreWidth > currentWidth + measureWidth {
-                currentWidth += measureWidth
-            } else {
-                print("~~~~~~~~~~~~~~~~~~~~~~~~~~구분선~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                currentLine += 1
-                currentWidth = measureWidth + firstMeasureOffset // 첫마디 보정값 적용
-            }
+            // 현재 마디 길이 저장
+            currentMeasureWidth = measureWidth
             // 이전 마디의 currentTimes
             let previousTimes = score.parts.last?.measures.last?.currentTimes ?? [1: 0, 2: 0]
             
@@ -234,13 +231,57 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         if elementName == "measure", let measure = currentMeasure {
+            // note 갯수 별 길이 관리 및 보정
+//            if var values = noteCountToMeasureLength[measure.notes.count] {
+//                values.append(currentMeasureWidth)
+//                noteCountToMeasureLength[measure.notes.count] = values
+//                
+//                let sum = values.reduce(0, +)
+//                let average = sum / Double(values.count)
+//                
+//                // 평균 값보다 작을 시 보정
+//                if average > currentMeasureWidth {
+//                    print("보정 길이: \(average), 현재 길이: \(currentMeasureWidth), 차이: \(average - currentMeasureWidth)")
+//                    currentMeasureWidth = average // 평균값으로 마디 길이 보정
+//                }
+//            } else {
+//                noteCountToMeasureLength[measure.notes.count] = [currentMeasureWidth]
+//            }
+            // 초기값 최댓값으로 설정
+            var minWidth = scoreWidth
+
+            if let width = noteCountToMeasureMinLength[measure.notes.count] {
+                minWidth = width
+            } else {
+                noteCountToMeasureMinLength[measure.notes.count] = currentMeasureWidth
+            }
+
+            if let maxWidth = noteCountToMeasureMaxLength[measure.notes.count] {
+                // 최솟값이랑 80이상 차이나는 길이는 특이 케이스로 간주하고 사용안함
+                if maxWidth < currentMeasureWidth && currentMeasureWidth < minWidth + 80 {
+                    noteCountToMeasureMaxLength[measure.notes.count] = currentMeasureWidth
+                } else {
+                    // 기존 음표 갯수에 따른 길이 보다 작으면 보정가로 크기로 보정
+                    print("보정 최대 길이: \(maxWidth), 현재 길이: \(currentMeasureWidth), 차이: \(maxWidth - currentMeasureWidth)")
+                    currentMeasureWidth = maxWidth
+                }
+            } else {
+                noteCountToMeasureMaxLength[measure.notes.count] = currentMeasureWidth
+            }
+
+            // 현재 마디 길이를 더한 값이 악보 길이보다 크면 다음 줄로 계산
+            if scoreWidth > currentWidth + currentMeasureWidth {
+                currentWidth += currentMeasureWidth
+            } else {
+                currentLine += 1
+                currentWidth = currentMeasureWidth
+            }
             print("현재 마디 포함 길이: \(currentWidth), 악보 전체 길이: \(scoreWidth)")
             print("현재 마디 번호: \(measure.number),현재 마디 줄: \(currentLine), 마디 포함 음수: \(measure.notes.count)")
             score.addMeasure(to: currentPartId!, measure: measure)
             currentMeasure = nil
             // 바라인이 들어가서 끝난 마디면 다음 마디부터 다음 라인 적용되게 만듦
             if isNextLine {
-                print("||||||||||||||||||||||||")
                 currentLine += 1
                 currentWidth = 0
                 isNextLine = false
