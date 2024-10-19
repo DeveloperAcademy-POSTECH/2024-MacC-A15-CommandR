@@ -14,6 +14,16 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var currentNote: Note?
     private var currentElement: String = ""
     private var currentVoice: String = "" // 현재 `voice` 값 저장
+    // 줄 계산을 위한 값
+    private var isPageLayout: Bool = false
+    private var scoreWidth: Double = 0 // 악보 가로 길이
+    private var scoreHeight: Double = 0 // 악보 세로 높이
+    private var leftMargin: Double = 0 // 왼쪽 여백
+    private var rightMargin: Double = 0 // 왼쪽 여백
+    private var topMargin: Double = 0 // 왼쪽 여백
+    private var bottomMargin: Double = 0 // 왼쪽 여백
+    private var currentWidth: Int = 0 // 현재 계산된 줄 길이
+    
     private var currentPartId: String? // 파싱할 `part`의 `id` 값
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // Score 타입으로 변경
@@ -39,6 +49,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         print("Parsing finished. Total parts: \(score.parts.count), Total Notes: \(totalNotes)")
+        print("악보 크기 : 가로 \(scoreWidth), 세로\(scoreHeight)")
         continuation?.resume(returning: score)
         continuation = nil
     }
@@ -46,6 +57,10 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
                 qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
         currentElement = elementName
+        
+        if elementName == "page-layout" {
+            isPageLayout = true
+         }
         
         // 모든 `part`를 파싱하도록 수정
         if elementName == "part", let partId = attributeDict["id"] {
@@ -116,10 +131,44 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             }
             currentNote = note
         }
+         
+        if let currentScale = Double(trimmedString), isPageLayout {
+            
+            switch currentElement {
+            case "page-height":
+                print("height \(currentScale)")
+                scoreHeight = currentScale
+            case "page-width":
+                print("width \(currentScale)")
+                scoreWidth = currentScale
+            case "left-margin":
+                print("Lmargin")
+                leftMargin = currentScale
+            case "right-margin":
+                print("Rmargin")
+                rightMargin = currentScale
+            case "top-margin":
+                print("Tmargin")
+                topMargin = currentScale
+            case "bottom-margin":
+                print("Bmargin")
+                bottomMargin = currentScale
+            default:
+                break
+            }
+        }
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String,
                 namespaceURI: String?, qualifiedName qName: String?) {
+        if elementName == "page-layout" {
+            scoreWidth -= leftMargin
+            scoreWidth -= rightMargin
+            scoreHeight -= topMargin
+            scoreHeight -= bottomMargin
+            isPageLayout = false
+         }
+        
         if elementName == "note", let note = currentNote, currentMeasure != nil {
             // 마디에 음표 추가
             currentMeasure?.addNote(note)
