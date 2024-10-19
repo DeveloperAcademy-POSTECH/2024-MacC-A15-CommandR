@@ -27,11 +27,22 @@ class ScoreManager {
         let notesSet = NSMutableOrderedSet()
         
         // ScoreData의 모든 Note를 순회하여 Entity로 변환
+//        scoreData.parts.forEach { part in
+//            part.measures.forEach { measure in
+//                measure.notes.forEach { note in
+//                    let noteEntity = createNoteEntity(from: note, partId: part.id, measureNumber: measure.number, score: score)
+//                    notesSet.add(noteEntity)
+//                }
+//            }
+//        }
+        // 줄 번호 키값도 순회하게 만듦
         scoreData.parts.forEach { part in
-            part.measures.forEach { measure in
-                measure.notes.forEach { note in
-                    let noteEntity = createNoteEntity(from: note, partId: part.id, measureNumber: measure.number, score: score)
-                    notesSet.add(noteEntity)
+            part.measures.forEach { (lineNumber, measures) in
+                measures.forEach { measure in
+                    measure.notes.forEach { note in
+                        let noteEntity = createNoteEntity(from: note, partId: part.id, measureNumber: measure.number, score: score)
+                        notesSet.add(noteEntity)
+                    }
                 }
             }
         }

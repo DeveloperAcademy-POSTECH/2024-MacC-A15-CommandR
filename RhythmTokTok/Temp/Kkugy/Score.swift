@@ -18,18 +18,15 @@ class Score {
     }
     
     // 특정 파트에 마디 추가
-    func addMeasure(to partID: String, measure: Measure) {
+    func addMeasure(to partID: String, measure: Measure, lineNumber: Int) {
         if let partIndex = parts.firstIndex(where: { $0.id == partID }) {
-            parts[partIndex].measures.append(measure)
-        }
-    }
-    
-    // backup 처리: 시간을 되돌림
-    func applyBackup(to partID: String, measureNumber: Int, staff: Int, backupDuration: Int) {
-        if let partIndex = parts.firstIndex(where: { $0.id == partID }) {
-            if let measureIndex = parts[partIndex].measures.firstIndex(where: { $0.number == measureNumber }) {
-                // 해당 스태프의 현재 시간을 되돌림
-                parts[partIndex].measures[measureIndex].currentTimes[staff]? -= backupDuration
+            // 만약 해당 lineNumber에 저장된 값이 없다면 빈 배열을 초기화
+            if parts[partIndex].measures[lineNumber] != nil {
+                // 이미 해당 라인에 값이 존재할 경우, 해당 배열에 추가
+                parts[partIndex].measures[lineNumber]?.append(measure)
+            } else {
+                // 해당 라인에 값이 없을 경우 새로운 배열로 초기화하고 추가
+                parts[partIndex].measures[lineNumber] = [measure]
             }
         }
     }

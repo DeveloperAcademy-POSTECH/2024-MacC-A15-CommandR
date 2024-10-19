@@ -7,5 +7,5 @@
 
 struct Part {
     let id: String
-    var measures: [Measure]
+    var measures: [Int: [Measure]]
 }

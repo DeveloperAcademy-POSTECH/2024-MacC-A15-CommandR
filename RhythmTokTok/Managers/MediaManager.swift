@@ -25,14 +25,22 @@ struct MediaManager {
     }
     
     func getMediaFile(parsedScore: Score) async throws -> URL {
-        let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
+        let notes = parsedScore.parts.flatMap { part in
+            part.measures.flatMap { (_, measures) in
+                measures.flatMap { $0.notes }
+            }
+        }
         let outputURL = try await createMediaFile(from: notes)
 
         return outputURL
     }
 
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
-        let notes = parsedScore.parts.flatMap { $0.measures.flatMap { $0.notes } }
+        let notes = parsedScore.parts.flatMap { part in
+            part.measures.flatMap { (_, measures) in
+                measures.flatMap { $0.notes }
+            }
+        }
         let outputURL = try await createMIDIFile(from: notes, division: Double(parsedScore.divisions))
         
         return outputURL
@@ -41,14 +49,18 @@ struct MediaManager {
     func getPartMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
         var notes: [Note] = []
         
-        // 현재 무조건적으로 if 문 타게 해놨음
+        // 현재 무조건적으로 if 문 타게 해놨음, 높은음자리표만 나오게
         if !isChordEnabled {
-            notes = part.measures.flatMap { $0.notes.filter { $0.staff == 1 } }
+            notes = part.measures.flatMap { (_, measures) in
+                measures.flatMap { $0.notes.filter { $0.staff == 1 } }
+            }
         } else {
-            notes = part.measures.flatMap { $0.notes }
+            notes = part.measures.flatMap { (_, measures) in
+                measures.flatMap { $0.notes }
+            }
         }
-        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
 
+        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
         return outputURL
     }
     
@@ -73,15 +85,18 @@ struct MediaManager {
             let startTimeInSeconds = (Double(note.startTime) / division) * 60 / tempoBPM
             haptics.append(startTimeInSeconds)
         }
+        // 시간순으로 정렬
+        haptics.sort()
         print("최종 햅틱 배열: \(haptics)")
         return haptics
     }
     
     func getHapticSequence(part: Part, divisions: Int) async throws -> [Double] {
-        let notes = part.measures.flatMap { $0.notes.filter { $0.staff == 1 } }
-        // TODO: 메인 note만 햅틱 만들게 해야됨
+        let notes = part.measures.flatMap { (_, measures) in
+            measures.flatMap { $0.notes.filter { $0.staff == 1 } }
+        }
         let hapticSequence = createHapticSequence(from: notes, division: Double(divisions))
-        
+
         return hapticSequence
     }
 
