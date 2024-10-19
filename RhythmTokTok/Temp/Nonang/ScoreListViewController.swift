@@ -18,12 +18,9 @@ class ScoreListViewController: UIViewController {
     
     // TODO: 추후에 Score 객체 배열 연결 필요
     let musicList = [
-        "꽃을 든 남자 - 이백호",
-        "사랑의 배터리 - 홍진영",
-        "꽃밭에서 / 아코디언",
-        "울어라 열풍아~~",
-        "갈대의 순정... 조순재",
-        "생일 축하곡 - 손주 생일을 위해"
+        "Moon River",
+        "만남",
+        "붉은노을 - 이문세"
     ]
     
     override func viewDidLoad() {
@@ -41,22 +38,16 @@ class ScoreListViewController: UIViewController {
     
     // 네비게이션 바 설정
     func setupNavigationBar() {
-        // 네이게이션 바 스타일 설정
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()  // 불투명 배경 설정
         appearance.backgroundColor = .white  // 네비게이션 바 배경색 흰색 설정
         appearance.shadowColor = .clear  // 하단의 그림자 제거 (선 제거)
         appearance.titleTextAttributes = [.foregroundColor: UIColor.black] // 텍스트 색상 설정
         
-        // 기본 Appearance 설정
         navigationController?.navigationBar.standardAppearance = appearance
-        // 스크롤 시 적용할 Appearance 설정
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        // 버튼 색상 설정
         navigationController?.navigationBar.tintColor = .black
         
-        // 네비게이션 바 버튼 설정
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(didTapSettings))
         
@@ -65,30 +56,23 @@ class ScoreListViewController: UIViewController {
     
     // 테이블 뷰 설정
     func setupTableView() {
-        // 테이블 뷰 배경을 회색으로 설정
         scoreListView.tableView.backgroundColor = UIColor.systemGray6
-        
-        // 테이블 뷰 기본 컴포넌트 연결
         scoreListView.tableView.delegate = self
         scoreListView.tableView.dataSource = self
         scoreListView.tableView.register(ListItemCellView.self, forCellReuseIdentifier: ListItemCellView.identifier)
-        
-        // 셀 사이의 separator 제거
         scoreListView.tableView.separatorStyle = .none
     }
     
     // TODO: 검색 기능 추가 예정
     @objc func didTapSearch() {
-        print("Search tapped")
         //MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
-        
         let viewController = ViewController()
         navigationController?.pushViewController(viewController, animated: true)
     }
     
-    // TODO: 세팅 기능 추가 예정
     @objc func didTapSettings() {
-        print("Settings tapped")
+        let settingViewController = SettingViewController()
+        navigationController?.pushViewController(settingViewController, animated: true)
     }
     
     // PDF 파일 선택 버튼 액션
@@ -114,8 +98,9 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-//            let detailViewController = MemoDetailViewController(memo: memo)
-//            navigationController?.pushViewController(detailViewController, animated: true)
+        
+        let musicPracticeViewController = MusicPracticeViewController(scoreTitle: musicList[indexPath.row])
+        navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -126,21 +111,18 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    // 각 셀의 높이를 70으로 설정
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
     
-    // 섹션 사이 간격 설정 (상, 하 간격)
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return UIView()
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 10  // 섹션 사이 간격
+        return 0  // 섹션 사이 간격
     }
 }
-
 
 // PDF 파일 선택에 사용되는 extension
 extension ScoreListViewController: UIDocumentPickerDelegate {
