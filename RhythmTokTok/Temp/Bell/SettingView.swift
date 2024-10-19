@@ -113,10 +113,6 @@ class SettingView: UIView {
         
         // 글자 크기 설정 스택뷰
         let fontSizeStackView = createHorizontalStackView(arrangedSubviews: fontSizeButtons)
-        
-        
-        
-        
         let bpmStackView = UIStackView(arrangedSubviews: [currentBPMLabel, bpmSlider])
         bpmStackView.axis = .vertical
         bpmStackView.spacing = 10
