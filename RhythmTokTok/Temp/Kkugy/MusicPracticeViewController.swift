@@ -21,8 +21,6 @@ class MusicPracticeViewController: UIViewController {
     
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
-//    let tableView = UITableView() 기존 테이블 제거 -> 악보 줄 뷰로 대체
-    // Divider 역할을 할 선
     let divider: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray // 선의 색상
@@ -89,13 +87,6 @@ class MusicPracticeViewController: UIViewController {
     }
     
     private func setupUI() {
-        // 테이블 뷰 설정 제거 -> 악보 줄 뷰로 대체
-//        tableView.translatesAutoresizingMaskIntoConstraints = false
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//        tableView.register(ProgressButtonTableViewCell.self, forCellReuseIdentifier: "ProgressButtonCell")
-//        view.addSubview(tableView)
-//        tableView.separatorStyle = .none // 구분선 없애기
         // TODO: 여기에 제목 연결
         musicPracticeTitleView.titleLabel.text = scoreTitle
         // TODO: 여기에 페이지 내용 만들 함수 연결
@@ -135,12 +126,6 @@ class MusicPracticeViewController: UIViewController {
             bpmButton.heightAnchor.constraint(equalToConstant: 48),
             bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            // 테이블뷰 제거 -> 악보 줄 뷰로 대체
-//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            tableView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 24),
-//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            
             // 플레이버튼
             playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
@@ -329,24 +314,3 @@ class MusicPracticeViewController: UIViewController {
           WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
       }
   }
-
-// MARK: - UITableViewDataSource, UITableViewDelegate 기존 프로그래스 버튼 테이블 제거 -> 악보 줄 뷰로 대체
-//extension MusicPracticeViewController: UITableViewDataSource, UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return progressData.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "ProgressButtonCell", for: indexPath) as! ProgressButtonTableViewCell
-//        let progress = progressData[indexPath.row]
-//        cell.configure(progress: progress)
-//        // TODO: 장 줄 네임 연결
-//        cell.setTitle(buttonName: "\(indexPath.row)")
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("Progress button at row \(indexPath.row) clicked")
-//        // TODO: 여기에 버튼 클릭 시 해당 줄부터 연주되게 만들기
-//    }
-//}

@@ -35,7 +35,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             // 햅틱 시작 예약
             print("delay 시간 : \(delay)")
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                self.startHapticWithHardCodedBeats(batchSize: 10)
+                self.startHapticWithHardCodedBeats(batchSize: 20)
             }
         }
     }
@@ -104,7 +104,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             print("타이머 설정 시간: \(beatTime)초")
 
             let timer = DispatchSource.makeTimerSource()
-            timer.schedule(deadline: .now() + beatTime, leeway: .milliseconds(50))
+            timer.schedule(deadline: .now() + beatTime, leeway: .milliseconds(1))
             timer.setEventHandler {
                 DispatchQueue.main.async {
                     WKInterfaceDevice.current().play(.start)  // 햅틱 실행
@@ -123,7 +123,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             beatTimes = beatTimes.map { $0 - nextBatchDelay }
 
             let batchTimer = DispatchSource.makeTimerSource()
-            batchTimer.schedule(deadline: .now() + nextBatchDelay - 2, leeway: .milliseconds(50))
+            batchTimer.schedule(deadline: .now() + nextBatchDelay, leeway: .milliseconds(1))
             batchTimer.setEventHandler {
                 DispatchQueue.main.async {
                     self.scheduleNextBatch(batchSize: batchSize) // 재귀로 다음 배치 실행
