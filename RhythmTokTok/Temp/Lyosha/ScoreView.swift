@@ -18,7 +18,7 @@ struct ScoreView: View {
         return 60
     }
     var tempo: String {
-        return "Slow"
+        return "느리게"
     }
     @State private var selectedMeasures: [[Int]] = [[-1, -1], [-1, -1]]
     
@@ -36,11 +36,17 @@ struct ScoreView: View {
             //악보 뷰
             ForEach (measureCounts.indices) { i in
                 HStack(spacing: 0) {
+                    Image("g-clef")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 50, height: 50)
+                    
                     ForEach(0..<measureCounts[i]) { j in
                         MeasureButton(currentRow: i, currentCol: j, selectedMeasures: $selectedMeasures)
                     }
                 }
                 .padding(.horizontal)
+                .padding(.bottom, 32)
             }
             
             //조작 버튼이 들어있는 행

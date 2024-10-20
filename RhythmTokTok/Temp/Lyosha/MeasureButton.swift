@@ -85,24 +85,30 @@ struct MeasureButton: View{
             handleClick()
             print(selectedMeasures)
         } label : {
-            RoundedRectangle(cornerRadius: 10)
+            Rectangle()
                 .fill(
                     isSelected ?
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.red, Color.blue]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ) : LinearGradient (
-                        gradient: Gradient(colors: [Color.blue, Color.gray]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    Color.progress
+                    : Color.white
                 )
                 .frame(maxWidth: .infinity,  maxHeight: 50)
+                .overlay(
+                    GeometryReader { geometry in
+                        let lineSpacing = geometry.size.height / 4
+                        Path { path in
+                            for i in 1...3 {
+                                let y = lineSpacing * CGFloat(i)
+                                path.move(to: CGPoint(x: 0, y: y))
+                                path.addLine(to: CGPoint(x: geometry.size.width, y: y))
+                            }
+                        }
+                        .stroke(Color.black, lineWidth: 1)
+                    }
+                )
         }
         .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(isSelected ? Color(.red) : Color.clear, lineWidth: 4)
+            Rectangle()
+                .stroke(Color(.black), lineWidth: 1)
         )
     }
     
