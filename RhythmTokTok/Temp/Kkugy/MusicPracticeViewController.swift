@@ -8,17 +8,16 @@
 import UIKit
 
 class MusicPracticeViewController: UIViewController {
-    var scoreTitle: String
-    
-    init(scoreTitle: String) {
-        self.scoreTitle = scoreTitle
+    var currentScore: Score // 현재 악보 score
+
+    init(currentScore: Score) {
+        self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     let mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
@@ -52,8 +51,6 @@ class MusicPracticeViewController: UIViewController {
     private var midiFilePathURL: URL?
     private var isPlayingMIDIFile = false
     private let musicPlayer = MusicPlayer()
-    // TODO: 나중에 여기로 score값 연결
-    var currentScore: Score? // 현재 악보 score
 
     override func loadView() {
         // 루트 뷰를 설정할 컨테이너 뷰 생성
@@ -83,7 +80,10 @@ class MusicPracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        generateMusicXMLAudio()
+//        generateMusicXMLAudio()
+        Task {
+            await createMIDIFile(score: currentScore)
+        }
         setupUI()
         setupConstraints()
         setupActions()
@@ -91,8 +91,7 @@ class MusicPracticeViewController: UIViewController {
     }
     
     private func setupUI() {
-        // TODO: 여기에 제목 연결
-        musicPracticeTitleView.titleLabel.text = scoreTitle
+        musicPracticeTitleView.titleLabel.text = currentScore.title
         // TODO: 여기에 페이지 내용 만들 함수 연결
         musicPracticeTitleView.pageLabel.text = "0/0장"
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
@@ -334,9 +333,8 @@ class MusicPracticeViewController: UIViewController {
 
         if isLaunched {
             // 임시 송 타이틀
-            // TODO: score안의 타이틀 값 연결해줘야됨
-            let scoreTitle = "Moon River - Kkugy"
-            WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
+            let scoreTitle = currentScore.title
+            WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
         }
     }
     
@@ -364,8 +362,6 @@ extension MusicPracticeViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        guard let currentScore else { return 0 }
-        
         let totalMeasuresCount = currentScore.parts.last?.measures.values.reduce(0) { total, measuresArray in
             total + measuresArray.count
         } ?? 0
@@ -375,8 +371,6 @@ extension MusicPracticeViewController: UIPickerViewDelegate, UIPickerViewDataSou
     
     // UIPickerViewDelegate 프로토콜
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        guard let currentScore = currentScore else { return "" }
-        
         // parts.last의 모든 키와 마디 넘버를 추출한 배열을 만들기
         let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
             measures.map { measure in
@@ -394,9 +388,6 @@ extension MusicPracticeViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        // 선택된 파트에 대한 처리
-        guard let currentScore = currentScore else { return }
-        
         // parts.last의 모든 lineNumber와 마디 넘버를 추출한 배열을 만듦
         let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
             measures.map { measure in

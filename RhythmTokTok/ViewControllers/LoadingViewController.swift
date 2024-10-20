@@ -202,7 +202,7 @@ class LoadingViewController: UIViewController {
         }
     }
     
-    func createMIDIFile(score: Score) async {
+    private func createMIDIFile(score: Score) async {
         let mediaManager = MediaManager()
         
         do {

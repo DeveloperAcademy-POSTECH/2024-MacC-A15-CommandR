@@ -16,7 +16,7 @@ struct MediaManager {
     private var outputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("output2.wav").path()
     private var midiOutputPath = FileManager.default
-        .temporaryDirectory.appendingPathComponent("output2.mid").path() // MIDI 파일 경로
+        .temporaryDirectory.appendingPathComponent("midifile.mid").path() // MIDI 파일 경로
 
     func getScore(xmlData: Data) async throws -> Score {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
@@ -296,7 +296,7 @@ struct MediaManager {
 
     // MARK: - MIDI 파일 생성 부분
     // MIDI 파일로 변환하는 기능
-    private func createMIDIFile(from notes: [Note], division: Double) async throws -> URL {
+    func createMIDIFile(from notes: [Note], division: Double) async throws -> URL {
         var musicSequence: MusicSequence?
         var musicTrack: MusicTrack?
         var tempoTrack: MusicTrack?
