@@ -193,7 +193,7 @@ class MusicPracticeViewController: UIViewController {
     // MARK: Button 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
-        WatchManager.shared.sendSongSelectionToWatch(songTitle: "", hapticSequence: [])
+        WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
         navigationController?.popViewController(animated: true)
     }
     
@@ -335,8 +335,8 @@ class MusicPracticeViewController: UIViewController {
         if isLaunched {
             // 임시 송 타이틀
             // TODO: score안의 타이틀 값 연결해줘야됨
-            let songTitle = "Moon River - Kkugy"
-            WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
+            let scoreTitle = "Moon River - Kkugy"
+            WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
         }
     }
     

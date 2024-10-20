@@ -75,6 +75,34 @@ class SettingView: UIView {
         return label
     }()
     
+    // BPM 설정 라벨
+    let bpmLabel: UILabel = {
+        let label = UILabel()
+        label.text = "BPM 설정"
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    // BPM 표시 라벨
+    let currentBPMLabel: UILabel = {
+        let label = UILabel()
+        label.text = "현재 BPM: 120"
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    // BPM 슬라이더
+    let bpmSlider: UISlider = {
+        let slider = UISlider()
+        slider.minimumValue = 60
+        slider.maximumValue = 180
+        slider.value = 120
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        return slider
+    }()
+    
     // MARK: - UI 설정
     private func setupUI() {
         backgroundColor = .white
@@ -85,8 +113,12 @@ class SettingView: UIView {
         
         // 글자 크기 설정 스택뷰
         let fontSizeStackView = createHorizontalStackView(arrangedSubviews: fontSizeButtons)
+        let bpmStackView = UIStackView(arrangedSubviews: [currentBPMLabel, bpmSlider])
+        bpmStackView.axis = .vertical
+        bpmStackView.spacing = 10
+        bpmStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        // 메인 스택뷰
+        // 메인 스택뷰에 BPM 설정 추가
         let mainStackView = UIStackView(arrangedSubviews: [
             soundLabel,
             soundStackView,
@@ -94,7 +126,9 @@ class SettingView: UIView {
             vibrationStackView,
             fontSizeLabel,
             fontSizeStackView,
-            fontSizeDescriptionLabel
+            fontSizeDescriptionLabel,
+            bpmLabel,
+            bpmStackView
         ])
         
         mainStackView.axis = .vertical

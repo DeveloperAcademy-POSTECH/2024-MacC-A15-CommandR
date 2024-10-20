@@ -14,6 +14,7 @@ class UserSettingData {
     private let soundSettingKey = "soundSetting"
     private let watchVibrationGuideKey = "watchVibrationGuide"
     private let fontSizeKey = "fontSize"
+    private let bpmKey = "bpm"
     
     private init() {}
     
@@ -54,4 +55,17 @@ class UserSettingData {
             NotificationCenter.default.post(name: .fontSizeChanged, object: nil, userInfo: ["fontSize": clampedValue])
         }
     }
-}
+    
+    // BPM 설정 (기본값: 120, 범위: 60 ~ 180)
+      var bpm: Int {
+          get {
+              let storedBPM = UserDefaults.standard.integer(forKey: bpmKey)
+              return storedBPM >= 60 && storedBPM <= 180 ? storedBPM : 120 // 기본값 120
+          }
+          set {
+              let clampedBPM = min(max(newValue, 60), 180)
+              UserDefaults.standard.set(clampedBPM, forKey: bpmKey)
+              NotificationCenter.default.post(name: .bpmChanged, object: nil, userInfo: ["bpm": clampedBPM])
+          }
+      }
+  }
