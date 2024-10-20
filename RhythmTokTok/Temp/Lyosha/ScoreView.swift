@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ScoreView: View {
+    @ObservedObject var viewModel: MeasureViewModel  // ObservableObject를 사용하여 상태를 관찰
     @State var selectedMeasures: [[Int]] = [[-1, -1], [-1, -1]]
     @State var measureCounts: [Int] = []
     let currentScore: Score
@@ -21,8 +22,9 @@ struct ScoreView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 32)
+                    
                     ForEach(0..<measureCounts[rowIndex], id: \.self) { colIndex in
-                        MeasureButton(currentRow: index, currentCol: colIndex, selectedMeasures: $selectedMeasures)
+                        MeasureButton(currentRow: rowIndex, currentCol: colIndex, selectedMeasures: $selectedMeasures)
                     }
                 }
                 .padding(.bottom, 15)
@@ -30,6 +32,9 @@ struct ScoreView: View {
         }
         .onAppear {
             measureCounts = getMeasureCountPerLine()
+        }
+        .onChange(of: selectedMeasures) {
+            setSelectedMeasureNumber()
         }
     }
     
@@ -47,7 +52,6 @@ struct ScoreView: View {
         var measureCnt = 0
         
         for measure in measureDetails {
-            print("line: \(measure.lineNumber), measure: \(measure.measureNumber)")
             if lineNumber != measure.lineNumber {
                 lineNumber = measure.lineNumber
                 if measureCnt != 0 {
@@ -55,18 +59,52 @@ struct ScoreView: View {
                 }
                 measureCnt = 1
             } else {
-                print("+")
                 measureCnt += 1
             }
         }
         if measureCnt > 0 {
             measureCounts.append(measureCnt)
         }
-        print ("check: \(measureCounts)")
+        
         return measureCounts
+    }
+    
+    private func setSelectedMeasureNumber() {
+        if selectedMeasures[0] == [-1, -1] {
+            viewModel.selectedMeasures = (-1, -1)
+        } else {
+            if selectedMeasures[0] != [-1, -1] && selectedMeasures[1] == [-1, -1] {
+                let startRow = selectedMeasures[0][0]
+                let startCol = selectedMeasures[0][1]
+                let startNum = getMeasureNum(startRow, startCol)
+                
+                viewModel.selectedMeasures = (startNum, startNum)
+                print("구간 하나만 선택 \(viewModel.selectedMeasures)")
+            } else if  selectedMeasures[0] != [-1, -1] && selectedMeasures[1] != [-1, -1] {
+                let startRow = selectedMeasures[0][0]
+                let startCol = selectedMeasures[0][1]
+                let startMeasureNum = getMeasureNum(startRow, startCol)
+                
+                let endRow = selectedMeasures[1][0]
+                let endCol = selectedMeasures[1][1]
+                let endMeasureNum = getMeasureNum(endRow, endCol)
+                
+                print("구간 선택 \(startMeasureNum) ~ \(endMeasureNum)")
+                viewModel.selectedMeasures = (startMeasureNum, endMeasureNum)
+            }
+        }
+    }
+    
+    private func getMeasureNum(_ row: Int, _ col: Int) -> Int {
+        var num = 0
+        for index in 0..<row {
+            num += measureCounts[index]
+        }
+        num += col
+        return num
     }
 }
 
-#Preview {
-    ScoreView(currentScore: Score())
-}
+//#Preview {
+//    ScoreView(currentScore: Score())
+//}

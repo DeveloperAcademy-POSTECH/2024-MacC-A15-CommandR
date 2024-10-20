@@ -7,13 +7,17 @@
 
 import UIKit
 import SwiftUI
+import Combine
+
+class MeasureViewModel: ObservableObject {
+    @Published var selectedMeasures: (Int, Int) = (0, 0)
+}
 
 class MusicPracticeViewController: UIViewController {
-    // 선택 구간
-    @State private var selectedMeasures: (Int, Int) = (0, 0)
-    
-    var currentScore: Score // 현재 악보 score
+    private var viewModel = MeasureViewModel()  // 선택구간 ObservableObject 생성
+    private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
 
+    var currentScore: Score // 현재 악보 score
     init(currentScore: Score) {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil)
@@ -50,8 +54,8 @@ class MusicPracticeViewController: UIViewController {
     private var pickerView: UIPickerView! // 임시 확인용 픽커
     // SwiftUI 뷰를 UIHostingController로 감싸기
     private var hostingController: UIHostingController<ScoreView>?
+    private var startMeasureNumber: Int = 0
     private var endMeasureNumber: Int = 0
-
     // 악보 관리용
     private var midiFilePathURL: URL?
     private var isPlayingMIDIFile = false
@@ -108,7 +112,7 @@ class MusicPracticeViewController: UIViewController {
 //        pickerView.translatesAutoresizingMaskIntoConstraints = false
 //        view.addSubview(pickerView)
 
-        hostingController = UIHostingController(rootView: ScoreView(currentScore: currentScore))
+        hostingController = UIHostingController(rootView: ScoreView(viewModel: viewModel, currentScore: currentScore))
         // hostingController의 뷰를 추가하기
         if let hostingView = hostingController?.view {
             hostingView.translatesAutoresizingMaskIntoConstraints = false
@@ -182,6 +186,35 @@ class MusicPracticeViewController: UIViewController {
         bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        // ViewModel의 상태 변화를 구독하여 특정 함수 호출
+        viewModel.$selectedMeasures
+            .sink { [weak self] selectedMeasures in
+                self?.handleMeasuresChange(selectedMeasures)
+            }
+            .store(in: &cancellables)  // 메모리에서 자동 해제될 수 있도록 구독을 저장
+    }
+    
+    // 상태 변화에 따라 호출되는 함수
+    private func handleMeasuresChange(_ selectedMeasures: (Int, Int)) {
+        if selectedMeasures == (-1, -1) {
+            return
+        }
+        startMeasureNumber = selectedMeasures.0
+        endMeasureNumber = selectedMeasures.1
+        
+        if let part = currentScore.parts.last,
+           let firstMeasure = part.measures.min(by: { $0.key < $1.key })?.value.first {
+            if firstMeasure.number != 0 {
+                startMeasureNumber += 1
+                endMeasureNumber += 1
+            }
+        }
+        // 구간 미디파일 생성
+        Task {
+            print("시작구간 \(startMeasureNumber) ~ 끝나는 구간 \(endMeasureNumber)")
+            await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
+        }
+        
     }
     
     // 워치 앱 상태 업데이트 메서드
@@ -249,7 +282,6 @@ class MusicPracticeViewController: UIViewController {
     }
     
     @objc private func stopButtonTapped() {
-//        WatchManager.shared.launchWatch()
         sendStopStatusToWatch()
         musicPlayer.stopMIDI()
         playPauseButton.isPlaying = false
