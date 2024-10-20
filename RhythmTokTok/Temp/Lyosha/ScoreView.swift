@@ -8,92 +8,103 @@
 import SwiftUI
 
 struct ScoreView: View {
-    var measureCounts: [Int] {
-        return [3, 4, 5, 3]
-    }
-    var title: String {
-        return "Moon River"
-    }
-    var bpm: Int {
-        return 60
-    }
-    var tempo: String {
-        return "느리게"
-    }
-    @State private var selectedMeasures: [[Int]] = [[-1, -1], [-1, -1]]
+    @ObservedObject var viewModel: MeasureViewModel  // ObservableObject를 사용하여 상태를 관찰
+    @State var selectedMeasures: [[Int]] = [[-1, -1], [-1, -1]]
+    @State var measureCounts: [Int] = []
+    let currentScore: Score
     
     var body: some View {
-        VStack{
-            //타이틀
-            Text(title)
-                .font(.largeTitle .bold())
-            //bpm 정보
-            HStack {
-                Text(tempo) + Text("(\(bpm)bpm)").foregroundColor(.gray)
-                Spacer()
-            }.padding(.leading)
-            
-            //악보 뷰
-            ForEach (measureCounts.indices) { rowIndex in
+        ScrollView {
+            // 악보 뷰
+            ForEach(measureCounts.indices, id: \.self) { rowIndex in
                 HStack(spacing: 0) {
-                    Image("g-clef")
+                    Image("gclef")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 50, height: 50)
+                        .frame(width: 32)
                     
-                    ForEach(0..<measureCounts[rowIndex]) { colIndex in
+                    ForEach(0..<measureCounts[rowIndex], id: \.self) { colIndex in
                         MeasureButton(currentRow: rowIndex, currentCol: colIndex, selectedMeasures: $selectedMeasures)
                     }
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 32)
+                .padding(.bottom, 15)
             }
-            
-            //조작 버튼이 들어있는 행
-            HStack {
-                //컴포넌트 정렬을 위한 빈 공간
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.clear)
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                
-                //재생 버튼
-                Button {
-                    print("play!")
-                } label : {
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(maxWidth: .infinity,  maxHeight: 50)
-                        .overlay(
-                            Image(systemName: "play.fill")
-                                .tint(.white)
-                        )
-                }.padding(.trailing)
-                
-                //repeat 버튼
-                HStack {
-                    Button {
-                        print("repeat")
-                    } label : {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.clear)
-                            .frame(maxWidth: .infinity,  maxHeight: 50)
-                            .overlay(
-                                Image(systemName: "repeat")
-                                    .resizable()
-                            )
-                    }
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.clear)
-                        .frame(maxWidth: .infinity,  maxHeight: 50)
-                }.padding(.leading)
-
-            }.padding()
-
         }
+        .onAppear {
+            measureCounts = getMeasureCountPerLine()
+        }
+        .onChange(of: selectedMeasures) {
+            setSelectedMeasureNumber()
+        }
+    }
+    
+    private func getMeasureCountPerLine() -> [Int] {
+        var measureCounts: [Int] = []
+        
+        // parts.last의 모든 키와 마디 넘버를 추출한 배열을 만들기
+        let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
+            measures.map { measure in
+                (lineNumber: lineNumber, measureNumber: measure.number)
+            }
+        }.sorted(by: { $0.measureNumber < $1.measureNumber }) ?? []
+        
+        var lineNumber = 0
+        var measureCnt = 0
+        
+        for measure in measureDetails {
+            if lineNumber != measure.lineNumber {
+                lineNumber = measure.lineNumber
+                if measureCnt != 0 {
+                    measureCounts.append(measureCnt)
+                }
+                measureCnt = 1
+            } else {
+                measureCnt += 1
+            }
+        }
+        if measureCnt > 0 {
+            measureCounts.append(measureCnt)
+        }
+        
+        return measureCounts
+    }
+    
+    private func setSelectedMeasureNumber() {
+        if selectedMeasures[0] == [-1, -1] {
+            viewModel.selectedMeasures = (-1, -1)
+        } else {
+            if selectedMeasures[0] != [-1, -1] && selectedMeasures[1] == [-1, -1] {
+                let startRow = selectedMeasures[0][0]
+                let startCol = selectedMeasures[0][1]
+                let startNum = getMeasureNum(startRow, startCol)
+                
+                viewModel.selectedMeasures = (startNum, startNum)
+                print("구간 하나만 선택 \(viewModel.selectedMeasures)")
+            } else if  selectedMeasures[0] != [-1, -1] && selectedMeasures[1] != [-1, -1] {
+                let startRow = selectedMeasures[0][0]
+                let startCol = selectedMeasures[0][1]
+                let startMeasureNum = getMeasureNum(startRow, startCol)
+                
+                let endRow = selectedMeasures[1][0]
+                let endCol = selectedMeasures[1][1]
+                let endMeasureNum = getMeasureNum(endRow, endCol)
+                
+                print("구간 선택 \(startMeasureNum) ~ \(endMeasureNum)")
+                viewModel.selectedMeasures = (startMeasureNum, endMeasureNum)
+            }
+        }
+    }
+    
+    private func getMeasureNum(_ row: Int, _ col: Int) -> Int {
+        var num = 0
+        for index in 0..<row {
+            num += measureCounts[index]
+        }
+        num += col
+        return num
     }
 }
 
-
-
-#Preview {
-    ScoreView()
-}
+//#Preview {
+//    ScoreView(currentScore: Score())
+//}
