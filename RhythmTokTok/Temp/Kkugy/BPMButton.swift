@@ -8,11 +8,10 @@
 import UIKit
 
 class BPMButton: UIButton {
-    private let speedLabel = UILabel()
-    private let dividerView = UIView()
+//    private let speedLabel = UILabel()
+//    private let dividerView = UIView()
     private let speedStatusLabel = UILabel()
     private let valueLabel = UILabel()
-
     private var speedValue: Int = UserSettingData.shared.bpm
     private var speedText: String = "보통"
 
@@ -31,53 +30,53 @@ class BPMButton: UIButton {
     // View 설정
     private func setupView() {
         // 라운드 사각형 버튼 스타일 설정
-        self.layer.cornerRadius = 12
-        self.backgroundColor = .gray03
+//        self.layer.cornerRadius = 12
+//        self.backgroundColor = .gray03
         self.setTitleColor(.black, for: .normal)
         self.translatesAutoresizingMaskIntoConstraints = false
 
         // "빠르기" 라벨 설정
-        speedLabel.text = "빠르기"
-        speedLabel.textColor = .gray13
-        speedLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        speedLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+//        speedLabel.text = "빠르기"
+//        speedLabel.textColor = .gray13
+//        speedLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+//        speedLabel.translatesAutoresizingMaskIntoConstraints = false
+//        
         // Divider 설정
-        dividerView.backgroundColor = .black
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        
+//        dividerView.backgroundColor = .black
+//        dividerView.translatesAutoresizingMaskIntoConstraints = false
+//        
         // 변하는 라벨 ("조금 느리게", "보통", "조금 빠르게")
         speedStatusLabel.text = speedText
         speedStatusLabel.textColor = .gray13
-        speedStatusLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        speedStatusLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         speedStatusLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // 값 라벨 설정 (소수점 2자리)
-        valueLabel.text = "(\(speedValue)BPM)"
+        valueLabel.text = "(\(speedValue)bpm)"
         valueLabel.textColor = .gray13
         valueLabel.font = UIFont.systemFont(ofSize: 14)
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // 버튼에 서브뷰 추가
-        self.addSubview(speedLabel)
-        self.addSubview(dividerView)
+//        self.addSubview(speedLabel)
+//        self.addSubview(dividerView)
         self.addSubview(speedStatusLabel)
         self.addSubview(valueLabel)
         
         // 레이아웃 제약 조건
         NSLayoutConstraint.activate([
             // "빠르기" 라벨
-            speedLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            speedLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-
-            // Divider
-            dividerView.leadingAnchor.constraint(equalTo: speedLabel.trailingAnchor, constant: 8),
-            dividerView.widthAnchor.constraint(equalToConstant: 1),
-            dividerView.heightAnchor.constraint(equalToConstant: 20),
-            dividerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+//            speedLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+//            speedLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+//
+//            // Divider
+//            dividerView.leadingAnchor.constraint(equalTo: speedLabel.trailingAnchor, constant: 8),
+//            dividerView.widthAnchor.constraint(equalToConstant: 1),
+//            dividerView.heightAnchor.constraint(equalToConstant: 20),
+//            dividerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
 
             // 속도 상태 라벨 ("조금 느리게", "보통", "조금 빠르게")
-            speedStatusLabel.leadingAnchor.constraint(equalTo: dividerView.trailingAnchor, constant: 8),
+            speedStatusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             speedStatusLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
 
             // 값 라벨
@@ -104,12 +103,10 @@ class BPMButton: UIButton {
     
     override var intrinsicContentSize: CGSize {
         // Auto Layout을 사용하여 내부 요소에 맞춰 가로 크기 자동 결정
-        let contentWidth = speedLabel.intrinsicContentSize.width
-            + dividerView.frame.width
-            + speedStatusLabel.intrinsicContentSize.width
+        let contentWidth = speedStatusLabel.intrinsicContentSize.width
             + valueLabel.intrinsicContentSize.width
-            + 48 // 좌우 여백 포함
-        let contentHeight = 48.0
+            
+        let contentHeight = 24.0
 
         return CGSize(width: contentWidth, height: contentHeight)
     }
