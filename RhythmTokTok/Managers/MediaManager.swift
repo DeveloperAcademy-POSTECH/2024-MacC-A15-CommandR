@@ -26,7 +26,9 @@ struct MediaManager {
     
     func getMediaFile(parsedScore: Score) async throws -> URL {
         let notes = parsedScore.parts.flatMap { part in
-            part.measures.flatMap { (_, measures) in
+            part.measures
+                .sorted(by: { $0.key < $1.key })
+                .flatMap { (_, measures) in
                 measures.flatMap { $0.notes }
             }
         }
@@ -37,7 +39,9 @@ struct MediaManager {
 
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
         let notes = parsedScore.parts.flatMap { part in
-            part.measures.flatMap { (_, measures) in
+            part.measures
+                .sorted(by: { $0.key < $1.key })
+                .flatMap { (_, measures) in
                 measures.flatMap { $0.notes }
             }
         }
@@ -51,16 +55,47 @@ struct MediaManager {
         
         // 현재 무조건적으로 if 문 타게 해놨음, 높은음자리표만 나오게
         if !isChordEnabled {
-            notes = part.measures.flatMap { (_, measures) in
+            notes = part.measures
+                .sorted(by: { $0.key < $1.key })
+                .flatMap { (_, measures) in
                 measures.flatMap { $0.notes.filter { $0.staff == 1 } }
             }
         } else {
-            notes = part.measures.flatMap { (_, measures) in
+            notes = part.measures
+                .sorted(by: { $0.key < $1.key })
+                .flatMap { (_, measures) in
                 measures.flatMap { $0.notes }
             }
         }
 
         let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
+        return outputURL
+    }
+    
+    func getClipMIDIFile(part: Part, divisions: Int, startNumber: Int, endNumber: Int) async throws -> URL? {
+        var notes: [Note] = []
+
+        notes = part.measures
+            .sorted(by: { $0.key < $1.key })
+            .flatMap { (_, measures) in
+                measures.filter { measure in
+                    // measure.number를 사용하여 범위 내의 마디만 필터링
+                    measure.number >= startNumber && measure.number <= endNumber
+                }.flatMap { $0.notes.filter { $0.staff == 1 } }
+            }
+        
+        guard let firstNote = notes.first else {
+            return nil
+        }
+
+        // 첫 번째 음표의 startTime을 기준으로 다른 음표들의 startTime을 조정
+        let adjustedNotes = notes.map { note -> Note in
+            var adjustedNote = note
+            adjustedNote.startTime -= firstNote.startTime // 첫 번째 음표의 startTime을 빼줌
+            return adjustedNote
+        }
+        
+        let outputURL = try await createMIDIFile(from: adjustedNotes, division: Double(divisions))
         return outputURL
     }
     
@@ -97,6 +132,32 @@ struct MediaManager {
         }
         let hapticSequence = createHapticSequence(from: notes, division: Double(divisions))
 
+        return hapticSequence
+    }
+    
+    func getClipHapticSequence(part: Part, divisions: Int, startNumber: Int, endNumber: Int) async throws -> [Double] {
+        let notes = part.measures
+            .sorted(by: { $0.key < $1.key })  // 마디 번호를 기준으로 정렬
+            .flatMap { (_, measures) in
+                measures.filter { measure in
+                    // measure.number를 사용하여 범위 내의 마디만 필터링
+                    measure.number >= startNumber && measure.number <= endNumber
+                }.flatMap { $0.notes.filter { $0.staff == 1 } }
+            }
+        guard let firstNote = notes.first else {
+            return [] // 음표가 없을 경우 빈 배열 반환
+        }
+
+        // 첫 번째 음표의 startTime을 기준으로 다른 음표들의 startTime을 조정
+        let adjustedNotes = notes.map { note -> Note in
+            var adjustedNote = note
+            adjustedNote.startTime -= firstNote.startTime // 첫 번째 음표의 startTime을 빼줌
+            return adjustedNote
+        }
+        
+        // 조정된 음표들을 기반으로 햅틱 시퀀스 생성
+        let hapticSequence = createHapticSequence(from: adjustedNotes, division: Double(divisions))
+        
         return hapticSequence
     }
 

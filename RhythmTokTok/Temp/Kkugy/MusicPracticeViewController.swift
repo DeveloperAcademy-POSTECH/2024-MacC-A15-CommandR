@@ -9,16 +9,17 @@ import UIKit
 
 class MusicPracticeViewController: UIViewController {
     var scoreTitle: String
-       
-       init(scoreTitle: String) {
-           self.scoreTitle = scoreTitle
-           super.init(nibName: nil, bundle: nil)
-       }
-       
-       required init?(coder: NSCoder) {
-           fatalError("init(coder:) has not been implemented")
-       }
     
+    init(scoreTitle: String) {
+        self.scoreTitle = scoreTitle
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    let mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
     let divider: UIView = {
@@ -44,6 +45,8 @@ class MusicPracticeViewController: UIViewController {
         return button
     }()
     private var pickerView: UIPickerView! // 임시 확인용 픽커
+    private var startMeasureNumber: Int = 0
+    private var endMeasureNumber: Int = 0
 
     // 악보 관리용
     private var midiFilePathURL: URL?
@@ -274,26 +277,44 @@ class MusicPracticeViewController: UIViewController {
         }
     }
     
-    private func createMIDIFile(score: Score) async {
-        let mediaManager = MediaManager()
-        
+    private func createMIDIFile(score: Score, startMeasureNumber: Int? = nil, endMeasureNumber: Int? = nil) async {
         do {
             // MIDI File URL 초기화
+            playPauseButton.isEnabled = false
             midiFilePathURL = nil
-            // TODO: 사용할 파트 어떻게 정할지 구상 필요
-            midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
+            if let startMeasureNumber, let endMeasureNumber {
+                // 구단 MIDI 파일 생성
+                midiFilePathURL = try await mediaManager.getClipMIDIFile(part: score.parts.last!,
                                                                          divisions: score.divisions,
-                                                                     isChordEnabled: false)
+                                                                         startNumber: startMeasureNumber,
+                                                                         endNumber: endMeasureNumber)
+            } else {
+                // TODO: 사용할 파트 어떻게 정할지 구상 필요
+                midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
+                                                                         divisions: score.divisions,
+                                                                         isChordEnabled: false)
+            }
             // MIDI 파일 URL 확인 및 파일 로드
             if let midiFilePathURL = midiFilePathURL {
                 print("MIDI file created successfully: \(midiFilePathURL)")
                 // 햅틱 시퀀스 관리
-                let hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
-                                  divisions: score.divisions)
-    
-                // 워치로 곡 선택 메시지 전송
-                await sendHapticSequenceToWatch(hapticSequence: hapticSequence)
+                var hapticSequence: [Double]? = nil
                 
+                if let startMeasureNumber, let endMeasureNumber {
+                    hapticSequence = try await mediaManager.getClipHapticSequence(part: score.parts.last!,
+                                                                                divisions: score.divisions,
+                                                                                startNumber: startMeasureNumber,
+                                                                                endNumber: endMeasureNumber)
+                } else {
+                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
+                                                                                      divisions: score.divisions)
+                }
+                if let validHapticSequence = hapticSequence {
+                    // 워치로 곡 선택 메시지 전송
+                    await sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
+                } else {
+                    print("No valid haptic sequence found.")
+                }
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                 playPauseButton.isEnabled = true
@@ -374,20 +395,37 @@ extension MusicPracticeViewController: UIPickerViewDelegate, UIPickerViewDataSou
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // 선택된 파트에 대한 처리
-        guard let currentScore else { return }
+        guard let currentScore = currentScore else { return }
         
-//        if row == 0 {
-//            selectedPart = nil
-//            print("All Parts selected")
-//            Task {
-//                await createMIDIFile(score: currentScore)
-//            }
-//        } else {
-//            selectedPart = currentScore.parts[row - 1]
-//            print("Selected part: \(selectedPart?.id ?? "인식실패")")
-//            Task {
-//                await createMIDIFile(score: currentScore)
-//            }
-//        }
+        // parts.last의 모든 lineNumber와 마디 넘버를 추출한 배열을 만듦
+        let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
+            measures.map { measure in
+                (lineNumber: lineNumber, measureNumber: measure.number)
+            }
+        }.sorted(by: { $0.measureNumber < $1.measureNumber }) ?? []
+        
+        // 첫 번째 열(0): lineNumber, 두 번째 열(1): measureNumber
+        switch component {
+        case 0:
+            // 첫 번째 열에서 선택된 row (lineNumber 처리)
+            if row < measureDetails.count {
+                startMeasureNumber = measureDetails[row].measureNumber
+                print("Selected StartMeasure: \(startMeasureNumber)")
+            }
+        case 1:
+            // 두 번째 열에서 선택된 row (measureNumber 처리)
+            if row < measureDetails.count {
+                endMeasureNumber = measureDetails[row].measureNumber
+                print("Selected EndMeasure: \(endMeasureNumber)")
+                // 구간 미디파일 생성
+                Task {
+                    if startMeasureNumber < endMeasureNumber {
+                        await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
+                    }
+                }
+            }
+        default:
+            break
+        }
     }
 }
