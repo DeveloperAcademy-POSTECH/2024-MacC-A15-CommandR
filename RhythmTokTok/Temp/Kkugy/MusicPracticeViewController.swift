@@ -9,6 +9,9 @@ import UIKit
 import SwiftUI
 
 class MusicPracticeViewController: UIViewController {
+    // 선택 구간
+    @State private var selectedMeasures: (Int, Int) = (0, 0)
+    
     var currentScore: Score // 현재 악보 score
 
     init(currentScore: Score) {
@@ -46,7 +49,7 @@ class MusicPracticeViewController: UIViewController {
     }()
     private var pickerView: UIPickerView! // 임시 확인용 픽커
     // SwiftUI 뷰를 UIHostingController로 감싸기
-    private let hostingController = UIHostingController(rootView: ScoreView())
+    private var hostingController: UIHostingController<ScoreView>?
     private var endMeasureNumber: Int = 0
 
     // 악보 관리용
@@ -105,8 +108,9 @@ class MusicPracticeViewController: UIViewController {
 //        pickerView.translatesAutoresizingMaskIntoConstraints = false
 //        view.addSubview(pickerView)
 
+        hostingController = UIHostingController(rootView: ScoreView(currentScore: currentScore))
         // hostingController의 뷰를 추가하기
-        if let hostingView = hostingController.view {
+        if let hostingView = hostingController?.view {
             hostingView.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(hostingView)
         }
@@ -150,10 +154,11 @@ class MusicPracticeViewController: UIViewController {
 //            pickerView.heightAnchor.constraint(equalToConstant: 200),
 
             // ScoreView
-            hostingController.view.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
+            hostingController!.view.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
+            hostingController!.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            hostingController!.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            hostingController!.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
+                
             
             // 플레이버튼
             playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
