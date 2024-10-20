@@ -8,10 +8,20 @@
 import UIKit
 
 class MusicPracticeViewController: UIViewController {
+    var scoreTitle: String
+    
+    init(scoreTitle: String) {
+        self.scoreTitle = scoreTitle
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    let mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
-//    let tableView = UITableView() 기존 테이블 제거 -> 악보 줄 뷰로 대체
-    // Divider 역할을 할 선
     let divider: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray // 선의 색상
@@ -34,13 +44,16 @@ class MusicPracticeViewController: UIViewController {
         button.isHidden = true
         return button
     }()
-    
+    private var pickerView: UIPickerView! // 임시 확인용 픽커
+    private var startMeasureNumber: Int = 0
+    private var endMeasureNumber: Int = 0
+
     // 악보 관리용
     private var midiFilePathURL: URL?
     private var isPlayingMIDIFile = false
     private let musicPlayer = MusicPlayer()
     // TODO: 나중에 여기로 score값 연결
-    var currenrScore: Score? // 현재 악보 score
+    var currentScore: Score? // 현재 악보 score
 
     override func loadView() {
         // 루트 뷰를 설정할 컨테이너 뷰 생성
@@ -62,6 +75,12 @@ class MusicPracticeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // 다른 화면으로 이동할 때 네비게이션 바를 다시 표시하도록 설정
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         generateMusicXMLAudio()
@@ -72,19 +91,19 @@ class MusicPracticeViewController: UIViewController {
     }
     
     private func setupUI() {
-        // 테이블 뷰 설정 제거 -> 악보 줄 뷰로 대체
-//        tableView.translatesAutoresizingMaskIntoConstraints = false
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//        tableView.register(ProgressButtonTableViewCell.self, forCellReuseIdentifier: "ProgressButtonCell")
-//        view.addSubview(tableView)
-//        tableView.separatorStyle = .none // 구분선 없애기
         // TODO: 여기에 제목 연결
-        musicPracticeTitleView.titleLabel.text = "MoonRiver"
+        musicPracticeTitleView.titleLabel.text = scoreTitle
         // TODO: 여기에 페이지 내용 만들 함수 연결
         musicPracticeTitleView.pageLabel.text = "0/0장"
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bpmButton)
+        // 임시 픽커
+        pickerView = UIPickerView()
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(pickerView)
+        
         // 버튼을 뷰에 추가
         playPauseButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(playPauseButton)
@@ -118,12 +137,11 @@ class MusicPracticeViewController: UIViewController {
             bpmButton.heightAnchor.constraint(equalToConstant: 48),
             bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
-            // 테이블뷰 제거 -> 악보 줄 뷰로 대체
-//            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            tableView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 24),
-//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            
+            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pickerView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
+            pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            pickerView.heightAnchor.constraint(equalToConstant: 200),
+
             // 플레이버튼
             playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
@@ -224,12 +242,18 @@ class MusicPracticeViewController: UIViewController {
         let setBPMViewController = SetBPMViewController()
         present(setBPMViewController, animated: true, completion: nil)
     }
-
+    
+    // 임시 픽커 업데이트
+    private func updateScore(score: Score) {
+        currentScore = score
+        pickerView.reloadAllComponents() // 데이터를 받아오면 Picker 업데이트
+    }
+    
     // MARK: MIDI 파일, 햅틱 시퀀스 관리
     // 테스트를 위해 임시 변환 여기서 실행
     private func generateMusicXMLAudio() {
         // MusicXML 파일 로드
-        guard let xmlPath = Bundle.main.url(forResource: "moon", withExtension: "xml") else {
+        guard let xmlPath = Bundle.main.url(forResource: "mannam", withExtension: "xml") else {
             ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
             return
         }
@@ -243,7 +267,8 @@ class MusicPracticeViewController: UIViewController {
                 let parser = MusicXMLParser()
                 let score = await parser.parseMusicXML(from: xmlData)
 
-                currenrScore = score
+                currentScore = score
+                updateScore(score: score)
                 await createMIDIFile(score: score)
                 
             } catch {
@@ -252,26 +277,44 @@ class MusicPracticeViewController: UIViewController {
         }
     }
     
-    private func createMIDIFile(score: Score) async {
-        let mediaManager = MediaManager()
-        
+    private func createMIDIFile(score: Score, startMeasureNumber: Int? = nil, endMeasureNumber: Int? = nil) async {
         do {
             // MIDI File URL 초기화
+            playPauseButton.isEnabled = false
             midiFilePathURL = nil
-            // TODO: 사용할 파트 어떻게 정할지 구상 필요
-            midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
+            if let startMeasureNumber, let endMeasureNumber {
+                // 구단 MIDI 파일 생성
+                midiFilePathURL = try await mediaManager.getClipMIDIFile(part: score.parts.last!,
                                                                          divisions: score.divisions,
-                                                                     isChordEnabled: false)
+                                                                         startNumber: startMeasureNumber,
+                                                                         endNumber: endMeasureNumber)
+            } else {
+                // TODO: 사용할 파트 어떻게 정할지 구상 필요
+                midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
+                                                                         divisions: score.divisions,
+                                                                         isChordEnabled: false)
+            }
             // MIDI 파일 URL 확인 및 파일 로드
             if let midiFilePathURL = midiFilePathURL {
                 print("MIDI file created successfully: \(midiFilePathURL)")
                 // 햅틱 시퀀스 관리
-                let hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
-                                  divisions: score.divisions)
-    
-                // 워치로 곡 선택 메시지 전송
-                await sendHapticSequenceToWatch(hapticSequence: hapticSequence)
+                var hapticSequence: [Double]? = nil
                 
+                if let startMeasureNumber, let endMeasureNumber {
+                    hapticSequence = try await mediaManager.getClipHapticSequence(part: score.parts.last!,
+                                                                                divisions: score.divisions,
+                                                                                startNumber: startMeasureNumber,
+                                                                                endNumber: endMeasureNumber)
+                } else {
+                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
+                                                                                      divisions: score.divisions)
+                }
+                if let validHapticSequence = hapticSequence {
+                    // 워치로 곡 선택 메시지 전송
+                    await sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
+                } else {
+                    print("No valid haptic sequence found.")
+                }
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                 playPauseButton.isEnabled = true
@@ -313,23 +356,76 @@ class MusicPracticeViewController: UIViewController {
       }
   }
 
-// MARK: - UITableViewDataSource, UITableViewDelegate 기존 프로그래스 버튼 테이블 제거 -> 악보 줄 뷰로 대체
-//extension MusicPracticeViewController: UITableViewDataSource, UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return progressData.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "ProgressButtonCell", for: indexPath) as! ProgressButtonTableViewCell
-//        let progress = progressData[indexPath.row]
-//        cell.configure(progress: progress)
-//        // TODO: 장 줄 네임 연결
-//        cell.setTitle(buttonName: "\(indexPath.row)")
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("Progress button at row \(indexPath.row) clicked")
-//        // TODO: 여기에 버튼 클릭 시 해당 줄부터 연주되게 만들기
-//    }
-//}
+extension MusicPracticeViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+
+    // UIPickerViewDataSource 프로토콜
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2 // UIPickerView의 열 수
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let currentScore else { return 0 }
+        
+        let totalMeasuresCount = currentScore.parts.last?.measures.values.reduce(0) { total, measuresArray in
+            total + measuresArray.count
+        } ?? 0
+        
+        return totalMeasuresCount
+    }
+    
+    // UIPickerViewDelegate 프로토콜
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let currentScore = currentScore else { return "" }
+        
+        // parts.last의 모든 키와 마디 넘버를 추출한 배열을 만들기
+        let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
+            measures.map { measure in
+                (lineNumber: lineNumber, measureNumber: measure.number)
+            }
+        }.sorted(by: { $0.measureNumber < $1.measureNumber }) ?? []
+        
+        // 해당 행(row)에 해당하는 마디 넘버와 키 반환
+        if row < measureDetails.count {
+            let detail = measureDetails[row]
+            return "줄 \(detail.lineNumber): 마디 \(detail.measureNumber)"  // lineNumber와 measureNumber 함께 표시
+        } else {
+            return ""
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // 선택된 파트에 대한 처리
+        guard let currentScore = currentScore else { return }
+        
+        // parts.last의 모든 lineNumber와 마디 넘버를 추출한 배열을 만듦
+        let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
+            measures.map { measure in
+                (lineNumber: lineNumber, measureNumber: measure.number)
+            }
+        }.sorted(by: { $0.measureNumber < $1.measureNumber }) ?? []
+        
+        // 첫 번째 열(0): lineNumber, 두 번째 열(1): measureNumber
+        switch component {
+        case 0:
+            // 첫 번째 열에서 선택된 row (lineNumber 처리)
+            if row < measureDetails.count {
+                startMeasureNumber = measureDetails[row].measureNumber
+                print("Selected StartMeasure: \(startMeasureNumber)")
+            }
+        case 1:
+            // 두 번째 열에서 선택된 row (measureNumber 처리)
+            if row < measureDetails.count {
+                endMeasureNumber = measureDetails[row].measureNumber
+                print("Selected EndMeasure: \(endMeasureNumber)")
+                // 구간 미디파일 생성
+                Task {
+                    if startMeasureNumber < endMeasureNumber {
+                        await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
+                    }
+                }
+            }
+        default:
+            break
+        }
+    }
+}

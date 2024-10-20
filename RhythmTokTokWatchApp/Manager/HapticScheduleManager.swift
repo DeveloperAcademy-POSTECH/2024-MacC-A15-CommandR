@@ -98,16 +98,13 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     }
     
     func scheduleNextBatch(batchSize: Int) {
-        let startIndex = currentBatchIndex * batchSize
-        let endIndex = min(startIndex + batchSize, beatTimes.count)
+        let currentBatch = Array(beatTimes.prefix(batchSize))  // 현재 배치만큼 가져옴
         
-        for index in startIndex..<endIndex {
-            let beatTime = beatTimes[index]  // beatTime 자체가 시간이 됨
-            
+        for beatTime in currentBatch {
             print("타이머 설정 시간: \(beatTime)초")
 
             let timer = DispatchSource.makeTimerSource()
-            timer.schedule(deadline: .now() + beatTime, leeway: .milliseconds(50))
+            timer.schedule(deadline: .now() + beatTime, leeway: .milliseconds(1))
             timer.setEventHandler {
                 DispatchQueue.main.async {
                     WKInterfaceDevice.current().play(.start)  // 햅틱 실행
@@ -117,12 +114,16 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             timers.append(timer)
         }
 
+        // 배열에서 이미 처리한 배치를 제거
+        beatTimes = Array(beatTimes.dropFirst(batchSize))
         // 다음 배치가 있는지 확인
-        if endIndex < beatTimes.count {
-            currentBatchIndex += 1
-            let nextBatchDelay = beatTimes[endIndex - 1] // 마지막 타이머까지의 시간
+        if !beatTimes.isEmpty {
+            let nextBatchDelay = currentBatch.last ?? 0  // 마지막 타이머까지의 시간
+            // 남아있는 beatTimes 배열에서 nextBatchDelay 값을 빼줌
+            beatTimes = beatTimes.map { $0 - nextBatchDelay }
+
             let batchTimer = DispatchSource.makeTimerSource()
-            batchTimer.schedule(deadline: .now() + nextBatchDelay, leeway: .milliseconds(50))
+            batchTimer.schedule(deadline: .now() + nextBatchDelay, leeway: .milliseconds(1))
             batchTimer.setEventHandler {
                 DispatchQueue.main.async {
                     self.scheduleNextBatch(batchSize: batchSize) // 재귀로 다음 배치 실행
