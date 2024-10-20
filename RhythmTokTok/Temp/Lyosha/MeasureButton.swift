@@ -96,10 +96,10 @@ struct MeasureButton: View{
                     GeometryReader { geometry in
                         let lineSpacing = geometry.size.height / 4
                         Path { path in
-                            for i in 1...3 {
-                                let y = lineSpacing * CGFloat(i)
-                                path.move(to: CGPoint(x: 0, y: y))
-                                path.addLine(to: CGPoint(x: geometry.size.width, y: y))
+                            for rowIndex in 1...3 {
+                                let yOffset = lineSpacing * CGFloat(rowIndex)
+                                path.move(to: CGPoint(x: 0, y: yOffset))
+                                path.addLine(to: CGPoint(x: geometry.size.width, y: yOffset))
                             }
                         }
                         .stroke(Color.black, lineWidth: 1)

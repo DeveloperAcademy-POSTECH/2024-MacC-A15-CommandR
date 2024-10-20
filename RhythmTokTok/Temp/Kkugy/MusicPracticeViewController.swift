@@ -334,7 +334,7 @@ class MusicPracticeViewController: UIViewController {
         if isLaunched {
             // 임시 송 타이틀
             let scoreTitle = currentScore.title
-            WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: hapticSequence)
+            WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
         }
     }
     
