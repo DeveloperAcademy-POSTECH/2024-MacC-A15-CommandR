@@ -18,6 +18,7 @@ struct WatchWaitingView: View {
                 .resizable()
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
+
             
             if connectivityManager.isSelectedScore {
                 WatchPlayView()
@@ -27,7 +28,7 @@ struct WatchWaitingView: View {
                     Text("연습하고 싶은 곡을")
                     Text("선택해 주세요.")
                 }
-                .font(.title2)
+                .font(Font.custom("Pretendard-Bold", size: 48))
                 .foregroundColor(.white)
                 .padding()
             }
