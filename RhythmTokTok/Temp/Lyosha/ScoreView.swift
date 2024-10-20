@@ -20,39 +20,37 @@ struct ScoreView: View {
     var tempo: String {
         return "Slow"
     }
+    @State private var selectedMeasures: [[Int]] = [[-1, -1], [-1, -1]]
     
     var body: some View {
         VStack{
+            //타이틀
             Text(title)
                 .font(.largeTitle .bold())
+            //bpm 정보
             HStack {
                 Text(tempo) + Text("(\(bpm)bpm)").foregroundColor(.gray)
                 Spacer()
             }.padding(.leading)
-            ForEach (measureCounts, id: \.self) { measureCount in
+            
+            //악보 뷰
+            ForEach (measureCounts.indices) { i in
                 HStack(spacing: 0) {
-                    ForEach(0..<measureCount) { _ in
-                        Button{
-                            print("selected")
-                        } label : {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [Color.red, Color.blue]),
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .frame(maxWidth: .infinity,  maxHeight: 50)
-                        }
+                    ForEach(0..<measureCounts[i]) { j in
+                        MeasureButton(currentRow: i, currentCol: j, selectedMeasures: $selectedMeasures)
                     }
                 }
                 .padding(.horizontal)
             }
+            
+            //조작 버튼이 들어있는 행
             HStack {
+                //컴포넌트 정렬을 위한 빈 공간
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.clear)
                     .frame(maxWidth: .infinity, maxHeight: 50)
+                
+                //재생 버튼
                 Button {
                     print("play!")
                 } label : {
@@ -63,6 +61,8 @@ struct ScoreView: View {
                                 .tint(.white)
                         )
                 }.padding(.trailing)
+                
+                //repeat 버튼
                 HStack {
                     Button {
                         print("repeat")
@@ -85,6 +85,8 @@ struct ScoreView: View {
         }
     }
 }
+
+
 
 #Preview {
     ScoreView()
