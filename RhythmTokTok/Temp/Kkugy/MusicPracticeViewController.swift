@@ -181,6 +181,7 @@ class MusicPracticeViewController: UIViewController {
     private func setupActions() {
         // 클릭 시 이벤트 설정
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+        practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
 //        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
@@ -247,6 +248,11 @@ class MusicPracticeViewController: UIViewController {
         // 뒤로 가기 동작
         WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func settingButtonTapped() {
+        let settingViewController = SettingViewController()
+        navigationController?.pushViewController(settingViewController, animated: true)
     }
     
     @objc private func playButtonTapped() {

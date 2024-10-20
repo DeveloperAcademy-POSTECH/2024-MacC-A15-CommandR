@@ -12,14 +12,8 @@ class BPMButton: UIButton {
 //    private let dividerView = UIView()
     private let speedStatusLabel = UILabel()
     private let valueLabel = UILabel()
-
-<<<<<<< HEAD
     private var speedValue: Int = UserSettingData.shared.bpm
     private var speedText: String = "보통"
-=======
-    private var speedValue: Int = 120
-    private var speedText: String = "느리게"
->>>>>>> d579f7d (Feat: ScoreView 연습뷰에 배치)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
