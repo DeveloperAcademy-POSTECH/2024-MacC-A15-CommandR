@@ -10,22 +10,17 @@ import UniformTypeIdentifiers
 class ScoreListViewController: UIViewController {
     
     var selectedFileURL: URL?
-    
     // ScoreListView를 뷰로 사용
     var scoreListView: ScoreListView! {
         return view as? ScoreListView
     }
-    
-    // TODO: 추후에 Score 객체 배열 연결 필요
-    let musicList = [
-        "Moon River",
-        "만남",
-        "붉은노을 - 이문세"
-    ]
+    var scoreList: [Score] = []
+    let mediaManager = MediaManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        generateMusicXMLAudio()
         // 네비게이션 바 설정
         setupNavigationBar()
         
@@ -63,6 +58,40 @@ class ScoreListViewController: UIViewController {
         scoreListView.tableView.separatorStyle = .none
     }
     
+    // MARK: - 임시 파일 score생성
+    private func generateMusicXMLAudio() {
+        let xmls = ["MoonRiver", "mannam", "red"]
+        let scoreNames = ["Moon River", "만남 - 노사연", "붉은 노을 - 이문세"]
+        
+        for (index, xmlName) in xmls.enumerated() {
+            guard let xmlPath = Bundle.main.url(forResource: xmlName, withExtension: "xml") else {
+                ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
+                return
+            }
+            
+            Task {
+                do {
+                    let xmlData = try Data(contentsOf: xmlPath)
+                    print("Successfully loaded MusicXML data.")
+                    let parser = MusicXMLParser()
+                    let score = await parser.parseMusicXML(from: xmlData)
+                    score.title = scoreNames[index]
+                    
+                    updateScore(score: score)
+                    
+                } catch {
+                    ErrorHandler.handleError(error: error)
+                }
+            }
+        }
+    }
+    
+    private func updateScore(score: Score) {
+        scoreList.append(score)
+        print("score 생성")
+        scoreListView.tableView.reloadData() // 테이블뷰 업데이트
+    }
+    
     // TODO: 검색 기능 추가 예정
     @objc func didTapSearch() {
         //MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
@@ -93,13 +122,13 @@ class ScoreListViewController: UIViewController {
 extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return musicList.count
+        return scoreList.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let musicPracticeViewController = MusicPracticeViewController(scoreTitle: musicList[indexPath.row])
+        let musicPracticeViewController = MusicPracticeViewController(currentScore: scoreList[indexPath.row])
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     
@@ -107,7 +136,7 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListItemCellView.identifier, for: indexPath) as? ListItemCellView else {
             return UITableViewCell()
         }
-        cell.configure(with: musicList[indexPath.row])
+        cell.configure(with: scoreList[indexPath.row].title)
         return cell
     }
     
