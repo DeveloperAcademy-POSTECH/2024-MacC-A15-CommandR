@@ -10,27 +10,10 @@ import UIKit
 class MusicPracticeTitleView: UIView {
     
     // UI 요소 선언
-    // Spacer 역할을 할 빈 뷰 생성
-    let spacerView1: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Welcome!"
-        label.font = UIFont.systemFont(ofSize: 21, weight: .semibold)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let pageLabel: UILabel = {
-        let label = UILabel()
-        label.text = "0/0장"
-        label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
-        label.textColor = .gray08
+        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -60,8 +43,6 @@ class MusicPracticeTitleView: UIView {
         
         // 제목 HStack 요소 추가
         titleHStackView.addArrangedSubview(titleLabel)
-        titleHStackView.addArrangedSubview(spacerView1)
-        titleHStackView.addArrangedSubview(pageLabel)
         
         // UI 요소 추가
         addSubview(titleHStackView) // 타이틀 스택

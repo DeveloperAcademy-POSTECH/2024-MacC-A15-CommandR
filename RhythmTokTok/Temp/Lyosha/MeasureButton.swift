@@ -91,7 +91,7 @@ struct MeasureButton: View{
                     Color.progress
                     : Color.white
                 )
-                .frame(maxWidth: .infinity,  maxHeight: 50)
+                .frame(maxWidth: .infinity,  minHeight: 53)
                 .overlay(
                     GeometryReader { geometry in
                         let lineSpacing = geometry.size.height / 4
