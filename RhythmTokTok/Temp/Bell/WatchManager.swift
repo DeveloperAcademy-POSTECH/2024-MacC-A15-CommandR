@@ -104,6 +104,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendSongSelectionToWatch(songTitle: String, hapticSequence: [Double]) {
         self.selectedSongTitle = songTitle
+        print("워치로 전송 햅틱 : \(hapticSequence)")
         let message: [String: Any] = [
             "songTitle": songTitle,
             "hapticSequence": hapticSequence
