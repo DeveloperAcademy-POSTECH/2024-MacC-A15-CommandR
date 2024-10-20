@@ -54,8 +54,6 @@ class MusicPracticeViewController: UIViewController {
     private var pickerView: UIPickerView! // 임시 확인용 픽커
     // SwiftUI 뷰를 UIHostingController로 감싸기
     private var hostingController: UIHostingController<ScoreView>?
-    private var startMeasureNumber: Int = 0
-    private var endMeasureNumber: Int = 0
     // 악보 관리용
     private var midiFilePathURL: URL?
     private var isPlayingMIDIFile = false
@@ -183,7 +181,7 @@ class MusicPracticeViewController: UIViewController {
     private func setupActions() {
         // 클릭 시 이벤트 설정
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
+//        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
         // ViewModel의 상태 변화를 구독하여 특정 함수 호출
@@ -196,11 +194,8 @@ class MusicPracticeViewController: UIViewController {
     
     // 상태 변화에 따라 호출되는 함수
     private func handleMeasuresChange(_ selectedMeasures: (Int, Int)) {
-        if selectedMeasures == (-1, -1) {
-            return
-        }
-        startMeasureNumber = selectedMeasures.0
-        endMeasureNumber = selectedMeasures.1
+        var startMeasureNumber = selectedMeasures.0
+        var endMeasureNumber = selectedMeasures.1
         
         if let part = currentScore.parts.last,
            let firstMeasure = part.measures.min(by: { $0.key < $1.key })?.value.first {
@@ -209,12 +204,18 @@ class MusicPracticeViewController: UIViewController {
                 endMeasureNumber += 1
             }
         }
-        // 구간 미디파일 생성
-        Task {
-            print("시작구간 \(startMeasureNumber) ~ 끝나는 구간 \(endMeasureNumber)")
-            await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
+        if selectedMeasures == (-1, -1) {
+            Task {
+//                print("다시 전체 구간")
+                await createMIDIFile(score: currentScore)
+            }
+        } else {
+            // 구간 미디파일 생성
+            Task {
+//                print("시작구간 \(startMeasureNumber) ~ 끝나는 구간 \(endMeasureNumber)")
+                await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
+            }
         }
-        
     }
     
     // 워치 앱 상태 업데이트 메서드
