@@ -8,7 +8,7 @@
 // 악보를 관리하는 객체
 class Score {
     var title: String = ""
-    var bpm: Int = 120
+    var bpm: Int = UserSettingData.shared.bpm
     var parts: [Part] = []
     var divisions: Int = 1  // 사음음표 기준 틱 값
     

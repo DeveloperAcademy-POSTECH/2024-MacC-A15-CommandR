@@ -17,7 +17,7 @@ class LoadingViewController: UIViewController {
     private var midiFilePathURL: URL?
     private var cancellables = Set<AnyCancellable>()
     private var isPlayingMIDIFile = false
-    private var currentBPM = 120 // bpm 조절 설정
+    private var currentBPM = UserSettingData.shared.bpm // bpm 조절 설정
     private var currenrScore: Score? // 현재 악보 score
     private var selectedPart: Part? // 픽커에서 선택된 파트
     
