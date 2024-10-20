@@ -13,7 +13,8 @@ class ScoreListView: UIView {
     let tableHeaderLabel: UILabel = {
         let label = UILabel()
         label.text = "악보 목록"
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        let customFont = UIFont(name: "Pretendard-Bold", size: 24)
+        label.font = customFont
         label.textAlignment = .left  // 좌측 정렬
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -63,7 +64,7 @@ class ScoreListView: UIView {
             tableHeaderLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             tableHeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             tableHeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-
+            
             // 테이블뷰 레이아웃
             tableView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),

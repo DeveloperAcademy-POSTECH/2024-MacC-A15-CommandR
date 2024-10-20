@@ -34,15 +34,15 @@ struct ScoreView: View {
             }.padding(.leading)
             
             //악보 뷰
-            ForEach (measureCounts.indices) { i in
+            ForEach (measureCounts.indices) { rowIndex in
                 HStack(spacing: 0) {
                     Image("g-clef")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 50, height: 50)
                     
-                    ForEach(0..<measureCounts[i]) { j in
-                        MeasureButton(currentRow: i, currentCol: j, selectedMeasures: $selectedMeasures)
+                    ForEach(0..<measureCounts[rowIndex]) { colIndex in
+                        MeasureButton(currentRow: rowIndex, currentCol: colIndex, selectedMeasures: $selectedMeasures)
                     }
                 }
                 .padding(.horizontal)

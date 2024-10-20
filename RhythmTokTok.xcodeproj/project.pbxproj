@@ -89,6 +89,12 @@
 		D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */; };
 		D3D6D1B92CBE8B6300D22886 /* MarqueeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */; };
 		D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */; };
+		D3DDA0772CC5516F00125C86 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */; };
+		D3DDA0782CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
+		D3DDA0792CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
+		D3DDA07A2CC5516F00125C86 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */; };
+		D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
+		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
 		EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */; };
 		EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */; };
 		EE7B28A02CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */; };
@@ -213,6 +219,9 @@
 		D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayView.swift; sourceTree = "<group>"; };
 		D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeTextView.swift; sourceTree = "<group>"; };
 		D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTestViewController.swift; sourceTree = "<group>"; };
+		D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -252,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				02BFED032CB10B52003CEC8A /* .swiftlint.yml */,
+				D3DDA07D2CC5517300125C86 /* Font */,
 				02BFECEA2CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */,
 				1E3E09112CB295D800EE1868 /* Frameworks */,
@@ -549,6 +559,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		D3DDA07D2CC5517300125C86 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */,
+				D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */,
+				D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		EE7B28882CBE50F700325725 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -661,6 +681,9 @@
 				1E3E09332CB2AAB400EE1868 /* do.mp3 in Resources */,
 				1E54A8F02CB6D37C00753A3E /* Piano.sf2 in Resources */,
 				1ED9FED72CBF8BAC00472C51 /* canon.xml in Resources */,
+				D3DDA0772CC5516F00125C86 /* Pretendard-Regular.otf in Resources */,
+				D3DDA0782CC5516F00125C86 /* Pretendard-Medium.otf in Resources */,
+				D3DDA0792CC5516F00125C86 /* Pretendard-Bold.otf in Resources */,
 				1E3E09342CB2AAB400EE1868 /* reh.mp3 in Resources */,
 				1E3E09422CB3ED5000EE1868 /* speechDo.mp3 in Resources */,
 				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
@@ -690,6 +713,9 @@
 			files = (
 				02CFE1292CB1156D008454B8 /* Preview Assets.xcassets in Resources */,
 				02CFE1262CB1156D008454B8 /* Assets.xcassets in Resources */,
+				D3DDA07A2CC5516F00125C86 /* Pretendard-Regular.otf in Resources */,
+				D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */,
+				D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
