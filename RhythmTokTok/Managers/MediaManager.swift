@@ -73,30 +73,12 @@ struct MediaManager {
     }
     
     func getClipMIDIFile(part: Part, divisions: Int, startNumber: Int, endNumber: Int) async throws -> URL? {
-        var notes: [Note] = []
-
-        notes = part.measures
-            .sorted(by: { $0.key < $1.key })
-            .flatMap { (_, measures) in
-                measures.filter { measure in
-                    // measure.number를 사용하여 범위 내의 마디만 필터링
-                    measure.number >= startNumber && measure.number <= endNumber
-                }.flatMap { $0.notes.filter { $0.staff == 1 } }
-            }
-        
-        guard let firstNote = notes.first else {
+        if let adjustedNotes = getAdjustedNotes(from: part, startNumber: startNumber, endNumber: endNumber) {
+            let outputURL = try await createMIDIFile(from: adjustedNotes, division: Double(divisions))
+            return outputURL
+        } else {
             return nil
         }
-
-        // 첫 번째 음표의 startTime을 기준으로 다른 음표들의 startTime을 조정
-        let adjustedNotes = notes.map { note -> Note in
-            var adjustedNote = note
-            adjustedNote.startTime -= firstNote.startTime // 첫 번째 음표의 startTime을 빼줌
-            return adjustedNote
-        }
-        
-        let outputURL = try await createMIDIFile(from: adjustedNotes, division: Double(divisions))
-        return outputURL
     }
     
     // MARK: - XML 파싱 부분
@@ -111,12 +93,10 @@ struct MediaManager {
     func createHapticSequence(from notes: [Note], division: Double) -> [Double] {
         var haptics: [Double] = []
         
-//        print("햅틱 만들기전 확인 틱 기준: \(division)")
         for note in notes {
             if note.pitch.isEmpty {
                 continue
             }
-//            print("햅틱 만들기전 확인 음: \(note.pitch), 음가: \(note.duration), 시작 틱: \(note.startTime)")
             let startTimeInSeconds = (Double(note.startTime) / division) * 60 / tempoBPM
             haptics.append(startTimeInSeconds)
         }
@@ -136,29 +116,42 @@ struct MediaManager {
     }
     
     func getClipHapticSequence(part: Part, divisions: Int, startNumber: Int, endNumber: Int) async throws -> [Double] {
-        let notes = part.measures
-            .sorted(by: { $0.key < $1.key })  // 마디 번호를 기준으로 정렬
+        
+        if let adjustedNotes = getAdjustedNotes(from: part, startNumber: startNumber, endNumber: endNumber) {
+            // 조정된 음표들을 기반으로 햅틱 시퀀스 생성
+            let hapticSequence = createHapticSequence(from: adjustedNotes, division: Double(divisions))
+            
+            return hapticSequence
+        } else {
+            return []
+        }
+    }
+    
+    // MARK: - 구간 노트 파싱 부분
+    func getAdjustedNotes(from part: Part, startNumber: Int, endNumber: Int, staff: Int = 1) -> [Note]? {
+        // 필터링과 정렬된 노트들을 가져옴
+        let notes: [Note] = part.measures
+            .sorted(by: { $0.key < $1.key }) // measureNumber 순서대로 정렬
             .flatMap { (_, measures) in
                 measures.filter { measure in
                     // measure.number를 사용하여 범위 내의 마디만 필터링
                     measure.number >= startNumber && measure.number <= endNumber
-                }.flatMap { $0.notes.filter { $0.staff == 1 } }
+                }.flatMap { $0.notes.filter { $0.staff == staff } } // 해당 스태프의 노트만 필터링
             }
+
+        // 첫 번째 노트가 있는지 확인 후, startTime 조정
         guard let firstNote = notes.first else {
-            return [] // 음표가 없을 경우 빈 배열 반환
+            return nil
         }
 
-        // 첫 번째 음표의 startTime을 기준으로 다른 음표들의 startTime을 조정
+        // 첫 번째 음표의 startTime을 기준으로 나머지 음표들의 startTime을 조정
         let adjustedNotes = notes.map { note -> Note in
             var adjustedNote = note
-            adjustedNote.startTime -= firstNote.startTime // 첫 번째 음표의 startTime을 빼줌
+            adjustedNote.startTime -= firstNote.startTime
             return adjustedNote
         }
-        
-        // 조정된 음표들을 기반으로 햅틱 시퀀스 생성
-        let hapticSequence = createHapticSequence(from: adjustedNotes, division: Double(divisions))
-        
-        return hapticSequence
+
+        return adjustedNotes
     }
 
     // MARK: - WAV 파일 생성 부분
