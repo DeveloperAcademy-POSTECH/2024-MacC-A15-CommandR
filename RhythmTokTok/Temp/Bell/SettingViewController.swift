@@ -46,6 +46,8 @@ class SettingViewController: UIViewController {
         for button in settingView.fontSizeButtons {
             button.addTarget(self, action: #selector(fontSizeButtonTapped(_:)), for: .touchUpInside)
         }
+        // BPM 슬라이더 값 변경 시 액션 추가
+        settingView.bpmSlider.addTarget(self, action: #selector(bpmSliderValueChanged(_:)), for: .valueChanged)
     }
     
     private func loadSettings() {
@@ -70,7 +72,20 @@ class SettingViewController: UIViewController {
         
         let fontSize = UserSettingData.shared.fontSize
         selectFontSizeButton(tag: fontSize)
+        
+        // 저장된 BPM 값 로드
+        let currentBPM = UserSettingData.shared.bpm
+        settingView.bpmSlider.value = Float(currentBPM)
+        settingView.currentBPMLabel.text = "현재 BPM: \(currentBPM)"
     }
+    
+    @objc private func bpmSliderValueChanged(_ sender: UISlider) {
+         let bpmValue = Int(sender.value)
+         // BPM 값을 업데이트하고 라벨 갱신
+         UserSettingData.shared.bpm = bpmValue
+         settingView.currentBPMLabel.text = "현재 BPM: \(bpmValue)"
+         print("BPM 설정 변경: \(bpmValue)")
+     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
         if soundButtons.contains(sender) {

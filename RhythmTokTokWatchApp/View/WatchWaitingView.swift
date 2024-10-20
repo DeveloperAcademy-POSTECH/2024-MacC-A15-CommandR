@@ -19,7 +19,7 @@ struct WatchWaitingView: View {
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
             
-            if connectivityManager.isSelectedSong {
+            if connectivityManager.isSelectedScore {
                 WatchPlayView()
             } else {
                 VStack(alignment: .leading) {
