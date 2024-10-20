@@ -9,7 +9,7 @@ import SwiftUI
 struct WatchPlayView: View {
     @EnvironmentObject var connectivityManager: ConnectivityManager
     
-    private var songStatusText: String {
+    private var scoreStatusText: String {
         switch connectivityManager.playStatus {
         case "ready", "stop", "":
             return "준비"
@@ -29,7 +29,7 @@ struct WatchPlayView: View {
             VStack {
                 HStack {
                     Spacer()
-                    Text(songStatusText)
+                    Text(scoreStatusText)
                         .foregroundColor(.blue)
                         .font(.headline)
                         .padding(.top, 20)
@@ -39,7 +39,7 @@ struct WatchPlayView: View {
             }
             // 메인 콘텐츠
             MarqueeTextView(
-                text: "\(connectivityManager.selectedSongTitle)",
+                text: "\(connectivityManager.selectedScoreTitle)",
                 font: .title2,
                 isAnimating: connectivityManager.playStatus == "play"
             )

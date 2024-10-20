@@ -10,7 +10,7 @@ import UIKit
 
 class WatchTestViewController: UIViewController {
     
-    var selectedSongTitle: String?
+    var selectedScoreTitle: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,13 +28,13 @@ class WatchTestViewController: UIViewController {
         view.addSubview(closeButton)
         
         // 버튼들 생성
-        let selectSongButton = createButton(title: "곡 선택하기", action: #selector(sendSongSelectionToWatch))
+        let selectScoreButton = createButton(title: "곡 선택하기", action: #selector(sendScoreSelectionToWatch))
         let playButton = createButton(title: "재생중", action: #selector(sendPlayStatusPlay))
         let pauseButton = createButton(title: "일시정지", action: #selector(sendPlayStatusPause))
         let stopButton = createButton(title: "정지", action: #selector(sendPlayStatusStop))
         
         // 버튼들을 스택 뷰에 추가
-        let stackView = UIStackView(arrangedSubviews: [selectSongButton, playButton, pauseButton, stopButton])
+        let stackView = UIStackView(arrangedSubviews: [selectScoreButton, playButton, pauseButton, stopButton])
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,16 +65,16 @@ class WatchTestViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @objc private func sendSongSelectionToWatch() {
-        if selectedSongTitle == nil {
+    @objc private func sendScoreSelectionToWatch() {
+        if selectedScoreTitle == nil {
             // 테스트용 곡 제목 설정
-            selectedSongTitle = "꽃을 든 남자 - 이백호"
+            selectedScoreTitle = "꽃을 든 남자 - 이백호"
         }
-        guard let songTitle = selectedSongTitle else {
+        guard let scoreTitle = selectedScoreTitle else {
             print("선택된 곡이 없습니다.")
             return
         }
-        WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: [0.0, 1.0, 3.0])
+        WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: [0.0, 1.0, 3.0])
     }
     
     @objc private func sendPlayStatusPlay() {

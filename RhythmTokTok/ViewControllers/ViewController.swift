@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     
     let statusLabel = UILabel()
     var selectedFileURL: URL?
-    var selectedSongTitle: String?
+    var selectedScoreTitle: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,20 +176,20 @@ class ViewController: UIViewController {
     }
     
     @objc private func sendMessageToWatch() {
-        if selectedSongTitle == nil {
-            selectedSongTitle = "꽃을 든 남자 - 이백호"  // 테스트용 곡 제목 설정
+        if selectedScoreTitle == nil {
+            selectedScoreTitle = "꽃을 든 남자 - 이백호"  // 테스트용 곡 제목 설정
         }
-        guard let songTitle = selectedSongTitle else {
+        guard let scoreTitle = selectedScoreTitle else {
             print("선택된 곡이 없습니다.")
             return
         }
-        let isSelectedSong = true
-        WatchManager.shared.sendSongSelectionToWatch(songTitle: songTitle, hapticSequence: [1.0])
+        let isSelectedScore = true
+        WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: [1.0])
     }
     
     // 곡을 선택하는 메서드 예시
-    func selectSong(title: String) {
-        self.selectedSongTitle = title
+    func selectScore(title: String) {
+        self.selectedScoreTitle = title
         // 곡이 선택되었으므로 워치로 메시지 전송
         sendMessageToWatch()
     }

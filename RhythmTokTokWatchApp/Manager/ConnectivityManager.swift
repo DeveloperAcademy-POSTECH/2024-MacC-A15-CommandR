@@ -14,8 +14,8 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     // 햅틱 관리용 매니저
     private var hapticManager = HapticScheduleManager()
     @Published var isConnected: Bool = false
-    @Published var isSelectedSong: Bool = false
-    @Published var selectedSongTitle: String = ""
+    @Published var isSelectedScore: Bool = false
+    @Published var selectedScoreTitle: String = ""
     @Published var playStatus: String = "준비"
     @Published var hapticSequence: [Double] = []
     
@@ -56,12 +56,12 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             guard let self = self else { return }
             
             // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
-            if let songTitle = applicationContext["songTitle"] as? String,
+            if let scoreTitle = applicationContext["scoreTitle"] as? String,
                let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
-                self.selectedSongTitle = songTitle
+                self.selectedScoreTitle = scoreTitle
                 self.hapticSequence = hapticSequence
-                self.isSelectedSong = !songTitle.isEmpty
-                print("곡 선택 완료, 곡 제목: \(songTitle)")
+                self.isSelectedScore = !scoreTitle.isEmpty
+                print("곡 선택 완료, 곡 제목: \(scoreTitle)")
             }
             // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
             else if let playStatusString = applicationContext["playStatus"] as? String,

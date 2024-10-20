@@ -12,7 +12,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     
     static let shared = WatchManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
-    var selectedSongTitle: String?
+    var selectedScoreTitle: String?
     // 런치 용도
     let healthStore = HKHealthStore()
     let allTypes = Set([HKObjectType.workoutType()])
@@ -102,10 +102,10 @@ class WatchManager: NSObject, WCSessionDelegate {
     
     // MARK: - 워치로 메시지 보내는 부분
     // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
-    func sendSongSelectionToWatch(songTitle: String, hapticSequence: [Double]) {
-        self.selectedSongTitle = songTitle
+    func sendScoreSelectionToWatch(scoreTitle: String, hapticSequence: [Double]) {
+        self.selectedScoreTitle = scoreTitle
         let message: [String: Any] = [
-            "songTitle": songTitle,
+            "scoreTitle": scoreTitle,
             "hapticSequence": hapticSequence
         ]
         
