@@ -13,7 +13,7 @@ class BPMButton: UIButton {
     private let speedStatusLabel = UILabel()
     private let valueLabel = UILabel()
 
-    private var speedValue: Int = 100
+    private var speedValue: Int = UserSettingData.shared.bpm
     private var speedText: String = "보통"
 
     override init(frame: CGRect) {

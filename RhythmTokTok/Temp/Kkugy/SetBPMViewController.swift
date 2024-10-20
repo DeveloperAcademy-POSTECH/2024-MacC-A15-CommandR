@@ -12,7 +12,7 @@ class SetBPMViewController: UIViewController {
     
     private let bpmLabel: UILabel = {
         let label = UILabel()
-        label.text = "현재 BPM: 120"
+        label.text = "현재 BPM: \(UserSettingData.shared.bpm)"
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -22,7 +22,7 @@ class SetBPMViewController: UIViewController {
         let slider = UISlider()
         slider.minimumValue = 60
         slider.maximumValue = 180
-        slider.value = 100
+        slider.value = Float(UserSettingData.shared.bpm)
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
@@ -38,7 +38,7 @@ class SetBPMViewController: UIViewController {
         return button
     }()
     
-    private var currentBPM: Int = 120
+    private var currentBPM: Int = UserSettingData.shared.bpm
     
     override func viewDidLoad() {
         super.viewDidLoad()

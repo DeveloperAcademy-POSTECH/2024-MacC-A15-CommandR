@@ -11,8 +11,7 @@ import AudioToolbox
 struct MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
-    // TODO: 나중에 템포 설정하는 함수 만들어서 연결하기
-    private var tempoBPM: Double = 120.0
+    private var tempoBPM: Double = Double(UserSettingData.shared.bpm)
     private var outputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("output2.wav").path()
     private var midiOutputPath = FileManager.default

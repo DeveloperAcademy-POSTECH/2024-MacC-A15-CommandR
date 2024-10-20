@@ -87,7 +87,7 @@ class SettingView: UIView {
     // BPM 표시 라벨
     let currentBPMLabel: UILabel = {
         let label = UILabel()
-        label.text = "현재 BPM: 120"
+        label.text = "현재 BPM: \(UserSettingData.shared.bpm)"
         label.font = UIFont.systemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -98,7 +98,7 @@ class SettingView: UIView {
         let slider = UISlider()
         slider.minimumValue = 60
         slider.maximumValue = 180
-        slider.value = 120
+        slider.value = Float(UserSettingData.shared.bpm)
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
