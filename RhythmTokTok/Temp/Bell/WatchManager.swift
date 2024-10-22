@@ -8,7 +8,7 @@ import HealthKit
 import UIKit
 import WatchConnectivity
 
-class WatchManager: NSObject, WCSessionDelegate {
+class WatchManager: NSObject, WCSessionDelegate, ObservableObject {
     
     static let shared = WatchManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
@@ -19,7 +19,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     let configuration = HKWorkoutConfiguration()
     
     // TODO: isPaired로 관리 가능한지 확인 부탁드려요
-    @Published var isWatchAppReachable: Bool = false
+    @Published var isWatchAppConnected: Bool = false
     
     private override init() {
         super.init()
@@ -42,6 +42,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     // MARK: - WCSessionDelegate 메서드
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if activationState == .activated {
+            isWatchAppConnected = true
             print("iPhone에서 WCSession 활성화 완료")
         }
         if let error = error {
@@ -51,10 +52,12 @@ class WatchManager: NSObject, WCSessionDelegate {
     }
     
     func sessionDidBecomeInactive(_ session: WCSession) {
+        isWatchAppConnected = false
         print("WCSession 비활성화됨")
     }
     
     func sessionDidDeactivate(_ session: WCSession) {
+        isWatchAppConnected = false
         print("WCSession 비활성화됨 - 다시 활성화 준비")
         WCSession.default.activate()
     }
@@ -65,8 +68,10 @@ class WatchManager: NSObject, WCSessionDelegate {
     
     private func updateWatchAppReachability(_ session: WCSession) {
         DispatchQueue.main.async {
-            self.isWatchAppReachable = session.isReachable
-            print("isWatchAppReachable: \(self.isWatchAppReachable)")
+            if session.isReachable {
+                self.isWatchAppConnected = true
+            }
+            print("isWatchAppReachable: \(self.isWatchAppConnected)")
         }
     }
     
@@ -77,6 +82,7 @@ class WatchManager: NSObject, WCSessionDelegate {
             healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { (success, error) in
                 if !success {
                     // 권한 요청 실패 시 처리
+                    self.isWatchAppConnected = false
                     ErrorHandler.handleError(error: error ?? "unknown error")
                     continuation.resume(returning: false) // 실패 시 false 반환
                     return
@@ -92,6 +98,7 @@ class WatchManager: NSObject, WCSessionDelegate {
                         continuation.resume(returning: true) // 성공 시 true 반환
                     } catch {
                         // 오류 처리
+                        self.isWatchAppConnected = false
                         ErrorHandler.handleError(error: error)
                         continuation.resume(returning: false) // 실패 시 false 반환
                     }
@@ -112,8 +119,10 @@ class WatchManager: NSObject, WCSessionDelegate {
         
         do {
             try WCSession.default.updateApplicationContext(message)
+            self.isWatchAppConnected = true
             print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
+            self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }
@@ -122,6 +131,7 @@ class WatchManager: NSObject, WCSessionDelegate {
     func sendPlayStatusToWatch(status: PlayStatus, startTime: TimeInterval?) {
         // 워치가 연결되어 있는지 확인 (페어링 및 앱 설치 여부)
         guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
+            self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "워치가 연결되지 않았거나 앱이 설치되어 있지 않음")
             return
         }
@@ -141,8 +151,10 @@ class WatchManager: NSObject, WCSessionDelegate {
         
         do {
             try WCSession.default.updateApplicationContext(message)
+            self.isWatchAppConnected = true
             print("워치로 메시지 전송 완료: \(message)")
         } catch {
+            self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }

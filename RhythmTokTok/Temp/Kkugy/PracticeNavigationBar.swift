@@ -97,6 +97,7 @@ class PracticeNavigationBar: UIView {
     }
     
     func setWatchImage(isConnected: Bool) {
+        
         if isConnected {
             watchConnectImageView.image = UIImage(systemName: "applewatch.watchface")?
                 .withRenderingMode(.alwaysTemplate)
