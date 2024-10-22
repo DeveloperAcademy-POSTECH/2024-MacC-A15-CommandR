@@ -4,10 +4,10 @@
 //
 //  Created by sungkug_apple_developer_ac on 10/15/24.
 //
-
-import UIKit
-import SwiftUI
 import Combine
+import Lottie
+import SwiftUI
+import UIKit
 
 class MeasureViewModel: ObservableObject {
     @Published var selectedMeasures: (Int, Int) = (-2, -2)
@@ -16,6 +16,7 @@ class MeasureViewModel: ObservableObject {
 class MusicPracticeViewController: UIViewController {
     private var viewModel = MeasureViewModel()  // 선택구간 ObservableObject 생성
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
+    private var animationView: LottieAnimationView? // 로띠뷰
 
     var currentScore: Score // 현재 악보 score
     init(currentScore: Score) {
@@ -123,6 +124,7 @@ class MusicPracticeViewController: UIViewController {
         view.addSubview(playPauseButton)
         // resume 버튼 추가
         view.addSubview(stopButton)
+        setLottieView()
     }
     
     private func setupConstraints() {
@@ -235,15 +237,12 @@ class MusicPracticeViewController: UIViewController {
     }
     
     private func handleWatchAppConnectionChange(_ isConnected: Bool) {
-        DispatchQueue.main.async {
-            
-            if isConnected {
-                // 연결되었을 때 처리
-                self.practicNavBar.setWatchImage(isConnected: true)
-            } else {
-                // 연결되지 않았을 때 처리
-                self.practicNavBar.setWatchImage(isConnected: false)
-            }
+        if isConnected {
+            // 연결되었을 때 처리
+            self.practicNavBar.setWatchImage(isConnected: true)
+        } else {
+            // 연결되지 않았을 때 처리
+            self.practicNavBar.setWatchImage(isConnected: false)
         }
     }
     
@@ -251,24 +250,58 @@ class MusicPracticeViewController: UIViewController {
     @objc func updateWatchAppStatus() {
         Task {
             let isLaunched = await WatchManager.shared.launchWatch()
-
+            
             if isLaunched {
                 let isWatchAppReachable = WatchManager.shared.isWatchAppConnected
-                DispatchQueue.main.async {
-                    if isWatchAppReachable {
-                        self.practicNavBar.setWatchImage(isConnected: true)
-                    } else {
-                        self.practicNavBar.setWatchImage(isConnected: false)
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    // 워치 런칭 실패 시 처리
-                    ErrorHandler.handleError(error: "Failed to launch the Watch app.")
+                if isWatchAppReachable {
+                    self.practicNavBar.setWatchImage(isConnected: true)
+                } else {
                     self.practicNavBar.setWatchImage(isConnected: false)
                 }
+                
+            } else {
+                // 워치 런칭 실패 시 처리
+                ErrorHandler.handleError(error: "Failed to launch the Watch app.")
+                self.practicNavBar.setWatchImage(isConnected: false)
             }
         }
+    }
+    
+    // MARK: 로띠뷰
+    func setLottieView() {
+        animationView = LottieAnimationView(name: "Countdown") // animationFile은 Lottie JSON 파일명
+        guard let animationView = animationView else { return }
+
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        // 애니메이션 재생 옵션 설정
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .playOnce // 반복 재생 설정
+        animationView.animationSpeed = 1.0 // 재생 속도
+        
+        view.addSubview(animationView)
+        animationView.isHidden = true
+
+        NSLayoutConstraint.activate([
+            animationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            animationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            animationView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            animationView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+    }
+    
+    // 특정 조건에서 애니메이션을 재생
+    func showLottieAnimation() {
+        animationView?.isHidden = false
+        animationView?.play { [weak self] (finished) in
+            if finished {
+                self?.hideLottieAnimation()
+            }
+        }
+    }
+    
+    // 애니메이션이 완료되면 뷰 숨기기
+    func hideLottieAnimation() {
+        animationView?.isHidden = true
     }
     
     // MARK: Button 액션
@@ -305,11 +338,12 @@ class MusicPracticeViewController: UIViewController {
             let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
             sendPlayStatusToWatch(startTimeInterVal: futureTime)
             let delay = futureTime - Date().timeIntervalSince1970
-            // 예약 시간에 재생
-//            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                // MIDI 재생
-            self.musicPlayer.playMIDI(delay: delay)
-//            }
+            // MIDI 재생
+            // TODO: 딜레이 조절해야됨
+            self.musicPlayer.playMIDI(delay: delay + 0)
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
+                self.showLottieAnimation()
+            }
             stopButton.isHidden = false
             // 워치로 play 예약 메시지 전송
         }
@@ -342,33 +376,6 @@ class MusicPracticeViewController: UIViewController {
     }
     
     // MARK: MIDI 파일, 햅틱 시퀀스 관리
-    // 테스트를 위해 임시 변환 여기서 실행
-    private func generateMusicXMLAudio() {
-        // MusicXML 파일 로드
-        guard let xmlPath = Bundle.main.url(forResource: "mannam", withExtension: "xml") else {
-            ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
-            return
-        }
-        // 시작 버튼 비활성화
-        updatePlayPauseButton(false)
-        
-        Task {
-            do {
-                let xmlData = try Data(contentsOf: xmlPath)
-                print("Successfully loaded MusicXML data.")
-                let parser = MusicXMLParser()
-                let score = await parser.parseMusicXML(from: xmlData)
-
-                currentScore = score
-                updateScore(score: score)
-                await createMIDIFile(score: score)
-                
-            } catch {
-                ErrorHandler.handleError(error: error)
-            }
-        }
-    }
-    
     private func createMIDIFile(score: Score, startMeasureNumber: Int? = nil, endMeasureNumber: Int? = nil) async {
         do {
             // MIDI File URL 초기화
@@ -397,12 +404,9 @@ class MusicPracticeViewController: UIViewController {
                                                                                 divisions: score.divisions,
                                                                                 startNumber: startMeasureNumber,
                                                                                 endNumber: endMeasureNumber)
-                    print("check1")
                 } else {
                     hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
                                                                                       divisions: score.divisions)
-                    print("check2")
-
                 }
                 
                 if let validHapticSequence = hapticSequence {

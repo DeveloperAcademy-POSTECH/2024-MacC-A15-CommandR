@@ -27,25 +27,20 @@ struct WatchPlayView: View {
     var body: some View {
         ZStack {
             VStack {
-                HStack {
+                HStack(alignment: .center) {
                     Spacer()
-//                    Text("\(connectivityManager.hapticManager.isHapticActive)")
-//                        .foregroundColor(.blue)
-//                        .font(.headline)
-//                        .padding(.top, 10)
-//                        .padding(.trailing)
-                    Text("\(connectivityManager.hapticSequence.count)")
-                        .foregroundColor(.blue)
-                        .font(.headline)
-                        .padding(.top, 10)
-                        .padding(.trailing)
-                         
+                    Image(systemName: connectivityManager.hapticManager.isHapticActive ? "play.fill" : "stop.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 10, height: 10)
+                        .foregroundStyle(.blue)
+
                     Text(scoreStatusText)
                         .foregroundColor(.blue)
                         .font(.headline)
-                        .padding(.top, 20)
                         .padding(.trailing)
                 }
+                .padding(.top, 20)
                 Spacer()
             }
             // 메인 콘텐츠
