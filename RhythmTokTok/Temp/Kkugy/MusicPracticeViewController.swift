@@ -308,7 +308,7 @@ class MusicPracticeViewController: UIViewController {
             // 예약 시간에 재생
 //            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 // MIDI 재생
-            self.musicPlayer.playMIDI(delay: delay - 0.21)
+            self.musicPlayer.playMIDI(delay: delay)
 //            }
             stopButton.isHidden = false
             // 워치로 play 예약 메시지 전송

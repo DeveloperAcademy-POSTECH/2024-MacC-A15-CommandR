@@ -29,6 +29,17 @@ struct WatchPlayView: View {
             VStack {
                 HStack {
                     Spacer()
+//                    Text("\(connectivityManager.hapticManager.isHapticActive)")
+//                        .foregroundColor(.blue)
+//                        .font(.headline)
+//                        .padding(.top, 10)
+//                        .padding(.trailing)
+                    Text("\(connectivityManager.hapticSequence.count)")
+                        .foregroundColor(.blue)
+                        .font(.headline)
+                        .padding(.top, 10)
+                        .padding(.trailing)
+                         
                     Text(scoreStatusText)
                         .foregroundColor(.blue)
                         .font(.headline)
