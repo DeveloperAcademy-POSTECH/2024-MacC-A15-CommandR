@@ -292,8 +292,10 @@
 				1E3E09212CB2A34700EE1868 /* ViewControllers */,
 				1E3E093E2CB2AAC500EE1868 /* Resources */,
 				1EF8A0A82CB53EAF00ADB783 /* Utils */,
+				EE7B28882CBE50F700325725 /* CoreData */,
 				02BFECF72CB10A15003CEC8A /* Assets.xcassets */,
 				02BFECF92CB10A15003CEC8A /* LaunchScreen.storyboard */,
+				1E526F8C2CC91FB9004E1C6E /* Deprecated */,
 				02BFECFC2CB10A15003CEC8A /* Info.plist */,
 			);
 			path = RhythmTokTok;
@@ -333,6 +335,8 @@
 			children = (
 				1E3E09152CB2988300EE1868 /* Measure.swift */,
 				1E3E09172CB298A900EE1868 /* Note.swift */,
+				1E54A8FC2CBA8F3500753A3E /* Part.swift */,
+				1E54A8FA2CBA8EE100753A3E /* Score.swift */,
 				1EF8A0A62CB53E6B00ADB783 /* Enum */,
 			);
 			path = Models;
@@ -341,9 +345,15 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
+				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
+				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
+				1ED9FEC62CBE4B2E00472C51 /* MusicPracticeViewController.swift */,
+				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
+				1ED9FED22CBF826900472C51 /* SetBPMViewController.swift */,
+				EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */,
+				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -403,6 +413,16 @@
 			path = RhythmTokTok/Resources/Sound/Speech;
 			sourceTree = SOURCE_ROOT;
 		};
+		1E526F8C2CC91FB9004E1C6E /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				1ED9FECA2CBE780000472C51 /* MeasureProgressView.swift */,
+				1ED9FECC2CBE793600472C51 /* ProgressTableViewCell.swift */,
+				D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */,
+			);
+			path = Deprecated;
+			sourceTree = "<group>";
+		};
 		1ED9FEBD2CBD571300472C51 /* Lotties */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,8 +436,12 @@
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */,
 				EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */,
 				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
+				EE7B28A52CBE5CC200325725 /* ScoreManager.swift */,
+				D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */,
+				1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -425,6 +449,10 @@
 		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1ED9FEC22CBE4A7A00472C51 /* MusicPracticeTitleView.swift */,
+				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
+				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
+				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
 				1EF8A0A72CB53E9A00ADB783 /* Components */,
 			);
 			path = Views;
@@ -433,7 +461,10 @@
 		1EF8A0A62CB53E6B00ADB783 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
+				D34EEB612CC2A80F007BE568 /* PlayStatus.swift */,
+				D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -441,6 +472,11 @@
 		1EF8A0A72CB53E9A00ADB783 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				1ED9FED02CBF653800472C51 /* BPMButton.swift */,
+				EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */,
+				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
+				1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */,
+				1ED9FECE2CBE8EB800472C51 /* PlayPauseButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -448,9 +484,10 @@
 		1EF8A0A82CB53EAF00ADB783 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				02CFE1312CB68479008454B8 /* ErrorHandler.swift */,
 				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
 				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
-				02CFE1312CB68479008454B8 /* ErrorHandler.swift */,
+				D3ABDF702CB6B68C005CD01F /* Notification.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -479,18 +516,6 @@
 		1EF8A0AB2CB559C500ADB783 /* Kkugy */ = {
 			isa = PBXGroup;
 			children = (
-				1E54A8FA2CBA8EE100753A3E /* Score.swift */,
-				1E54A8FC2CBA8F3500753A3E /* Part.swift */,
-				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
-				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
-				1ED9FEC22CBE4A7A00472C51 /* MusicPracticeTitleView.swift */,
-				1ED9FEC62CBE4B2E00472C51 /* MusicPracticeViewController.swift */,
-				1ED9FECC2CBE793600472C51 /* ProgressTableViewCell.swift */,
-				1ED9FECA2CBE780000472C51 /* MeasureProgressView.swift */,
-				1ED9FED22CBF826900472C51 /* SetBPMViewController.swift */,
-				1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */,
-				1ED9FECE2CBE8EB800472C51 /* PlayPauseButton.swift */,
-				1ED9FED02CBF653800472C51 /* BPMButton.swift */,
 			);
 			path = Kkugy;
 			sourceTree = "<group>";
@@ -498,14 +523,6 @@
 		1EF8A0AC2CB559CE00ADB783 /* Bell */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */,
-				D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */,
-				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
-				D34EEB612CC2A80F007BE568 /* PlayStatus.swift */,
-				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
-				D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */,
-				D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */,
-				D3ABDF702CB6B68C005CD01F /* Notification.swift */,
 			);
 			path = Bell;
 			sourceTree = "<group>";
@@ -513,12 +530,6 @@
 		1EF8A0AD2CB559D300ADB783 /* Nonang */ = {
 			isa = PBXGroup;
 			children = (
-				EE7B28A52CBE5CC200325725 /* ScoreManager.swift */,
-				EE7B28882CBE50F700325725 /* CoreData */,
-				EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */,
-				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
-				EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */,
-				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 			);
 			path = Nonang;
 			sourceTree = "<group>";
@@ -534,9 +545,6 @@
 		1EF8A0AF2CB559E100ADB783 /* Lyosha */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */,
-				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
-				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
 			);
 			path = Lyosha;
 			sourceTree = "<group>";
@@ -553,10 +561,10 @@
 		D3ABDF692CB64ECE005CD01F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				02CFE1232CB1156C008454B8 /* WatchWaitingView.swift */,
+				D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */,
 				1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */,
 				D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */,
-				D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */,
+				02CFE1232CB1156C008454B8 /* WatchWaitingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
