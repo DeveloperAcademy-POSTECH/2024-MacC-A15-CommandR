@@ -262,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				02BFED032CB10B52003CEC8A /* .swiftlint.yml */,
+				1E526F8D2CCA31EB004E1C6E /* Shared */,
 				D3DDA07D2CC5517300125C86 /* Font */,
 				02BFECEA2CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */,
@@ -423,6 +424,14 @@
 			path = Deprecated;
 			sourceTree = "<group>";
 		};
+		1E526F8D2CCA31EB004E1C6E /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D34EEB612CC2A80F007BE568 /* PlayStatus.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		1ED9FEBD2CBD571300472C51 /* Lotties */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,7 +472,6 @@
 			children = (
 				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
-				D34EEB612CC2A80F007BE568 /* PlayStatus.swift */,
 				D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */,
 			);
 			path = Enum;
