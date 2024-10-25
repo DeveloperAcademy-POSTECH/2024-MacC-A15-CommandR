@@ -5,14 +5,17 @@
 //  Created by sungkug_apple_developer_ac on 10/14/24.
 //
 
+import Combine
 import UserNotifications
 import WatchConnectivity
 import WatchKit
 
-class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
+class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, ObservableObject {
+    @Published var isHapticActive: Bool = false
+    var cancellables = Set<AnyCancellable>()
+
     private var session: WKExtendedRuntimeSession?
     private var timers: [DispatchSourceTimer] = [] // 햅틱 타임스케쥴러 관리 배열
-    private var isHapticActive = false // 시작여부 관리
     private var currentBatchIndex = 0 // 현재 실행 중인 배치 인덱스
     private var hapticType: WKHapticType = .start
     private var beatTimes: [Double] = []
@@ -20,7 +23,9 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
 
     // MARK: WKExtendedRuntimeSession 로직
     // 백그라운드에서 햅틱 적용을 위해 WKExtendedRuntimeSession 사용
-    private func startExtendedSession() {
+    func startExtendedSession() {
+        // 세션 시작시 초기화
+        self.isHapticActive = false
         session = WKExtendedRuntimeSession()
         session?.delegate = self
         session?.start()
@@ -28,16 +33,23 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
 
     // WKExtendedRuntimeSessionDelegate methods
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("Extended session started")
-        if !isHapticActive {
-            let currentTimestamp = Date().timeIntervalSince1970
-            let delay = startTimeInterval - currentTimestamp
-            // 햅틱 시작 예약
-            print("delay 시간 : \(delay)")
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                self.startHapticWithHardCodedBeats(batchSize: 20)
-            }
-        }
+        // 백그라운드에서 isHapticActive 반응형으로 동작 예약
+        self.$isHapticActive
+                    .sink { [weak self] isStarted in
+                        if isStarted {
+                            guard let self = self else {
+                                return
+                            }
+                            let currentTimestamp = Date().timeIntervalSince1970
+                            let delay = startTimeInterval - currentTimestamp
+                            // 햅틱 시작 예약
+                            print("delay 시간 : \(delay)")
+                            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                                self.startHapticWithBeats(batchSize: 20)
+                            }
+                        }
+                    }
+                    .store(in: &cancellables)
     }
 
     func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
@@ -47,16 +59,16 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession,
                                 didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason,
                                 error: (any Error)?) {
-        print("Extended session invalidated")
+        ErrorHandler.handleError(error: error as Any)
+ 
     }
         
     // MARK: Haptic 관리 로직
     // 리듬 햅틱 시작
     func startHaptic(beatTime: [Double], startTimeInterval: TimeInterval) {
-        isHapticActive = false // 시작여부 초기화
         setBeatTime(beatTime: beatTime)
         self.startTimeInterval = startTimeInterval
-        startExtendedSession()
+        self.isHapticActive = true
     }
     
     // 햅틱 타입 설정
@@ -86,14 +98,13 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         timer.resume()
         timers.append(timer)
         
-        isHapticActive = true
+//        isHapticActive = true
     }
     
     // 타이밍에 따라 햅틱 시퀀스 배치로 나누어 타이머 실행
-    private func startHapticWithHardCodedBeats(batchSize: Int) {
+    private func startHapticWithBeats(batchSize: Int) {
         stopHaptic()  // 이전 타이머가 있으면 정지
         currentBatchIndex = 0 // 배치 인덱스 초기화
-        isHapticActive = true
         scheduleNextBatch(batchSize: batchSize) // 첫 번째 배치 실행
     }
     
@@ -132,7 +143,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             batchTimer.resume()
             timers.append(batchTimer)
         } else {
-            isHapticActive = false // 모든 배치가 완료된 경우
+            self.isHapticActive = false // 모든 배치가 완료된 경우
         }
     }
     
@@ -143,6 +154,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             timer.cancel()
         }
         timers.removeAll()  // 배열 비우기
-        isHapticActive = false
+        self.isHapticActive = false
     }
 }

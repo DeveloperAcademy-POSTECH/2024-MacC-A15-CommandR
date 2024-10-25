@@ -29,7 +29,7 @@ class LottieViewController: UIViewController {
         
         // 애니메이션 재생 옵션 설정
         animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = .loop // 반복 재생 설정
+        animationView.loopMode = .playOnce // 반복 재생 설정
         animationView.animationSpeed = 1.0 // 재생 속도
         
         // 애니메이션 뷰를 메인 뷰에 추가

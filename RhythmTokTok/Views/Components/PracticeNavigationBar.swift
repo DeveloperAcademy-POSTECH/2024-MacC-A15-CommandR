@@ -97,14 +97,16 @@ class PracticeNavigationBar: UIView {
     }
     
     func setWatchImage(isConnected: Bool) {
-        if isConnected {
-            watchConnectImageView.image = UIImage(systemName: "applewatch.watchface")?
-                .withRenderingMode(.alwaysTemplate)
-            watchConnectImageView.tintColor = .green
-        } else {
-            watchConnectImageView.image = UIImage(systemName: "applewatch.slash")?
-                .withRenderingMode(.alwaysTemplate)
-            watchConnectImageView.tintColor = .red
+        DispatchQueue.main.async {
+            if isConnected {
+                self.watchConnectImageView.image = UIImage(systemName: "applewatch.watchface")?
+                    .withRenderingMode(.alwaysTemplate)
+                self.watchConnectImageView.tintColor = .green
+            } else {
+                self.watchConnectImageView.image = UIImage(systemName: "applewatch.slash")?
+                    .withRenderingMode(.alwaysTemplate)
+                self.watchConnectImageView.tintColor = .red
+            }
         }
     }
 }

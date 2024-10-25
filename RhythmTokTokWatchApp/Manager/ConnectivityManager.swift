@@ -12,7 +12,7 @@ import Combine
 
 class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     // 햅틱 관리용 매니저
-    private var hapticManager = HapticScheduleManager()
+    var hapticManager = HapticScheduleManager()
     @Published var isConnected: Bool = false
     @Published var isSelectedScore: Bool = false
     @Published var selectedScoreTitle: String = ""
@@ -43,6 +43,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             print("워치에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
                 self.isConnected = session.isReachable
+                self.hapticManager.startExtendedSession()
             }
         }
         if let error = error {
@@ -54,7 +55,8 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
+            session.activate()
+
             // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
             if let scoreTitle = applicationContext["scoreTitle"] as? String,
                let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
