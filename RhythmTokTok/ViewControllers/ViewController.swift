@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     // 워치 앱 상태 업데이트 메서드
     @objc func updateWatchAppStatus() {
         DispatchQueue.main.async {
-            let isWatchAppReachable = WatchManager.shared.isWatchAppReachable
+            let isWatchAppReachable = WatchManager.shared.isWatchAppConnected
             print("ViewController: updateWatchAppStatus - isWatchAppReachable = \(isWatchAppReachable)")
             
             if isWatchAppReachable {

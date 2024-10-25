@@ -28,7 +28,7 @@ struct WatchWaitingView: View {
                     Text("연습하고 싶은 곡을")
                     Text("선택해 주세요.")
                 }
-                .font(Font.custom("Pretendard-Bold", size: 48))
+                .font(Font.custom("Pretendard-Bold", size: 20))
                 .foregroundColor(.white)
                 .padding()
             }
