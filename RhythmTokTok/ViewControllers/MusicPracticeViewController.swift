@@ -37,6 +37,7 @@ class MusicPracticeViewController: UIViewController {
         return view
     }()
     let bpmButton = BPMButton()
+    let currentMeasureLabel = UILabel()
     let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
     let stopButton: UIButton = {
         let button = UIButton(type: .system)
@@ -111,6 +112,9 @@ class MusicPracticeViewController: UIViewController {
 //        pickerView.dataSource = self
 //        pickerView.translatesAutoresizingMaskIntoConstraints = false
 //        view.addSubview(pickerView)
+        // 현재 진행 중인 마디 표시 라벨
+        currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(currentMeasureLabel)
 
         hostingController = UIHostingController(rootView: ScoreView(viewModel: viewModel, currentScore: currentScore))
         // hostingController의 뷰를 추가하기
@@ -152,6 +156,11 @@ class MusicPracticeViewController: UIViewController {
             bpmButton.topAnchor.constraint(equalTo: musicPracticeTitleView.bottomAnchor, constant: 20),
             bpmButton.heightAnchor.constraint(equalToConstant: 48),
             bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            
+            // 현재 진행 중인 마디 라벨
+            currentMeasureLabel.topAnchor.constraint(equalTo: musicPracticeTitleView.bottomAnchor, constant: 20),
+            currentMeasureLabel.heightAnchor.constraint(equalToConstant: 48),
+            currentMeasureLabel.leadingAnchor.constraint(equalTo: bpmButton.trailingAnchor, constant: 60),
             
 //            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 //            pickerView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
@@ -203,6 +212,13 @@ class MusicPracticeViewController: UIViewController {
                 self?.handleWatchAppConnectionChange(isConnected)
             }
             .store(in: &cancellables)
+        
+        musicPlayer.$currentTime
+            .sink { [weak self] currentTime in
+                self?.currentMeasureLabel.text = "\(currentTime) 초"
+            }
+            .store(in: &cancellables)
+
     }
     
     // 상태 변화에 따라 호출되는 함수

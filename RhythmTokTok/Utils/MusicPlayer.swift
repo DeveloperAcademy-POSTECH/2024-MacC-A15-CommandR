@@ -93,6 +93,7 @@ class MusicPlayer: ObservableObject {
                 midiPlayer.play {
                     print("MIDI playback completed.")
                 }
+                self.startTimer()
             }
         }
     }
@@ -124,6 +125,7 @@ class MusicPlayer: ObservableObject {
         // 처음으로
         midiPlayer.stop()
         midiPlayer.currentPosition = 0
+        stopTimer()
     }
     
     // 타이머 시작
