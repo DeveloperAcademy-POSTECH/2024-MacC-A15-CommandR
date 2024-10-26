@@ -35,6 +35,16 @@ struct MediaManager {
 
         return outputURL
     }
+    
+    func getCurrentMeasure(part: Part) {
+        part.measures
+            .sorted(by: { $0.key < $1.key })
+            .forEach { (_, measures) in
+                measures.forEach {
+                    print("----- number : \($0.number), 끝난 시간 : \($0.startTime)")
+                }
+            }
+    }
 
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
         let notes = parsedScore.parts.flatMap { part in
@@ -66,7 +76,7 @@ struct MediaManager {
                 measures.flatMap { $0.notes }
             }
         }
-
+        getCurrentMeasure(part: part)
         let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
         return outputURL
     }

@@ -116,7 +116,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 previousTimes = lastMeasure.currentTimes
             }
             
-            currentMeasure = Measure(number: measureNumber, notes: [], currentTimes: previousTimes)  // 두 개의 스태프 관리
+            currentMeasure = Measure(number: measureNumber, notes: [],
+                                     currentTimes: previousTimes, startTime: previousTimes[1] ?? 0)  // 두 개의 스태프 관리
         }
 
         // 노트(note) 태그를 만났을 때
