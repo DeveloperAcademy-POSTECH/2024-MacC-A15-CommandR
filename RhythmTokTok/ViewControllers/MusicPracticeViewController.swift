@@ -27,7 +27,7 @@ class MusicPracticeViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    let mediaManager = MediaManager()
+    var mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
     let divider: UIView = {
@@ -213,9 +213,11 @@ class MusicPracticeViewController: UIViewController {
             }
             .store(in: &cancellables)
         
+        // 현재 마디 파악을 위해 MIDI Player 진행 구간 구독하여 값 처리
         musicPlayer.$currentTime
             .sink { [weak self] currentTime in
-                self?.currentMeasureLabel.text = "\(currentTime) 초"
+                self?.currentMeasureLabel.text =
+                "\(self?.mediaManager.getCurrentMeasureNumber(currentTime: currentTime) ?? 0)"
             }
             .store(in: &cancellables)
 
@@ -240,14 +242,13 @@ class MusicPracticeViewController: UIViewController {
         }
         if selectedMeasures == (-1, -1) {
             Task {
-//                print("다시 전체 구간")
                 await createMIDIFile(score: currentScore)
             }
         } else {
             // 구간 미디파일 생성
             Task {
-//                print("시작구간 \(startMeasureNumber) ~ 끝나는 구간 \(endMeasureNumber)")
-                await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
+                await createMIDIFile(score: currentScore,
+                                     startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
             }
         }
     }
@@ -397,6 +398,8 @@ class MusicPracticeViewController: UIViewController {
             // MIDI File URL 초기화
             updatePlayPauseButton(false)
             midiFilePathURL = nil
+            // TODO: 사용할 파트 어떻게 정할지 구상 필요
+            mediaManager.setCurrentPart(part: score.parts.last!, division: Double(score.divisions))
             if let startMeasureNumber, let endMeasureNumber {
                 // 구단 MIDI 파일 생성
                 midiFilePathURL = try await mediaManager.getClipMIDIFile(part: score.parts.last!,
@@ -404,7 +407,6 @@ class MusicPracticeViewController: UIViewController {
                                                                          startNumber: startMeasureNumber,
                                                                          endNumber: endMeasureNumber)
             } else {
-                // TODO: 사용할 파트 어떻게 정할지 구상 필요
                 midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
                                                                          divisions: score.divisions,
                                                                          isChordEnabled: false)

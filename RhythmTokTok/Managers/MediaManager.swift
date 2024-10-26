@@ -16,6 +16,8 @@ struct MediaManager {
         .temporaryDirectory.appendingPathComponent("output2.wav").path()
     private var midiOutputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("midifile.mid").path() // MIDI 파일 경로
+    private var currentPart: Part?
+    private var currentDivision = 0.0
 
     func getScore(xmlData: Data) async throws -> Score {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
@@ -36,14 +38,35 @@ struct MediaManager {
         return outputURL
     }
     
-    func getCurrentMeasure(part: Part) {
-        part.measures
+    mutating func setCurrentPart(part: Part, division: Double) {
+        self.currentPart = part
+        self.currentDivision = division
+    }
+    
+    // TODO: 나중에 시간 및 마디 번호 관리용 프로퍼티를 만들어서 최적화 필요
+    func getCurrentMeasureNumber(currentTime: TimeInterval) -> Int {
+        guard let currentPart = currentPart else {
+            return 0
+        }
+        
+        let measures = currentPart.measures
             .sorted(by: { $0.key < $1.key })
-            .forEach { (_, measures) in
-                measures.forEach {
-                    print("----- number : \($0.number), 끝난 시간 : \($0.startTime)")
-                }
+            .flatMap { (_, measures) in
+                measures
             }
+        
+        var previousStartTime = 0.0
+        
+        for measure in measures {
+            let startTime = convertTicksToTime(convertTick: measure.startTime, division: currentDivision)
+            
+            if currentTime >= previousStartTime && currentTime <= startTime{
+                return measure.number
+            }
+            previousStartTime = startTime
+        }
+        
+        return measures.last?.number ?? 0
     }
 
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
@@ -76,7 +99,7 @@ struct MediaManager {
                 measures.flatMap { $0.notes }
             }
         }
-        getCurrentMeasure(part: part)
+        
         let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
         return outputURL
     }
@@ -88,6 +111,10 @@ struct MediaManager {
         } else {
             return nil
         }
+    }
+    
+    private func convertTicksToTime(convertTick: Int, division: Double) -> Double {
+        return (Double(convertTick) / division) * 60 / tempoBPM
     }
     
     // MARK: - XML 파싱 부분
@@ -106,7 +133,7 @@ struct MediaManager {
             if note.pitch.isEmpty {
                 continue
             }
-            let startTimeInSeconds = (Double(note.startTime) / division) * 60 / tempoBPM
+            let startTimeInSeconds = convertTicksToTime(convertTick: note.startTime, division: division)
             haptics.append(startTimeInSeconds)
         }
         // 시간순으로 정렬
