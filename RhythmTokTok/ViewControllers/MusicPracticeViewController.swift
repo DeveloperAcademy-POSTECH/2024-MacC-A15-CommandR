@@ -19,6 +19,7 @@ class MusicPracticeViewController: UIViewController {
     private var animationView: LottieAnimationView? // 로띠뷰
 
     var currentScore: Score // 현재 악보 score
+    var totalMeasure = 0
     init(currentScore: Score) {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil)
@@ -90,6 +91,7 @@ class MusicPracticeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        generateMusicXMLAudio()
+        totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         Task {
             await createMIDIFile(score: currentScore)
         }
@@ -216,11 +218,16 @@ class MusicPracticeViewController: UIViewController {
         // 현재 마디 파악을 위해 MIDI Player 진행 구간 구독하여 값 처리
         musicPlayer.$currentTime
             .sink { [weak self] currentTime in
-                self?.currentMeasureLabel.text =
-                "\(self?.mediaManager.getCurrentMeasureNumber(currentTime: currentTime) ?? 0)"
+                self?.updateCurrentMeasureLabel(currentTime: currentTime)
             }
             .store(in: &cancellables)
-
+    }
+    
+    private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
+        let division = Double(currentScore.divisions)
+        let currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: currentTime, division: division)
+        
+        currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
     }
     
     // 상태 변화에 따라 호출되는 함수

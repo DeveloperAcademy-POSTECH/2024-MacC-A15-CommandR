@@ -17,7 +17,6 @@ struct MediaManager {
     private var midiOutputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("midifile.mid").path() // MIDI 파일 경로
     private var currentPart: Part?
-    private var currentDivision = 0.0
 
     func getScore(xmlData: Data) async throws -> Score {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
@@ -38,13 +37,27 @@ struct MediaManager {
         return outputURL
     }
     
+    // TODO: 뷰모델로 빼도 될 것 같다
     mutating func setCurrentPart(part: Part, division: Double) {
         self.currentPart = part
-        self.currentDivision = division
+    }
+    
+    func getMainPartMeasureCount(score: Score) -> Int {
+        guard let currentPart = score.parts.last else {
+            return 0
+        }
+        
+        let measures = currentPart.measures
+            .sorted(by: { $0.key < $1.key })
+            .flatMap { (_, measures) in
+                measures
+            }
+        
+        return measures.last?.number ?? 0
     }
     
     // TODO: 나중에 시간 및 마디 번호 관리용 프로퍼티를 만들어서 최적화 필요
-    func getCurrentMeasureNumber(currentTime: TimeInterval) -> Int {
+    func getCurrentMeasureNumber(currentTime: TimeInterval, division: Double) -> Int {
         guard let currentPart = currentPart else {
             return 0
         }
@@ -58,7 +71,7 @@ struct MediaManager {
         var previousStartTime = 0.0
         
         for measure in measures {
-            let startTime = convertTicksToTime(convertTick: measure.startTime, division: currentDivision)
+            let startTime = convertTicksToTime(convertTick: measure.startTime, division: division)
             
             if currentTime >= previousStartTime && currentTime <= startTime{
                 return measure.number
