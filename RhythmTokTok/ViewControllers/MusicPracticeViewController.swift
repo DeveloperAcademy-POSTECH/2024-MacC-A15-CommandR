@@ -104,8 +104,6 @@ class MusicPracticeViewController: UIViewController {
     
     private func setupUI() {
         musicPracticeTitleView.titleLabel.text = currentScore.title
-        // TODO: 여기에 페이지 내용 만들 함수 연결
-//        musicPracticeTitleView.pageLabel.text = "0/0장"
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bpmButton)
         // 임시 픽커
@@ -175,7 +173,6 @@ class MusicPracticeViewController: UIViewController {
             hostingController!.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             hostingController!.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
                 
-            
             // 플레이버튼
             playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,

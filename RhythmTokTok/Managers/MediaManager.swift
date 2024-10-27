@@ -61,7 +61,7 @@ struct MediaManager {
         guard let currentPart = currentPart else {
             return 0
         }
-        
+
         let measures = currentPart.measures
             .sorted(by: { $0.key < $1.key })
             .flatMap { (_, measures) in
@@ -69,17 +69,19 @@ struct MediaManager {
             }
         
         var previousStartTime = 0.0
-        
-        for measure in measures {
+
+        for (index, measure) in measures.enumerated() {
             let startTime = convertTicksToTime(convertTick: measure.startTime, division: division)
-            
-            if currentTime >= previousStartTime && currentTime <= startTime{
-                return measure.number
+
+            if currentTime >= previousStartTime && currentTime < startTime {
+                return measures[max(0, index - 1)].number
             }
+
             previousStartTime = startTime
         }
-        
-        return measures.last?.number ?? 0
+
+        // 마지막 마디 반환
+        return measures.last?.number ?? -1
     }
 
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
@@ -151,7 +153,7 @@ struct MediaManager {
         }
         // 시간순으로 정렬
         haptics.sort()
-        print("최종 햅틱 배열: \(haptics)")
+//        print("최종 햅틱 배열: \(haptics)")
         return haptics
     }
     
