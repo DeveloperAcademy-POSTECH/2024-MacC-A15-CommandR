@@ -66,9 +66,7 @@ class SettingViewController: UIViewController {
         
         let hapticGuide = UserSettingData.shared.watchHapticGuide
         if hapticGuide {
-            selectButton(settingView.hapticButtons[0])
-        } else {
-            selectButton(settingView.hapticButtons[1])
+            selectButton(settingView.hapticButtons[hapticGuide ? 0 : 1])
         }
         
         let fontSize = UserSettingData.shared.fontSize
@@ -81,12 +79,12 @@ class SettingViewController: UIViewController {
     }
     
     @objc private func bpmSliderValueChanged(_ sender: UISlider) {
-         let bpmValue = Int(sender.value)
-         // BPM 값을 업데이트하고 라벨 갱신
-         UserSettingData.shared.bpm = bpmValue
-         settingView.currentBPMLabel.text = "현재 BPM: \(bpmValue)"
-         print("BPM 설정 변경: \(bpmValue)")
-     }
+        let bpmValue = Int(sender.value)
+        // BPM 값을 업데이트하고 라벨 갱신
+        UserSettingData.shared.bpm = bpmValue
+        settingView.currentBPMLabel.text = "현재 BPM: \(bpmValue)"
+        print("BPM 설정 변경: \(bpmValue)")
+    }
     
     @objc private func buttonTapped(_ sender: UIButton) {
         if soundButtons.contains(sender) {
@@ -143,7 +141,7 @@ class SettingViewController: UIViewController {
             try WCSession.default.updateApplicationContext(message)
             print("햅틱 가이드 설정을 워치로 전송함: \(message)")
         } catch {
-            print("워치로 햅틱 가이드 설정 전송 중 오류 발생: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "워치로 햅틱 가이드 설정 전송 중 오류 발생: \(error.localizedDescription)")
         }
     }
     
