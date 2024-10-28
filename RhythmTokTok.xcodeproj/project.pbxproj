@@ -95,10 +95,11 @@
 		D3DDA07A2CC5516F00125C86 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */; };
 		D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
 		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
+		EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */; };
+		EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */; };
+		EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B952CCFB88200079D75 /* ScoreService.swift */; };
 		EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */; };
 		EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */; };
-		EE7B28A02CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */; };
-		EE7B28A12CBE58D500325725 /* ScoreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289D2CBE58D500325725 /* ScoreEntity+CoreDataClass.swift */; };
 		EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */; };
 		EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */; };
 		EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A52CBE5CC200325725 /* ScoreManager.swift */; };
@@ -223,11 +224,12 @@
 		D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EE7A8B952CCFB88200079D75 /* ScoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScoreService.swift; path = RhythmTokTok/Temp/ScoreService.swift; sourceTree = SOURCE_ROOT; };
 		EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		EE7B289D2CBE58D500325725 /* ScoreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		EE7B28A52CBE5CC200325725 /* ScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
 		EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListView.swift; sourceTree = "<group>"; };
@@ -505,7 +507,7 @@
 			children = (
 				1EF8A0AF2CB559E100ADB783 /* Lyosha */,
 				1EF8A0AE2CB559DB00ADB783 /* Yusol */,
-				1EF8A0AD2CB559D300ADB783 /* Nonang */,
+				1EF8A0AD2CB559D300ADB783 /* Norang */,
 				1EF8A0AC2CB559CE00ADB783 /* Bell */,
 				1EF8A0AB2CB559C500ADB783 /* Kkugy */,
 				1EF8A0AA2CB559C000ADB783 /* Wendy */,
@@ -535,11 +537,12 @@
 			path = Bell;
 			sourceTree = "<group>";
 		};
-		1EF8A0AD2CB559D300ADB783 /* Nonang */ = {
+		1EF8A0AD2CB559D300ADB783 /* Norang */ = {
 			isa = PBXGroup;
 			children = (
+				EE7A8B952CCFB88200079D75 /* ScoreService.swift */,
 			);
-			path = Nonang;
+			path = Norang;
 			sourceTree = "<group>";
 		};
 		1EF8A0AE2CB559DB00ADB783 /* Yusol */ = {
@@ -593,8 +596,8 @@
 				EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */,
 				EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */,
 				EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */,
-				EE7B289D2CBE58D500325725 /* ScoreEntity+CoreDataClass.swift */,
-				EE7B289E2CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift */,
+				EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */,
+				EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */,
 				EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */,
 			);
 			path = CoreData;
@@ -767,8 +770,6 @@
 			files = (
 				EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */,
 				EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */,
-				EE7B28A02CBE58D500325725 /* ScoreEntity+CoreDataProperties.swift in Sources */,
-				EE7B28A12CBE58D500325725 /* ScoreEntity+CoreDataClass.swift in Sources */,
 				EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
 				EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */,
@@ -792,6 +793,7 @@
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
+				EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */,
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
@@ -801,6 +803,8 @@
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
 				1ED9FEC72CBE4B2F00472C51 /* MusicPracticeViewController.swift in Sources */,
+				EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */,
+				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				1ED9FECB2CBE781000472C51 /* MeasureProgressView.swift in Sources */,
@@ -983,7 +987,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
@@ -1000,7 +1004,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RTT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1022,7 +1026,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
@@ -1039,7 +1043,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RTT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1063,7 +1067,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1079,7 +1083,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok2.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RTT.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;
@@ -1102,7 +1106,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"RhythmTokTokWatchApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6KQJH558XZ;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1118,7 +1122,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RhythmTokTok2.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cmdr.RTT.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = watchos;

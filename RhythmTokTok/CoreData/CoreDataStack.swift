@@ -12,7 +12,13 @@ class CoreDataStack {
     static let shared = CoreDataStack()
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Score") // 데이터 모델 이름
+        let container = NSPersistentContainer(name: "Score")
+        
+        //프로퍼티 변경시에 자동 반영 해준다고 함
+        let description = container.persistentStoreDescriptions.first
+        description?.shouldMigrateStoreAutomatically = true
+        description?.shouldInferMappingModelAutomatically = true
+        
         container.loadPersistentStores(completionHandler: { _, error in
             if let error = error {
                 fatalError("Unable to load persistent stores: \(error)")
