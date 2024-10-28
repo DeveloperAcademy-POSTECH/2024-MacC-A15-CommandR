@@ -12,7 +12,7 @@ class UserSettingData {
     static let shared = UserSettingData()
     
     private let soundSettingKey = "soundSetting"
-    private let watchVibrationGuideKey = "watchVibrationGuide"
+    private let watchHapticGuideKey = "watchHapticGuide"
     private let fontSizeKey = "fontSize"
     private let bpmKey = "bpm"
     
@@ -33,12 +33,16 @@ class UserSettingData {
     }
     
     // Watch 진동 가이드 설정
-    var watchVibrationGuide: Bool {
+    var watchHapticGuide: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: watchVibrationGuideKey)
+            if UserDefaults.standard.object(forKey: watchHapticGuideKey) != nil {
+                return UserDefaults.standard.bool(forKey: watchHapticGuideKey)
+            } else {
+                return true // 기본값 true로 설정
+            }
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: watchVibrationGuideKey)
+            UserDefaults.standard.set(newValue, forKey: watchHapticGuideKey)
         }
     }
     

@@ -11,13 +11,14 @@ import WatchConnectivity
 import Combine
 
 class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
-    // 햅틱 관리용 매니저
+    
     var hapticManager = HapticScheduleManager()
     @Published var isConnected: Bool = false
     @Published var isSelectedScore: Bool = false
     @Published var selectedScoreTitle: String = ""
     @Published var playStatus: String = "준비"
     @Published var hapticSequence: [Double] = []
+    @Published var watchHapticGuide: Bool = true
     
     override init() {
         super.init()
@@ -56,7 +57,12 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             session.activate()
-
+            
+            if let watchHapticGuide = applicationContext["watchHapticGuide"] as? Bool {
+                self.watchHapticGuide = watchHapticGuide
+                print("워치에서 수신한 watchHapticGuide 설정: \(self.watchHapticGuide)")
+            }
+            
             // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
             if let scoreTitle = applicationContext["scoreTitle"] as? String,
                let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
@@ -65,7 +71,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 self.isSelectedScore = !scoreTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(scoreTitle)")
                 print("곡 햅틱: \(hapticSequence)")
-
+                
             }
             // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
             else if let playStatusString = applicationContext["playStatus"] as? String,
@@ -77,8 +83,13 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 case .play:
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
-                        // 햅틱 시퀀스 시작 예약
-                        self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
+                        if self.watchHapticGuide {
+                            // 진동 가이드가 활성화된 경우
+                            self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
+                        } else {
+                            // 진동 가이드가 비활성화된 경우
+                            print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
+                        }
                     } else {
                         ErrorHandler.handleError(error: "시작 시간 누락")
                     }
