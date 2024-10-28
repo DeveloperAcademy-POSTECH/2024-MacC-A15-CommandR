@@ -336,11 +336,14 @@ class MusicPracticeViewController: UIViewController {
         } else {
             // 현재 시간으로부터 4초 후, 평균 워치지연시간 0.14
             let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
+            
             sendPlayStatusToWatch(startTimeInterVal: futureTime)
             let delay = futureTime - Date().timeIntervalSince1970
-            // MIDI 재생
+            // mute가 아닐 때만 MIDI 재생
             // TODO: 딜레이 조절해야됨
-            self.musicPlayer.playMIDI(delay: delay + 0)
+            if UserSettingData.shared.soundSetting != .mute {
+                self.musicPlayer.playMIDI(delay: delay + 0)
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
                 self.showLottieAnimation()
             }
