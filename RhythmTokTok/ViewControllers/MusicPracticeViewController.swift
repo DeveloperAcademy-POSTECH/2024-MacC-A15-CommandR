@@ -19,6 +19,7 @@ class MusicPracticeViewController: UIViewController {
     private var animationView: LottieAnimationView? // 로띠뷰
 
     var currentScore: Score // 현재 악보 score
+    var totalMeasure = 0
     init(currentScore: Score) {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil)
@@ -27,7 +28,7 @@ class MusicPracticeViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    let mediaManager = MediaManager()
+    var mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
     let musicPracticeTitleView = MusicPracticeTitleView()
     let divider: UIView = {
@@ -37,6 +38,7 @@ class MusicPracticeViewController: UIViewController {
         return view
     }()
     let bpmButton = BPMButton()
+    let currentMeasureLabel = UILabel()
     let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
     let stopButton: UIButton = {
         let button = UIButton(type: .system)
@@ -89,6 +91,7 @@ class MusicPracticeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        generateMusicXMLAudio()
+        totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         Task {
             await createMIDIFile(score: currentScore)
         }
@@ -101,8 +104,6 @@ class MusicPracticeViewController: UIViewController {
     
     private func setupUI() {
         musicPracticeTitleView.titleLabel.text = currentScore.title
-        // TODO: 여기에 페이지 내용 만들 함수 연결
-//        musicPracticeTitleView.pageLabel.text = "0/0장"
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bpmButton)
         // 임시 픽커
@@ -111,6 +112,9 @@ class MusicPracticeViewController: UIViewController {
 //        pickerView.dataSource = self
 //        pickerView.translatesAutoresizingMaskIntoConstraints = false
 //        view.addSubview(pickerView)
+        // 현재 진행 중인 마디 표시 라벨
+        currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(currentMeasureLabel)
 
         hostingController = UIHostingController(rootView: ScoreView(viewModel: viewModel, currentScore: currentScore))
         // hostingController의 뷰를 추가하기
@@ -153,6 +157,11 @@ class MusicPracticeViewController: UIViewController {
             bpmButton.heightAnchor.constraint(equalToConstant: 48),
             bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
+            // 현재 진행 중인 마디 라벨
+            currentMeasureLabel.topAnchor.constraint(equalTo: musicPracticeTitleView.bottomAnchor, constant: 20),
+            currentMeasureLabel.heightAnchor.constraint(equalToConstant: 48),
+            currentMeasureLabel.leadingAnchor.constraint(equalTo: bpmButton.trailingAnchor, constant: 60),
+            
 //            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 //            pickerView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
 //            pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -164,7 +173,6 @@ class MusicPracticeViewController: UIViewController {
             hostingController!.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             hostingController!.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
                 
-            
             // 플레이버튼
             playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
@@ -203,6 +211,20 @@ class MusicPracticeViewController: UIViewController {
                 self?.handleWatchAppConnectionChange(isConnected)
             }
             .store(in: &cancellables)
+        
+        // 현재 마디 파악을 위해 MIDI Player 진행 구간 구독하여 값 처리
+        musicPlayer.$currentTime
+            .sink { [weak self] currentTime in
+                self?.updateCurrentMeasureLabel(currentTime: currentTime)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
+        let division = Double(currentScore.divisions)
+        let currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: currentTime, division: division)
+        
+        currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
     }
     
     // 상태 변화에 따라 호출되는 함수
@@ -224,14 +246,13 @@ class MusicPracticeViewController: UIViewController {
         }
         if selectedMeasures == (-1, -1) {
             Task {
-//                print("다시 전체 구간")
                 await createMIDIFile(score: currentScore)
             }
         } else {
             // 구간 미디파일 생성
             Task {
-//                print("시작구간 \(startMeasureNumber) ~ 끝나는 구간 \(endMeasureNumber)")
-                await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
+                await createMIDIFile(score: currentScore,
+                                     startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
             }
         }
     }
@@ -381,6 +402,8 @@ class MusicPracticeViewController: UIViewController {
             // MIDI File URL 초기화
             updatePlayPauseButton(false)
             midiFilePathURL = nil
+            // TODO: 사용할 파트 어떻게 정할지 구상 필요
+            mediaManager.setCurrentPart(part: score.parts.last!, division: Double(score.divisions))
             if let startMeasureNumber, let endMeasureNumber {
                 // 구단 MIDI 파일 생성
                 midiFilePathURL = try await mediaManager.getClipMIDIFile(part: score.parts.last!,
@@ -388,7 +411,6 @@ class MusicPracticeViewController: UIViewController {
                                                                          startNumber: startMeasureNumber,
                                                                          endNumber: endMeasureNumber)
             } else {
-                // TODO: 사용할 파트 어떻게 정할지 구상 필요
                 midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
                                                                          divisions: score.divisions,
                                                                          isChordEnabled: false)

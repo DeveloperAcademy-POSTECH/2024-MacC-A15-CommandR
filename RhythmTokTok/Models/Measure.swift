@@ -10,6 +10,7 @@ struct Measure {
     let number: Int
     var notes: [Note]
     var currentTimes: [Int: Int]  // 스태프별로 현재 시간을 관리
+    var startTime: Int = 0 // 높은음자리표 마디 시작틱
     
     // 특정 스태프에 음표 추가
     mutating func addNote(_ note: Note) {
@@ -17,7 +18,7 @@ struct Measure {
         let staff = note.staff
         // 해당 스태프의 현재 시간을 가져옴 (없으면 0)
         let currentStaffTime = currentTimes[staff] ?? 0
-        print("업데이트 [\(staff)]노트 시간 \(currentStaffTime)")
+//        print("업데이트 [\(staff)]노트 시간 \(currentStaffTime)")
         updatedNote.startTime = currentStaffTime
 
         // 음표를 추가
