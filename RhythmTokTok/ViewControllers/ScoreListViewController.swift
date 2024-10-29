@@ -10,7 +10,6 @@ import UniformTypeIdentifiers
 class ScoreListViewController: UIViewController {
     
     var selectedFileURL: URL?
-    // ScoreListView를 뷰로 사용
     var scoreListView: ScoreListView! {
         return view as? ScoreListView
     }
@@ -99,6 +98,7 @@ class ScoreListViewController: UIViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
+    // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
     @objc func didTapSettings() {
         let settingViewController = SettingViewController()
         navigationController?.pushViewController(settingViewController, animated: true)
