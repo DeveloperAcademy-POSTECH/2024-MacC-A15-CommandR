@@ -143,7 +143,8 @@ class ScorePracticeViewController: UIViewController {
 //        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         controlButtonView.stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
-        controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for:  .touchUpInside)
+        controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+        controlButtonView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
     private func setupBindings() {
@@ -290,10 +291,21 @@ class ScorePracticeViewController: UIViewController {
     }
     
     @objc private func previousButtonTapped() {
-//        sendPauseStatusToWatch()
         if currentMeasure != 0 {
             currentMeasure -= 1
         }
+        
+        jumpMeasure()
+    }
+    
+    @objc private func nextButtonTapped() {
+        if currentMeasure != totalMeasure {
+            currentMeasure += 1
+        }
+        jumpMeasure()
+    }
+
+    private func jumpMeasure() {
         let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
                                                          division: Double(currentScore.divisions))
         currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
@@ -302,17 +314,11 @@ class ScorePracticeViewController: UIViewController {
                                                                               divisions: currentScore.divisions,
                                                                               startNumber: currentMeasure,
                                                                               endNumber: totalMeasure)
-            await performJumpMeasure(hapticSequence: hapticSequence, startTime: startTime)
+            let futureTime = Date().addingTimeInterval(1).timeIntervalSince1970
+            
+            musicPlayer.playMIDI(startTime: startTime, delay: 1)
+            sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: futureTime)
         }
-    }
-    
-    func performJumpMeasure(hapticSequence: [Double], startTime: TimeInterval) async {
-        
-        await sendHapticSequenceToWatch(hapticSequence: hapticSequence)
-        let futureTime = Date().addingTimeInterval(1).timeIntervalSince1970
-        
-        musicPlayer.playMIDI(startTime: startTime, delay: 1)
-        sendPlayStatusToWatch(startTimeInterVal: futureTime)
     }
     
     @objc private func presentBPMModal() {
@@ -392,17 +398,24 @@ class ScorePracticeViewController: UIViewController {
     }
     
     // 워치로 실행 예약 메시지 전송
-      func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
-          WatchManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
-      }
-      
-      // 워치로 일시정지 예약 메시지 전송
-      func sendPauseStatusToWatch() {
-          WatchManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
-      }
-      
-      // 워치로 멈추고 처음으로 대기 메시지 전송
-      func sendStopStatusToWatch() {
-          WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
-      }
-  }
+    func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
+        WatchManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
+    }
+    
+    // 마디 점프 메시지 전송
+    func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
+        let scoreTitle = currentScore.title
+
+        WatchManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
+    }
+    
+    // 워치로 일시정지 예약 메시지 전송
+    func sendPauseStatusToWatch() {
+        WatchManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
+    }
+    
+    // 워치로 멈추고 처음으로 대기 메시지 전송
+    func sendStopStatusToWatch() {
+        WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+    }
+}
