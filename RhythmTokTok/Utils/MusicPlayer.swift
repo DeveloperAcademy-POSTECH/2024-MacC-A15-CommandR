@@ -16,6 +16,16 @@ class MusicPlayer: ObservableObject {
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0 // 일시정지용
     var musicSequence: MusicSequence?
+    var soundFont: String {
+        switch UserSettingData.shared.soundSetting {
+        case .melody:
+            "Piano"
+        case .beat:
+            "Drum Set JD Rockset 5"
+        default:
+            "Piano"
+        }
+    }
     
     init() {
         do {
@@ -74,7 +84,8 @@ class MusicPlayer: ObservableObject {
         
         // AVMIDIPlayer 초기화
         do {
-            let bankURL = Bundle.main.url(forResource: "Piano", withExtension: "sf2")! // 사운드 폰트 파일 경로
+            
+            let bankURL = Bundle.main.url(forResource: soundFont, withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             midiPlayer?.prepareToPlay()

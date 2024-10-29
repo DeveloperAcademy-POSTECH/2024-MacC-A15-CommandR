@@ -380,7 +380,9 @@ struct MediaManager {
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
-                note: UInt8(note.pitchNoteNumber()), // pitch를 MIDI note number로 변환
+                note: UInt8(UserSettingData.shared.soundSetting == .melody ?
+                            note.pitchNoteNumber() :
+                            60), // pitch를 MIDI note number로 변환
                 velocity: 64, // 음의 강도 (나중에 수정 가능)
                 releaseVelocity: 0,
                 duration: 0
@@ -390,8 +392,10 @@ struct MediaManager {
             MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick, &noteOnMessage)
             
             // 노트의 길이를 MIDI 틱으로 변환
-            let noteDurationTicks = MusicTimeStamp(Double(note.duration) * divisionCorrectionFactor)
-
+            let noteDurationTicks = MusicTimeStamp(Double(UserSettingData.shared.soundSetting == .melody ?
+                                                          note.duration :
+                                                            0) * divisionCorrectionFactor)
+ 
             // 노트 오프 이벤트 생성
             var noteOffMessage = MIDINoteMessage(
                 channel: 0,
