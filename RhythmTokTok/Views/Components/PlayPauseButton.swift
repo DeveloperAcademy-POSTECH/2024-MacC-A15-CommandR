@@ -59,4 +59,8 @@ class PlayPauseButton: UIButton {
         config.cornerStyle = .medium
         self.configuration = config
     }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: 48) // Dynamic width, fixed height
+    }
 }

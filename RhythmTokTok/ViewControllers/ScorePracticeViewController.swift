@@ -39,21 +39,9 @@ class ScorePracticeViewController: UIViewController {
     }()
     let bpmButton = BPMButton()
     let currentMeasureLabel = UILabel()
-    let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
-    let stopButton: UIButton = {
-        let button = UIButton(type: .system)
-        let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular)
-        let image = UIImage(systemName: "stop.fill", withConfiguration: configuration)
-        button.tintColor = .white
-        button.setImage(image, for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .gray08
-        button.layer.cornerRadius = 16
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.clipsToBounds = true
-        button.isHidden = true
-        return button
-    }()
+    private let controlButtonView = ControlButtonView()
+
+//    let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
     private var pickerView: UIPickerView! // 임시 확인용 픽커
     // 악보 관리용
     private var midiFilePathURL: URL?
@@ -71,6 +59,9 @@ class ScorePracticeViewController: UIViewController {
         containerView.addSubview(scorePracticeTitleView)
         scorePracticeTitleView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(divider) // divider
+        // 컨트롤러뷰 추가
+        controlButtonView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(controlButtonView)
         // 루트 뷰 설정
         self.view = containerView
     }
@@ -88,7 +79,6 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        generateMusicXMLAudio()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         Task {
             await createMIDIFile(score: currentScore)
@@ -104,21 +94,10 @@ class ScorePracticeViewController: UIViewController {
         scorePracticeTitleView.titleLabel.text = currentScore.title
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bpmButton)
-        // 임시 픽커
-//        pickerView = UIPickerView()
-//        pickerView.delegate = self
-//        pickerView.dataSource = self
-//        pickerView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(pickerView)
         // 현재 진행 중인 마디 표시 라벨
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(currentMeasureLabel)
-
-        // 버튼을 뷰에 추가
-        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(playPauseButton)
-        // resume 버튼 추가
-        view.addSubview(stopButton)
+        
         setLottieView()
     }
     
@@ -152,20 +131,13 @@ class ScorePracticeViewController: UIViewController {
             currentMeasureLabel.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 20),
             currentMeasureLabel.heightAnchor.constraint(equalToConstant: 48),
             currentMeasureLabel.leadingAnchor.constraint(equalTo: bpmButton.trailingAnchor, constant: 60),
-            
-            // 플레이버튼
-            playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    constant: -20),
-            playPauseButton.heightAnchor.constraint(equalToConstant: 80),
-            playPauseButton.widthAnchor.constraint(equalToConstant: 160),
-            
-            // 정지버튼
-            stopButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    constant: -20),
-            stopButton.trailingAnchor.constraint(equalTo: playPauseButton.leadingAnchor, constant: -8),
-            stopButton.heightAnchor.constraint(equalToConstant: 80),
-            stopButton.widthAnchor.constraint(equalToConstant: 80)
+            // 컨트롤러뷰
+            controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            controlButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            controlButtonView.heightAnchor.constraint(equalToConstant: 120),
+            controlButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            controlButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+
         ])
     }
     
@@ -174,8 +146,8 @@ class ScorePracticeViewController: UIViewController {
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
 //        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
-        playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        controlButtonView.stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
     }
     
     private func setupBindings() {
@@ -329,7 +301,7 @@ class ScorePracticeViewController: UIViewController {
             return
         }
         // MIDI 파일 재생 여부에 따른 처리
-        if playPauseButton.isPlaying {
+        if controlButtonView.playPauseButton.isPlaying {
             // 재생 중일 때 일시정지
             sendPauseStatusToWatch()
             // MIDI 일시정지
@@ -345,17 +317,17 @@ class ScorePracticeViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
                 self.showLottieAnimation()
             }
-            stopButton.isHidden = false
+            controlButtonView.stopButton.isHidden = false
             // 워치로 play 예약 메시지 전송
         }
-        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
+        controlButtonView.playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
     }
     
     @objc private func stopButtonTapped() {
         sendStopStatusToWatch()
         musicPlayer.stopMIDI()
-        playPauseButton.isPlaying = false
-        stopButton.isHidden = true
+        controlButtonView.playPauseButton.isPlaying = false
+        controlButtonView.stopButton.isHidden = true
     }
     
     @objc private func presentBPMModal() {
@@ -366,7 +338,7 @@ class ScorePracticeViewController: UIViewController {
     // 시작 버튼 활성화 업데이트
     private func updatePlayPauseButton(_ isEnabled: Bool) {
         DispatchQueue.main.async {
-            self.playPauseButton.isEnabled = isEnabled
+            self.controlButtonView.playPauseButton.isEnabled = isEnabled
         }
     }
     
