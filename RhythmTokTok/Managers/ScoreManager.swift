@@ -21,7 +21,7 @@ class ScoreManager {
         score.id = UUID().uuidString
         score.createdAt = Date()
         score.title = scoreData.title
-        score.bpm = scoreData.bpm
+        score.bpm = Int64(scoreData.bpm)
         
         // Note를 담을 Ordered Set 생성
         let notesSet = NSMutableOrderedSet()

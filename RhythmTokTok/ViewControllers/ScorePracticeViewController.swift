@@ -13,7 +13,7 @@ class MeasureViewModel: ObservableObject {
     @Published var selectedMeasures: (Int, Int) = (-2, -2)
 }
 
-class MusicPracticeViewController: UIViewController {
+class ScorePracticeViewController: UIViewController {
     private var viewModel = MeasureViewModel()  // 선택구간 ObservableObject 생성
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var animationView: LottieAnimationView? // 로띠뷰
@@ -30,7 +30,7 @@ class MusicPracticeViewController: UIViewController {
     }
     var mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
-    let musicPracticeTitleView = MusicPracticeTitleView()
+    let scorePracticeTitleView = ScorePracticeTitleView()
     let divider: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray // 선의 색상
@@ -70,8 +70,8 @@ class MusicPracticeViewController: UIViewController {
         containerView.addSubview(practicNavBar)
         practicNavBar.translatesAutoresizingMaskIntoConstraints = false
         // MusicPracticeView 추가
-        containerView.addSubview(musicPracticeTitleView)
-        musicPracticeTitleView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(scorePracticeTitleView)
+        scorePracticeTitleView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(divider) // divider
         // 루트 뷰 설정
         self.view = containerView
@@ -103,7 +103,7 @@ class MusicPracticeViewController: UIViewController {
     }
     
     private func setupUI() {
-        musicPracticeTitleView.titleLabel.text = currentScore.title
+        scorePracticeTitleView.titleLabel.text = currentScore.title
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bpmButton)
         // 임시 픽커
@@ -147,18 +147,18 @@ class MusicPracticeViewController: UIViewController {
             divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
             
             // MusicPracticeView 레이아웃 설정 (네비게이션 바 아래에 위치)
-            musicPracticeTitleView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 24),
-            musicPracticeTitleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            musicPracticeTitleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            musicPracticeTitleView.heightAnchor.constraint(equalToConstant: 38),
+            scorePracticeTitleView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 24),
+            scorePracticeTitleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            scorePracticeTitleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            scorePracticeTitleView.heightAnchor.constraint(equalToConstant: 38),
             
             // BPM 버튼
-            bpmButton.topAnchor.constraint(equalTo: musicPracticeTitleView.bottomAnchor, constant: 20),
+            bpmButton.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 20),
             bpmButton.heightAnchor.constraint(equalToConstant: 48),
             bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             
             // 현재 진행 중인 마디 라벨
-            currentMeasureLabel.topAnchor.constraint(equalTo: musicPracticeTitleView.bottomAnchor, constant: 20),
+            currentMeasureLabel.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 20),
             currentMeasureLabel.heightAnchor.constraint(equalToConstant: 48),
             currentMeasureLabel.leadingAnchor.constraint(equalTo: bpmButton.trailingAnchor, constant: 60),
             

@@ -128,7 +128,7 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let musicPracticeViewController = MusicPracticeViewController(currentScore: scoreList[indexPath.row])
+        let musicPracticeViewController = ScorePracticeViewController(currentScore: scoreList[indexPath.row])
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     
