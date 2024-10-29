@@ -16,16 +16,11 @@ class MusicPlayer: ObservableObject {
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0 // 일시정지용
     var musicSequence: MusicSequence?
-    var soundFont: String {
-        switch UserSettingData.shared.soundSetting {
-        case .melody:
-            "Piano"
-        case .beat:
-            "Drum Set JD Rockset 5"
-        default:
-            "Piano"
-        }
-    }
+    private var soundFont: String = "Piano"
+    private var soundSettingObserver: Any?
+    
+    // Store MIDI file URL separately
+    private var midiFileURL: URL?
     
     init() {
         do {
@@ -33,6 +28,28 @@ class MusicPlayer: ObservableObject {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             ErrorHandler.handleError(error: error)
+        }
+        
+        // soundSetting의 변화를 감지하여 soundFont 변수를 업데이트함
+        soundSettingObserver = NotificationCenter.default.addObserver(
+            forName: .soundSettingDidChange,
+            object: nil,
+            queue: .main) { [weak self] _ in
+                self?.updateSoundFont()
+        }
+        
+        updateSoundFont()
+    }
+    
+    // soundFont 변수를 현재의 soundSetting값을 반영하여 업데이트하기
+    private func updateSoundFont() {
+        switch UserSettingData.shared.soundSetting {
+        case .melody:
+            soundFont = "Piano"
+        case .beat:
+            soundFont = "Drum Set JD Rockset 5"
+        default:
+            soundFont = "Piano"
         }
     }
     
@@ -67,6 +84,9 @@ class MusicPlayer: ObservableObject {
     
     // MARK: - MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
+        // 필요할 때 다시 꺼내 쓸 수 있도록 midiURL 저장
+        self.midiFileURL = midiURL
+        
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
         
@@ -156,6 +176,9 @@ class MusicPlayer: ObservableObject {
     }
     
     deinit {
+        if let observer = soundSettingObserver {
+                   NotificationCenter.default.removeObserver(observer)
+               }
         stopTimer()
     }
 }

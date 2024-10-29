@@ -80,6 +80,9 @@ class ScorePracticeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        Task {
+                await createMIDIFile(score: currentScore)
+            }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
