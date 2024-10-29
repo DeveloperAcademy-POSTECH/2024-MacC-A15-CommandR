@@ -57,7 +57,7 @@ struct MediaManager {
     }
     
     // TODO: 나중에 시간 및 마디 번호 관리용 프로퍼티를 만들어서 최적화 필요
-    func getCurrentMeasureNumber(currentTime: TimeInterval, division: Double) -> Int {
+    func getCurrentMeasureNumber(currentTime: Double, division: Double) -> Int {
         guard let currentPart = currentPart else {
             return 0
         }
@@ -83,7 +83,25 @@ struct MediaManager {
         // 마지막 마디 반환
         return measures.last?.number ?? -1
     }
+    
+    // 이전마디 시작틱
+    func getMeasureStartTime(currentMeasure: Int, division: Double) -> TimeInterval {
+        guard let currentPart = currentPart else { return 0 }
+        
+        let measures = currentPart.measures
+            .sorted(by: { $0.key < $1.key })
+            .flatMap { $0.value }
+        
+        if let currentIndex = measures.firstIndex(where: { $0.number == currentMeasure }) {
+            let startTime = convertTicksToTime(convertTick: measures[currentIndex].startTime,
+                                               division: division)
 
+            return startTime
+        }
+        
+        return 0
+    }
+    
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
         let notes = parsedScore.parts.flatMap { part in
             part.measures

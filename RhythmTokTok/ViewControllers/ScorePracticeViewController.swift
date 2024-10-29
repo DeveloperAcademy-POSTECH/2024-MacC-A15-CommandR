@@ -9,25 +9,23 @@ import Lottie
 import SwiftUI
 import UIKit
 
-class MeasureViewModel: ObservableObject {
-    @Published var selectedMeasures: (Int, Int) = (-2, -2)
-}
-
 class ScorePracticeViewController: UIViewController {
-    private var viewModel = MeasureViewModel()  // 선택구간 ObservableObject 생성
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var animationView: LottieAnimationView? // 로띠뷰
 
     var currentScore: Score // 현재 악보 score
+    var currentMeasure: Int = 0// 현재 진행중인 마디
     var totalMeasure = 0
+    
     init(currentScore: Score) {
         self.currentScore = currentScore
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: nil) // Calls the designated initializer
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     var mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
     let scorePracticeTitleView = ScorePracticeTitleView()
@@ -40,9 +38,6 @@ class ScorePracticeViewController: UIViewController {
     let bpmButton = BPMButton()
     let currentMeasureLabel = UILabel()
     private let controlButtonView = ControlButtonView()
-
-//    let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
-    private var pickerView: UIPickerView! // 임시 확인용 픽커
     // 악보 관리용
     private var midiFilePathURL: URL?
     private var isPlayingMIDIFile = false
@@ -148,16 +143,10 @@ class ScorePracticeViewController: UIViewController {
 //        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         controlButtonView.stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for:  .touchUpInside)
     }
     
     private func setupBindings() {
-        // ViewModel의 상태 변화를 구독하여 특정 함수 호출
-        viewModel.$selectedMeasures
-            .sink { [weak self] selectedMeasures in
-                self?.handleMeasuresChange(selectedMeasures)
-            }
-            .store(in: &cancellables)  // 메모리에서 자동 해제될 수 있도록 구독을 저장
-        
         WatchManager.shared.$isWatchAppConnected
             .sink { [weak self] isConnected in
                 self?.handleWatchAppConnectionChange(isConnected)
@@ -174,41 +163,11 @@ class ScorePracticeViewController: UIViewController {
     
     private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
         let division = Double(currentScore.divisions)
-        let currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: currentTime, division: division)
+        currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: Double(currentTime), division: division)
         
         currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
     }
-    
-    // 상태 변화에 따라 호출되는 함수
-    private func handleMeasuresChange(_ selectedMeasures: (Int, Int)) {
-        var startMeasureNumber = selectedMeasures.0
-        var endMeasureNumber = selectedMeasures.1
         
-        // TODO: 더 좋은 방법 구상하기, 처음 시작시 무시
-        if viewModel.selectedMeasures == (-2, -2) {
-            return
-        }
-        
-        if let part = currentScore.parts.last,
-           let firstMeasure = part.measures.min(by: { $0.key < $1.key })?.value.first {
-            if firstMeasure.number != 0 {
-                startMeasureNumber += 1
-                endMeasureNumber += 1
-            }
-        }
-        if selectedMeasures == (-1, -1) {
-            Task {
-                await createMIDIFile(score: currentScore)
-            }
-        } else {
-            // 구간 미디파일 생성
-            Task {
-                await createMIDIFile(score: currentScore,
-                                     startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
-            }
-        }
-    }
-    
     private func handleWatchAppConnectionChange(_ isConnected: Bool) {
         if isConnected {
             // 연결되었을 때 처리
@@ -330,6 +289,20 @@ class ScorePracticeViewController: UIViewController {
         controlButtonView.stopButton.isHidden = true
     }
     
+    @objc private func previousButtonTapped() {
+//        sendStopStatusToWatch()
+//        musicPlayer.stopMIDI()
+//        controlButtonView.playPauseButton.isPlaying = false
+//        controlButtonView.stopButton.isHidden = true
+        if currentMeasure != 0 {
+            currentMeasure -= 1
+        }
+        let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
+                                                         division: Double(currentScore.divisions))
+        musicPlayer.playMIDI(startTime: startTime, delay: 1)
+        currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
+    }
+    
     @objc private func presentBPMModal() {
         let setBPMViewController = SetBPMViewController()
         present(setBPMViewController, animated: true, completion: nil)
@@ -340,12 +313,6 @@ class ScorePracticeViewController: UIViewController {
         DispatchQueue.main.async {
             self.controlButtonView.playPauseButton.isEnabled = isEnabled
         }
-    }
-    
-    // 임시 픽커 업데이트
-    private func updateScore(score: Score) {
-        currentScore = score
-        pickerView.reloadAllComponents() // 데이터를 받아오면 Picker 업데이트
     }
     
     // MARK: MIDI 파일, 햅틱 시퀀스 관리
