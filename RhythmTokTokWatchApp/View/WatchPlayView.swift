@@ -22,52 +22,46 @@ struct WatchPlayView: View {
         }
     }
     
-    
     var body: some View {
-        ZStack {
-            VStack {
-                HStack(alignment: .center) {
-                    Spacer()
-                    Text(scoreStatusText)
-                        .foregroundColor(.blue)
-                        .font(.headline)
-                        .padding(.trailing)
-                }
-//                .padding(.top, 20)
-                
-                // 메인 콘텐츠
-                MarqueeTextView(
-                    text: "\(connectivityManager.selectedScoreTitle)",
-                    font: .title2,
-                    isAnimating: connectivityManager.playStatus == .play
-                )
-                .padding()
-
-                // 재생 및 일시정지 버튼
-                if connectivityManager.playStatus == .ready ||
-                    connectivityManager.playStatus == .pause ||
-                    connectivityManager.playStatus == .stop ||
-                    connectivityManager.playStatus == .done {
-                    Button(action: {
-                        // 재생 버튼 눌렀을 때
-                        connectivityManager.playButtonTapped()
-                    }) {
-                        Image(systemName: "play.fill")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                    }
-                } else if connectivityManager.playStatus == .play {
-                    Button(action: {
-                        // 일시정지 버튼 눌렀을 때
-                        connectivityManager.playButtonTapped()
-                    }) {
-                        Image(systemName: "pause.fill")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                    }
-                }
+        VStack(spacing: 10)  {
+            HStack(alignment: .center) {
+                Spacer()
+                Text(scoreStatusText)
+                    .foregroundColor(.blue)
+                    .font(.headline)
+                    .padding(.top, 10)
             }
+            Spacer()
+            
+            // 곡 타이틀 표시
+            MarqueeTextView(
+                text: connectivityManager.selectedScoreTitle,
+                fontSize: 20,
+                isAnimating: connectivityManager.playStatus == .play
+            )
+            .frame(height: 24)
+            
+            Spacer()
+            
+            Button(action: {
+                connectivityManager.playButtonTapped()
+            }
+            ){
+                Image(systemName: connectivityManager.playStatus != .play ? "play.fill" : "pause.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 24)
+                    .foregroundColor(.white)
+            }
+            .frame(width: 142, height: 64)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.blue)
+            )
+            .buttonStyle(PlainButtonStyle())
+            .padding(.bottom, 10)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

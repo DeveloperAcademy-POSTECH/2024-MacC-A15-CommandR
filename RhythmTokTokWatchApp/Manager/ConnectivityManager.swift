@@ -117,10 +117,21 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             // 현재 재생 중이면 일시정지로 변경
             playStatus = .pause
             sendPlayStatusToPhone(status: .pause)
+            hapticManager.stopHaptic() // 햅틱 중지
         } else {
             // 재생 상태로 변경
             playStatus = .play
             sendPlayStatusToPhone(status: .play)
+            
+            // 이전에 받은 햅틱 시퀀스 실행
+            if isHapticGuideOn {
+                // 진동 가이드가 활성화된 경우
+                let startTime = Date().timeIntervalSince1970
+                hapticManager.startHaptic(beatTime: hapticSequence, startTimeInterval: startTime)
+            } else {
+                // 진동 가이드가 비활성화된 경우
+                print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
+            }
         }
     }
 }
