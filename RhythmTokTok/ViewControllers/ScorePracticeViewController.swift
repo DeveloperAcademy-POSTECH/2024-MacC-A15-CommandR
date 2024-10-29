@@ -290,17 +290,29 @@ class ScorePracticeViewController: UIViewController {
     }
     
     @objc private func previousButtonTapped() {
-//        sendStopStatusToWatch()
-//        musicPlayer.stopMIDI()
-//        controlButtonView.playPauseButton.isPlaying = false
-//        controlButtonView.stopButton.isHidden = true
+//        sendPauseStatusToWatch()
         if currentMeasure != 0 {
             currentMeasure -= 1
         }
         let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
                                                          division: Double(currentScore.divisions))
-        musicPlayer.playMIDI(startTime: startTime, delay: 1)
         currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
+        Task {
+            let hapticSequence = try await mediaManager.getClipHapticSequence(part: currentScore.parts.last!,
+                                                                              divisions: currentScore.divisions,
+                                                                              startNumber: currentMeasure,
+                                                                              endNumber: totalMeasure)
+            await performJumpMeasure(hapticSequence: hapticSequence, startTime: startTime)
+        }
+    }
+    
+    func performJumpMeasure(hapticSequence: [Double], startTime: TimeInterval) async {
+        
+        await sendHapticSequenceToWatch(hapticSequence: hapticSequence)
+        let futureTime = Date().addingTimeInterval(1).timeIntervalSince1970
+        
+        musicPlayer.playMIDI(startTime: startTime, delay: 1)
+        sendPlayStatusToWatch(startTimeInterVal: futureTime)
     }
     
     @objc private func presentBPMModal() {
