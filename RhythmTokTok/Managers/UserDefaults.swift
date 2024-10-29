@@ -33,7 +33,7 @@ class UserSettingData {
     }
     
     // Watch 진동 가이드 설정
-    var watchHapticGuide: Bool {
+    var isHapticGuideOn: Bool {
         get {
             if UserDefaults.standard.object(forKey: watchHapticGuideKey) != nil {
                 return UserDefaults.standard.bool(forKey: watchHapticGuideKey)

@@ -136,7 +136,7 @@ class WatchManager: NSObject, WCSessionDelegate, ObservableObject {
             return
         }
         
-        let watchHapticGuide = UserSettingData.shared.watchHapticGuide
+        let watchHapticGuide = UserSettingData.shared.isHapticGuideOn
         var message: [String: Any] = [
             "playStatus": status.rawValue,
             "watchHapticGuide": watchHapticGuide

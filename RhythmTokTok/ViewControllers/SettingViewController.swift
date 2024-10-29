@@ -64,7 +64,7 @@ class SettingViewController: UIViewController {
             selectButton(settingView.soundButtons[3])
         }
         
-        let hapticGuide = UserSettingData.shared.watchHapticGuide
+        let hapticGuide = UserSettingData.shared.isHapticGuideOn
         if hapticGuide {
             selectButton(settingView.hapticButtons[hapticGuide ? 0 : 1])
         }
@@ -121,21 +121,21 @@ class SettingViewController: UIViewController {
             if let index = hapticButtons.firstIndex(of: sender) {
                 switch index {
                 case 0:
-                    UserSettingData.shared.watchHapticGuide = true
+                    UserSettingData.shared.isHapticGuideOn = true
                 case 1:
-                    UserSettingData.shared.watchHapticGuide = false
+                    UserSettingData.shared.isHapticGuideOn = false
                 default:
                     break
                 }
                 // 설정 변경 시 워치로 설정 전송
                 sendHapticGuideSettingToWatch()
             }
-            print("Watch 진동 가이드 설정: \(UserSettingData.shared.watchHapticGuide ? "켜기" : "끄기")")
+            print("Watch 진동 가이드 설정: \(UserSettingData.shared.isHapticGuideOn ? "켜기" : "끄기")")
         }
     }
     private func sendHapticGuideSettingToWatch() {
         let message: [String: Any] = [
-            "watchHapticGuide": UserSettingData.shared.watchHapticGuide
+            "watchHapticGuide": UserSettingData.shared.isHapticGuideOn
         ]
         do {
             try WCSession.default.updateApplicationContext(message)

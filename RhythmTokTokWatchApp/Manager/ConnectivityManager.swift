@@ -18,7 +18,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var selectedScoreTitle: String = ""
     @Published var playStatus: String = "준비"
     @Published var hapticSequence: [Double] = []
-    @Published var watchHapticGuide: Bool = true
+    @Published var isHapticGuideOn: Bool = true
     
     override init() {
         super.init()
@@ -58,9 +58,9 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             guard let self = self else { return }
             session.activate()
             
-            if let watchHapticGuide = applicationContext["watchHapticGuide"] as? Bool {
-                self.watchHapticGuide = watchHapticGuide
-                print("워치에서 수신한 watchHapticGuide 설정: \(self.watchHapticGuide)")
+            if let isHapticGuideOn = applicationContext["watchHapticGuide"] as? Bool {
+                self.isHapticGuideOn = isHapticGuideOn
+                print("워치에서 수신한 watchHapticGuide 설정: \(self.isHapticGuideOn)")
             }
             
             // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
@@ -83,7 +83,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                 case .play:
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
-                        if self.watchHapticGuide {
+                        if self.isHapticGuideOn {
                             // 진동 가이드가 활성화된 경우
                             self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
                         } else {
