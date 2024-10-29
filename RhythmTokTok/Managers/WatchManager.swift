@@ -20,6 +20,8 @@ class WatchManager: NSObject, WCSessionDelegate, ObservableObject {
     
     // TODO: isPaired로 관리 가능한지 확인 부탁드려요
     @Published var isWatchAppConnected: Bool = false
+    @Published var status: PlayStatus = .stop
+
     
     private override init() {
         super.init()
@@ -126,7 +128,7 @@ class WatchManager: NSObject, WCSessionDelegate, ObservableObject {
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }
-    
+        
     // 2. 연습뷰에서 [재생 상태]를 보냄. 재생인 경우 [시작시간] 보냄. (연습뷰에서 재생 관련 버튼 조작시 작동)
     func sendPlayStatusToWatch(status: PlayStatus, startTime: TimeInterval?) {
         // 워치가 연결되어 있는지 확인 (페어링 및 앱 설치 여부)
