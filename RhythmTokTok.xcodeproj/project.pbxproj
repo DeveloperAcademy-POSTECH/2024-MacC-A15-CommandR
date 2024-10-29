@@ -421,6 +421,7 @@
 			children = (
 				1ED9FECA2CBE780000472C51 /* MeasureProgressView.swift */,
 				1ED9FECC2CBE793600472C51 /* ProgressTableViewCell.swift */,
+				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
 				D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */,
 			);
 			path = Deprecated;
@@ -463,7 +464,6 @@
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeTitleView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
 				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
-				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
 				1EF8A0A72CB53E9A00ADB783 /* Components */,
 			);
 			path = Views;
