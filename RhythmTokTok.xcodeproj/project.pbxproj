@@ -57,8 +57,8 @@
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
 		1ED9FEBF2CBD573D00472C51 /* Loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBE2CBD573D00472C51 /* Loading.json */; };
-		1ED9FEC32CBE4A8300472C51 /* MusicPracticeTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEC22CBE4A7A00472C51 /* MusicPracticeTitleView.swift */; };
-		1ED9FEC72CBE4B2F00472C51 /* MusicPracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEC62CBE4B2E00472C51 /* MusicPracticeViewController.swift */; };
+		1ED9FEC32CBE4A8300472C51 /* ScorePracticeTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEC22CBE4A7A00472C51 /* ScorePracticeTitleView.swift */; };
+		1ED9FEC72CBE4B2F00472C51 /* ScorePracticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEC62CBE4B2E00472C51 /* ScorePracticeViewController.swift */; };
 		1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */; };
 		1ED9FECB2CBE781000472C51 /* MeasureProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FECA2CBE780000472C51 /* MeasureProgressView.swift */; };
 		1ED9FECD2CBE797C00472C51 /* ProgressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FECC2CBE793600472C51 /* ProgressTableViewCell.swift */; };
@@ -189,8 +189,8 @@
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
 		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
-		1ED9FEC22CBE4A7A00472C51 /* MusicPracticeTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPracticeTitleView.swift; sourceTree = "<group>"; };
-		1ED9FEC62CBE4B2E00472C51 /* MusicPracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPracticeViewController.swift; sourceTree = "<group>"; };
+		1ED9FEC22CBE4A7A00472C51 /* ScorePracticeTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePracticeTitleView.swift; sourceTree = "<group>"; };
+		1ED9FEC62CBE4B2E00472C51 /* ScorePracticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorePracticeViewController.swift; sourceTree = "<group>"; };
 		1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeNavigationBar.swift; sourceTree = "<group>"; };
 		1ED9FECA2CBE780000472C51 /* MeasureProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureProgressView.swift; sourceTree = "<group>"; };
 		1ED9FECC2CBE793600472C51 /* ProgressTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressTableViewCell.swift; sourceTree = "<group>"; };
@@ -352,7 +352,7 @@
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
 				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
-				1ED9FEC62CBE4B2E00472C51 /* MusicPracticeViewController.swift */,
+				1ED9FEC62CBE4B2E00472C51 /* ScorePracticeViewController.swift */,
 				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
 				1ED9FED22CBF826900472C51 /* SetBPMViewController.swift */,
 				EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */,
@@ -460,7 +460,7 @@
 		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1ED9FEC22CBE4A7A00472C51 /* MusicPracticeTitleView.swift */,
+				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeTitleView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
 				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
 				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
@@ -786,7 +786,7 @@
 				616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */,
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
 				1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */,
-				1ED9FEC32CBE4A8300472C51 /* MusicPracticeTitleView.swift in Sources */,
+				1ED9FEC32CBE4A8300472C51 /* ScorePracticeTitleView.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
@@ -802,7 +802,7 @@
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
-				1ED9FEC72CBE4B2F00472C51 /* MusicPracticeViewController.swift in Sources */,
+				1ED9FEC72CBE4B2F00472C51 /* ScorePracticeViewController.swift in Sources */,
 				EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */,
 				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
