@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MusicPracticeTitleView: UIView {
+class ScorePracticeTitleView: UIView {
     
     // UI 요소 선언
     let titleLabel: UILabel = {
