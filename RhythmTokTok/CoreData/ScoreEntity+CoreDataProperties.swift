@@ -2,12 +2,12 @@
 //  ScoreEntity+CoreDataProperties.swift
 //  RhythmTokTok
 //
-//  Created by Kyuhee hong on 10/15/24.
+//  Created by Kyuhee hong on 10/28/24.
 //
 //
 
-import CoreData
 import Foundation
+import CoreData
 
 extension ScoreEntity {
 
@@ -15,10 +15,12 @@ extension ScoreEntity {
         return NSFetchRequest<ScoreEntity>(entityName: "ScoreEntity")
     }
 
-    @NSManaged public var id: String?
+    @NSManaged public var bpm: Int64
     @NSManaged public var createdAt: Date?
+    @NSManaged public var id: String?
     @NSManaged public var title: String?
-    @NSManaged public var bpm: Int
+    @NSManaged public var isHapticOn: Bool
+    @NSManaged public var soundType: String?
     @NSManaged public var notes: NSOrderedSet?
 
 }
