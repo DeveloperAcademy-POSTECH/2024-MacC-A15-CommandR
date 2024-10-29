@@ -2,12 +2,12 @@
 //  ScoreEntity+CoreDataClass.swift
 //  RhythmTokTok
 //
-//  Created by Kyuhee hong on 10/15/24.
+//  Created by Kyuhee hong on 10/28/24.
 //
 //
 
-import CoreData
 import Foundation
+import CoreData
 
 @objc(ScoreEntity)
 public class ScoreEntity: NSManagedObject {
