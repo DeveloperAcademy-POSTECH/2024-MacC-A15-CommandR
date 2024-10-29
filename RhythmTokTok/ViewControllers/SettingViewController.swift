@@ -127,21 +127,8 @@ class SettingViewController: UIViewController {
                 default:
                     break
                 }
-                // 설정 변경 시 워치로 설정 전송
-                sendHapticGuideSettingToWatch()
             }
             print("Watch 진동 가이드 설정: \(UserSettingData.shared.isHapticGuideOn ? "켜기" : "끄기")")
-        }
-    }
-    private func sendHapticGuideSettingToWatch() {
-        let message: [String: Any] = [
-            "watchHapticGuide": UserSettingData.shared.isHapticGuideOn
-        ]
-        do {
-            try WCSession.default.updateApplicationContext(message)
-            print("햅틱 가이드 설정을 워치로 전송함: \(message)")
-        } catch {
-            ErrorHandler.handleError(error: "워치로 햅틱 가이드 설정 전송 중 오류 발생: \(error.localizedDescription)")
         }
     }
     
