@@ -98,20 +98,12 @@ class MusicPracticeViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupActions()
-        setupBindings()
-        updateWatchAppStatus()
-    }
+        setupBindings()    }
     
     private func setupUI() {
         musicPracticeTitleView.titleLabel.text = currentScore.title
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bpmButton)
-        // 임시 픽커
-//        pickerView = UIPickerView()
-//        pickerView.delegate = self
-//        pickerView.dataSource = self
-//        pickerView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(pickerView)
         // 현재 진행 중인 마디 표시 라벨
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(currentMeasureLabel)
@@ -161,11 +153,6 @@ class MusicPracticeViewController: UIViewController {
             currentMeasureLabel.topAnchor.constraint(equalTo: musicPracticeTitleView.bottomAnchor, constant: 20),
             currentMeasureLabel.heightAnchor.constraint(equalToConstant: 48),
             currentMeasureLabel.leadingAnchor.constraint(equalTo: bpmButton.trailingAnchor, constant: 60),
-            
-//            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            pickerView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
-//            pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            pickerView.heightAnchor.constraint(equalToConstant: 200),
 
             // ScoreView
             hostingController!.view.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
@@ -216,6 +203,14 @@ class MusicPracticeViewController: UIViewController {
         musicPlayer.$currentTime
             .sink { [weak self] currentTime in
                 self?.updateCurrentMeasureLabel(currentTime: currentTime)
+            }
+            .store(in: &cancellables)
+        
+        // WatchManager의 playStatus를 구독하여 UI 업데이트
+        WatchManager.shared.$playStatus
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newStatus in
+                self?.handlePlayStatusChange(newStatus)
             }
             .store(in: &cancellables)
     }
@@ -368,7 +363,14 @@ class MusicPracticeViewController: UIViewController {
             stopButton.isHidden = false
             // 워치로 play 예약 메시지 전송
         }
-        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
+//        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
+        if WatchManager.shared.playStatus == .play {
+            // 현재 재생 중이면 일시정지로 변경
+            WatchManager.shared.playStatus = .pause
+        } else {
+            // 재생 상태로 변경
+            WatchManager.shared.playStatus = .play
+        }
     }
     
     @objc private func stopButtonTapped() {
@@ -376,6 +378,7 @@ class MusicPracticeViewController: UIViewController {
         musicPlayer.stopMIDI()
         playPauseButton.isPlaying = false
         stopButton.isHidden = true
+        WatchManager.shared.playStatus = .stop
     }
     
     @objc private func presentBPMModal() {
@@ -475,6 +478,66 @@ class MusicPracticeViewController: UIViewController {
           WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
       }
   }
+
+// MARK: - Play Status Handling Extension
+
+extension MusicPracticeViewController {
+    func handlePlayStatusChange(_ status: PlayStatus) {
+        switch status {
+        case .ready:
+            // 준비 상태: 재생 버튼만 표시
+            playPauseButton.isHidden = false
+            playPauseButton.isPlaying = false
+            stopButton.isHidden = true
+        case .play:
+            // 재생 상태: 일시정지 버튼 표시
+            playPauseButton.isHidden = false
+            playPauseButton.isPlaying = true
+            stopButton.isHidden = false
+            // MIDI 재생 시작
+            startMIDIPlayback()
+        case .pause:
+            // 일시정지 상태: 재생 버튼 표시
+            playPauseButton.isHidden = false
+            playPauseButton.isPlaying = false
+            stopButton.isHidden = false
+            // MIDI 일시정지
+            musicPlayer.pauseMIDI()
+        case .stop:
+            // 정지 상태: 재생 버튼만 표시
+            playPauseButton.isHidden = false
+            playPauseButton.isPlaying = false
+            stopButton.isHidden = true
+            // MIDI 재생 중지
+            musicPlayer.stopMIDI()
+        case .done:
+            // 완료 상태: 필요에 따라 처리
+            break
+        }
+    }
+
+    func startMIDIPlayback() {
+        guard let outputPathURL = midiFilePathURL else {
+            ErrorHandler.handleError(error: "MIDI file URL is nil.")
+            return
+        }
+
+        // MIDI 파일이 존재하는지 확인
+        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
+            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
+            return
+        }
+
+        // 현재 시간으로부터 4초 후 재생 시작
+        let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
+        let delay = futureTime - Date().timeIntervalSince1970
+        self.musicPlayer.playMIDI(delay: delay)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
+            self.showLottieAnimation()
+        }
+    }
+}
+
 
 //extension MusicPracticeViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 //
