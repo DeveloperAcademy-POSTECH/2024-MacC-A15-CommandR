@@ -36,7 +36,7 @@ class SettingView: UIView {
     ]
     
     // 진동 가이드 설정 라벨
-    let vibrationLabel: UILabel = {
+    let hapticLabel: UILabel = {
         let label = UILabel()
         label.text = "Watch 진동 가이드 설정"
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -45,7 +45,7 @@ class SettingView: UIView {
     }()
     
     // 진동 가이드 설정 버튼들
-    let vibrationButtons: [UIButton] = [
+    let hapticButtons: [UIButton] = [
         createCustomButton(title: "진동 가이드 받기"),
         createCustomButton(title: "진동 가이드 받지 않기")
     ]
@@ -109,7 +109,7 @@ class SettingView: UIView {
         
         // 소리 설정과 진동 가이드 스택뷰
         let soundStackView = createVerticalStackView(arrangedSubviews: soundButtons)
-        let vibrationStackView = createVerticalStackView(arrangedSubviews: vibrationButtons)
+        let hapticStackView = createVerticalStackView(arrangedSubviews: hapticButtons)
         
         // 글자 크기 설정 스택뷰
         let fontSizeStackView = createHorizontalStackView(arrangedSubviews: fontSizeButtons)
@@ -122,8 +122,8 @@ class SettingView: UIView {
         let mainStackView = UIStackView(arrangedSubviews: [
             soundLabel,
             soundStackView,
-            vibrationLabel,
-            vibrationStackView,
+            hapticLabel,
+            hapticStackView,
             fontSizeLabel,
             fontSizeStackView,
             fontSizeDescriptionLabel,

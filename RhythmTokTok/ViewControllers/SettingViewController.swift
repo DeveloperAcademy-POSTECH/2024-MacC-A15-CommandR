@@ -5,6 +5,7 @@
 //  Created by Byeol Kim on 10/9/24.
 //
 import UIKit
+import WatchConnectivity
 
 class SettingViewController: UIViewController {
     
@@ -14,7 +15,7 @@ class SettingViewController: UIViewController {
     var selectedSoundButton: UIButton?
     
     // 현재 선택된 진동 가이드 버튼
-    var selectedVibrationButton: UIButton?
+    var selectedHapticButton: UIButton?
     
     // 소리 설정 버튼들
     var soundButtons: [UIButton] {
@@ -22,8 +23,8 @@ class SettingViewController: UIViewController {
     }
     
     // 진동 가이드 설정 버튼들
-    var vibrationButtons: [UIButton] {
-        return settingView.vibrationButtons
+    var hapticButtons: [UIButton] {
+        return settingView.hapticButtons
     }
     
     override func loadView() {
@@ -39,7 +40,7 @@ class SettingViewController: UIViewController {
     
     private func setupActions() {
         // 소리와 진동 버튼에 대한 액션 설정을 배열로 처리
-        for button in soundButtons + vibrationButtons {
+        for button in soundButtons + hapticButtons {
             button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         }
         
@@ -63,11 +64,9 @@ class SettingViewController: UIViewController {
             selectButton(settingView.soundButtons[3])
         }
         
-        let vibrationGuide = UserSettingData.shared.watchVibrationGuide
-        if vibrationGuide {
-            selectButton(settingView.vibrationButtons[0])
-        } else {
-            selectButton(settingView.vibrationButtons[1])
+        let hapticGuide = UserSettingData.shared.isHapticGuideOn
+        if hapticGuide {
+            selectButton(settingView.hapticButtons[hapticGuide ? 0 : 1])
         }
         
         let fontSize = UserSettingData.shared.fontSize
@@ -80,12 +79,12 @@ class SettingViewController: UIViewController {
     }
     
     @objc private func bpmSliderValueChanged(_ sender: UISlider) {
-         let bpmValue = Int(sender.value)
-         // BPM 값을 업데이트하고 라벨 갱신
-         UserSettingData.shared.bpm = bpmValue
-         settingView.currentBPMLabel.text = "현재 BPM: \(bpmValue)"
-         print("BPM 설정 변경: \(bpmValue)")
-     }
+        let bpmValue = Int(sender.value)
+        // BPM 값을 업데이트하고 라벨 갱신
+        UserSettingData.shared.bpm = bpmValue
+        settingView.currentBPMLabel.text = "현재 BPM: \(bpmValue)"
+        print("BPM 설정 변경: \(bpmValue)")
+    }
     
     @objc private func buttonTapped(_ sender: UIButton) {
         if soundButtons.contains(sender) {
@@ -111,27 +110,28 @@ class SettingViewController: UIViewController {
                 }
             }
             print("소리 설정 변경: \(UserSettingData.shared.soundSetting.rawValue)")
-        } else if vibrationButtons.contains(sender) {
+        } else if hapticButtons.contains(sender) {
             // 이전에 선택된 버튼 해제
-            if let previousButton = selectedVibrationButton {
+            if let previousButton = selectedHapticButton {
                 deselectButton(previousButton)
             }
             selectButton(sender)
             
             // 진동 설정 업데이트
-            if let index = vibrationButtons.firstIndex(of: sender) {
+            if let index = hapticButtons.firstIndex(of: sender) {
                 switch index {
                 case 0:
-                    UserSettingData.shared.watchVibrationGuide = true
+                    UserSettingData.shared.isHapticGuideOn = true
                 case 1:
-                    UserSettingData.shared.watchVibrationGuide = false
+                    UserSettingData.shared.isHapticGuideOn = false
                 default:
                     break
                 }
             }
-            print("Watch 진동 가이드 설정: \(UserSettingData.shared.watchVibrationGuide ? "켜기" : "끄기")")
+            print("Watch 진동 가이드 설정: \(UserSettingData.shared.isHapticGuideOn ? "켜기" : "끄기")")
         }
     }
+    
     
     @objc private func fontSizeButtonTapped(_ sender: UIButton) {
         let selectedFontSize = sender.tag
@@ -147,8 +147,8 @@ class SettingViewController: UIViewController {
         // 그룹별 선택된 버튼 저장
         if soundButtons.contains(button) {
             selectedSoundButton = button
-        } else if vibrationButtons.contains(button) {
-            selectedVibrationButton = button
+        } else if hapticButtons.contains(button) {
+            selectedHapticButton = button
         }
     }
     
