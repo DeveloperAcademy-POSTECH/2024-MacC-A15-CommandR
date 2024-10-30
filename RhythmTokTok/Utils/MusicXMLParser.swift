@@ -33,6 +33,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var isNextLine = false // 바라인으로 마무리 여부 확인용
     private var noteCountToMeasureMaxLength: [Int: Double] = [0: 0]// 음표 갯수별 최대가로 길이관리
     private var noteCountToMeasureMinLength: [Int: Double] = [0: 0]// 음표 갯수별 최소가로 길이관리
+    private var tieStartNotes: [String: Note] = [:]
+    
 
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
@@ -86,6 +88,13 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             if let location = attributeDict["location"] {
                 currentLocationBarLine = location
             }
+        }
+        
+        // notiations 내에 있는 "tie" 혹은 "tied" 원소를 발견할 시 이를 note의 속성에 추가함
+        if elementName == "tie" || elementName == "tied",
+            let tieType = attributeDict["type"],
+            let note = currentNote {
+            currentNote?.tieType = tieType // Store "start" or "stop" in the current note
         }
         
         // repeat 태그가 발견되면 플래그를 true로 설정
@@ -233,8 +242,29 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             currentLocationBarLine = ""
             hasRepeat = false
         }
-        
+  
         if elementName == "note", let note = currentNote, currentMeasure != nil {
+            // 이음줄 관련 처리 로직
+            if let tieType = note.tieType {
+                let noteKey = "\(note.pitch)-\(note.octave)-\(note.voice)" // Unique key
+                
+                if tieType == "start" {
+                    // "tie start"일 때는 노트를 저장만 해주기
+                    tieStartNotes[noteKey] = note
+                    return
+                } else if tieType == "stop" {
+                    // 매칭하는 "tie start"를 찾고, 그 노트의 duration을 연장한 뒤 add
+                    if var startNote = tieStartNotes[noteKey] {
+                        startNote.duration += note.duration
+                        tieStartNotes.removeValue(forKey: noteKey)
+                        // 사용된 값은 삭제함
+                        currentMeasure?.addNote(startNote)
+                        currentNote = nil
+                    }
+                    return
+                }
+            }
+    
             // 마디에 음표 추가
             currentMeasure?.addNote(note)
             currentNote = nil
