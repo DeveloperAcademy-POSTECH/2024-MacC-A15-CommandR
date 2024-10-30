@@ -36,6 +36,7 @@ class ScorePracticeViewController: UIViewController {
         return view
     }()
     let progressBar = ProgressBarView()
+    let statusTags = StatusTagView()
     let scorePracticeTitleView = ScorePracticeTitleView()
 
     let bpmButton = BPMButton()
@@ -60,6 +61,9 @@ class ScorePracticeViewController: UIViewController {
         // 프로그래스바 추가
         containerView.addSubview(progressBar)
         progressBar.translatesAutoresizingMaskIntoConstraints = false
+        // 셋팅 테그 추가
+        containerView.addSubview(statusTags)
+        statusTags.translatesAutoresizingMaskIntoConstraints = false
         // 컨트롤러뷰 추가
         controlButtonView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(controlButtonView)
@@ -126,13 +130,20 @@ class ScorePracticeViewController: UIViewController {
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
             
+            // 프로그래스바
             progressBar.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 0),
             progressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             progressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             progressBar.heightAnchor.constraint(equalToConstant: 4),
             
+            // 멜로디, 진동 셋팅 테그
+            statusTags.topAnchor.constraint(equalTo: progressBar.bottomAnchor, constant: 32),
+            statusTags.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            statusTags.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            statusTags.heightAnchor.constraint(equalToConstant: 40),
+            
             // MusicPracticeView 레이아웃 설정 (네비게이션 바 아래에 위치)
-            scorePracticeTitleView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 24),
+            scorePracticeTitleView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 24),
             scorePracticeTitleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             scorePracticeTitleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             scorePracticeTitleView.heightAnchor.constraint(equalToConstant: 38),

@@ -57,6 +57,7 @@
 		1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */; };
 		1E91466F2CD0FE2900DBCD00 /* WatchManage_Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */; };
 		1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */; };
+		1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
@@ -195,6 +196,7 @@
 		1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButtonView.swift; sourceTree = "<group>"; };
 		1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManage_Ex.swift; sourceTree = "<group>"; };
 		1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTagView.swift; sourceTree = "<group>"; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
 		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 			children = (
 				1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */,
 				1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */,
+				1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */,
 				1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */,
 			);
 			path = Kkugy;
@@ -818,6 +821,7 @@
 				1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */,
 				616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
+				1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */,
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
