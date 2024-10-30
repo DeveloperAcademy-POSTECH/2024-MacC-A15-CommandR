@@ -6,12 +6,17 @@
 //
 
 import UIKit
-
 class ControlButtonView: UIView {
     let playPauseButton = PlayPauseButton()
-    let stopButton = UIButton(type: .system)
-    let previousButton = UIButton(type: .system)
-    let nextButton = UIButton(type: .system)
+    let stopButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
+                                             title: "처음부터", backGroundColor: .clear,
+                                             foregoundColor: .lableQuaternary, strokeColor: .buttonInactive)
+    let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
+                                                 title: "이전마디", backGroundColor: .gray02,
+                                                 foregoundColor: .lableSecondary)
+    let nextButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.right"),
+                                             title: "다음마디", backGroundColor: .gray02,
+                                             foregoundColor: .lableSecondary)
 
     var isPlaying: Bool = false {
         didSet {
@@ -31,36 +36,53 @@ class ControlButtonView: UIView {
     }
 
     private func setupButtons() {
-        let measureStack = UIStackView(arrangedSubviews: [previousButton, nextButton])
-        measureStack.axis = .horizontal
-        measureStack.distribution = .fillEqually
-        measureStack.spacing = 10
-        measureStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        let playStack = UIStackView(arrangedSubviews: [playPauseButton, stopButton])
-        playStack.axis = .horizontal
-        playStack.distribution = .fillEqually
-        playStack.spacing = 10
-        playStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        let mainStack = UIStackView(arrangedSubviews: [playStack, measureStack])
-        mainStack.axis = .vertical
-        mainStack.distribution = .fillEqually
-        mainStack.spacing = 8
-        mainStack.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(mainStack)
-
-        NSLayoutConstraint.activate([
-            mainStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            mainStack.topAnchor.constraint(equalTo: topAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-
         let playImage = UIImage(systemName: "play.fill")
         playPauseButton.setImage(playImage, for: .normal)
-        stopButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
-        previousButton.setImage(UIImage(systemName: "backward.end.fill"), for: .normal)
-        nextButton.setImage(UIImage(systemName: "forward.end.fill"), for: .normal)
+        
+//        previousButton.icon = UIImage(systemName: "arrow.left")
+//        previousButton.title = "이전마디"
+//        previousButton.titleFont = UIFont(name: "Pretendard-Medium", size: 18) ?? .systemFont(ofSize: 18)
+//        previousButton.titleColor = .lableSecondary
+//        previousButton.backgroundColorCustom = .gray02
+//        previousButton.borderColor = .clear
+//        previousButton.translatesAutoresizingMaskIntoConstraints = false
+
+//        nextButton.icon = UIImage(systemName: "arrow.right")
+//        nextButton.title = "다음"
+//        nextButton.titleFont = UIFont(name: "Pretendard-Medium", size: 18) ?? .systemFont(ofSize: 18)
+//        nextButton.titleColor = .lableSecondary
+//        nextButton.backgroundColorCustom = .gray02
+//        nextButton.borderColor = .clear
+//        nextButton.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        stopButton.icon = UIImage(systemName: "arrow.circlepath")
+//        stopButton.title = "처음부터"
+//        stopButton.titleFont = UIFont(name: "Pretendard-Medium", size: 18) ?? .systemFont(ofSize: 18)
+//        stopButton.titleColor = .lableQuaternary
+//        stopButton.backgroundColorCustom = .clear
+//        stopButton.borderColor = .buttonInactive
+//        stopButton.translatesAutoresizingMaskIntoConstraints = false
+
+        let measureStack = UIStackView(arrangedSubviews: [previousButton, stopButton, nextButton])
+        measureStack.axis = .horizontal
+        measureStack.distribution = .fillEqually
+        measureStack.spacing = 8
+        measureStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        let mainVStack = UIStackView(arrangedSubviews: [playPauseButton, measureStack])
+        mainVStack.axis = .vertical
+        mainVStack.distribution = .fillEqually
+        mainVStack.spacing = 8
+        mainVStack.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mainVStack)
+
+        NSLayoutConstraint.activate([
+            mainVStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainVStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainVStack.topAnchor.constraint(equalTo: topAnchor),
+            mainVStack.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            stopButton.widthAnchor.constraint(equalToConstant: 120)
+        ])
     }
 }

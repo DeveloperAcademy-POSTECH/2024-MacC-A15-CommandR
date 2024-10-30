@@ -54,7 +54,6 @@ class BPMLabel: UIView {
             BPMHStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             BPMHStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             BPMHStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-
         ])
     }
 
@@ -73,6 +72,6 @@ class BPMLabel: UIView {
 
         // 속도 상태 라벨과 값 라벨 업데이트
         speedStatusLabel.text = speedText
-        valueLabel.text = " (\(speedValue)BPM)"
+        valueLabel.text = " (\(speedValue)bpm)"
     }
 }

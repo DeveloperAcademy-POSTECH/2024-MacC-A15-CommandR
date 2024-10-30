@@ -52,7 +52,7 @@ class ScorePracticeScoreCardView: UIView {
         
         totalMeasureLabel.text = "/ 0"
         totalMeasureLabel.textAlignment = .left
-        totalMeasureLabel.textColor = UIColor(named: "lable_quaternary")
+        totalMeasureLabel.textColor = UIColor(named: "lable_tertiary")
         totalMeasureLabel.font = .systemFont(ofSize: 24, weight: .regular)
         totalMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -89,6 +89,6 @@ class ScorePracticeScoreCardView: UIView {
     }
     
     func setTotalMeasure(totalMeasure: Int) {
-        totalMeasureLabel.text = " / \(totalMeasure)마디"
+        totalMeasureLabel.text = " / \(totalMeasure) 마디"
     }
 }

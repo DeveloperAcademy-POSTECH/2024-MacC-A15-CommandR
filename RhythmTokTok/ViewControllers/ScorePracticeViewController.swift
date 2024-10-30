@@ -38,8 +38,6 @@ class ScorePracticeViewController: UIViewController {
     let progressBar = ProgressBarView()
     let statusTags = StatusTagView()
     let scoreCardView = ScorePracticeScoreCardView()
-
-    let currentMeasureLabel = UILabel()
     private let controlButtonView = ControlButtonView()
     // 악보 관리용
     private var midiFilePathURL: URL?
@@ -53,10 +51,10 @@ class ScorePracticeViewController: UIViewController {
         // 커스텀 네비게이션 바 추가
         containerView.addSubview(practicNavBar)
         practicNavBar.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(divider) // divider
         // MusicPracticeView 추가
         containerView.addSubview(scoreCardView)
         scoreCardView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(divider) // divider
         // 프로그래스바 추가
         containerView.addSubview(progressBar)
         progressBar.translatesAutoresizingMaskIntoConstraints = false
@@ -88,9 +86,9 @@ class ScorePracticeViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
-        super.viewDidLoad()
         Task {
             await createMIDIFile(score: currentScore)
         }
@@ -108,9 +106,6 @@ class ScorePracticeViewController: UIViewController {
     
     private func setupUI() {
         scoreCardView.titleLabel.text = currentScore.title
-        // 현재 진행 중인 마디 표시 라벨
-        currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(currentMeasureLabel)
         // 프로그래스바 초기화
         progressBar.setProgress(0.0, animated: false)
         setLottieView()
@@ -149,13 +144,11 @@ class ScorePracticeViewController: UIViewController {
             scoreCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
             // 컨트롤러뷰
-            controlButtonView.topAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: 102),
             controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            controlButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            controlButtonView.heightAnchor.constraint(equalToConstant: 120),
+            controlButtonView.topAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: 102),
+            controlButtonView.heightAnchor.constraint(equalToConstant: 248),
             controlButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             controlButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-            
         ])
     }
     
@@ -163,7 +156,6 @@ class ScorePracticeViewController: UIViewController {
         // 클릭 시 이벤트 설정
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
-        //        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         controlButtonView.stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
         controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
@@ -371,7 +363,6 @@ class ScorePracticeViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
                 self.showLottieAnimation()
             }
-            controlButtonView.stopButton.isHidden = false
         }
         controlButtonView.playPauseButton.isPlaying.toggle()
     }
@@ -380,7 +371,6 @@ class ScorePracticeViewController: UIViewController {
         sendStopStatusToWatch()
         musicPlayer.stopMIDI()
         controlButtonView.playPauseButton.isPlaying = false
-        controlButtonView.stopButton.isHidden = true
         IOStoWatchConnectivityManager.shared.playStatus = .stop
     }
     
@@ -402,7 +392,7 @@ class ScorePracticeViewController: UIViewController {
     private func jumpMeasure() {
         let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
                                                          division: Double(currentScore.divisions))
-        currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
+        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
         Task {
             let hapticSequence = try await mediaManager.getClipHapticSequence(part: currentScore.parts.last!,
                                                                               divisions: currentScore.divisions,
