@@ -16,6 +16,11 @@ class MusicPlayer: ObservableObject {
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0 // 일시정지용
     var musicSequence: MusicSequence?
+    private var soundFont: String = "Piano"
+    private var soundSettingObserver: Any?
+    
+    // Store MIDI file URL separately
+    private var midiFileURL: URL?
     
     init() {
         do {
@@ -23,6 +28,28 @@ class MusicPlayer: ObservableObject {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             ErrorHandler.handleError(error: error)
+        }
+        
+        // soundSetting의 변화를 감지하여 soundFont 변수를 업데이트함
+        soundSettingObserver = NotificationCenter.default.addObserver(
+            forName: .soundSettingDidChange,
+            object: nil,
+            queue: .main) { [weak self] _ in
+                self?.updateSoundFont()
+        }
+        
+        updateSoundFont()
+    }
+    
+    // soundFont 변수를 현재의 soundSetting값을 반영하여 업데이트하기
+    private func updateSoundFont() {
+        switch UserSettingData.shared.soundSetting {
+        case .melody:
+            soundFont = "Piano"
+        case .beat:
+            soundFont = "Drum Set JD Rockset 5"
+        default:
+            soundFont = "Piano"
         }
     }
     
@@ -57,6 +84,9 @@ class MusicPlayer: ObservableObject {
     
     // MARK: - MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
+        // 필요할 때 다시 꺼내 쓸 수 있도록 midiURL 저장
+        self.midiFileURL = midiURL
+        
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
         
@@ -74,7 +104,8 @@ class MusicPlayer: ObservableObject {
         
         // AVMIDIPlayer 초기화
         do {
-            let bankURL = Bundle.main.url(forResource: "Piano", withExtension: "sf2")! // 사운드 폰트 파일 경로
+            
+            let bankURL = Bundle.main.url(forResource: soundFont, withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             midiPlayer?.prepareToPlay()
@@ -84,10 +115,14 @@ class MusicPlayer: ObservableObject {
     }
     
     // MIDI 파일 실행
-    func playMIDI(delay: TimeInterval) {
+    func playMIDI(startTime: TimeInterval = 0, delay: TimeInterval) {
         if let midiPlayer = midiPlayer {
 //            // 이전에 일시 정지된 위치에서 재개
 //            midiPlayer.currentPosition = lastPosition
+            midiPlayer.stop()
+            stopTimer()
+            // 시작 틱 위치
+            midiPlayer.currentPosition = startTime
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 midiPlayer.play {
@@ -145,6 +180,9 @@ class MusicPlayer: ObservableObject {
     }
     
     deinit {
+        if let observer = soundSettingObserver {
+                   NotificationCenter.default.removeObserver(observer)
+               }
         stopTimer()
     }
 }

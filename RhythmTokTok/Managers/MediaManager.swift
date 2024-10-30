@@ -57,7 +57,7 @@ struct MediaManager {
     }
     
     // TODO: 나중에 시간 및 마디 번호 관리용 프로퍼티를 만들어서 최적화 필요
-    func getCurrentMeasureNumber(currentTime: TimeInterval, division: Double) -> Int {
+    func getCurrentMeasureNumber(currentTime: Double, division: Double) -> Int {
         guard let currentPart = currentPart else {
             return 0
         }
@@ -83,7 +83,25 @@ struct MediaManager {
         // 마지막 마디 반환
         return measures.last?.number ?? -1
     }
+    
+    // 이전마디 시작틱
+    func getMeasureStartTime(currentMeasure: Int, division: Double) -> TimeInterval {
+        guard let currentPart = currentPart else { return 0 }
+        
+        let measures = currentPart.measures
+            .sorted(by: { $0.key < $1.key })
+            .flatMap { $0.value }
+        
+        if let currentIndex = measures.firstIndex(where: { $0.number == currentMeasure }) {
+            let startTime = convertTicksToTime(convertTick: measures[currentIndex].startTime,
+                                               division: division)
 
+            return startTime
+        }
+        
+        return 0
+    }
+    
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
         let notes = parsedScore.parts.flatMap { part in
             part.measures
@@ -380,7 +398,9 @@ struct MediaManager {
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
-                note: UInt8(note.pitchNoteNumber()), // pitch를 MIDI note number로 변환
+                note: UInt8(UserSettingData.shared.soundSetting == .melody ?
+                            note.pitchNoteNumber() :
+                            60), // pitch를 MIDI note number로 변환
                 velocity: 64, // 음의 강도 (나중에 수정 가능)
                 releaseVelocity: 0,
                 duration: 0
@@ -390,8 +410,10 @@ struct MediaManager {
             MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick, &noteOnMessage)
             
             // 노트의 길이를 MIDI 틱으로 변환
-            let noteDurationTicks = MusicTimeStamp(Double(note.duration) * divisionCorrectionFactor)
-
+            let noteDurationTicks = MusicTimeStamp(Double(UserSettingData.shared.soundSetting == .melody ?
+                                                          note.duration :
+                                                            0) * divisionCorrectionFactor)
+ 
             // 노트 오프 이벤트 생성
             var noteOffMessage = MIDINoteMessage(
                 channel: 0,

@@ -165,7 +165,7 @@ class ViewController: UIViewController {
     
     // 필요한 인수를 제공하여 메서드 호출 수정
     @objc func navigateToMusicPracticeViewController() {
-        let musicPracticeViewController = MusicPracticeViewController(currentScore: Score())
+        let musicPracticeViewController = ScorePracticeViewController(currentScore: Score())
         navigationController?.pushViewController(musicPracticeViewController, animated: true)
     }
     

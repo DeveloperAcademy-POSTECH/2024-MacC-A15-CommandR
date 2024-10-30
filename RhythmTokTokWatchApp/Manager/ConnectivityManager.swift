@@ -66,15 +66,17 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
             if let scoreTitle = applicationContext["scoreTitle"] as? String,
                let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
+                self.hapticManager.stopHaptic()
                 self.selectedScoreTitle = scoreTitle
                 self.hapticSequence = hapticSequence
                 self.isSelectedScore = !scoreTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(scoreTitle)")
                 print("곡 햅틱: \(hapticSequence)")
-                
+            } else {
+                print("햅틱 셋팅 없음")
             }
             // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
-            else if let playStatusString = applicationContext["playStatus"] as? String,
+            if let playStatusString = applicationContext["playStatus"] as? String,
                     let playStatus = PlayStatus(rawValue: playStatusString) {
                 self.playStatus = playStatus
                 print("재생 상태 업데이트: \(playStatus.rawValue)")
