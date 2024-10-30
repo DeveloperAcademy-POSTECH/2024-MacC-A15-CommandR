@@ -37,7 +37,7 @@ class ScorePracticeViewController: UIViewController {
     }()
     let progressBar = ProgressBarView()
     let statusTags = StatusTagView()
-    let scorePracticeTitleView = ScorePracticeScoreCardView()
+    let scoreCardView = ScorePracticeScoreCardView()
 
     let currentMeasureLabel = UILabel()
     private let controlButtonView = ControlButtonView()
@@ -54,8 +54,8 @@ class ScorePracticeViewController: UIViewController {
         containerView.addSubview(practicNavBar)
         practicNavBar.translatesAutoresizingMaskIntoConstraints = false
         // MusicPracticeView 추가
-        containerView.addSubview(scorePracticeTitleView)
-        scorePracticeTitleView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(scoreCardView)
+        scoreCardView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(divider) // divider
         // 프로그래스바 추가
         containerView.addSubview(progressBar)
@@ -78,7 +78,7 @@ class ScorePracticeViewController: UIViewController {
         }
 
         statusTags.updateTag()
-        scorePracticeTitleView.bpmLabel.updateSpeedText()
+        scoreCardView.bpmLabel.updateSpeedText()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -88,8 +88,9 @@ class ScorePracticeViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
+        scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
+        super.viewDidLoad()
         Task {
             await createMIDIFile(score: currentScore)
         }
@@ -106,7 +107,7 @@ class ScorePracticeViewController: UIViewController {
     }
     
     private func setupUI() {
-        scorePracticeTitleView.titleLabel.text = currentScore.title
+        scoreCardView.titleLabel.text = currentScore.title
         // 현재 진행 중인 마디 표시 라벨
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(currentMeasureLabel)
@@ -143,12 +144,12 @@ class ScorePracticeViewController: UIViewController {
             statusTags.heightAnchor.constraint(equalToConstant: 40),
             
             // MusicPracticeView 레이아웃 설정 (네비게이션 바 아래에 위치)
-            scorePracticeTitleView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 24),
-            scorePracticeTitleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            scorePracticeTitleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            scoreCardView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 24),
+            scoreCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            scoreCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
             // 컨트롤러뷰
-            controlButtonView.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 102),
+            controlButtonView.topAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: 102),
             controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             controlButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             controlButtonView.heightAnchor.constraint(equalToConstant: 120),
@@ -197,7 +198,7 @@ class ScorePracticeViewController: UIViewController {
         let division = Double(currentScore.divisions)
         currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: Double(currentTime), division: division)
         
-        currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
+        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
     }
     
     private func updateProgressBar(currentTime: TimeInterval) {

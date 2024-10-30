@@ -73,6 +73,6 @@ class BPMLabel: UIView {
 
         // 속도 상태 라벨과 값 라벨 업데이트
         speedStatusLabel.text = speedText
-        valueLabel.text = "(\(speedValue)BPM)"
+        valueLabel.text = " (\(speedValue)BPM)"
     }
 }
