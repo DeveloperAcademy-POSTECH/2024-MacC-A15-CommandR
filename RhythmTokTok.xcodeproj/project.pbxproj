@@ -20,6 +20,7 @@
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
 		02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
+		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
@@ -151,6 +152,7 @@
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		02CFE1312CB68479008454B8 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */,
+				1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */,
 				1E54A8F72CB7D26900753A3E /* MoonRiver.xml */,
 				1ED9FEDF2CC26E6000472C51 /* mannam.xml */,
 				1ED9FEE02CC26E6000472C51 /* mannam-f 2.xml */,
@@ -688,6 +691,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */,
 				1ED9FEE22CC26E6000472C51 /* red.xml in Resources */,
 				1ED9FEE32CC26E6000472C51 /* mannam-f 2.xml in Resources */,
 				1ED9FEE42CC26E6000472C51 /* mannam.xml in Resources */,

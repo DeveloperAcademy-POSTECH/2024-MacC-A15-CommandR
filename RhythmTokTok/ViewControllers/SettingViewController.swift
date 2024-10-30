@@ -110,6 +110,7 @@ class SettingViewController: UIViewController {
                 }
             }
             print("소리 설정 변경: \(UserSettingData.shared.soundSetting.rawValue)")
+            NotificationCenter.default.post(name: .soundSettingDidChange, object: nil)
         } else if hapticButtons.contains(sender) {
             // 이전에 선택된 버튼 해제
             if let previousButton = selectedHapticButton {
