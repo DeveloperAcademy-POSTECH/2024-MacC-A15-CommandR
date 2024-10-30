@@ -54,6 +54,8 @@
 		1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FA2CBA8EE100753A3E /* Score.swift */; };
 		1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FC2CBA8F3500753A3E /* Part.swift */; };
 		1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */; };
+		1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */; };
+		1E91466F2CD0FE2900DBCD00 /* WatchManage_Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
@@ -188,6 +190,8 @@
 		1E54A8FC2CBA8F3500753A3E /* Part.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Part.swift; sourceTree = "<group>"; };
 		1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayHapticView.swift; sourceTree = "<group>"; };
 		1E54A9002CBBBCEC00753A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButtonView.swift; sourceTree = "<group>"; };
+		1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManage_Ex.swift; sourceTree = "<group>"; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
 		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
@@ -424,6 +428,7 @@
 			children = (
 				1ED9FECA2CBE780000472C51 /* MeasureProgressView.swift */,
 				1ED9FECC2CBE793600472C51 /* ProgressTableViewCell.swift */,
+				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
 				D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */,
 			);
 			path = Deprecated;
@@ -466,7 +471,6 @@
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeTitleView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
 				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
-				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
 				1EF8A0A72CB53E9A00ADB783 /* Components */,
 			);
 			path = Views;
@@ -529,6 +533,8 @@
 		1EF8A0AB2CB559C500ADB783 /* Kkugy */ = {
 			isa = PBXGroup;
 			children = (
+				1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */,
+				1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */,
 			);
 			path = Kkugy;
 			sourceTree = "<group>";
@@ -801,11 +807,13 @@
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */,
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
+				1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */,
 				616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
+				1E91466F2CD0FE2900DBCD00 /* WatchManage_Ex.swift in Sources */,
 				1ED9FEC72CBE4B2F00472C51 /* ScorePracticeViewController.swift in Sources */,
 				EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */,
 				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,

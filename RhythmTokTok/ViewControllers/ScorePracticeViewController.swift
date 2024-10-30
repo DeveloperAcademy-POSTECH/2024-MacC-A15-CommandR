@@ -9,25 +9,23 @@ import Lottie
 import SwiftUI
 import UIKit
 
-class MeasureViewModel: ObservableObject {
-    @Published var selectedMeasures: (Int, Int) = (-2, -2)
-}
-
 class ScorePracticeViewController: UIViewController {
-    private var viewModel = MeasureViewModel()  // 선택구간 ObservableObject 생성
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var animationView: LottieAnimationView? // 로띠뷰
 
     var currentScore: Score // 현재 악보 score
+    var currentMeasure: Int = 0// 현재 진행중인 마디
     var totalMeasure = 0
+    
     init(currentScore: Score) {
         self.currentScore = currentScore
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: nil) // Calls the designated initializer
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     var mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
     let scorePracticeTitleView = ScorePracticeTitleView()
@@ -39,24 +37,7 @@ class ScorePracticeViewController: UIViewController {
     }()
     let bpmButton = BPMButton()
     let currentMeasureLabel = UILabel()
-    let playPauseButton = PlayPauseButton(frame: CGRect(x: 0, y: 0, width: 160, height: 80))
-    let stopButton: UIButton = {
-        let button = UIButton(type: .system)
-        let configuration = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular)
-        let image = UIImage(systemName: "stop.fill", withConfiguration: configuration)
-        button.tintColor = .white
-        button.setImage(image, for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .gray08
-        button.layer.cornerRadius = 16
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.clipsToBounds = true
-        button.isHidden = true
-        return button
-    }()
-    private var pickerView: UIPickerView! // 임시 확인용 픽커
-    // SwiftUI 뷰를 UIHostingController로 감싸기
-    private var hostingController: UIHostingController<ScoreView>?
+    private let controlButtonView = ControlButtonView()
     // 악보 관리용
     private var midiFilePathURL: URL?
     private var isPlayingMIDIFile = false
@@ -73,6 +54,9 @@ class ScorePracticeViewController: UIViewController {
         containerView.addSubview(scorePracticeTitleView)
         scorePracticeTitleView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(divider) // divider
+        // 컨트롤러뷰 추가
+        controlButtonView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(controlButtonView)
         // 루트 뷰 설정
         self.view = containerView
     }
@@ -93,7 +77,6 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        generateMusicXMLAudio()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         Task {
             await createMIDIFile(score: currentScore)
@@ -109,28 +92,10 @@ class ScorePracticeViewController: UIViewController {
         scorePracticeTitleView.titleLabel.text = currentScore.title
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bpmButton)
-        // 임시 픽커
-//        pickerView = UIPickerView()
-//        pickerView.delegate = self
-//        pickerView.dataSource = self
-//        pickerView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(pickerView)
         // 현재 진행 중인 마디 표시 라벨
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(currentMeasureLabel)
-
-        hostingController = UIHostingController(rootView: ScoreView(viewModel: viewModel, currentScore: currentScore))
-        // hostingController의 뷰를 추가하기
-        if let hostingView = hostingController?.view {
-            hostingView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(hostingView)
-        }
-
-        // 버튼을 뷰에 추가
-        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(playPauseButton)
-        // resume 버튼 추가
-        view.addSubview(stopButton)
+        
         setLottieView()
     }
     
@@ -164,31 +129,13 @@ class ScorePracticeViewController: UIViewController {
             currentMeasureLabel.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 20),
             currentMeasureLabel.heightAnchor.constraint(equalToConstant: 48),
             currentMeasureLabel.leadingAnchor.constraint(equalTo: bpmButton.trailingAnchor, constant: 60),
-            
-//            pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            pickerView.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
-//            pickerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            pickerView.heightAnchor.constraint(equalToConstant: 200),
+            // 컨트롤러뷰
+            controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            controlButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            controlButtonView.heightAnchor.constraint(equalToConstant: 120),
+            controlButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            controlButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
 
-            // ScoreView
-            hostingController!.view.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 20),
-            hostingController!.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            hostingController!.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            hostingController!.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 20),
-                
-            // 플레이버튼
-            playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    constant: -20),
-            playPauseButton.heightAnchor.constraint(equalToConstant: 80),
-            playPauseButton.widthAnchor.constraint(equalToConstant: 160),
-            
-            // 정지버튼
-            stopButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                    constant: -20),
-            stopButton.trailingAnchor.constraint(equalTo: playPauseButton.leadingAnchor, constant: -8),
-            stopButton.heightAnchor.constraint(equalToConstant: 80),
-            stopButton.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
     
@@ -197,18 +144,13 @@ class ScorePracticeViewController: UIViewController {
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
 //        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
-        playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
+        controlButtonView.stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+        controlButtonView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
     private func setupBindings() {
-        // ViewModel의 상태 변화를 구독하여 특정 함수 호출
-        viewModel.$selectedMeasures
-            .sink { [weak self] selectedMeasures in
-                self?.handleMeasuresChange(selectedMeasures)
-            }
-            .store(in: &cancellables)  // 메모리에서 자동 해제될 수 있도록 구독을 저장
-        
         WatchManager.shared.$isWatchAppConnected
             .sink { [weak self] isConnected in
                 self?.handleWatchAppConnectionChange(isConnected)
@@ -225,41 +167,11 @@ class ScorePracticeViewController: UIViewController {
     
     private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
         let division = Double(currentScore.divisions)
-        let currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: currentTime, division: division)
+        currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: Double(currentTime), division: division)
         
         currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
     }
-    
-    // 상태 변화에 따라 호출되는 함수
-    private func handleMeasuresChange(_ selectedMeasures: (Int, Int)) {
-        var startMeasureNumber = selectedMeasures.0
-        var endMeasureNumber = selectedMeasures.1
         
-        // TODO: 더 좋은 방법 구상하기, 처음 시작시 무시
-        if viewModel.selectedMeasures == (-2, -2) {
-            return
-        }
-        
-        if let part = currentScore.parts.last,
-           let firstMeasure = part.measures.min(by: { $0.key < $1.key })?.value.first {
-            if firstMeasure.number != 0 {
-                startMeasureNumber += 1
-                endMeasureNumber += 1
-            }
-        }
-        if selectedMeasures == (-1, -1) {
-            Task {
-                await createMIDIFile(score: currentScore)
-            }
-        } else {
-            // 구간 미디파일 생성
-            Task {
-                await createMIDIFile(score: currentScore,
-                                     startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
-            }
-        }
-    }
-    
     private func handleWatchAppConnectionChange(_ isConnected: Bool) {
         if isConnected {
             // 연결되었을 때 처리
@@ -352,7 +264,7 @@ class ScorePracticeViewController: UIViewController {
             return
         }
         // MIDI 파일 재생 여부에 따른 처리
-        if playPauseButton.isPlaying {
+        if controlButtonView.playPauseButton.isPlaying {
             // 재생 중일 때 일시정지
             sendPauseStatusToWatch()
             // MIDI 일시정지
@@ -368,17 +280,48 @@ class ScorePracticeViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
                 self.showLottieAnimation()
             }
-            stopButton.isHidden = false
+            controlButtonView.stopButton.isHidden = false
             // 워치로 play 예약 메시지 전송
         }
-        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
+        controlButtonView.playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
     }
     
     @objc private func stopButtonTapped() {
         sendStopStatusToWatch()
         musicPlayer.stopMIDI()
-        playPauseButton.isPlaying = false
-        stopButton.isHidden = true
+        controlButtonView.playPauseButton.isPlaying = false
+        controlButtonView.stopButton.isHidden = true
+    }
+    
+    @objc private func previousButtonTapped() {
+        if currentMeasure != 0 {
+            currentMeasure -= 1
+        }
+        
+        jumpMeasure()
+    }
+    
+    @objc private func nextButtonTapped() {
+        if currentMeasure != totalMeasure {
+            currentMeasure += 1
+        }
+        jumpMeasure()
+    }
+
+    private func jumpMeasure() {
+        let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
+                                                         division: Double(currentScore.divisions))
+        currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
+        Task {
+            let hapticSequence = try await mediaManager.getClipHapticSequence(part: currentScore.parts.last!,
+                                                                              divisions: currentScore.divisions,
+                                                                              startNumber: currentMeasure,
+                                                                              endNumber: totalMeasure)
+            let futureTime = Date().addingTimeInterval(1).timeIntervalSince1970
+            
+            musicPlayer.playMIDI(startTime: startTime, delay: 1)
+            sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: futureTime)
+        }
     }
     
     @objc private func presentBPMModal() {
@@ -389,14 +332,8 @@ class ScorePracticeViewController: UIViewController {
     // 시작 버튼 활성화 업데이트
     private func updatePlayPauseButton(_ isEnabled: Bool) {
         DispatchQueue.main.async {
-            self.playPauseButton.isEnabled = isEnabled
+            self.controlButtonView.playPauseButton.isEnabled = isEnabled
         }
-    }
-    
-    // 임시 픽커 업데이트
-    private func updateScore(score: Score) {
-        currentScore = score
-        pickerView.reloadAllComponents() // 데이터를 받아오면 Picker 업데이트
     }
     
     // MARK: MIDI 파일, 햅틱 시퀀스 관리
@@ -464,84 +401,24 @@ class ScorePracticeViewController: UIViewController {
     }
     
     // 워치로 실행 예약 메시지 전송
-      func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
-          WatchManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
-      }
-      
-      // 워치로 일시정지 예약 메시지 전송
-      func sendPauseStatusToWatch() {
-          WatchManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
-      }
-      
-      // 워치로 멈추고 처음으로 대기 메시지 전송
-      func sendStopStatusToWatch() {
-          WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
-      }
-  }
+    func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
+        WatchManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
+    }
+    
+    // 마디 점프 메시지 전송
+    func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
+        let scoreTitle = currentScore.title
 
-//extension MusicPracticeViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-//
-//    // UIPickerViewDataSource 프로토콜
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        return 2 // UIPickerView의 열 수
-//    }
-//    
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        let totalMeasuresCount = currentScore.parts.last?.measures.values.reduce(0) { total, measuresArray in
-//            total + measuresArray.count
-//        } ?? 0
-//        
-//        return totalMeasuresCount
-//    }
-//    
-//    // UIPickerViewDelegate 프로토콜
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        // parts.last의 모든 키와 마디 넘버를 추출한 배열을 만들기
-//        let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
-//            measures.map { measure in
-//                (lineNumber: lineNumber, measureNumber: measure.number)
-//            }
-//        }.sorted(by: { $0.measureNumber < $1.measureNumber }) ?? []
-//        
-//        // 해당 행(row)에 해당하는 마디 넘버와 키 반환
-//        if row < measureDetails.count {
-//            let detail = measureDetails[row]
-//            return "줄 \(detail.lineNumber): 마디 \(detail.measureNumber)"  // lineNumber와 measureNumber 함께 표시
-//        } else {
-//            return ""
-//        }
-//    }
-//    
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        // parts.last의 모든 lineNumber와 마디 넘버를 추출한 배열을 만듦
-//        let measureDetails = currentScore.parts.last?.measures.flatMap { (lineNumber, measures) in
-//            measures.map { measure in
-//                (lineNumber: lineNumber, measureNumber: measure.number)
-//            }
-//        }.sorted(by: { $0.measureNumber < $1.measureNumber }) ?? []
-//        
-//        // 첫 번째 열(0): lineNumber, 두 번째 열(1): measureNumber
-//        switch component {
-//        case 0:
-//            // 첫 번째 열에서 선택된 row (lineNumber 처리)
-//            if row < measureDetails.count {
-//                startMeasureNumber = measureDetails[row].measureNumber
-//                print("Selected StartMeasure: \(startMeasureNumber)")
-//            }
-//        case 1:
-//            // 두 번째 열에서 선택된 row (measureNumber 처리)
-//            if row < measureDetails.count {
-//                endMeasureNumber = measureDetails[row].measureNumber
-//                print("Selected EndMeasure: \(endMeasureNumber)")
-//                // 구간 미디파일 생성
-//                Task {
-//                    if startMeasureNumber < endMeasureNumber {
-//                        await createMIDIFile(score: currentScore, startMeasureNumber: startMeasureNumber, endMeasureNumber: endMeasureNumber)
-//                    }
-//                }
-//            }
-//        default:
-//            break
-//        }
-//    }
-//}
+        WatchManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
+    }
+    
+    // 워치로 일시정지 예약 메시지 전송
+    func sendPauseStatusToWatch() {
+        WatchManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
+    }
+    
+    // 워치로 멈추고 처음으로 대기 메시지 전송
+    func sendStopStatusToWatch() {
+        WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+    }
+}

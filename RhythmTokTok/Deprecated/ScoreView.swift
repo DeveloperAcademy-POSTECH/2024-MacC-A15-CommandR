@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+class MeasureViewModel: ObservableObject {
+    @Published var selectedMeasures: (Int, Int) = (-2, -2)
+}
+
 struct ScoreView: View {
     @ObservedObject var viewModel: MeasureViewModel  // ObservableObject를 사용하여 상태를 관찰
     @State var selectedMeasures: [[Int]] = [[-1, -1], [-1, -1]]

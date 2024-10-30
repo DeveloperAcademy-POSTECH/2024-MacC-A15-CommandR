@@ -115,10 +115,14 @@ class MusicPlayer: ObservableObject {
     }
     
     // MIDI 파일 실행
-    func playMIDI(delay: TimeInterval) {
+    func playMIDI(startTime: TimeInterval = 0, delay: TimeInterval) {
         if let midiPlayer = midiPlayer {
 //            // 이전에 일시 정지된 위치에서 재개
 //            midiPlayer.currentPosition = lastPosition
+            midiPlayer.stop()
+            stopTimer()
+            // 시작 틱 위치
+            midiPlayer.currentPosition = startTime
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 midiPlayer.play {
