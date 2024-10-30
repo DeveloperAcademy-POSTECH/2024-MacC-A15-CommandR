@@ -37,9 +37,8 @@ class ScorePracticeViewController: UIViewController {
     }()
     let progressBar = ProgressBarView()
     let statusTags = StatusTagView()
-    let scorePracticeTitleView = ScorePracticeTitleView()
+    let scorePracticeTitleView = ScorePracticeScoreCardView()
 
-    let bpmButton = BPMButton()
     let currentMeasureLabel = UILabel()
     private let controlButtonView = ControlButtonView()
     // 악보 관리용
@@ -107,8 +106,6 @@ class ScorePracticeViewController: UIViewController {
     
     private func setupUI() {
         scorePracticeTitleView.titleLabel.text = currentScore.title
-        bpmButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(bpmButton)
         // 현재 진행 중인 마디 표시 라벨
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(currentMeasureLabel)
@@ -148,19 +145,9 @@ class ScorePracticeViewController: UIViewController {
             scorePracticeTitleView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 24),
             scorePracticeTitleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             scorePracticeTitleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            scorePracticeTitleView.heightAnchor.constraint(equalToConstant: 38),
-            
-            // BPM 버튼
-            bpmButton.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 20),
-            bpmButton.heightAnchor.constraint(equalToConstant: 48),
-            bpmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            
-            // 현재 진행 중인 마디 라벨
-            currentMeasureLabel.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 20),
-            currentMeasureLabel.heightAnchor.constraint(equalToConstant: 48),
-            currentMeasureLabel.leadingAnchor.constraint(equalTo: bpmButton.trailingAnchor, constant: 60),
-            
+
             // 컨트롤러뷰
+            controlButtonView.topAnchor.constraint(equalTo: scorePracticeTitleView.bottomAnchor, constant: 102),
             controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             controlButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             controlButtonView.heightAnchor.constraint(equalToConstant: 120),

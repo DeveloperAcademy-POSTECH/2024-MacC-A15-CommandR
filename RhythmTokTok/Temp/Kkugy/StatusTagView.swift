@@ -8,7 +8,6 @@
 import UIKit
 
 class StatusTagView: UIView {
-
     private let soundSetTag = UIView()
     private let hapticSetTag = UIView()
     private let soundSetLabel = UILabel()
