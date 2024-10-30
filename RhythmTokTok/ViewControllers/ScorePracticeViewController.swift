@@ -78,6 +78,7 @@ class ScorePracticeViewController: UIViewController {
         }
 
         statusTags.updateTag()
+        scorePracticeTitleView.bpmLabel.updateSpeedText()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

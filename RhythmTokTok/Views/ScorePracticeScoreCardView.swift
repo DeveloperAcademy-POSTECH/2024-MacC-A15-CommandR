@@ -58,8 +58,7 @@ class ScorePracticeScoreCardView: UIView {
             
             // BPM
             bpmLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            bpmLabel.leadingAnchor.constraint(equalTo: scoreCardView.leadingAnchor, constant: 16),
-
+            bpmLabel.leadingAnchor.constraint(equalTo: scoreCardView.leadingAnchor, constant: 16)
         ])
     }
 }
