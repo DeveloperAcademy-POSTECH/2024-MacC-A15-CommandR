@@ -18,6 +18,7 @@ class MusicPlayer: ObservableObject {
     var musicSequence: MusicSequence?
     private var soundFont: String = "Piano"
     private var soundSettingObserver: Any?
+    private var totalDuration = 0.0 // MIDI파일 총 시간
     
     // Store MIDI file URL separately
     private var midiFileURL: URL?
@@ -82,6 +83,11 @@ class MusicPlayer: ObservableObject {
         stopTimer()
     }
     
+    // 미디파일 총 시간
+    func getTotalDuration() -> Double {
+        return totalDuration
+    }
+    
     // MARK: - MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
         // 필요할 때 다시 꺼내 쓸 수 있도록 midiURL 저장
@@ -108,7 +114,12 @@ class MusicPlayer: ObservableObject {
             let bankURL = Bundle.main.url(forResource: soundFont, withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
-            midiPlayer?.prepareToPlay()
+            
+            if let midiPlayer {
+                midiPlayer.prepareToPlay()
+                totalDuration = midiPlayer.duration
+            }
+  
         } catch {
             ErrorHandler.handleError(error: error)
         }

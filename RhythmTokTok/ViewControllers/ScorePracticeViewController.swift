@@ -29,13 +29,15 @@ class ScorePracticeViewController: UIViewController {
     
     var mediaManager = MediaManager()
     let practicNavBar = PracticeNavigationBar()
-    let scorePracticeTitleView = ScorePracticeTitleView()
     let divider: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray // 선의 색상
+        view.backgroundColor = UIColor(named: "boarders_secondary")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    let progressBar = ProgressBarView()
+    let scorePracticeTitleView = ScorePracticeTitleView()
+
     let bpmButton = BPMButton()
     let currentMeasureLabel = UILabel()
     private let controlButtonView = ControlButtonView()
@@ -55,6 +57,9 @@ class ScorePracticeViewController: UIViewController {
         containerView.addSubview(scorePracticeTitleView)
         scorePracticeTitleView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(divider) // divider
+        // 프로그래스바 추가
+        containerView.addSubview(progressBar)
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
         // 컨트롤러뷰 추가
         controlButtonView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(controlButtonView)
@@ -101,7 +106,8 @@ class ScorePracticeViewController: UIViewController {
         // 현재 진행 중인 마디 표시 라벨
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(currentMeasureLabel)
-        
+        // 프로그래스바 초기화
+        progressBar.setProgress(0.0, animated: false)
         setLottieView()
     }
     
@@ -115,10 +121,15 @@ class ScorePracticeViewController: UIViewController {
             practicNavBar.heightAnchor.constraint(equalToConstant: 60),
             
             // divider
-            divider.topAnchor.constraint(equalTo: practicNavBar.bottomAnchor, constant: 1),
+            divider.topAnchor.constraint(equalTo: practicNavBar.bottomAnchor, constant: 0),
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
+            
+            progressBar.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 0),
+            progressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            progressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            progressBar.heightAnchor.constraint(equalToConstant: 4),
             
             // MusicPracticeView 레이아웃 설정 (네비게이션 바 아래에 위치)
             scorePracticeTitleView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 24),
@@ -168,6 +179,7 @@ class ScorePracticeViewController: UIViewController {
         musicPlayer.$currentTime
             .sink { [weak self] currentTime in
                 self?.updateCurrentMeasureLabel(currentTime: currentTime)
+                self?.updateProgressBar(currentTime: currentTime)
             }
             .store(in: &cancellables)
         
@@ -187,6 +199,12 @@ class ScorePracticeViewController: UIViewController {
         currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
     }
     
+    private func updateProgressBar(currentTime: TimeInterval) {
+        let progress = currentTime / musicPlayer.getTotalDuration()
+        
+        progressBar.setProgress(CGFloat(progress), animated: false)
+    }
+        
     private func handleWatchAppConnectionChange(_ isConnected: Bool) {
         if isConnected {
             // 연결되었을 때 처리

@@ -56,6 +56,7 @@
 		1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */; };
 		1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */; };
 		1E91466F2CD0FE2900DBCD00 /* WatchManage_Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */; };
+		1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
@@ -193,6 +194,7 @@
 		1E54A9002CBBBCEC00753A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButtonView.swift; sourceTree = "<group>"; };
 		1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManage_Ex.swift; sourceTree = "<group>"; };
+		1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
 		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 			isa = PBXGroup;
 			children = (
 				1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */,
+				1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */,
 				1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */,
 			);
 			path = Kkugy;
@@ -794,6 +797,7 @@
 				1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
 				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
+				1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */,
 				D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */,
 				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
 				1EF8A0B82CB55A4B00ADB783 /* IOStoWatchConnectivityManager.swift in Sources */,
