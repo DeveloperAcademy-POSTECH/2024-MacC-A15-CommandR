@@ -77,6 +77,8 @@ class ScorePracticeViewController: UIViewController {
         Task {
             await createMIDIFile(score: currentScore)
         }
+
+        statusTags.updateTag()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

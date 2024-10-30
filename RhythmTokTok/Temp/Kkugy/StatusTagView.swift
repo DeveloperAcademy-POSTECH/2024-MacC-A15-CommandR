@@ -17,11 +17,13 @@ class StatusTagView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+        updateTag()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
+        updateTag()
     }
 
     private func setupView() {
@@ -37,12 +39,12 @@ class StatusTagView: UIView {
         hapticSetTag.layer.borderColor = UIColor(named: "background_tertiary")?.cgColor
         hapticSetTag.translatesAutoresizingMaskIntoConstraints = false
 
-        soundSetLabel.text = "🎵 멜로디"
+        soundSetLabel.text = ""
         soundSetLabel.textAlignment = .center
         soundSetLabel.textColor = UIColor(named: "lable_tertiary")
         soundSetLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        hapticLabel.text = "🫨 워치 진동"
+        hapticLabel.text = ""
         hapticLabel.textAlignment = .center
         hapticLabel.textColor = UIColor(named: "lable_tertiary")
         hapticLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -75,4 +77,28 @@ class StatusTagView: UIView {
             hapticLabel.bottomAnchor.constraint(equalTo: hapticSetTag.bottomAnchor, constant: -8)
         ])
     }
+
+    func updateTag() {
+        // TODO: 나중에 CoreData로 변결
+        let soundSetting = UserSettingData.shared.soundSetting
+        let hapticSetting =  UserSettingData.shared.isHapticGuideOn
+        
+        switch soundSetting {
+        case .beat:
+            soundSetLabel.text = "박자만"
+        case .melody:
+            soundSetLabel.text = "🎵 멜로디"
+        case .mute:
+            soundSetLabel.text = "🎵 무음"
+        case .voice:
+            soundSetLabel.text = "없음"
+        }
+        
+        if hapticSetting {
+            hapticLabel.text = "🫨 워치 진동 ON"
+        } else {
+            hapticLabel.text = "🫨 워치 진동 OFF"
+        }
+    }
+    
 }
