@@ -39,7 +39,6 @@ struct WatchPlayView: View {
                 fontSize: 20,
                 isAnimating: connectivityManager.playStatus == .play
             )
-            .frame(height: 24)
             
             Spacer()
             
@@ -61,11 +60,22 @@ struct WatchPlayView: View {
             .buttonStyle(PlainButtonStyle())
             .padding(.bottom, 10)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
-#Preview {
-    WatchPlayView()
-        .environmentObject(ConnectivityManager())
+struct WatchPlayView_Previews: PreviewProvider {
+    static var previews: some View {
+        // 샘플 데이터를 가진 ConnectivityManager 생성
+        let manager = ConnectivityManager()
+        manager.selectedScoreTitle = "This is a long song title that should scroll across the screen"
+        manager.playStatus = .play
+        return WatchPlayView()
+            .environmentObject(manager)
+    }
 }
+
+
+//#Preview {
+//    WatchPlayView()
+//        .environmentObject(ConnectivityManager())
+//}
