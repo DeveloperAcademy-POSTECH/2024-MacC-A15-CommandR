@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BPMSettingViewController: UIViewController {
+class BPMSettingSectionViewController: UIViewController {
     var currentBPM: Int = 120
     var onBPMSelected: ((Int) -> Void)?
     

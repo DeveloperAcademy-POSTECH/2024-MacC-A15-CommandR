@@ -6,7 +6,7 @@
 //
 import UIKit
 
-class BPMSettingSection: UIView {
+class BPMSettingSectionView: UIView {
     var onBPMButtonTapped: (() -> Void)?
     
     let titleLabel: UILabel = {

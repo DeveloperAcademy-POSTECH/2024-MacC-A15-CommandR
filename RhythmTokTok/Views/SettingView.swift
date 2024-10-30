@@ -2,12 +2,14 @@ import UIKit
 
 class SettingView: UIView {
     // 섹션 추가
-    let bpmSettingSection = BPMSettingSection()
-    let soundSettingSection = SoundSettingSection()
-    let hapticSettingSection = HapticSettingSection()
+    let bpmSettingSection = BPMSettingSectionView()
+    let soundSettingSection = SoundSettingSectionView()
+    let hapticSettingSection = HapticSettingSectionView()
     
-    // 버튼 탭 이벤트를 전달하기 위한 클로저
+    // 각 섹션의 이벤트를 전달하기 위한 클로저
     var onBPMButtonTapped: (() -> Void)?
+    var onSoundOptionSelected: ((String) -> Void)?
+    var onHapticToggleChanged: ((Bool) -> Void)?
     
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -18,6 +20,14 @@ class SettingView: UIView {
         bpmSettingSection.onBPMButtonTapped = { [weak self] in
             self?.onBPMButtonTapped?()
         }
+        // soundSettingSection에서 이벤트를 받아서 SettingView로 전달
+        soundSettingSection.onOptionSelected = { [weak self] selectedOption in
+            self?.onSoundOptionSelected?(selectedOption)
+        }
+        // hapticGuideSection에서 이벤트를 받아서 SettingView로 전달
+        hapticSettingSection.onToggleChanged = { [weak self] isOn in
+            self?.onHapticToggleChanged?(isOn)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -27,6 +37,14 @@ class SettingView: UIView {
         // bpmSettingSection에서 이벤트를 받아서 SettingView로 전달
         bpmSettingSection.onBPMButtonTapped = { [weak self] in
             self?.onBPMButtonTapped?()
+        }
+        // soundSettingSection에서 이벤트를 받아서 SettingView로 전달
+        soundSettingSection.onOptionSelected = { [weak self] selectedOption in
+            self?.onSoundOptionSelected?(selectedOption)
+        }
+        // hapticGuideSection에서 이벤트를 받아서 SettingView로 전달
+        hapticSettingSection.onToggleChanged = { [weak self] isOn in
+            self?.onHapticToggleChanged?(isOn)
         }
     }
     
@@ -39,7 +57,7 @@ class SettingView: UIView {
     
     private func setupUI() {
         backgroundColor = .white
-
+        
         let divider0 = createDivider()
         let divider1 = createDivider()
         let divider2 = createDivider()
@@ -78,7 +96,7 @@ class SettingView: UIView {
             hapticSettingSection.topAnchor.constraint(equalTo: divider2.bottomAnchor, constant: 16),
             hapticSettingSection.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             hapticSettingSection.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            hapticSettingSection.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            hapticSettingSection.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }
