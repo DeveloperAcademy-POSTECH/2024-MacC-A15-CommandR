@@ -16,6 +16,7 @@ struct Note {
     var startTime: Int  // 음표가 재생되기 시작하는 시간
     var isRest: Bool = false
     var accidental: Accidental = .natural
+    var tieType: String?
     
     // pitch 값을 MIDI 노트 번호로 변환하는 함수
     func pitchNoteNumber() -> Int {
