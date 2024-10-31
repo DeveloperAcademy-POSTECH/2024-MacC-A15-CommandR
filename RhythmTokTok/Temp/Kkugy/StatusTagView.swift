@@ -84,19 +84,19 @@ class StatusTagView: UIView {
         
         switch soundSetting {
         case .beat:
-            soundSetLabel.text = "박자만"
+            soundSetLabel.text = "🥁 박자"
         case .melody:
             soundSetLabel.text = "🎵 멜로디"
         case .mute:
-            soundSetLabel.text = "🎵 무음"
+            soundSetLabel.text = "🔇 소리 끄기"
         case .voice:
-            soundSetLabel.text = "없음"
+            soundSetLabel.text = "🗣️ 계이름"
         }
         
         if hapticSetting {
             hapticLabel.text = "🫨 워치 진동 ON"
         } else {
-            hapticLabel.text = "🫨 워치 진동 OFF"
+            hapticLabel.text = "🚫 워치 진동 OFF"
         }
     }
     

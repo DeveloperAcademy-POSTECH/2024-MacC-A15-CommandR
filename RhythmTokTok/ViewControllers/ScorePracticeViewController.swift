@@ -77,6 +77,22 @@ class ScorePracticeViewController: UIViewController {
 
         statusTags.updateTag()
         scoreCardView.bpmLabel.updateSpeedText()
+        checkUpdatePreviousButtonState()
+    }
+    
+    private func checkUpdatePreviousButtonState() {
+        // 처음 마디에 위치할 때 이전마디 처음으로 버튼 비활성화
+        if let startMeasureNumber = currentScore.parts.last?.measures[1]?[0].number {
+            if currentMeasure == startMeasureNumber || currentMeasure == 0 {
+                controlButtonView.previousButton.isEnabled = false
+                controlButtonView.refreshButton.isEnabled = false
+            } else {
+                controlButtonView.previousButton.isEnabled = true
+                controlButtonView.refreshButton.isEnabled = true
+            }
+        } else {
+            ErrorHandler.handleError(error: "Unexpectedly found nil while unwrapping an Optional value")
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -157,7 +173,7 @@ class ScorePracticeViewController: UIViewController {
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        controlButtonView.stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        controlButtonView.refreshButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
         controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
         controlButtonView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
@@ -174,6 +190,7 @@ class ScorePracticeViewController: UIViewController {
             .sink { [weak self] currentTime in
                 self?.updateCurrentMeasureLabel(currentTime: currentTime)
                 self?.updateProgressBar(currentTime: currentTime)
+                self?.checkUpdatePreviousButtonState()
             }
             .store(in: &cancellables)
         
