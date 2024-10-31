@@ -18,13 +18,6 @@ class ControlButtonView: UIView {
                                              title: "다음마디", backGroundColor: .gray02,
                                              foregoundColor: .lableSecondary)
 
-    var isPlaying: Bool = false {
-        didSet {
-            let image = UIImage(systemName: isPlaying ? "pause.fill" : "play.fill")
-            playPauseButton.setImage(image, for: .normal)
-        }
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupButtons()

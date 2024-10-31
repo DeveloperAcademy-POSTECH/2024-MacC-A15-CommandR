@@ -192,6 +192,7 @@ class ScorePracticeViewController: UIViewController {
         musicPlayer.$isEnd
             .sink { [weak self] isEnd in
                 if isEnd {
+                    print("끝")
                     self?.controlButtonView.playPauseButton.isPlaying = false
                 }
             }
@@ -350,6 +351,7 @@ class ScorePracticeViewController: UIViewController {
             sendPauseStatusToWatch()
             // MIDI 일시정지
             musicPlayer.pauseMIDI()
+            controlButtonView.playPauseButton.isPlaying = false
         } else {
             // 현재 시간으로부터 4초 후, 평균 워치지연시간 0.14
             let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
@@ -361,8 +363,16 @@ class ScorePracticeViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
                 self.countDownLottieView?.play()
             }
+            controlButtonView.playPauseButton.isPlaying = true
         }
-        controlButtonView.playPauseButton.isPlaying.toggle()
+//        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
+        if IOStoWatchConnectivityManager.shared.playStatus == .play {
+            // 현재 재생 중이면 일시정지로 변경
+            IOStoWatchConnectivityManager.shared.playStatus = .pause
+        } else {
+            // 재생 상태로 변경
+            IOStoWatchConnectivityManager.shared.playStatus = .play
+        }
     }
     
     @objc private func stopButtonTapped() {

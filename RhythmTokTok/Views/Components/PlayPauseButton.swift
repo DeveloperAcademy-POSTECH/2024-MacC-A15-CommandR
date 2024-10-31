@@ -12,7 +12,9 @@ class PlayPauseButton: UIButton {
     // 상태를 관리하는 변수 (재생 중인지 여부)
     var isPlaying: Bool = false {
         didSet {
-            updateButtonAppearance()
+            DispatchQueue.main.async { [weak self] in
+                self?.updateButtonAppearance()
+            }
         }
     }
 
