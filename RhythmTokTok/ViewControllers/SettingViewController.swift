@@ -16,6 +16,9 @@ class SettingViewController: UIViewController {
         // 네비게이션 타이틀 설정
         self.title = "설정"
         
+        // 네비게이션 타이틀 설정
+        self.title = "설정"
+        
         // SettingView에서 이벤트를 받아서 처리
         settingView.onBPMButtonTapped = { [weak self] in
             self?.presentBPMSettingModal()
@@ -40,7 +43,6 @@ class SettingViewController: UIViewController {
         
         if let isHapticGuideOn = fetchSavedHapticGuideState() {
             settingView.hapticSettingSection.setToggleState(isOn: isHapticGuideOn)
-            
             // SettingView에서 이벤트를 받아서 처리
             settingView.onBPMButtonTapped = { [weak self] in
                 self?.presentBPMSettingModal()

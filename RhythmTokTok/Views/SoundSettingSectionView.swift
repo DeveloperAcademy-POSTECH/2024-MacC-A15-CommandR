@@ -82,24 +82,20 @@ class RadioButton: UIButton {
             updateAppearance()
         }
     }
-
     // 초기화 메서드
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupButton()
     }
-
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupButton()
     }
-
     // 버튼 설정
     private func setupButton() {
         self.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         self.backgroundColor = .clear
     }
-
     // 버튼 외형 업데이트
     private func updateAppearance() {
         setNeedsLayout()
