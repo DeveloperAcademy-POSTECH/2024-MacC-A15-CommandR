@@ -218,37 +218,37 @@ class ScorePracticeViewController: UIViewController {
         }
     }
     
-    // 알림 수신 후 실행될 재생 및 일시정지 함수
-    @objc func remotePlayButtonTapped(startTime: TimeInterval) {
-        guard let outputPathURL = midiFilePathURL else {
-            ErrorHandler.handleError(error: "MIDI file URL is nil.")
-            return
-        }
-        
-        // MIDI 파일이 존재하는지 확인
-        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
-            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
-            return
-        }
-        
-        // delay를 startTime을 기준으로 계산
-        let currentTime = Date().timeIntervalSince1970
-        let delay = startTime - currentTime
-        if delay > 0 {
-            // MIDI 파일 재생 예약
-            musicPlayer.playMIDI(delay: delay)
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
-                self.showLottieAnimation()
-            }
-            controlButtonView.stopButton.isHidden = false
-        } else {
-            ErrorHandler.handleError(error: "Start time already passed.")
-        }
-    }
-    
-    func remotePauseButtonTapped() {
-        stopButtonTapped() // 즉시 일시정지
-    }
+//    // 알림 수신 후 실행될 재생 및 일시정지 함수
+//    @objc func remotePlayButtonTapped(startTime: TimeInterval) {
+//        guard let outputPathURL = midiFilePathURL else {
+//            ErrorHandler.handleError(error: "MIDI file URL is nil.")
+//            return
+//        }
+//        
+//        // MIDI 파일이 존재하는지 확인
+//        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
+//            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
+//            return
+//        }
+//        
+//        // delay를 startTime을 기준으로 계산
+//        let currentTime = Date().timeIntervalSince1970
+//        let delay = startTime - currentTime
+//        if delay > 0 {
+//            // MIDI 파일 재생 예약
+//            musicPlayer.playMIDI(delay: delay)
+//            DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
+//                self.showLottieAnimation()
+//            }
+//            controlButtonView.stopButton.isHidden = false
+//        } else {
+//            ErrorHandler.handleError(error: "Start time already passed.")
+//        }
+//    }
+//    
+//    func remotePauseButtonTapped() {
+//        stopButtonTapped() // 즉시 일시정지
+//    }
     
     // MARK: 로띠뷰
     func setLottieView() {
