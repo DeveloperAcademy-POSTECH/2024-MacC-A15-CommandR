@@ -10,6 +10,7 @@ import AVFoundation
 // MusicPlayer: AVPlayer를 사용하여 오디오 파일을 재생 및 제어하는 클래스
 class MusicPlayer: ObservableObject {
     @Published var currentTime: TimeInterval = 0
+    @Published var isEnd: Bool = false
     
     private var player: AVAudioPlayer?
     private var midiPlayer: AVMIDIPlayer? // MIDI 재생 플레이어
@@ -132,12 +133,14 @@ class MusicPlayer: ObservableObject {
 //            midiPlayer.currentPosition = lastPosition
             midiPlayer.stop()
             stopTimer()
+            isEnd = false
             // 시작 틱 위치
             midiPlayer.currentPosition = startTime
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 midiPlayer.play {
                     print("MIDI playback completed.")
+                    self.isEnd = true
                 }
                 self.startTimer()
             }
@@ -178,7 +181,7 @@ class MusicPlayer: ObservableObject {
     private func startTimer() {
         stopTimer() // 기존 타이머가 있으면 중지
         // MIDI Player 현재 위치 업데이트
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.currentTime = self.midiPlayer?.currentPosition ?? 0.0
         }

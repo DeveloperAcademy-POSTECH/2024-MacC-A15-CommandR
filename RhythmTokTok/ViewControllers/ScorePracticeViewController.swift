@@ -188,6 +188,15 @@ class ScorePracticeViewController: UIViewController {
                 self?.handlePlayStatusChange(newStatus)
             }
             .store(in: &cancellables)
+
+        musicPlayer.$isEnd
+            .sink { [weak self] isEnd in
+                if isEnd {
+                    self?.controlButtonView.playPauseButton.isPlaying = false
+                }
+            }
+            .store(in: &cancellables)
+
     }
     
     private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
@@ -225,7 +234,6 @@ class ScorePracticeViewController: UIViewController {
                 } else {
                     self.practicNavBar.setWatchImage(isConnected: false)
                 }
-                
             } else {
                 // 워치 런칭 실패 시 처리
                 ErrorHandler.handleError(error: "Failed to launch the Watch app.")
