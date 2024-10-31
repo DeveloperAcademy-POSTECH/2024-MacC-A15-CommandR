@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct WatchPlayView: View {
-    @EnvironmentObject var connectivityManager: ConnectivityManager
+    @EnvironmentObject var connectivityManager: WatchtoiOSConnectivityManager
     
     private var scoreStatusText: String {
         switch connectivityManager.playStatus {
@@ -23,42 +23,50 @@ struct WatchPlayView: View {
     }
     
     var body: some View {
-        VStack(spacing: 10)  {
-            HStack(alignment: .center) {
+        
+        ZStack {
+            VStack {
+                HStack(alignment: .center) {
+                    Spacer()
+                    Text(scoreStatusText)
+                        .foregroundColor(.blue)
+                        .font(.headline)
+                        .padding(.trailing)
+                }
+                .padding(.top, 20)
                 Spacer()
-                Text(scoreStatusText)
-                    .foregroundColor(.blue)
-                    .font(.headline)
-                    .padding(.top, 10)
+                // 메인 콘텐츠
+                MarqueeTextView(
+                    text: connectivityManager.selectedScoreTitle,
+                    fontSize: 20,
+                    isAnimating: connectivityManager.playStatus == .play
+                )
+                
+                Spacer()
+                Button(action: {
+                    if connectivityManager.playStatus == .play {
+                        // 재생 중일 때 일시정지 동작
+                        connectivityManager.pauseButtonTapped()
+                    } else {
+                        // 일시정지 또는 준비 상태일 때 재생 동작
+                        connectivityManager.playButtonTapped()
+                    }
+                })
+                {
+                    Image(systemName: connectivityManager.playStatus != .play ? "play.fill" : "pause.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 24)
+                        .foregroundColor(.white)
+                }
+                .frame(width: 142, height: 64)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.blue)
+                )
+                .buttonStyle(PlainButtonStyle())
+                .padding(.bottom, 10)
             }
-            Spacer()
-            
-            // 곡 타이틀 표시
-            MarqueeTextView(
-                text: connectivityManager.selectedScoreTitle,
-                fontSize: 20,
-                isAnimating: connectivityManager.playStatus == .play
-            )
-            
-            Spacer()
-            
-            Button(action: {
-                connectivityManager.playButtonTapped()
-            }
-            ){
-                Image(systemName: connectivityManager.playStatus != .play ? "play.fill" : "pause.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 24)
-                    .foregroundColor(.white)
-            }
-            .frame(width: 142, height: 64)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.blue)
-            )
-            .buttonStyle(PlainButtonStyle())
-            .padding(.bottom, 10)
         }
     }
 }
@@ -66,14 +74,13 @@ struct WatchPlayView: View {
 struct WatchPlayView_Previews: PreviewProvider {
     static var previews: some View {
         // 샘플 데이터를 가진 ConnectivityManager 생성
-        let manager = ConnectivityManager()
+        let manager = WatchtoiOSConnectivityManager()
         manager.selectedScoreTitle = "This is a long song title that should scroll across the screen"
         manager.playStatus = .play
         return WatchPlayView()
             .environmentObject(manager)
     }
 }
-
 
 //#Preview {
 //    WatchPlayView()
