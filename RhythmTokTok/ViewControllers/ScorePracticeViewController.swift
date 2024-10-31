@@ -78,21 +78,7 @@ class ScorePracticeViewController: UIViewController {
         statusTags.updateTag()
         scoreCardView.bpmLabel.updateSpeedText()
         checkUpdatePreviousButtonState()
-    }
-    
-    private func checkUpdatePreviousButtonState() {
-        // 처음 마디에 위치할 때 이전마디 처음으로 버튼 비활성화
-        if let startMeasureNumber = currentScore.parts.last?.measures[1]?[0].number {
-            if currentMeasure == startMeasureNumber || currentMeasure == 0 {
-                controlButtonView.previousButton.isEnabled = false
-                controlButtonView.refreshButton.isEnabled = false
-            } else {
-                controlButtonView.previousButton.isEnabled = true
-                controlButtonView.refreshButton.isEnabled = true
-            }
-        } else {
-            ErrorHandler.handleError(error: "Unexpectedly found nil while unwrapping an Optional value")
-        }
+        checkUpdateNextButtonState()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -191,6 +177,7 @@ class ScorePracticeViewController: UIViewController {
                 self?.updateCurrentMeasureLabel(currentTime: currentTime)
                 self?.updateProgressBar(currentTime: currentTime)
                 self?.checkUpdatePreviousButtonState()
+                self?.checkUpdateNextButtonState()
             }
             .store(in: &cancellables)
         
@@ -278,6 +265,29 @@ class ScorePracticeViewController: UIViewController {
 //    func remotePauseButtonTapped() {
 //        stopButtonTapped() // 즉시 일시정지
 //    }
+
+    private func checkUpdatePreviousButtonState() {
+        // 처음 마디에 위치할 때 이전마디 처음으로 버튼 비활성화
+        if let startMeasureNumber = currentScore.parts.last?.measures[1]?[0].number {
+            if currentMeasure == startMeasureNumber || currentMeasure == 0 {
+                controlButtonView.previousButton.isEnabled = false
+                controlButtonView.refreshButton.isEnabled = false
+            } else {
+                controlButtonView.previousButton.isEnabled = true
+                controlButtonView.refreshButton.isEnabled = true
+            }
+        } else {
+            ErrorHandler.handleError(error: "Unexpectedly found nil while unwrapping an Optional value")
+        }
+    }
+    
+    private func checkUpdateNextButtonState() {
+        if currentMeasure == totalMeasure {
+            controlButtonView.nextButton.isEnabled = false
+        } else {
+            controlButtonView.nextButton.isEnabled = true
+        }
+    }
     
     // MARK: 로띠뷰
     func setLottieView() {
@@ -528,28 +538,20 @@ extension ScorePracticeViewController {
         switch status {
         case .ready:
             // 준비 상태: 재생 버튼만 표시
-            controlButtonView.playPauseButton.isHidden = false
             controlButtonView.playPauseButton.isPlaying = false
-            controlButtonView.stopButton.isHidden = true
         case .play:
             // 재생 상태: 일시정지 버튼 표시
-            controlButtonView.playPauseButton.isHidden = false
             controlButtonView.playPauseButton.isPlaying = true
-            controlButtonView.stopButton.isHidden = false
             // MIDI 재생 시작
             startMIDIPlayback()
         case .pause:
             // 일시정지 상태: 재생 버튼 표시
-            controlButtonView.playPauseButton.isHidden = false
             controlButtonView.playPauseButton.isPlaying = false
-            controlButtonView.stopButton.isHidden = false
             // MIDI 일시정지
             musicPlayer.pauseMIDI()
         case .stop:
             // 정지 상태: 재생 버튼만 표시
-            controlButtonView.playPauseButton.isHidden = false
             controlButtonView.playPauseButton.isPlaying = false
-            controlButtonView.stopButton.isHidden = true
             // MIDI 재생 중지
             musicPlayer.stopMIDI()
         case .done:
