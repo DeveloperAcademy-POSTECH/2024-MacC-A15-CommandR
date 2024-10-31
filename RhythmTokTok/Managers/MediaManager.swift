@@ -369,6 +369,7 @@ struct MediaManager {
         var musicSequence: MusicSequence?
         var musicTrack: MusicTrack?
         var tempoTrack: MusicTrack?
+        var tieStartNotes: [String: Note] = [:]
         
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
@@ -385,7 +386,34 @@ struct MediaManager {
         // 템포 설정 (0 번째 시점에서 보정된 템포 이벤트 추가)
         MusicTrackNewExtendedTempoEvent(tempoTrack!, 0, correctedTempoBPM)
         
-        for note in notes {
+        for index in 0..<notes.count {
+            var note = notes[index]
+            
+            // 붙임줄 관련 처리 로직
+            if let tieType = note.tieType {
+                let noteKey = "\(note.staff)-\(note.pitch)-\(note.octave)-\(note.voice)" // Unique key
+                
+                if tieType == "start" {
+                    // "tie start"일 때는 노트를 저장만 해주기
+                    // 키값이 이미 저장되어 있다면 붙임줄이 여러 개가 이어지고 있는 상황임
+                    if tieStartNotes[noteKey] != nil {
+                        tieStartNotes[noteKey]!.duration += note.duration
+                    } else {
+                        // 붙임줄이 처음 시작될 때에 키값을 저장해둠
+                        tieStartNotes[noteKey] = note
+                    }
+                    continue
+                } else if tieType == "stop" {
+                    // 매칭하는 "tie start"를 찾고, 그 노트의 duration을 연장한 뒤 add
+                    // 그 노트를 사용하여 MIDI파일에 붙임
+                    if tieStartNotes[noteKey] != nil {
+                        tieStartNotes[noteKey]!.duration += note.duration
+                        note = tieStartNotes[noteKey]!
+                        tieStartNotes.removeValue(forKey: noteKey)
+                    }
+                }
+            }
+    
             if note.isRest {
 //                print("쉼표: \(note.duration) ticks, 시작시간 \(note.startTime)")
                 continue // 쉼표는 MIDI 이벤트를 생성하지 않으므로 다음 음표로 넘어감
