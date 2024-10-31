@@ -99,6 +99,10 @@
 		D3DDA07A2CC5516F00125C86 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */; };
 		D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
 		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
+		EE4203962CD226800081F2A1 /* BPMSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingViewController.swift */; };
+		EE4203982CD277690081F2A1 /* BPMSettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSection.swift */; };
+		EE42039A2CD277A60081F2A1 /* SoundSettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203992CD277A60081F2A1 /* SoundSettingSection.swift */; };
+		EE42039C2CD277B20081F2A1 /* HapticSettingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE42039B2CD277B20081F2A1 /* HapticSettingSection.swift */; };
 		EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */; };
 		EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */; };
 		EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B952CCFB88200079D75 /* ScoreService.swift */; };
@@ -232,6 +236,10 @@
 		D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		EE4203952CD226750081F2A1 /* BPMSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingViewController.swift; sourceTree = "<group>"; };
+		EE4203972CD277630081F2A1 /* BPMSettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSection.swift; sourceTree = "<group>"; };
+		EE4203992CD277A60081F2A1 /* SoundSettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingSection.swift; sourceTree = "<group>"; };
+		EE42039B2CD277B20081F2A1 /* HapticSettingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingSection.swift; sourceTree = "<group>"; };
 		EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EE7A8B952CCFB88200079D75 /* ScoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScoreService.swift; path = RhythmTokTok/Temp/ScoreService.swift; sourceTree = SOURCE_ROOT; };
@@ -356,6 +364,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				EE4203952CD226750081F2A1 /* BPMSettingViewController.swift */,
 				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
@@ -473,6 +482,9 @@
 			children = (
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeTitleView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
+				EE4203972CD277630081F2A1 /* BPMSettingSection.swift */,
+				EE4203992CD277A60081F2A1 /* SoundSettingSection.swift */,
+				EE42039B2CD277B20081F2A1 /* HapticSettingSection.swift */,
 				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
 				1EF8A0A72CB53E9A00ADB783 /* Components */,
 			);
@@ -782,6 +794,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE4203962CD226800081F2A1 /* BPMSettingViewController.swift in Sources */,
 				EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */,
 				EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */,
 				EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */,
@@ -796,12 +809,14 @@
 				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
 				D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */,
 				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
+				EE4203982CD277690081F2A1 /* BPMSettingSection.swift in Sources */,
 				1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */,
 				616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */,
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
 				1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */,
 				1ED9FEC32CBE4A8300472C51 /* ScorePracticeTitleView.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
+				EE42039A2CD277A60081F2A1 /* SoundSettingSection.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
@@ -810,6 +825,7 @@
 				EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */,
+				EE42039C2CD277B20081F2A1 /* HapticSettingSection.swift in Sources */,
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
 				1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */,
 				616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */,

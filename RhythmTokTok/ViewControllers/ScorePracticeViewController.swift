@@ -256,6 +256,7 @@ class ScorePracticeViewController: UIViewController {
     
     @objc private func settingButtonTapped() {
         let settingViewController = SettingViewController()
+        navigationItem.title = "설정"
         navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(settingViewController, animated: true)
     }
