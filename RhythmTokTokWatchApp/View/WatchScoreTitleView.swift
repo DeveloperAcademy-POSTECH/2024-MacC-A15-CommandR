@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MarqueeTextView: View {
+struct WatchScoreTitleView: View {
     let text: String
     let fontSize: CGFloat
     let isAnimating: Bool

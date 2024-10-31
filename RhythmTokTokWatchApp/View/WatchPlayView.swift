@@ -37,8 +37,9 @@ struct WatchPlayView: View {
                 }
                 .padding(.top, 20)
                 Spacer()
-                // 메인 콘텐츠
-                MarqueeTextView(
+                
+                // 곡 타이틀 표시
+                WatchScoreTitleView(
                     text: connectivityManager.selectedScoreTitle,
                     fontSize: 20,
                     isAnimating: connectivityManager.playStatus == .play
@@ -69,21 +70,19 @@ struct WatchPlayView: View {
                 .buttonStyle(PlainButtonStyle())
                 .padding(.bottom, 10)
             }
+            
             // 카운트다운 뷰 (countdownNumber가 nil이 아닐 때만 표시)
             if countdownNumber != nil {
                 WatchCountdownView(countdownNumber: $countdownNumber)
             }
         }
-        .onAppear {
-            startCountdown()
-        }
-        .onDisappear {
-            stopCountdown()
-        }
         .onReceive(connectivityManager.$startTime) { newStartTime in
             if let startTime = newStartTime {
                 scheduleCountdown(startTime: startTime)
             }
+        }
+        .onDisappear {
+            stopCountdown()
         }
     }
     
@@ -126,11 +125,11 @@ struct WatchPlayView: View {
     private func playHaptic(for number: Int) {
         switch number {
         case 3:
-            WKInterfaceDevice.current().play(.start)
+            WKInterfaceDevice.current().play(.retry)
         case 2:
-            WKInterfaceDevice.current().play(.stop)
+            WKInterfaceDevice.current().play(.retry)
         case 1:
-            WKInterfaceDevice.current().play(.success)
+            WKInterfaceDevice.current().play(.retry)
         default:
             break
         }

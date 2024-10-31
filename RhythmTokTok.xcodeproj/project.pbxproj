@@ -56,7 +56,6 @@
 		1E54A8F82CB7D26900753A3E /* MoonRiver.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F72CB7D26900753A3E /* MoonRiver.xml */; };
 		1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FA2CBA8EE100753A3E /* Score.swift */; };
 		1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FC2CBA8F3500753A3E /* Part.swift */; };
-		1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */; };
 		1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */; };
 		1E91466F2CD0FE2900DBCD00 /* WatchManage_Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */; };
 		1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */; };
@@ -100,7 +99,7 @@
 		D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */; };
 		D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF702CB6B68C005CD01F /* Notification.swift */; };
 		D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */; };
-		D3D6D1B92CBE8B6300D22886 /* MarqueeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */; };
+		D3D6D1B92CBE8B6300D22886 /* WatchScoreTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B82CBE8B6300D22886 /* WatchScoreTitleView.swift */; };
 		D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */; };
 		D3DDA0772CC5516F00125C86 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */; };
 		D3DDA0782CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
@@ -209,7 +208,6 @@
 		1E54A8F72CB7D26900753A3E /* MoonRiver.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = MoonRiver.xml; path = RhythmTokTok/Resources/MoonRiver.xml; sourceTree = SOURCE_ROOT; };
 		1E54A8FA2CBA8EE100753A3E /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		1E54A8FC2CBA8F3500753A3E /* Part.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Part.swift; sourceTree = "<group>"; };
-		1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayHapticView.swift; sourceTree = "<group>"; };
 		1E54A9002CBBBCEC00753A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButtonView.swift; sourceTree = "<group>"; };
 		1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManage_Ex.swift; sourceTree = "<group>"; };
@@ -252,7 +250,7 @@
 		D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D3ABDF702CB6B68C005CD01F /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayView.swift; sourceTree = "<group>"; };
-		D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeTextView.swift; sourceTree = "<group>"; };
+		D3D6D1B82CBE8B6300D22886 /* WatchScoreTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchScoreTitleView.swift; sourceTree = "<group>"; };
 		D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTestViewController.swift; sourceTree = "<group>"; };
 		D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
@@ -632,11 +630,10 @@
 		D3ABDF692CB64ECE005CD01F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D3D6D1B82CBE8B6300D22886 /* MarqueeTextView.swift */,
-				1E54A8FE2CBBB91800753A3E /* PlayHapticView.swift */,
-				D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */,
-				02CFE1232CB1156C008454B8 /* WatchWaitingView.swift */,
 				D3693D6E2CD3C7EE00E37D2C /* WatchCountdownView.swift */,
+				D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */,
+				D3D6D1B82CBE8B6300D22886 /* WatchScoreTitleView.swift */,
+				02CFE1232CB1156C008454B8 /* WatchWaitingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -907,12 +904,12 @@
 			files = (
 				D36E430D2CB642630038994B /* WatchtoiOSConnectivityManager.swift in Sources */,
 				D3693D6F2CD3C7EE00E37D2C /* WatchCountdownView.swift in Sources */,
-				D3D6D1B92CBE8B6300D22886 /* MarqueeTextView.swift in Sources */,
+				D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */,
+				D3D6D1B92CBE8B6300D22886 /* WatchScoreTitleView.swift in Sources */,
 				02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */,
 				02CFE1242CB1156C008454B8 /* WatchWaitingView.swift in Sources */,
 				02CFE1222CB1156C008454B8 /* RhythmTokTokWatchApp.swift in Sources */,
 				D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */,
-				1E54A8FF2CBBB91800753A3E /* PlayHapticView.swift in Sources */,
 				1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */,
 				D34EEB632CC2A8ED007BE568 /* PlayStatus.swift in Sources */,
 			);
