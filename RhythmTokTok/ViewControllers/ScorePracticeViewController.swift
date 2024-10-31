@@ -78,6 +78,8 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification(_:)), name: .watchPlayButtonTapped, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification), name: .watchPauseButtonTapped, object: nil)
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         Task {
             await createMIDIFile(score: currentScore)
@@ -87,9 +89,13 @@ class ScorePracticeViewController: UIViewController {
         setupActions()
         setupBindings()
         updateWatchAppStatus()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification), name: .watchPlayButtonTapped, object: nil)
-           NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification), name: .watchPauseButtonTapped, object: nil)
-       
+        
+        
+        
+        //MARK: - [1] 아이폰에서만 재생
+        //        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification), name: .watchPlayButtonTapped, object: nil)
+        //           NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification), name: .watchPauseButtonTapped, object: nil)
+        
     }
     
     private func setupUI() {
@@ -216,6 +222,38 @@ class ScorePracticeViewController: UIViewController {
         }
     }
     
+    // 알림 수신 후 실행될 재생 및 일시정지 함수
+    @objc func remotePlayButtonTapped(startTime: TimeInterval) {
+        guard let outputPathURL = midiFilePathURL else {
+            ErrorHandler.handleError(error: "MIDI file URL is nil.")
+            return
+        }
+        
+        // MIDI 파일이 존재하는지 확인
+        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
+            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
+            return
+        }
+        
+        // delay를 startTime을 기준으로 계산
+        let currentTime = Date().timeIntervalSince1970
+        let delay = startTime - currentTime
+        if delay > 0 {
+            // MIDI 파일 재생 예약
+            musicPlayer.playMIDI(delay: delay)
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
+                self.showLottieAnimation()
+            }
+            controlButtonView.stopButton.isHidden = false
+        } else {
+            ErrorHandler.handleError(error: "Start time already passed.")
+        }
+    }
+    
+    func remotePauseButtonTapped() {
+        stopButtonTapped() // 즉시 일시정지
+    }
+    
     // MARK: 로띠뷰
     func setLottieView() {
         animationView = LottieAnimationView(name: "Countdown") // animationFile은 Lottie JSON 파일명
@@ -253,16 +291,28 @@ class ScorePracticeViewController: UIViewController {
         animationView?.isHidden = true
     }
     
-    //MARK: - 벨이 추가해본 notification 기능
-    @objc private func handleWatchPlayNotification() {
-        // 워치에서 play 알림 수신 시 playButtonTapped 호출
-        playButtonTapped()
+    
+    // 워치에서 Play 알림을 수신했을 때 호출
+    @objc private func handleWatchPlayNotification(_ notification: Notification) {
+        if let startTime = notification.object as? TimeInterval {
+            remotePlayButtonTapped(startTime: startTime)
+        }
     }
     
+    // 워치에서 Pause 알림을 수신했을 때 호출
     @objc private func handleWatchPauseNotification() {
-        // 워치에서 pause 알림 수신 시 stopButtonTapped 호출
-        stopButtonTapped()
+        remotePauseButtonTapped()
     }
+    //    //MARK: - [1]벨이 추가해본 notification 기능
+    //    @objc private func handleWatchPlayNotification() {
+    //        // 워치에서 play 알림 수신 시 playButtonTapped 호출
+    //        playButtonTapped()
+    //    }
+    //    
+    //    @objc private func handleWatchPauseNotification() {
+    //        // 워치에서 pause 알림 수신 시 stopButtonTapped 호출
+    //        stopButtonTapped()
+    //    }
     
     
     // MARK: Button 액션

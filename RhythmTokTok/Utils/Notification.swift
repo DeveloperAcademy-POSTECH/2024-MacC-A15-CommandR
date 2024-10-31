@@ -15,4 +15,3 @@ extension Notification.Name {
     static let watchPlayButtonTapped = Notification.Name("watchPlayButtonTapped")
     static let watchPauseButtonTapped = Notification.Name("watchPauseButtonTapped")
 }
-

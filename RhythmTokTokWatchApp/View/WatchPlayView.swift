@@ -45,10 +45,10 @@ struct WatchPlayView: View {
                 Spacer()
                 Button(action: {
                     if connectivityManager.playStatus == .play {
-                        // 현재 상태가 재생 중일 때 일시정지
+                        // 재생 중일 때 일시정지 동작
                         connectivityManager.pauseButtonTapped()
                     } else {
-                        // 현재 상태가 일시정지 또는 다른 상태일 때 재생
+                        // 일시정지 또는 준비 상태일 때 재생 동작
                         connectivityManager.playButtonTapped()
                     }
                 }
