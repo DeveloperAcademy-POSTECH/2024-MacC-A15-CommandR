@@ -50,7 +50,6 @@ class SettingViewController: UIViewController {
         bpmSettingVC.currentBPM = settingView.bpmSettingSection.bpm // 현재 BPM 값 전달
         bpmSettingVC.onBPMSelected = { [weak self] selectedBPM in
             self?.settingView.bpmSettingSection.bpm = selectedBPM
-            
             // Core Data에 BPM 값 저장
             self?.saveBPMToCoreData(bpm: selectedBPM)
         }
