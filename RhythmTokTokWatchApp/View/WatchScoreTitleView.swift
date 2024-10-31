@@ -23,8 +23,9 @@ struct WatchScoreTitleView: View {
             let containerWidth = geometry.size.width
 
             Text(text)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: fontSize))
+//                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(Font.custom("Pretendard-Bold", size: fontSize))
+                .multilineTextAlignment(.center) 
                 .lineLimit(1)
                 .truncationMode(.tail)
             
@@ -34,7 +35,6 @@ struct WatchScoreTitleView: View {
                             .onAppear {
                                 self.textWidth = textGeometry.size.width
                                 self.containerWidth = containerWidth
-                                
                                 // 애니메이션 시작 조건 확인
                                 if isAnimating && textWidth > containerWidth {
                                     startAnimation()

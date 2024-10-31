@@ -33,10 +33,8 @@ struct WatchPlayView: View {
                     Text(scoreStatusText)
                         .foregroundColor(.blue)
                         .font(.headline)
-                        .padding(.trailing)
                 }
-                .padding(.top, 20)
-                Spacer()
+                .padding(.top, 10)
                 
                 // 곡 타이틀 표시
                 WatchScoreTitleView(
@@ -44,7 +42,7 @@ struct WatchPlayView: View {
                     fontSize: 20,
                     isAnimating: connectivityManager.playStatus == .play
                 )
-                
+                .padding(.top, 8)
                 Spacer()
                 Button(action: {
                     if connectivityManager.playStatus == .play {
@@ -65,7 +63,7 @@ struct WatchPlayView: View {
                 .frame(width: 142, height: 64)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.blue)
+                        .fill(Color.blue05)
                 )
                 .buttonStyle(PlainButtonStyle())
                 .padding(.bottom, 10)
