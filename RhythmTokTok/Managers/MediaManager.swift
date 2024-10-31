@@ -158,14 +158,51 @@ struct MediaManager {
         return score
     }
     
+    private func handleNoteTie(_ note: inout Note, _ tieStartNotes: inout [String: Note]) {
+        let noteKey = "\(note.staff)-\(note.pitch)-\(note.octave)-\(note.voice)" // Unique key
+        if let tieType = note.tieType {
+            if tieType == "start" {
+                // "tie start"일 때는 노트를 저장만 해주기
+                // 키값이 이미 저장되어 있다면 붙임줄이 여러 개가 이어지고 있는 상황임
+                if tieStartNotes[noteKey] != nil {
+                    tieStartNotes[noteKey]!.duration += note.duration
+                } else {
+                    // 붙임줄이 처음 시작될 때에 키값을 저장해둠
+                    tieStartNotes[noteKey] = note
+                }
+            } else if tieType == "stop" {
+                // 매칭하는 "tie start"를 찾고, 그 노트의 duration을 연장한 뒤 add
+                // 그 노트를 사용하여 MIDI파일에 붙임
+                if tieStartNotes[noteKey] != nil {
+                    tieStartNotes[noteKey]!.duration += note.duration
+                    note = tieStartNotes[noteKey]!
+                    tieStartNotes.removeValue(forKey: noteKey)
+                }
+            }
+        }
+    }
+    
+    
     // MARK: - 햅틱 시퀀스 생성 부분
     func createHapticSequence(from notes: [Note], division: Double) -> [Double] {
         var haptics: [Double] = []
+        var tieStartNotes: [String: Note] = [:]
         
-        for note in notes {
+        for index in 0..<notes.count {
+            var note = notes[index]
+            
             if note.pitch.isEmpty {
                 continue
             }
+            
+            // 붙임줄 관련 처리 로직
+            if let tieType = note.tieType {
+                handleNoteTie(&note, &tieStartNotes)
+                if tieType == "start" {
+                    continue
+                }
+            }
+            
             let startTimeInSeconds = convertTicksToTime(convertTick: note.startTime, division: division)
             haptics.append(startTimeInSeconds)
         }
@@ -391,26 +428,9 @@ struct MediaManager {
             
             // 붙임줄 관련 처리 로직
             if let tieType = note.tieType {
-                let noteKey = "\(note.staff)-\(note.pitch)-\(note.octave)-\(note.voice)" // Unique key
-                
+                handleNoteTie(&note, &tieStartNotes)
                 if tieType == "start" {
-                    // "tie start"일 때는 노트를 저장만 해주기
-                    // 키값이 이미 저장되어 있다면 붙임줄이 여러 개가 이어지고 있는 상황임
-                    if tieStartNotes[noteKey] != nil {
-                        tieStartNotes[noteKey]!.duration += note.duration
-                    } else {
-                        // 붙임줄이 처음 시작될 때에 키값을 저장해둠
-                        tieStartNotes[noteKey] = note
-                    }
                     continue
-                } else if tieType == "stop" {
-                    // 매칭하는 "tie start"를 찾고, 그 노트의 duration을 연장한 뒤 add
-                    // 그 노트를 사용하여 MIDI파일에 붙임
-                    if tieStartNotes[noteKey] != nil {
-                        tieStartNotes[noteKey]!.duration += note.duration
-                        note = tieStartNotes[noteKey]!
-                        tieStartNotes.removeValue(forKey: noteKey)
-                    }
                 }
             }
     
