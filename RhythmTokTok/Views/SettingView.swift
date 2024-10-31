@@ -57,7 +57,7 @@ class SettingView: UIView {
     
     private func setupUI() {
         backgroundColor = .white
-        
+
         let divider0 = createDivider()
         let divider1 = createDivider()
         let divider2 = createDivider()
