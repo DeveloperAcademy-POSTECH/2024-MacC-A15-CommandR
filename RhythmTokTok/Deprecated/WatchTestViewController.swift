@@ -74,18 +74,18 @@ class WatchTestViewController: UIViewController {
             print("선택된 곡이 없습니다.")
             return
         }
-        IOSConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: [0.0, 1.0, 3.0])
+        IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: [0.0, 1.0, 3.0])
     }
     
     @objc private func sendPlayStatusPlay() {
-        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .play, startTime: Date().timeIntervalSince1970)
+        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .play, startTime: Date().timeIntervalSince1970)
     }
     
     @objc private func sendPlayStatusPause() {
-        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
+        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
     }
     
     @objc private func sendPlayStatusStop() {
-        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
     }
 }

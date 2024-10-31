@@ -8,9 +8,9 @@ import HealthKit
 import UIKit
 import WatchConnectivity
 
-class IOSConnectivityManager: NSObject, WCSessionDelegate, ObservableObject {
+class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObject {
     
-    static let shared = IOSConnectivityManager()
+    static let shared = IOStoWatchConnectivityManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
     var selectedScoreTitle: String?
     // 런치 용도

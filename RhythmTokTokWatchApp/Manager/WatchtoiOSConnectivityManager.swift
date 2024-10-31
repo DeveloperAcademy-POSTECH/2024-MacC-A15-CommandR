@@ -9,7 +9,7 @@ import Foundation
 import WatchConnectivity
 import Combine
 
-class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
+class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     
     var hapticManager = HapticScheduleManager()
     @Published var isConnected: Bool = false

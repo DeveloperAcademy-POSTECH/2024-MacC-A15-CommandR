@@ -88,8 +88,6 @@ class ScorePracticeViewController: UIViewController {
         setupBindings()
         updateWatchAppStatus()
         
-        
-        
         // MARK: - [1] 아이폰에서만 재생
         NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification), name: .watchPlayButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification), name: .watchPauseButtonTapped, object: nil)
@@ -160,7 +158,7 @@ class ScorePracticeViewController: UIViewController {
     }
     
     private func setupBindings() {
-        IOSConnectivityManager.shared.$isWatchAppConnected
+        IOStoWatchConnectivityManager.shared.$isWatchAppConnected
             .sink { [weak self] isConnected in
                 self?.handleWatchAppConnectionChange(isConnected)
             }
@@ -174,7 +172,7 @@ class ScorePracticeViewController: UIViewController {
             .store(in: &cancellables)
         
         // WatchManager의 playStatus를 구독하여 UI 업데이트
-        IOSConnectivityManager.shared.$playStatus
+        IOStoWatchConnectivityManager.shared.$playStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newStatus in
                 self?.handlePlayStatusChange(newStatus)
@@ -202,10 +200,10 @@ class ScorePracticeViewController: UIViewController {
     // 워치 앱 상태 업데이트 메서드
     @objc func updateWatchAppStatus() {
         Task {
-            let isLaunched = await IOSConnectivityManager.shared.launchWatch()
+            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
             
             if isLaunched {
-                let isWatchAppReachable = IOSConnectivityManager.shared.isWatchAppConnected
+                let isWatchAppReachable = IOStoWatchConnectivityManager.shared.isWatchAppConnected
                 if isWatchAppReachable {
                     self.practicNavBar.setWatchImage(isConnected: true)
                 } else {
@@ -316,7 +314,7 @@ class ScorePracticeViewController: UIViewController {
     // MARK: Button 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
-        IOSConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
+        IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
         navigationController?.popViewController(animated: true)
     }
     
@@ -363,7 +361,7 @@ class ScorePracticeViewController: UIViewController {
         musicPlayer.stopMIDI()
         controlButtonView.playPauseButton.isPlaying = false
         controlButtonView.stopButton.isHidden = true
-        IOSConnectivityManager.shared.playStatus = .stop
+        IOStoWatchConnectivityManager.shared.playStatus = .stop
     }
     
     @objc private func previousButtonTapped() {
@@ -465,17 +463,17 @@ class ScorePracticeViewController: UIViewController {
     // MARK: 워치 통신 부분
     // 워치로 곡 선택 메시지 전송
     func sendHapticSequenceToWatch(hapticSequence: [Double]) async {
-        let isLaunched = await IOSConnectivityManager.shared.launchWatch()
+        let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
         
         if isLaunched {
             let scoreTitle = currentScore.title
-            IOSConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
+            IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
         }
     }
     
     // 워치로 실행 예약 메시지 전송
     func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
-        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
+        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
     }
     
     // 마디 점프 메시지 전송
@@ -483,17 +481,17 @@ class ScorePracticeViewController: UIViewController {
         let scoreTitle = currentScore.title
         
         
-        IOSConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
+        IOStoWatchConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
     }
     
     // 워치로 일시정지 예약 메시지 전송
     func sendPauseStatusToWatch() {
-        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
+        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
     }
     
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
-        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
     }
 }
 

@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         
         setupUI()
         
-        _ = IOSConnectivityManager.shared
+        _ = IOStoWatchConnectivityManager.shared
         setupObservers()
         updateWatchAppStatus()
     }
@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     // 워치 앱 상태 업데이트 메서드
     @objc func updateWatchAppStatus() {
         DispatchQueue.main.async {
-            let isWatchAppReachable = IOSConnectivityManager.shared.isWatchAppConnected
+            let isWatchAppReachable = IOStoWatchConnectivityManager.shared.isWatchAppConnected
             print("ViewController: updateWatchAppStatus - isWatchAppReachable = \(isWatchAppReachable)")
             
             if isWatchAppReachable {
@@ -184,7 +184,7 @@ class ViewController: UIViewController {
             return
         }
         let isSelectedScore = true
-        IOSConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: [1.0])
+        IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: [1.0])
     }
     
     // 곡을 선택하는 메서드 예시

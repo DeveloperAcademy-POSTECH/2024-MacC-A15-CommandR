@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct WatchPlayView: View {
-    @EnvironmentObject var connectivityManager: WatchConnectivityManager
+    @EnvironmentObject var connectivityManager: WatchtoiOSConnectivityManager
     
     private var scoreStatusText: String {
         switch connectivityManager.playStatus {
@@ -51,8 +51,7 @@ struct WatchPlayView: View {
                         // 일시정지 또는 준비 상태일 때 재생 동작
                         connectivityManager.playButtonTapped()
                     }
-                }
-                )
+                })
                 {
                     Image(systemName: connectivityManager.playStatus != .play ? "play.fill" : "pause.fill")
                         .resizable()
@@ -75,7 +74,7 @@ struct WatchPlayView: View {
 struct WatchPlayView_Previews: PreviewProvider {
     static var previews: some View {
         // 샘플 데이터를 가진 ConnectivityManager 생성
-        let manager = WatchConnectivityManager()
+        let manager = WatchtoiOSConnectivityManager()
         manager.selectedScoreTitle = "This is a long song title that should scroll across the screen"
         manager.playStatus = .play
         return WatchPlayView()
