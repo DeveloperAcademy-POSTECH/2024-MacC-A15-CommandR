@@ -1,3 +1,9 @@
+//
+//  SoundSettingViewController.swift
+//  RhythmTokTok
+//
+//  Created by Kyuhee hong on 10/30/24.
+//
 import UIKit
 
 class HapticSettingSectionView: UIView {
@@ -34,7 +40,7 @@ class HapticSettingSectionView: UIView {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "SwitchOn") // 이미지 이름을 실제 에셋 이름으로 변경
         imageView.isUserInteractionEnabled = true // 제스처 인식을 위해 필요
-        imageView.contentMode = .scaleAspectFit // 추가된 부분
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
@@ -57,16 +63,16 @@ class HapticSettingSectionView: UIView {
         let stackView = UIStackView(arrangedSubviews: [watchGuideLabel, toggleImageView])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 8 // 라벨과 이미지 뷰 사이의 간격
+        stackView.spacing = 8
 
         addSubview(titleLabel)
         addSubview(stackView)
         addSubview(descriptionLabel)
-        
+
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // 제약 조건 설정
         NSLayoutConstraint.activate([
             // Title Label Constraints

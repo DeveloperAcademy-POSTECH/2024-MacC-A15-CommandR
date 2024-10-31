@@ -82,64 +82,66 @@ class RadioButton: UIButton {
             updateAppearance()
         }
     }
-    
+
     // 초기화 메서드
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupButton()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupButton()
     }
-    
+
     // 버튼 설정
     private func setupButton() {
         self.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         self.backgroundColor = .clear
     }
-    
+
     // 버튼 외형 업데이트
     private func updateAppearance() {
-        // 레이아웃이 완료된 후에 외형 업데이트
         setNeedsLayout()
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        // 선택 상태에 따라 외형 설정
+        configureAppearance()
+    }
+
+    private func configureAppearance() {
+        self.layer.cornerRadius = self.bounds.height / 2
+        self.layer.borderWidth = 2
+
         if isChecked {
             // 선택된 상태: 파란색 테두리와 내부 원
-            self.layer.cornerRadius = self.bounds.height / 2
-            self.layer.borderWidth = 2
             self.layer.borderColor = UIColor.blue.cgColor
-            self.backgroundColor = .clear
-            
-            // 내부 원 추가
-            if self.viewWithTag(100) == nil {
-                let innerCircle = UIView(frame: CGRect(x: 4, y: 4, width: self.bounds.width - 8, height: self.bounds.height - 8))
-                innerCircle.backgroundColor = UIColor.blue
-                innerCircle.layer.cornerRadius = innerCircle.bounds.height / 2
-                innerCircle.isUserInteractionEnabled = false
-                innerCircle.tag = 100 // 태그를 지정하여 나중에 제거할 때 사용
-                self.addSubview(innerCircle)
-            }
+            addInnerCircle(color: UIColor.blue)
         } else {
             // 선택되지 않은 상태: 회색 테두리
-            self.layer.cornerRadius = self.bounds.height / 2
-            self.layer.borderWidth = 2
             self.layer.borderColor = UIColor.gray.cgColor
-            self.backgroundColor = .clear
-            
-            // 내부 원 제거
-            if let innerCircle = self.viewWithTag(100) {
-                innerCircle.removeFromSuperview()
-            }
+            removeInnerCircle()
         }
     }
-    
+
+    private func addInnerCircle(color: UIColor) {
+        if self.viewWithTag(100) == nil {
+            let innerCircle = UIView(frame: CGRect(x: 4, y: 4, width: self.bounds.width - 8, height: self.bounds.height - 8))
+            innerCircle.backgroundColor = color
+            innerCircle.layer.cornerRadius = innerCircle.bounds.height / 2
+            innerCircle.isUserInteractionEnabled = false
+            innerCircle.tag = 100
+            self.addSubview(innerCircle)
+        }
+    }
+
+    private func removeInnerCircle() {
+        if let innerCircle = self.viewWithTag(100) {
+            innerCircle.removeFromSuperview()
+        }
+    }
+
     // 버튼 탭 액션
     @objc private func buttonTapped() {
         // 외부에서 선택 상태를 관리하므로 여기서는 상태를 변경하지 않습니다.
