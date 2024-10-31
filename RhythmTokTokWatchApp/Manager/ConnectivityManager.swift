@@ -94,18 +94,54 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                         }
                     } else {
                         ErrorHandler.handleError(error: "시작 시간 누락")
-                    }
-                case .pause, .stop:
-                    self.hapticManager.stopHaptic()
-                case .ready, .done:
-                    break
+                     }
+                 case .pause, .stop:
+                     self.hapticManager.stopHaptic()
+                 case .ready, .done:
+                     break
+                 }
+             } else {
+                 ErrorHandler.handleError(error: "알 수 없는 재생 상태")
+             }
+         }
+     }
+    
+    func sendPlayStatusToPhone(status: PlayStatus, startTime: TimeInterval? = nil) {
+        let message: [String: Any] = [
+            "playStatus": status.rawValue,
+            "startTime": startTime ?? 0 // startTime이 없으면 0으로 설정
+        ]
+        WCSession.default.sendMessage(message, replyHandler: nil) { error in
+            print("iPhone으로 메시지 전송 중 오류 발생: \(error.localizedDescription)")
+        }
+    }
+    
+    // 워치에서 버튼을 누르면 이 메소드를 호출하도록 설정
+    func playButtonTapped() {
+        if playStatus == .play {
+            // 현재 재생 중이면 일시정지로 변경
+            playStatus = .pause
+            sendPlayStatusToPhone(status: .pause)
+            hapticManager.stopHaptic() // 햅틱 중지
+        } else {
+            // 재생 상태로 변경
+            playStatus = .play
+            let delaySeconds: TimeInterval = 4.0
+            let startTime = Date().addingTimeInterval(delaySeconds).timeIntervalSince1970
+            sendPlayStatusToPhone(status: .play, startTime: startTime)
+            
+            // 4초 후에 햅틱 실행
+            DispatchQueue.main.asyncAfter(deadline: .now() + delaySeconds) {
+                if self.isHapticGuideOn {
+                    self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
+                } else {
+                    print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
                 }
-            } else {
-                ErrorHandler.handleError(error: "알 수 없는 재생 상태")
             }
         }
     }
     
+
     func sendPlayStatusToPhone(status: PlayStatus) {
         let message: [String: Any] = ["playStatus": status.rawValue]
         WCSession.default.sendMessage(message, replyHandler: nil) { error in
