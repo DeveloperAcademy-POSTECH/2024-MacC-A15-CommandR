@@ -33,8 +33,9 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var isNextLine = false // 바라인으로 마무리 여부 확인용
     private var noteCountToMeasureMaxLength: [Int: Double] = [0: 0]// 음표 갯수별 최대가로 길이관리
     private var noteCountToMeasureMinLength: [Int: Double] = [0: 0]// 음표 갯수별 최소가로 길이관리
-
     
+    // 마디의 duration에 대한 통계
+    var measureDurationsCount: [Int: Int] = [:]
 
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
@@ -249,7 +250,32 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             currentNote = nil
         }
         
-        if elementName == "measure", let measure = currentMeasure {
+        if elementName == "measure", var measure = currentMeasure {
+            // 부족한 박자를 채워 넣는 보정 작업
+            for staffKey in 1...2 {
+                let filteredNotes = currentMeasure!.notes.filter { $0.staff == staffKey }
+                // 마디 내에 위치한 모든 노트들의 duration의 sum을 구함
+                let totalNotesDuration = filteredNotes.reduce(0) { $0 + $1.duration }
+                // 마디의 duration에 대한 통계를 유지
+                measureDurationsCount[totalNotesDuration, default: 0] += 1
+                
+                // 현재까지 가장 많이 발생한 duration에 해당하는 값을 기준으로 삼아 보정작업을 진행함
+                measureDurationsCount.removeValue(forKey: 0)
+                let measureFullDuration = measureDurationsCount.max(by: { $0.value < $1.value })?.key ?? 0
+                
+                // 마디 내에서 부족한 길이를 구함
+                let remainingDuration = measureFullDuration - totalNotesDuration
+                
+                // 부족한 길이만큼 쉼표를 생성하여 마디에 추가함
+                if remainingDuration > 0 {
+                    currentNote = Note(pitch: "", duration: remainingDuration, octave: 0, type: "", voice: 1, staff: staffKey, startTime: 0, isRest: true)
+                    currentNote?.isRest = true
+                    currentMeasure?.addNote(currentNote!)
+                    measure = currentMeasure!
+                }
+            }
+               
+
             // TODO: 마디 줄 파싱 로직 더 좋은 방법 구상 필요
             // 초기값 최댓값으로 설정
             var minWidth = scoreWidth
@@ -280,9 +306,11 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 currentLine += 1
                 currentWidth = currentMeasureWidth
             }
+            
+            
 //            print("현재 마디 포함 길이: \(currentWidth), 악보 전체 길이: \(scoreWidth)")
 //            print("현재 마디 번호: \(measure.number),현재 마디 줄: \(currentLine), 마디 포함 음수: \(measure.notes.count)")
-            score.addMeasure(to: currentPartId!, measure: measure, lineNumber: currentLine)
+            score.addMeasure(to: currentPartId!, measure: currentMeasure!, lineNumber: currentLine)
             currentMeasure = nil
             // 바라인이 들어가서 끝난 마디면 다음 마디부터 다음 라인 적용되게 만듦
             if isNextLine {
