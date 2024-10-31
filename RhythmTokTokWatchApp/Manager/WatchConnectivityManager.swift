@@ -104,7 +104,7 @@ class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             }
         }
     }
-    //MARK: - [1] 아이폰에서만 함수실행할때
+    //M ARK: - [1] 아이폰에서만 함수실행할때
     func playButtonTapped() {
         playStatus = .play
         sendPlayStatusToiOS(status: .play)
@@ -114,6 +114,7 @@ class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     func pauseButtonTapped() {
         playStatus = .pause
         sendPlayStatusToiOS(status: .pause)
+        hapticManager.stopHaptic()
     }
     
     private func sendPlayStatusToiOS(status: PlayStatus) {
@@ -124,7 +125,6 @@ class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             print("Error sending play status: \(error.localizedDescription)")
         }
     }
-}
 }
 
 

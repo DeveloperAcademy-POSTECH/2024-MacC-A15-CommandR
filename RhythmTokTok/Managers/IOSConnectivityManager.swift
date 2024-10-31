@@ -26,7 +26,7 @@ class IOSConnectivityManager: NSObject, WCSessionDelegate, ObservableObject {
             sendPlayStatusToWatch(status: playStatus, startTime: nil)
         }
     }
-
+    
     
     // 워치로부터 받은 상태, 시간
     @Published var receivedPlayStatus: PlayStatus = .ready
@@ -119,6 +119,7 @@ class IOSConnectivityManager: NSObject, WCSessionDelegate, ObservableObject {
     }
     
     // MARK: - 워치로 메시지 보내는 부분
+    // TODO: - 워치 동시성 체크 필요
     // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendScoreSelectionToWatch(scoreTitle: String, hapticSequence: [Double]) {
         self.selectedScoreTitle = scoreTitle
@@ -137,7 +138,7 @@ class IOSConnectivityManager: NSObject, WCSessionDelegate, ObservableObject {
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }
-        
+    
     // 2. 연습뷰에서 [재생 상태]를 보냄. 재생인 경우 [시작시간] 보냄. (연습뷰에서 재생 관련 버튼 조작시 작동)
     func sendPlayStatusToWatch(status: PlayStatus, startTime: TimeInterval?) {
         // 워치가 연결되어 있는지 확인 (페어링 및 앱 설치 여부)
@@ -172,42 +173,37 @@ class IOSConnectivityManager: NSObject, WCSessionDelegate, ObservableObject {
         }
     }
     
-    // iPhone에서 Play/Pause 명령을 받은 후 알림을 전송
+    // MARK: - [1] 아이폰에서만 재생 실행되는 거
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async {
             if let playStatusString = applicationContext["playStatus"] as? String,
                let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
                 self.receivedPlayStatus = receivedPlayStatus
-                if receivedPlayStatus == .play, let startTime = applicationContext["startTime"] as? TimeInterval {
-                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: startTime)
+                print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
+                
+                // 상태 변경에 대한 알림을 전송
+                if receivedPlayStatus == .play {
+                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
                 } else if receivedPlayStatus == .pause {
                     NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
                 }
             }
         }
     }
-
-
-    
-//    //MARK: - [1] 아이폰에서만 재생 실행되는 거
-//    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
-//        DispatchQueue.main.async {
-//            if let playStatusString = applicationContext["playStatus"] as? String,
-//               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
-//                self.receivedPlayStatus = receivedPlayStatus
-//                print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
-//                
-//                // 상태 변경에 대한 알림을 전송
-//                if receivedPlayStatus == .play {
-//                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
-//                } else if receivedPlayStatus == .pause {
-//                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
-//                }
-//            }
-//        }
-//    }
-    
-    
-
 }
-
+    
+    //    // [2] 워치에서 타이머 직접 실행
+    //    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+    //        DispatchQueue.main.async {
+    //            if let playStatusString = applicationContext["playStatus"] as? String,
+    //               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
+    //                self.receivedPlayStatus = receivedPlayStatus
+    //                if receivedPlayStatus == .play, let startTime = applicationContext["startTime"] as? TimeInterval {
+    //                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: startTime)
+    //                } else if receivedPlayStatus == .pause {
+    //                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
+    //                }
+    //            }
+    //        }
+    //    }
+    

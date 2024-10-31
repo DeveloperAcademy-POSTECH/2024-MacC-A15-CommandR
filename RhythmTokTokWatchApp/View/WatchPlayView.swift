@@ -23,7 +23,7 @@ struct WatchPlayView: View {
     }
     
     var body: some View {
-
+        
         ZStack {
             VStack {
                 HStack(alignment: .center) {
@@ -38,7 +38,7 @@ struct WatchPlayView: View {
                 // 메인 콘텐츠
                 MarqueeTextView(
                     text: connectivityManager.selectedScoreTitle,
-                    font: .system(size: 20),
+                    fontSize: 20,
                     isAnimating: connectivityManager.playStatus == .play
                 )
                 
@@ -52,7 +52,8 @@ struct WatchPlayView: View {
                         connectivityManager.playButtonTapped()
                     }
                 }
-                ) {
+                )
+                {
                     Image(systemName: connectivityManager.playStatus != .play ? "play.fill" : "pause.fill")
                         .resizable()
                         .scaledToFit()
@@ -74,13 +75,13 @@ struct WatchPlayView: View {
 struct WatchPlayView_Previews: PreviewProvider {
     static var previews: some View {
         // 샘플 데이터를 가진 ConnectivityManager 생성
-        let manager = ConnectivityManager()
+        let manager = WatchConnectivityManager()
         manager.selectedScoreTitle = "This is a long song title that should scroll across the screen"
         manager.playStatus = .play
         return WatchPlayView()
             .environmentObject(manager)
     }
-
+}
 
 //#Preview {
 //    WatchPlayView()
