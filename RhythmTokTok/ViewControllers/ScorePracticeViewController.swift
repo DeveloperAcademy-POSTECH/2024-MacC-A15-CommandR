@@ -12,8 +12,8 @@ import WatchConnectivity
 
 class ScorePracticeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
-    private var animationView: LottieAnimationView? // 로띠뷰
-    
+    private var countDownLottieView: CountDownLottieView? // 로띠뷰
+
     var currentScore: Score // 현재 악보 score
     var currentMeasure: Int = 0// 현재 진행중인 마디
     var totalMeasure = 0
@@ -110,7 +110,7 @@ class ScorePracticeViewController: UIViewController {
         scoreCardView.titleLabel.text = currentScore.title
         // 프로그래스바 초기화
         progressBar.setProgress(0.0, animated: false)
-        setLottieView()
+        countDownLottieView = CountDownLottieView(view: self.view, animationName: "Countdown")
     }
     
     private func setupConstraints() {
@@ -289,43 +289,6 @@ class ScorePracticeViewController: UIViewController {
         }
     }
     
-    // MARK: 로띠뷰
-    func setLottieView() {
-        animationView = LottieAnimationView(name: "Countdown") // animationFile은 Lottie JSON 파일명
-        guard let animationView = animationView else { return }
-        
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        // 애니메이션 재생 옵션 설정
-        animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = .playOnce // 반복 재생 설정
-        animationView.animationSpeed = 1.0 // 재생 속도
-        
-        view.addSubview(animationView)
-        animationView.isHidden = true
-        
-        NSLayoutConstraint.activate([
-            animationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            animationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            animationView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            animationView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
-    }
-    
-    // 특정 조건에서 애니메이션을 재생
-    func showLottieAnimation() {
-        animationView?.isHidden = false
-        animationView?.play { [weak self] (finished) in
-            if finished {
-                self?.hideLottieAnimation()
-            }
-        }
-    }
-    
-    // 애니메이션이 완료되면 뷰 숨기기
-    func hideLottieAnimation() {
-        animationView?.isHidden = true
-    }
-    
     // MARK: - [1] 워치에서 버튼 눌렀을 때 notification을 받아서 아이폰 함수를 호출
     @objc private func handleWatchPlayNotification() {
         // 워치에서 play 알림 수신 시 playButtonTapped 호출
@@ -388,7 +351,7 @@ class ScorePracticeViewController: UIViewController {
             // TODO: 딜레이 조절해야됨
             musicPlayer.playMIDI(delay: delay)
             DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
-                self.showLottieAnimation()
+                self.countDownLottieView?.play()
             }
         }
         controlButtonView.playPauseButton.isPlaying.toggle()
@@ -467,7 +430,7 @@ class ScorePracticeViewController: UIViewController {
             if let midiFilePathURL = midiFilePathURL {
                 print("MIDI file created successfully: \(midiFilePathURL)")
                 // 햅틱 시퀀스 관리
-                var hapticSequence: [Double]? = nil
+                var hapticSequence: [Double]?
                 
                 if let startMeasureNumber, let endMeasureNumber {
                     hapticSequence = try await mediaManager.getClipHapticSequence(part: score.parts.last!,
@@ -516,8 +479,6 @@ class ScorePracticeViewController: UIViewController {
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
-        
-        
         IOStoWatchConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
     }
     
@@ -539,6 +500,7 @@ extension ScorePracticeViewController {
         case .ready:
             // 준비 상태: 재생 버튼만 표시
             controlButtonView.playPauseButton.isPlaying = false
+
         case .play:
             // 재생 상태: 일시정지 버튼 표시
             controlButtonView.playPauseButton.isPlaying = true
@@ -577,7 +539,7 @@ extension ScorePracticeViewController {
         let delay = futureTime - Date().timeIntervalSince1970
         self.musicPlayer.playMIDI(delay: delay)
         DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
-            self.showLottieAnimation()
+            self.countDownLottieView?.play()
         }
     }
 }

@@ -59,6 +59,7 @@
 		1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */; };
 		1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */; };
 		1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */; };
+		1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
@@ -199,6 +200,7 @@
 		1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTagView.swift; sourceTree = "<group>"; };
 		1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureControllerButton.swift; sourceTree = "<group>"; };
+		1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownLottieView.swift; sourceTree = "<group>"; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
 		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 				1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */,
 				1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */,
 				1E91466E2CD0FE1C00DBCD00 /* WatchManage_Ex.swift */,
+				1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */,
 			);
 			path = Kkugy;
 			sourceTree = "<group>";
@@ -800,6 +803,7 @@
 				D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */,
 				1ED9FED12CBF654400472C51 /* BPMLabel.swift in Sources */,
 				1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */,
+				1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */,
 				1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
 				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
