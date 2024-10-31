@@ -131,7 +131,7 @@ class MusicPlayer: ObservableObject {
         if let midiPlayer = midiPlayer {
 //            // 이전에 일시 정지된 위치에서 재개
 //            midiPlayer.currentPosition = lastPosition
-            midiPlayer.stop()
+            print("MIDI 시작")
             stopTimer()
             isEnd = false
             // 시작 틱 위치
