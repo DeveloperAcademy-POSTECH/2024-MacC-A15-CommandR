@@ -8,9 +8,9 @@ import HealthKit
 import UIKit
 import WatchConnectivity
 
-class WatchManager: NSObject, WCSessionDelegate, ObservableObject {
+class IOSConnectivityManager: NSObject, WCSessionDelegate, ObservableObject {
     
-    static let shared = WatchManager()
+    static let shared = IOSConnectivityManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
     var selectedScoreTitle: String?
     // 런치 용도
@@ -27,6 +27,10 @@ class WatchManager: NSObject, WCSessionDelegate, ObservableObject {
         }
     }
 
+    
+    // 워치로부터 받은 상태, 시간
+    @Published var receivedPlayStatus: PlayStatus = .ready
+    @Published var receivedStartTime: TimeInterval?
     
     private override init() {
         super.init()
@@ -168,14 +172,67 @@ class WatchManager: NSObject, WCSessionDelegate, ObservableObject {
         }
     }
     
-    // watch에서 재생/일시정지 조작한 경우 메세지 수신
-    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async {
-            if let playStatusString = message["playStatus"] as? String,
+            if let playStatusString = applicationContext["playStatus"] as? String,
                let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
-                self.playStatus = receivedPlayStatus
+                self.receivedPlayStatus = receivedPlayStatus
                 print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
+                
+                // 상태 변경에 대한 알림을 전송
+                if receivedPlayStatus == .play {
+                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
+                } else if receivedPlayStatus == .pause {
+                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
+                }
             }
         }
     }
+    
+    
+//    // MARK: - 워치로부터 메세지 수신
+//    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+//        DispatchQueue.main.async {
+//            // iOS 측에서 수신한 메시지 처리
+//            if let playStatusString = applicationContext["playStatus"] as? String,
+//               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
+//                self.receivedPlayStatus = receivedPlayStatus
+//                print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
+//                
+//                // Play 상태이고 startTime이 유효한 경우 MIDI 재생
+//                if receivedPlayStatus == .play,
+//                   let startTime = applicationContext["startTime"] as? TimeInterval,
+//                   startTime > Date().timeIntervalSince1970 {
+//                    let delay = startTime - Date().timeIntervalSince1970
+//                    if delay > 0 {
+//                        print("MIDI 재생을 \(delay)초 후에 시작합니다.")
+//                        // MIDI 재생 로직 호출
+////                        musicPlayer.playMIDI(delay: delay)
+//                        // 애니메이션 표시 로직 호출
+//                        // DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
+//                        //     showLottieAnimation()
+//                        // }
+//                    } else {
+//                        // startTime이 이미 지난 경우 즉시 재생
+//                        // musicPlayer.playMIDI(delay: 0)
+//                        // showLottieAnimation()
+//                    }
+//                }
+//            }
+//            
+//            if let scoreTitle = applicationContext["scoreTitle"] as? String,
+//               let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
+//                // 곡 선택 메시지 수신 시 처리
+//                self.selectedScoreTitle = scoreTitle
+//                // self.hapticSequence = hapticSequence // 이 줄을 제거
+//                // self.isSelectedScore = !scoreTitle.isEmpty // hapticSequence는 ConnectivityManager에서 처리
+//                print("iPhone에서 수신한 곡 선택: \(scoreTitle), 햅틱 시퀀스: \(hapticSequence)")
+//                
+//                // 필요한 경우 ConnectivityManager에 데이터를 전달
+//                // 예를 들어, ConnectivityManager.shared.updateHapticSequence(hapticSequence)
+//                // 하지만 ConnectivityManager가 이미 이 작업을 처리하도록 수정되었을 수 있습니다.
+//            }
+//        }
+//    }
 }
+

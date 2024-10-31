@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct WatchWaitingView: View {
-    @EnvironmentObject var connectivityManager: ConnectivityManager
+    @EnvironmentObject var connectivityManager: WatchConnectivityManager
     
     var body: some View {
         ZStack {
@@ -36,5 +36,5 @@ struct WatchWaitingView: View {
 
 #Preview {
     WatchWaitingView()
-        .environmentObject(ConnectivityManager())
+        .environmentObject(WatchConnectivityManager())
 }

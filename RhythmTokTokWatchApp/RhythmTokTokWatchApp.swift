@@ -10,7 +10,7 @@ import SwiftUI
 
 @main
 struct RhythmTokTokWatchApp: App {
-    @StateObject private var connectivityManager = ConnectivityManager()
+    @StateObject private var connectivityManager = WatchConnectivityManager()
     
     var body: some Scene {
         WindowGroup {

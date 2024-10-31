@@ -74,7 +74,7 @@
 		1ED9FEE42CC26E6000472C51 /* mannam.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEDF2CC26E6000472C51 /* mannam.xml */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
-		1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */; };
+		1EF8A0B82CB55A4B00ADB783 /* IOSConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* IOSConnectivityManager.swift */; };
 		1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */; };
 		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 		616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0972CC3F76300F2C72D /* ScoreView.swift */; };
@@ -84,7 +84,7 @@
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
 		D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34EEB612CC2A80F007BE568 /* PlayStatus.swift */; };
 		D34EEB632CC2A8ED007BE568 /* PlayStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34EEB612CC2A80F007BE568 /* PlayStatus.swift */; };
-		D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* ConnectivityManager.swift */; };
+		D36E430D2CB642630038994B /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* WatchConnectivityManager.swift */; };
 		D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */; };
 		D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6A2CB6A325005CD01F /* SettingView.swift */; };
 		D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */; };
@@ -211,7 +211,7 @@
 		1ED9FEE12CC26E6000472C51 /* red.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = red.xml; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
-		1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
+		1EF8A0B72CB55A4600ADB783 /* IOSConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSConnectivityManager.swift; sourceTree = "<group>"; };
 		1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accidental.swift; sourceTree = "<group>"; };
 		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		616BD0972CC3F76300F2C72D /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
 		D34EEB612CC2A80F007BE568 /* PlayStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayStatus.swift; sourceTree = "<group>"; };
-		D36E430C2CB642630038994B /* ConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectivityManager.swift; sourceTree = "<group>"; };
+		D36E430C2CB642630038994B /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
 		D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetting.swift; sourceTree = "<group>"; };
 		D3ABDF6A2CB6A325005CD01F /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -463,7 +463,7 @@
 				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
 				EE7B28A52CBE5CC200325725 /* ScoreManager.swift */,
 				D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */,
-				1EF8A0B72CB55A4600ADB783 /* WatchManager.swift */,
+				1EF8A0B72CB55A4600ADB783 /* IOSConnectivityManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -575,7 +575,7 @@
 		D3ABDF682CB64EBF005CD01F /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				D36E430C2CB642630038994B /* ConnectivityManager.swift */,
+				D36E430C2CB642630038994B /* WatchConnectivityManager.swift */,
 				1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */,
 			);
 			path = Manager;
@@ -796,7 +796,7 @@
 				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
 				D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */,
 				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
-				1EF8A0B82CB55A4B00ADB783 /* WatchManager.swift in Sources */,
+				1EF8A0B82CB55A4B00ADB783 /* IOSConnectivityManager.swift in Sources */,
 				616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */,
 				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
 				1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */,
@@ -841,7 +841,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D36E430D2CB642630038994B /* ConnectivityManager.swift in Sources */,
+				D36E430D2CB642630038994B /* WatchConnectivityManager.swift in Sources */,
 				D3D6D1B92CBE8B6300D22886 /* MarqueeTextView.swift in Sources */,
 				02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */,
 				02CFE1242CB1156C008454B8 /* WatchWaitingView.swift in Sources */,

@@ -12,4 +12,7 @@ extension Notification.Name {
     static let fontSizeChanged = Notification.Name("fontSizeChanged")
     static let bpmChanged = Notification.Name("bpmChanged") // BPM 변경 알림 추가
     static let soundSettingDidChange = Notification.Name("soundSettingDidChange")
+    static let watchPlayButtonTapped = Notification.Name("watchPlayButtonTapped")
+    static let watchPauseButtonTapped = Notification.Name("watchPauseButtonTapped")
 }
+

@@ -8,11 +8,12 @@ import Combine
 import Lottie
 import SwiftUI
 import UIKit
+import WatchConnectivity
 
 class ScorePracticeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var animationView: LottieAnimationView? // 로띠뷰
-
+    
     var currentScore: Score // 현재 악보 score
     var currentMeasure: Int = 0// 현재 진행중인 마디
     var totalMeasure = 0
@@ -21,7 +22,7 @@ class ScorePracticeViewController: UIViewController {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -42,7 +43,7 @@ class ScorePracticeViewController: UIViewController {
     private var midiFilePathURL: URL?
     private var isPlayingMIDIFile = false
     private let musicPlayer = MusicPlayer()
-
+    
     override func loadView() {
         // 루트 뷰를 설정할 컨테이너 뷰 생성
         let containerView = UIView()
@@ -65,8 +66,8 @@ class ScorePracticeViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         Task {
-                await createMIDIFile(score: currentScore)
-            }
+            await createMIDIFile(score: currentScore)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,7 +85,12 @@ class ScorePracticeViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupActions()
-        setupBindings()    }
+        setupBindings()
+        updateWatchAppStatus()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification), name: .watchPlayButtonTapped, object: nil)
+           NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification), name: .watchPauseButtonTapped, object: nil)
+       
+    }
     
     private func setupUI() {
         scorePracticeTitleView.titleLabel.text = currentScore.title
@@ -134,7 +140,7 @@ class ScorePracticeViewController: UIViewController {
             controlButtonView.heightAnchor.constraint(equalToConstant: 120),
             controlButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             controlButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-
+            
         ])
     }
     
@@ -142,7 +148,7 @@ class ScorePracticeViewController: UIViewController {
         // 클릭 시 이벤트 설정
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
-//        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
+        //        bpmButton.addTarget(self, action: #selector(presentBPMModal), for: .touchUpInside)
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         controlButtonView.stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
         controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
@@ -150,7 +156,7 @@ class ScorePracticeViewController: UIViewController {
     }
     
     private func setupBindings() {
-        WatchManager.shared.$isWatchAppConnected
+        IOSConnectivityManager.shared.$isWatchAppConnected
             .sink { [weak self] isConnected in
                 self?.handleWatchAppConnectionChange(isConnected)
             }
@@ -178,7 +184,7 @@ class ScorePracticeViewController: UIViewController {
         
         currentMeasureLabel.text = "\(currentMeasure)/\(totalMeasure)마디"
     }
-        
+    
     private func handleWatchAppConnectionChange(_ isConnected: Bool) {
         if isConnected {
             // 연결되었을 때 처리
@@ -192,10 +198,10 @@ class ScorePracticeViewController: UIViewController {
     // 워치 앱 상태 업데이트 메서드
     @objc func updateWatchAppStatus() {
         Task {
-            let isLaunched = await WatchManager.shared.launchWatch()
+            let isLaunched = await IOSConnectivityManager.shared.launchWatch()
             
             if isLaunched {
-                let isWatchAppReachable = WatchManager.shared.isWatchAppConnected
+                let isWatchAppReachable = IOSConnectivityManager.shared.isWatchAppConnected
                 if isWatchAppReachable {
                     self.practicNavBar.setWatchImage(isConnected: true)
                 } else {
@@ -214,7 +220,7 @@ class ScorePracticeViewController: UIViewController {
     func setLottieView() {
         animationView = LottieAnimationView(name: "Countdown") // animationFile은 Lottie JSON 파일명
         guard let animationView = animationView else { return }
-
+        
         animationView.translatesAutoresizingMaskIntoConstraints = false
         // 애니메이션 재생 옵션 설정
         animationView.contentMode = .scaleAspectFit
@@ -223,7 +229,7 @@ class ScorePracticeViewController: UIViewController {
         
         view.addSubview(animationView)
         animationView.isHidden = true
-
+        
         NSLayoutConstraint.activate([
             animationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             animationView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
@@ -247,10 +253,22 @@ class ScorePracticeViewController: UIViewController {
         animationView?.isHidden = true
     }
     
+    //MARK: - 벨이 추가해본 notification 기능
+    @objc private func handleWatchPlayNotification() {
+        // 워치에서 play 알림 수신 시 playButtonTapped 호출
+        playButtonTapped()
+    }
+    
+    @objc private func handleWatchPauseNotification() {
+        // 워치에서 pause 알림 수신 시 stopButtonTapped 호출
+        stopButtonTapped()
+    }
+    
+    
     // MARK: Button 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
-        WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
+        IOSConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
         navigationController?.popViewController(animated: true)
     }
     
@@ -283,22 +301,13 @@ class ScorePracticeViewController: UIViewController {
             let delay = futureTime - Date().timeIntervalSince1970
             // MIDI 재생
             // TODO: 딜레이 조절해야됨
-            self.musicPlayer.playMIDI(delay: delay + 0)
+            musicPlayer.playMIDI(delay: delay)
             DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
                 self.showLottieAnimation()
             }
             controlButtonView.stopButton.isHidden = false
-            // 워치로 play 예약 메시지 전송
         }
-//        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
-        if WatchManager.shared.playStatus == .play {
-            // 현재 재생 중이면 일시정지로 변경
-            WatchManager.shared.playStatus = .pause
-        } else {
-            // 재생 상태로 변경
-            WatchManager.shared.playStatus = .play
-        }
-        controlButtonView.playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
+        controlButtonView.playPauseButton.isPlaying.toggle()
     }
     
     @objc private func stopButtonTapped() {
@@ -323,7 +332,7 @@ class ScorePracticeViewController: UIViewController {
         }
         jumpMeasure()
     }
-
+    
     private func jumpMeasure() {
         let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
                                                          division: Double(currentScore.divisions))
@@ -379,12 +388,12 @@ class ScorePracticeViewController: UIViewController {
                 
                 if let startMeasureNumber, let endMeasureNumber {
                     hapticSequence = try await mediaManager.getClipHapticSequence(part: score.parts.last!,
-                                                                                divisions: score.divisions,
-                                                                                startNumber: startMeasureNumber,
-                                                                                endNumber: endMeasureNumber)
+                                                                                  divisions: score.divisions,
+                                                                                  startNumber: startMeasureNumber,
+                                                                                  endNumber: endMeasureNumber)
                 } else {
                     hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
-                                                                                      divisions: score.divisions)
+                                                                              divisions: score.divisions)
                 }
                 
                 if let validHapticSequence = hapticSequence {
@@ -408,34 +417,96 @@ class ScorePracticeViewController: UIViewController {
     // MARK: 워치 통신 부분
     // 워치로 곡 선택 메시지 전송
     func sendHapticSequenceToWatch(hapticSequence: [Double]) async {
-        let isLaunched = await WatchManager.shared.launchWatch()
-
+        let isLaunched = await IOSConnectivityManager.shared.launchWatch()
+        
         if isLaunched {
             let scoreTitle = currentScore.title
-            WatchManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
+            IOSConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
         }
     }
     
     // 워치로 실행 예약 메시지 전송
     func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
-        WatchManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
+        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
     }
     
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
         
-        WatchManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
+
+        IOSConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
     }
     
     // 워치로 일시정지 예약 메시지 전송
     func sendPauseStatusToWatch() {
-        WatchManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
+        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
     }
     
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
-        WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+        IOSConnectivityManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+    }
+}
+
+
+
+
+// MARK: - Play Status Handling Extension
+extension ScorePracticeViewController {
+    func handlePlayStatusChange(_ status: PlayStatus) {
+        switch status {
+        case .ready:
+            // 준비 상태: 재생 버튼만 표시
+            controlButtonView.playPauseButton.isHidden = false
+            controlButtonView.playPauseButton.isPlaying = false
+            controlButtonView.stopButton.isHidden = true
+        case .play:
+            // 재생 상태: 일시정지 버튼 표시
+            controlButtonView.playPauseButton.isHidden = false
+            controlButtonView.playPauseButton.isPlaying = true
+            controlButtonView.stopButton.isHidden = false
+            // MIDI 재생 시작
+            startMIDIPlayback()
+        case .pause:
+            // 일시정지 상태: 재생 버튼 표시
+            controlButtonView.playPauseButton.isHidden = false
+            controlButtonView.playPauseButton.isPlaying = false
+            controlButtonView.stopButton.isHidden = false
+            // MIDI 일시정지
+            musicPlayer.pauseMIDI()
+        case .stop:
+            // 정지 상태: 재생 버튼만 표시
+            controlButtonView.playPauseButton.isHidden = false
+            controlButtonView.playPauseButton.isPlaying = false
+            controlButtonView.stopButton.isHidden = true
+            // MIDI 재생 중지
+            musicPlayer.stopMIDI()
+        case .done:
+            // 완료 상태: 필요에 따라 처리
+            break
+        }
+    }
+    
+    func startMIDIPlayback() {
+        guard let outputPathURL = midiFilePathURL else {
+            ErrorHandler.handleError(error: "MIDI file URL is nil.")
+            return
+        }
+        
+        // MIDI 파일이 존재하는지 확인
+        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
+            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
+            return
+        }
+        
+        // 현재 시간으로부터 4초 후 재생 시작
+        let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
+        let delay = futureTime - Date().timeIntervalSince1970
+        self.musicPlayer.playMIDI(delay: delay)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
+            self.showLottieAnimation()
+        }
     }
 }
 
