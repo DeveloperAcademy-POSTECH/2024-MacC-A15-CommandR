@@ -292,14 +292,7 @@ class ScorePracticeViewController: UIViewController {
             controlButtonView.stopButton.isHidden = false
             // 워치로 play 예약 메시지 전송
         }
-//        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
-        if WatchManager.shared.playStatus == .play {
-            // 현재 재생 중이면 일시정지로 변경
-            WatchManager.shared.playStatus = .pause
-        } else {
-            // 재생 상태로 변경
-            WatchManager.shared.playStatus = .play
-        }
+
         controlButtonView.playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
     }
     
@@ -426,7 +419,7 @@ class ScorePracticeViewController: UIViewController {
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
-        
+
         WatchManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
     }
     
@@ -438,63 +431,5 @@ class ScorePracticeViewController: UIViewController {
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
         WatchManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
-    }
-}
-
-// MARK: - Play Status Handling Extension
-extension ScorePracticeViewController {
-    func handlePlayStatusChange(_ status: PlayStatus) {
-        switch status {
-        case .ready:
-            // 준비 상태: 재생 버튼만 표시
-            controlButtonView.playPauseButton.isHidden = false
-            controlButtonView.playPauseButton.isPlaying = false
-            controlButtonView.stopButton.isHidden = true
-        case .play:
-            // 재생 상태: 일시정지 버튼 표시
-            controlButtonView.playPauseButton.isHidden = false
-            controlButtonView.playPauseButton.isPlaying = true
-            controlButtonView.stopButton.isHidden = false
-            // MIDI 재생 시작
-            startMIDIPlayback()
-        case .pause:
-            // 일시정지 상태: 재생 버튼 표시
-            controlButtonView.playPauseButton.isHidden = false
-            controlButtonView.playPauseButton.isPlaying = false
-            controlButtonView.stopButton.isHidden = false
-            // MIDI 일시정지
-            musicPlayer.pauseMIDI()
-        case .stop:
-            // 정지 상태: 재생 버튼만 표시
-            controlButtonView.playPauseButton.isHidden = false
-            controlButtonView.playPauseButton.isPlaying = false
-            controlButtonView.stopButton.isHidden = true
-            // MIDI 재생 중지
-            musicPlayer.stopMIDI()
-        case .done:
-            // 완료 상태: 필요에 따라 처리
-            break
-        }
-    }
-
-    func startMIDIPlayback() {
-        guard let outputPathURL = midiFilePathURL else {
-            ErrorHandler.handleError(error: "MIDI file URL is nil.")
-            return
-        }
-
-        // MIDI 파일이 존재하는지 확인
-        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
-            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
-            return
-        }
-
-        // 현재 시간으로부터 4초 후 재생 시작
-        let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
-        let delay = futureTime - Date().timeIntervalSince1970
-        self.musicPlayer.playMIDI(delay: delay)
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
-            self.showLottieAnimation()
-        }
     }
 }
