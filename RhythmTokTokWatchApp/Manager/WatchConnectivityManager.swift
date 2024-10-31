@@ -104,56 +104,56 @@ class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             }
         }
     }
-    // 재생 버튼을 눌렀을 때
+    //MARK: - [1] 아이폰에서만 함수실행할때
     func playButtonTapped() {
         playStatus = .play
-        let startTime = Date().timeIntervalSince1970 + 4 // 4초 후 재생 시작
-        sendPlayStatusToiOS(status: .play, startTime: startTime)
-        hapticManager.startHaptic(beatTime: hapticSequence, startTimeInterval: startTime) // 4초 뒤에 햅틱 재생
+        sendPlayStatusToiOS(status: .play)
     }
     
-    // 일시정지 버튼을 눌렀을 때
+    // 일시정지 버튼을 누르면 호출되는 함수
     func pauseButtonTapped() {
         playStatus = .pause
         sendPlayStatusToiOS(status: .pause)
-        hapticManager.stopHaptic() // 햅틱 중지
-        print("Pause action sent to iOS and haptic stopped.")
     }
-
-    private func sendPlayStatusToiOS(status: PlayStatus, startTime: TimeInterval? = nil) {
-        var message: [String: Any] = ["playStatus": status.rawValue]
-        if let startTime = startTime {
-            message["startTime"] = startTime
-        }
+    
+    private func sendPlayStatusToiOS(status: PlayStatus) {
+        let message = ["playStatus": status.rawValue]
         do {
             try WCSession.default.updateApplicationContext(message)
-            print("Sent play status to iOS with startTime: \(startTime ?? 0)")
         } catch {
-            ErrorHandler.handleError(error: "Error sending play status: \(error.localizedDescription)")
+            print("Error sending play status: \(error.localizedDescription)")
         }
     }
 }
-    
-    
-//    //MARK: - [1]아이폰에서만 함수실행할때
+}
+
+
+//    //MARK: - [2] 워치에서 직접 타이머 설정
+//    // 재생 버튼을 눌렀을 때
 //    func playButtonTapped() {
 //        playStatus = .play
-//        sendPlayStatusToiOS(status: .play)
+//        let startTime = Date().timeIntervalSince1970 + 4 // 4초 후 재생 시작
+//        sendPlayStatusToiOS(status: .play, startTime: startTime)
+//        hapticManager.startHaptic(beatTime: hapticSequence, startTimeInterval: startTime) // 4초 뒤에 햅틱 재생
 //    }
 //
-//    // 일시정지 버튼을 누르면 호출되는 함수
+//    // 일시정지 버튼을 눌렀을 때
 //    func pauseButtonTapped() {
 //        playStatus = .pause
 //        sendPlayStatusToiOS(status: .pause)
+//        hapticManager.stopHaptic() // 햅틱 중지
+//        print("Pause action sent to iOS and haptic stopped.")
 //    }
 //
-//    private func sendPlayStatusToiOS(status: PlayStatus) {
-//        let message = ["playStatus": status.rawValue]
+//    private func sendPlayStatusToiOS(status: PlayStatus, startTime: TimeInterval? = nil) {
+//        var message: [String: Any] = ["playStatus": status.rawValue]
+//        if let startTime = startTime {
+//            message["startTime"] = startTime
+//        }
 //        do {
 //            try WCSession.default.updateApplicationContext(message)
+//            print("Sent play status to iOS with startTime: \(startTime ?? 0)")
 //        } catch {
-//            print("Error sending play status: \(error.localizedDescription)")
+//            ErrorHandler.handleError(error: "Error sending play status: \(error.localizedDescription)")
 //        }
 //    }
-//}
-//

@@ -291,29 +291,29 @@ class ScorePracticeViewController: UIViewController {
         animationView?.isHidden = true
     }
     
-    
-    // 워치에서 Play 알림을 수신했을 때 호출
-    @objc private func handleWatchPlayNotification(_ notification: Notification) {
-        if let startTime = notification.object as? TimeInterval {
-            remotePlayButtonTapped(startTime: startTime)
+        //MARK: - [1]벨이 추가해본 notification 기능
+        @objc private func handleWatchPlayNotification() {
+            // 워치에서 play 알림 수신 시 playButtonTapped 호출
+            playButtonTapped()
         }
-    }
     
-    // 워치에서 Pause 알림을 수신했을 때 호출
-    @objc private func handleWatchPauseNotification() {
-        remotePauseButtonTapped()
-    }
-    //    //MARK: - [1]벨이 추가해본 notification 기능
-    //    @objc private func handleWatchPlayNotification() {
-    //        // 워치에서 play 알림 수신 시 playButtonTapped 호출
-    //        playButtonTapped()
-    //    }
-    //    
-    //    @objc private func handleWatchPauseNotification() {
-    //        // 워치에서 pause 알림 수신 시 stopButtonTapped 호출
-    //        stopButtonTapped()
-    //    }
+        @objc private func handleWatchPauseNotification() {
+            // 워치에서 pause 알림 수신 시 stopButtonTapped 호출
+            stopButtonTapped()
+        }
     
+//    //MARK: - [2] 워치에서 타이머 직접 수행
+//    // 워치에서 Play 알림을 수신했을 때 호출
+//    @objc private func handleWatchPlayNotification(_ notification: Notification) {
+//        if let startTime = notification.object as? TimeInterval {
+//            remotePlayButtonTapped(startTime: startTime)
+//        }
+//    }
+//    
+//    // 워치에서 Pause 알림을 수신했을 때 호출
+//    @objc private func handleWatchPauseNotification() {
+//        remotePauseButtonTapped()
+//    }
     
     // MARK: Button 액션
     @objc private func backButtonTapped() {
