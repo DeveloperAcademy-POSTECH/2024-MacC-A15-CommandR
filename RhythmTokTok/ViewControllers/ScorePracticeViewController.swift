@@ -44,37 +44,11 @@ class ScorePracticeViewController: UIViewController {
     private var isPlayingMIDIFile = false
     private let musicPlayer = MusicPlayer()
     
-    override func loadView() {
-        // 루트 뷰를 설정할 컨테이너 뷰 생성
-        let containerView = UIView()
-        containerView.backgroundColor = .white
-        // 커스텀 네비게이션 바 추가
-        containerView.addSubview(practicNavBar)
-        practicNavBar.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(divider) // divider
-        // MusicPracticeView 추가
-        containerView.addSubview(scoreCardView)
-        scoreCardView.translatesAutoresizingMaskIntoConstraints = false
-        // 프로그래스바 추가
-        containerView.addSubview(progressBar)
-        progressBar.translatesAutoresizingMaskIntoConstraints = false
-        // 셋팅 테그 추가
-        containerView.addSubview(statusTags)
-        statusTags.translatesAutoresizingMaskIntoConstraints = false
-        // 컨트롤러뷰 추가
-        controlButtonView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(controlButtonView)
-        // 루트 뷰 설정
-        self.view = containerView
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        Task {
-            await createMIDIFile(score: currentScore)
-        }
-
+        Task { await createMIDIFile(score: currentScore) }
+        
         statusTags.updateTag()
         scoreCardView.bpmLabel.updateSpeedText()
         checkUpdatePreviousButtonState()
@@ -89,28 +63,43 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
+
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
-        Task {
-            await createMIDIFile(score: currentScore)
-        }
-        setupUI()
-        setupConstraints()
+        Task { await createMIDIFile(score: currentScore) }
+        
         setupActions()
         setupBindings()
         updateWatchAppStatus()
         
         // MARK: - [1] 아이폰에서만 재생
-        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification), name: .watchPlayButtonTapped, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification), name: .watchPauseButtonTapped, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification),
+                                               name: .watchPlayButtonTapped, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification),
+                                               name: .watchPauseButtonTapped, object: nil)
         
     }
     
-    private func setupUI() {
+    private func configureUI() {
+        // 루트 뷰 설정
+        let containerView = UIView()
+        containerView.backgroundColor = .white
+        self.view = containerView
+
+        // 필요한 서브 뷰 추가 및 기본 설정
+        [practicNavBar, divider, scoreCardView, progressBar, statusTags, controlButtonView].forEach {
+            containerView.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        // 추가 UI 초기화 설정
         scoreCardView.titleLabel.text = currentScore.title
-        // 프로그래스바 초기화
         progressBar.setProgress(0.0, animated: false)
         countDownLottieView = CountDownLottieView(view: self.view, animationName: "Countdown")
+
+        // 제약 조건 추가
+        setupConstraints()
     }
     
     private func setupConstraints() {
@@ -197,7 +186,6 @@ class ScorePracticeViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
-
     }
     
     private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
