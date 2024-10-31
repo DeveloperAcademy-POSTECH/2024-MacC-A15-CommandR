@@ -8,6 +8,8 @@ import SwiftUI
 
 struct WatchPlayView: View {
     @EnvironmentObject var connectivityManager: WatchtoiOSConnectivityManager
+    @State private var countdownNumber: Int? = nil // 카운트다운 숫자
+    @State private var timer: Timer? = nil // 타이머 관리
     
     private var scoreStatusText: String {
         switch connectivityManager.playStatus {
@@ -67,6 +69,70 @@ struct WatchPlayView: View {
                 .buttonStyle(PlainButtonStyle())
                 .padding(.bottom, 10)
             }
+            // 카운트다운 뷰 (countdownNumber가 nil이 아닐 때만 표시)
+            if countdownNumber != nil {
+                WatchCountdownView(countdownNumber: $countdownNumber)
+            }
+        }
+        .onAppear {
+            startCountdown()
+        }
+        .onDisappear {
+            stopCountdown()
+        }
+        .onReceive(connectivityManager.$startTime) { newStartTime in
+            if let startTime = newStartTime {
+                scheduleCountdown(startTime: startTime)
+            }
+        }
+    }
+    
+    private func scheduleCountdown(startTime: TimeInterval) {
+        stopCountdown()
+        
+        let currentTime = Date().timeIntervalSince1970
+        let countdownStartTime = startTime - 3
+        let delay = countdownStartTime - currentTime
+        
+        if delay > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                startCountdown()
+            }
+        } else {
+            startCountdown()
+        }
+    }
+    
+    private func startCountdown() {
+        countdownNumber = 3
+        playHaptic(for: 3)
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            if let currentNumber = countdownNumber, currentNumber > 1 {
+                countdownNumber = currentNumber - 1
+                playHaptic(for: currentNumber - 1)
+            } else {
+                countdownNumber = nil
+                stopCountdown()
+            }
+        }
+    }
+    
+    private func stopCountdown() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    private func playHaptic(for number: Int) {
+        switch number {
+        case 3:
+            WKInterfaceDevice.current().play(.start)
+        case 2:
+            WKInterfaceDevice.current().play(.stop)
+        case 1:
+            WKInterfaceDevice.current().play(.success)
+        default:
+            break
         }
     }
 }
