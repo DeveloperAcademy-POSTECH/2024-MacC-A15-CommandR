@@ -103,8 +103,10 @@
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
 		EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */; };
 		EE42039C2CD277B20081F2A1 /* HapticSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */; };
-		EE42039E2CD27C590081F2A1 /* SoundSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE42039D2CD27C4F0081F2A1 /* SoundSettingSectionViewController.swift */; };
 		EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */; };
+		EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203A62CD3D26A0081F2A1 /* RadioButton.swift */; };
+		EE4203A92CD3D2C40081F2A1 /* RadioButtonOptionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */; };
+		EE4203AB2CD3D50C0081F2A1 /* RadioButtonOptionItemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */; };
 		EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */; };
 		EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */; };
 		EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B952CCFB88200079D75 /* ScoreService.swift */; };
@@ -242,8 +244,10 @@
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
 		EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingSectionView.swift; sourceTree = "<group>"; };
 		EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingSectionView.swift; sourceTree = "<group>"; };
-		EE42039D2CD27C4F0081F2A1 /* SoundSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingSectionViewController.swift; sourceTree = "<group>"; };
+		EE4203A62CD3D26A0081F2A1 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonOptionItem.swift; sourceTree = "<group>"; };
+		EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonOptionItemPicker.swift; sourceTree = "<group>"; };
 		EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EE7A8B952CCFB88200079D75 /* ScoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScoreService.swift; path = RhythmTokTok/Temp/ScoreService.swift; sourceTree = SOURCE_ROOT; };
@@ -369,7 +373,6 @@
 			isa = PBXGroup;
 			children = (
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
-				EE42039D2CD27C4F0081F2A1 /* SoundSettingSectionViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
 				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
@@ -510,6 +513,9 @@
 		1EF8A0A72CB53E9A00ADB783 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */,
+				EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */,
+				EE4203A62CD3D26A0081F2A1 /* RadioButton.swift */,
 				1ED9FED02CBF653800472C51 /* BPMButton.swift */,
 				EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */,
 				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
@@ -805,11 +811,11 @@
 				EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */,
 				EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
+				EE4203A92CD3D2C40081F2A1 /* RadioButtonOptionItem.swift in Sources */,
 				EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */,
 				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
 				D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */,
 				1ED9FED12CBF654400472C51 /* BPMButton.swift in Sources */,
-				EE42039E2CD27C590081F2A1 /* SoundSettingSectionViewController.swift in Sources */,
 				1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */,
 				1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
@@ -827,6 +833,7 @@
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
+				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */,
@@ -841,6 +848,7 @@
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
 				1E91466F2CD0FE2900DBCD00 /* WatchManage_Ex.swift in Sources */,
+				EE4203AB2CD3D50C0081F2A1 /* RadioButtonOptionItemPicker.swift in Sources */,
 				1ED9FEC72CBE4B2F00472C51 /* ScorePracticeViewController.swift in Sources */,
 				EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */,
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,

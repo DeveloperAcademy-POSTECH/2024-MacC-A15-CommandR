@@ -53,6 +53,7 @@ class BPMSettingSectionView: UIView {
         return label
     }()
     
+    // TODO: 추후에 enum 관리로 변경
     private func updateBPMDescription() {
         switch bpm {
         case 0..<60: bpmDescription = "| 매우 느리게"
@@ -92,9 +93,8 @@ class BPMSettingSectionView: UIView {
     lazy var bpmButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addSubview(buttonStackView)
-        
-        // `buttonStackView`의 제약 조건 설정
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             buttonStackView.leadingAnchor.constraint(equalTo: button.leadingAnchor),
             buttonStackView.trailingAnchor.constraint(equalTo: button.trailingAnchor),
@@ -105,7 +105,6 @@ class BPMSettingSectionView: UIView {
         return button
     }()
     
-    // 초기화 메서드에서 뷰를 설정합니다.
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -123,8 +122,6 @@ class BPMSettingSectionView: UIView {
         setupConstraints()
         bpmLabel.text = "\(bpm) bpm"
         bpmDescriptionLabel.text = bpmDescription
-        
-        // 버튼 액션 추가
         bpmButton.addTarget(self, action: #selector(bpmButtonTapped), for: .touchUpInside)
     }
     
@@ -132,14 +129,12 @@ class BPMSettingSectionView: UIView {
         onBPMButtonTapped?()
     }
     
-    // 뷰를 추가하는 메서드
     private func setupViews() {
         addSubview(titleLabel)
         addSubview(bpmButton)
         addSubview(descriptionLabel)
     }
     
-    // 제약 조건을 설정하는 메서드
     private func setupConstraints() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         bpmButton.translatesAutoresizingMaskIntoConstraints = false
@@ -164,8 +159,4 @@ class BPMSettingSectionView: UIView {
             descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
         ])
     }
-}
-
-protocol BPMSettingSectionDelegate: AnyObject {
-    func bpmButtonTapped()
 }

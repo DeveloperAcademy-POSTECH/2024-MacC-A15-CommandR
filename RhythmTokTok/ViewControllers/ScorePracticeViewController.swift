@@ -167,7 +167,7 @@ class ScorePracticeViewController: UIViewController {
         WatchManager.shared.$playStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newStatus in
-                self?.handlePlayStatusChange(newStatus)
+                self?.updateWatchAppStatus()
             }
             .store(in: &cancellables)
     }

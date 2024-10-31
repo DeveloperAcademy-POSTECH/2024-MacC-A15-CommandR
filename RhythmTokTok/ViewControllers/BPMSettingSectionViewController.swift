@@ -4,10 +4,10 @@
 //
 //  Created by Kyuhee hong on 10/30/24.
 //
-
 import UIKit
 
 class BPMSettingSectionViewController: UIViewController {
+    // TODO: currentBPM 은 추후에 CoreData Entity 에서 현재 설정값 가져와야 함
     var currentBPM: Int = 120
     var onBPMSelected: ((Int) -> Void)?
     
@@ -18,7 +18,7 @@ class BPMSettingSectionViewController: UIViewController {
         super.viewWillAppear(animated)
         if let sheet = sheetPresentationController {
             sheet.detents = [.medium()]
-            sheet.prefersGrabberVisible = true // 위로 스와이프하여 닫을 수 있는 그래버 표시
+            sheet.prefersGrabberVisible = true
         }
     }
     
@@ -32,25 +32,21 @@ class BPMSettingSectionViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
-        // 제목 레이블
         let titleLabel = UILabel()
         titleLabel.text = "빠르기 설정"
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // BPM 입력 필드
         bpmTextField.borderStyle = .roundedRect
         bpmTextField.keyboardType = .numberPad
         bpmTextField.translatesAutoresizingMaskIntoConstraints = false
         
-        // 확인 버튼
         let confirmButton = UIButton(type: .system)
         confirmButton.setTitle("설정 완료", for: .normal)
         confirmButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         
-        // 스택 뷰로 구성 요소 배치
         let stackView = UIStackView(arrangedSubviews: [titleLabel, bpmTextField, confirmButton])
         stackView.axis = .vertical
         stackView.spacing = 20
@@ -59,7 +55,6 @@ class BPMSettingSectionViewController: UIViewController {
         
         view.addSubview(stackView)
         
-        // 제약 조건 설정
         NSLayoutConstraint.activate([
             // titleLabel 제약 조건
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),

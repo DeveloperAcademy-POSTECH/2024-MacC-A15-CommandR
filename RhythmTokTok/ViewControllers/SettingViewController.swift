@@ -13,10 +13,6 @@ class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // 네비게이션 타이틀 설정
-        self.title = "설정"
-        
-        // 네비게이션 타이틀 설정
         self.title = "설정"
         
         // SettingView에서 이벤트를 받아서 처리
