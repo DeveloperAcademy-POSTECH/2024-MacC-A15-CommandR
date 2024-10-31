@@ -13,7 +13,10 @@ struct WatchCountdownView: View {
     
     var body: some View {
         ZStack {
-//            Color.black.edgesIgnoringSafeArea(.all) // 전체 화면을 채우는 배경색
+            Image("BasicBackground")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
             
             if let countdownNumber = countdownNumber {
                 Text("\(countdownNumber)")

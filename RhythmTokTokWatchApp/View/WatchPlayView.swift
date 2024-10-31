@@ -8,8 +8,8 @@ import SwiftUI
 
 struct WatchPlayView: View {
     @EnvironmentObject var connectivityManager: WatchtoiOSConnectivityManager
-    @State private var countdownNumber: Int? = nil // 카운트다운 숫자
-    @State private var timer: Timer? = nil // 타이머 관리
+    @State private var countdownNumber: Int? = nil
+    @State private var timer: Timer? = nil
     
     private var scoreStatusText: String {
         switch connectivityManager.playStatus {
@@ -77,7 +77,7 @@ struct WatchPlayView: View {
             }
         }
         .onReceive(connectivityManager.$startTime) { newStartTime in
-            if let startTime = newStartTime {
+            if connectivityManager.playStatus == .play, let startTime = newStartTime {
                 scheduleCountdown(startTime: startTime)
             }
         }
