@@ -8,7 +8,9 @@
 import Foundation
 
 enum PlayStatus: String {
+    case ready
     case play
     case pause
     case stop
+    case done
 }

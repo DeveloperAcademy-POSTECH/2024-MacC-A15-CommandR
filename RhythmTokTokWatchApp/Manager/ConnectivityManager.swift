@@ -16,7 +16,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var isConnected: Bool = false
     @Published var isSelectedScore: Bool = false
     @Published var selectedScoreTitle: String = ""
-    @Published var playStatus: String = "준비"
+    @Published var playStatus: PlayStatus = .ready
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
     
@@ -78,7 +78,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
             if let playStatusString = applicationContext["playStatus"] as? String,
                     let playStatus = PlayStatus(rawValue: playStatusString) {
-                self.playStatus = playStatus.rawValue
+                self.playStatus = playStatus
                 print("재생 상태 업데이트: \(playStatus.rawValue)")
                 
                 switch playStatus {
@@ -97,9 +97,42 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
                     }
                 case .pause, .stop:
                     self.hapticManager.stopHaptic()
+                case .ready, .done:
+                    break
                 }
             } else {
                 ErrorHandler.handleError(error: "알 수 없는 재생 상태")
+            }
+        }
+    }
+    
+    func sendPlayStatusToPhone(status: PlayStatus) {
+        let message: [String: Any] = ["playStatus": status.rawValue]
+        WCSession.default.sendMessage(message, replyHandler: nil) { error in
+            print("iPhone으로 메시지 전송 중 오류 발생: \(error.localizedDescription)")
+        }
+    }
+    
+    // 워치에서 버튼을 누르면 이 메소드를 호출하도록 설정
+    func playButtonTapped() {
+        if playStatus == .play {
+            // 현재 재생 중이면 일시정지로 변경
+            playStatus = .pause
+            sendPlayStatusToPhone(status: .pause)
+            hapticManager.stopHaptic() // 햅틱 중지
+        } else {
+            // 재생 상태로 변경
+            playStatus = .play
+            sendPlayStatusToPhone(status: .play)
+            
+            // 이전에 받은 햅틱 시퀀스 실행
+            if isHapticGuideOn {
+                // 진동 가이드가 활성화된 경우
+                let startTime = Date().timeIntervalSince1970
+                hapticManager.startHaptic(beatTime: hapticSequence, startTimeInterval: startTime)
+            } else {
+                // 진동 가이드가 비활성화된 경우
+                print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
             }
         }
     }

@@ -19,15 +19,13 @@ struct WatchWaitingView: View {
                 .scaledToFill()
                 .edgesIgnoringSafeArea(.all)
 
-            
             if connectivityManager.isSelectedScore {
                 WatchPlayView()
+                .padding()
             } else {
-                VStack(alignment: .leading) {
-                    Text("아이폰에서")
-                    Text("연습하고 싶은 곡을")
-                    Text("선택해 주세요.")
-                }
+
+                    Text("아이폰에서\n연습하고 싶은 곡을\n선택해 주세요.")
+                    .multilineTextAlignment(.leading)
                 .font(Font.custom("Pretendard-Bold", size: 20))
                 .foregroundColor(.white)
                 .padding()

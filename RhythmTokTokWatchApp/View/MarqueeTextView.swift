@@ -9,97 +9,95 @@ import SwiftUI
 
 struct MarqueeTextView: View {
     let text: String
-    let font: Font
+    let fontSize: CGFloat
     let isAnimating: Bool
+    let speed: Double = 30 // 속도 조절 (포인트/초)
 
     @State private var textWidth: CGFloat = 0
     @State private var containerWidth: CGFloat = 0
-    @State private var animationOffset: CGFloat = 0
-    @State private var animationTimer: Timer?
+    @State private var offset: CGFloat = 0
+    @State private var timer: Timer? = nil
 
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-                Spacer() // 상단 공간을 채워서 중앙 배치
+            let containerWidth = geometry.size.width
 
-                HStack {
-                    Text(text)
-                        .font(font)
-                        .lineLimit(1)
-                        .fixedSize()
-                        .background(
-                            GeometryReader { textGeometry in
-                                Color.clear
-                                    .onAppear {
-                                        textWidth = textGeometry.size.width
-                                        containerWidth = geometry.size.width
-                                        resetAnimation()
-                                    }
+            Text(text)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.system(size: fontSize))
+                .lineLimit(1)
+                .truncationMode(.tail)
+            
+                .background(
+                    GeometryReader { textGeometry in
+                        Color.clear
+                            .onAppear {
+                                self.textWidth = textGeometry.size.width
+                                self.containerWidth = containerWidth
+                                
+                                // 애니메이션 시작 조건 확인
+                                if isAnimating && textWidth > containerWidth {
+                                    startAnimation()
+                                }
                             }
-                        )
-                        .offset(x: animationOffset)
-                        .onAppear {
-                            if isAnimating {
-                                startAnimation()
-                            }
-                        }
-                        .onChange(of: isAnimating) { _, newValue in
-                            if newValue {
-                                startAnimation()
-                            } else {
-                                stopAnimation()
-                            }
-                        }
+                    }
+                )
+                .offset(x: offset)
+                .onAppear {
+                    // 뷰가 나타날 때 애니메이션 시작 조건 확인
+                    if isAnimating && textWidth > containerWidth {
+                        startAnimation()
+                    }
                 }
-                .frame(width: containerWidth, alignment: .leading)
-                .clipped()
-
-                Spacer()
-            }
+                .onDisappear {
+                    // 뷰가 사라질 때 애니메이션 중지
+                    stopAnimation()
+                }
+                .onChange(of: isAnimating) { newValue in
+                    // 애니메이션 상태 변경 시 애니메이션 시작 또는 중지
+                    if newValue {
+                        if textWidth > containerWidth {
+                            startAnimation()
+                        }
+                    } else {
+                        stopAnimation()
+                    }
+                }
         }
+        .frame(height: fontSize + 4) // 텍스트 높이 설정
+        .clipped() // 텍스트가 컨테이너를 벗어나지 않도록 잘라냄
     }
 
+    /// 애니메이션 시작
     private func startAnimation() {
-        guard textWidth > containerWidth else {
-            // 텍스트가 컨테이너보다 작으면 애니메이션 필요 없음
-            animationOffset = 0
-            return
-        }
+        stopAnimation() // 기존 타이머 중지
 
-        // 애니메이션 타이머가 이미 실행 중이면 중지
-        animationTimer?.invalidate()
-
-        // 애니메이션 초기 설정
-        animationOffset = containerWidth
+        offset = containerWidth // 텍스트 시작 위치 설정 (오른쪽 끝)
 
         let totalDistance = textWidth + containerWidth
-        let animationDuration = Double(totalDistance) / 30 // 속도 조절
+        let animationDuration = Double(totalDistance) / speed
 
-        // 애니메이션 타이머 시작
-        animationTimer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
-            withAnimation(.linear(duration: 0.01)) {
-                animationOffset -= CGFloat(totalDistance) / CGFloat(animationDuration * 100)
+        // 타이머 간격 및 이동 거리 설정
+        let updateInterval = 0.01 // 0.01초마다 업데이트
+        let distancePerTick = CGFloat(speed * updateInterval) // 한 번에 이동할 거리
+
+        // 타이머 시작
+        timer = Timer.scheduledTimer(withTimeInterval: updateInterval, repeats: true) { _ in
+            withAnimation(.linear(duration: updateInterval)) {
+                offset -= distancePerTick
             }
 
-            // 애니메이션이 끝나면 초기화
-            if animationOffset <= -textWidth {
-                animationOffset = containerWidth
+            // 텍스트가 왼쪽 끝에 도달하면 다시 시작 위치로 리셋
+            if offset <= -textWidth {
+                offset = containerWidth
             }
         }
     }
 
+    /// 애니메이션 중지
     private func stopAnimation() {
-        // 애니메이션 타이머 중지
-        animationTimer?.invalidate()
-        animationTimer = nil
-
-        // 애니메이션 오프셋 초기화
-        withAnimation(.none) {
-            animationOffset = 0
-        }
-    }
-
-    private func resetAnimation() {
-        animationOffset = isAnimating && textWidth > containerWidth ? containerWidth : 0
+        timer?.invalidate() // 타이머 중지
+        timer = nil
+        offset = 0 // 오프셋 초기화
     }
 }
