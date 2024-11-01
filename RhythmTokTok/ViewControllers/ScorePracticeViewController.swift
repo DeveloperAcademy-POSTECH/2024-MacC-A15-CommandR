@@ -127,7 +127,7 @@ class ScorePracticeViewController: UIViewController {
             statusTags.heightAnchor.constraint(equalToConstant: 40),
             
             // MusicPracticeView 레이아웃 설정 (네비게이션 바 아래에 위치)
-            scoreCardView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 24),
+            scoreCardView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 8),
             scoreCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             scoreCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 
@@ -442,7 +442,6 @@ class ScorePracticeViewController: UIViewController {
             controlButtonView.playPauseButton.isPlaying = false
         case .play:
             // MIDI 재생 시작
-            print("play")
             if !isJumpMeasure {
                 startMIDIPlayback()
             } else {
