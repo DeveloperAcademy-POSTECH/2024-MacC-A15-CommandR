@@ -221,7 +221,7 @@ struct MediaManager {
         return hapticSequence
     }
     
-    func getClipHapticSequence(part: Part, divisions: Int, startNumber: Int, endNumber: Int) async throws -> [Double] {
+    func getClipMeasureHapticSequence(part: Part, divisions: Int, startNumber: Int, endNumber: Int) async throws -> [Double] {
         
         if let adjustedNotes = getAdjustedNotes(from: part, startNumber: startNumber, endNumber: endNumber) {
             // 조정된 음표들을 기반으로 햅틱 시퀀스 생성
@@ -231,6 +231,21 @@ struct MediaManager {
         } else {
             return []
         }
+    }
+    
+    // 일시정지 시 햅틱 시퀀스 재산출
+    func getClipPauseHapticSequence(part: Part, divisions: Int, pauseTime: TimeInterval) async throws -> [TimeInterval] {
+        var totalHapticSequence = try await getHapticSequence(part: part, divisions: divisions)
+        
+        if let startIndex = totalHapticSequence.firstIndex(where: { $0 > pauseTime }) {
+            var clipHaticSequence = Array(totalHapticSequence[startIndex...])
+            let diff = totalHapticSequence[startIndex] - pauseTime
+            clipHaticSequence = clipHaticSequence.map { $0 - (totalHapticSequence[startIndex] - diff) }
+            
+            return clipHaticSequence
+        }
+        
+        return []
     }
     
     // MARK: - 구간 노트 파싱 부분

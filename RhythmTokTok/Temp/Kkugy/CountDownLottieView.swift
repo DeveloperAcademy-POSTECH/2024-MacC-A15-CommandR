@@ -12,10 +12,10 @@ class CountDownLottieView {
     private let animationView: LottieAnimationView
     private let backgroundView: UIView
     
-    init(view: UIView, animationName: String, opacity: Float = 0.6, animationSpeed: CGFloat = 1.0) {
+    init(view: UIView, animationName: String, opacity: Float = 1, animationSpeed: CGFloat = 1.0) {
         // 배경 뷰 설정
         backgroundView = UIView()
-        backgroundView.backgroundColor = .placeholder
+        backgroundView.backgroundColor = .countdown
         backgroundView.layer.opacity = opacity
         backgroundView.isHidden = true
         view.addSubview(backgroundView)

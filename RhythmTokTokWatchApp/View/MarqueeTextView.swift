@@ -16,7 +16,7 @@ struct MarqueeTextView: View {
     @State private var textWidth: CGFloat = 0
     @State private var containerWidth: CGFloat = 0
     @State private var offset: CGFloat = 0
-    @State private var timer: Timer? = nil
+    @State private var timer: Timer?
 
     var body: some View {
         GeometryReader { geometry in
@@ -53,7 +53,7 @@ struct MarqueeTextView: View {
                     // 뷰가 사라질 때 애니메이션 중지
                     stopAnimation()
                 }
-                .onChange(of: isAnimating) { newValue in
+                .onChange(of: isAnimating) { _, newValue in
                     // 애니메이션 상태 변경 시 애니메이션 시작 또는 중지
                     if newValue {
                         if textWidth > containerWidth {

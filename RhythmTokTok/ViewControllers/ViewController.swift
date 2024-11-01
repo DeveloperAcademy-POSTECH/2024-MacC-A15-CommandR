@@ -184,7 +184,7 @@ class ViewController: UIViewController {
             return
         }
         let isSelectedScore = true
-        IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: [1.0])
+        IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle, hapticSequence: [1.0])
     }
     
     // 곡을 선택하는 메서드 예시
