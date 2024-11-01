@@ -51,8 +51,6 @@ class BPMSettingSectionViewController: UIViewController {
         }
     }
     
-    
-    
     private func setupUI() {
         view.backgroundColor = .white
         
