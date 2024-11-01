@@ -76,13 +76,6 @@ class ScorePracticeViewController: UIViewController {
         setupActions()
         setupBindings()
         updateWatchAppStatus()
-        
-        // MARK: - [1] 아이폰에서만 재생
-        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification),
-                                               name: .watchPlayButtonTapped, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification),
-                                               name: .watchPauseButtonTapped, object: nil)
-        
     }
     
     private func configureUI() {
@@ -175,6 +168,7 @@ class ScorePracticeViewController: UIViewController {
             .store(in: &cancellables)
         
         // WatchManager의 playStatus를 구독하여 UI 업데이트
+        // TODO: playerStatus ViewModel로 만들면 좋을 듯
         IOStoWatchConnectivityManager.shared.$playStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newStatus in
@@ -185,13 +179,19 @@ class ScorePracticeViewController: UIViewController {
         musicPlayer.$isEnd
             .sink { [weak self] isEnd in
                 if isEnd {
-                    print("끝")
                     self?.controlButtonView.playPauseButton.isPlaying = false
                 }
             }
             .store(in: &cancellables)
+        
+        // 워치 컨트롤 요청 처리
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification),
+                                               name: .watchPlayButtonTapped, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification),
+                                               name: .watchPauseButtonTapped, object: nil)
     }
     
+    // MARK: UI 변경
     private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
         let division = Double(currentScore.divisions)
         currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: Double(currentTime), division: division)
@@ -207,11 +207,39 @@ class ScorePracticeViewController: UIViewController {
         
     private func handleWatchAppConnectionChange(_ isConnected: Bool) {
         if isConnected {
-            // 연결되었을 때 처리
             self.practicNavBar.setWatchImage(isConnected: true)
         } else {
-            // 연결되지 않았을 때 처리
             self.practicNavBar.setWatchImage(isConnected: false)
+        }
+    }
+    
+    // 처음 마디에 위치할 때 이전마디 처음으로 버튼 비활성화
+    private func checkUpdatePreviousButtonState() {
+        if let startMeasureNumber = currentScore.parts.last?.measures[1]?[0].number {
+            if currentMeasure == startMeasureNumber || currentMeasure == 0 {
+                controlButtonView.previousButton.isEnabled = false
+                controlButtonView.refreshButton.isEnabled = false
+            } else {
+                controlButtonView.previousButton.isEnabled = true
+                controlButtonView.refreshButton.isEnabled = true
+            }
+        } else {
+            ErrorHandler.handleError(error: "Unexpectedly found nil while unwrapping an Optional value")
+        }
+    }
+    
+    private func checkUpdateNextButtonState() {
+        if currentMeasure == totalMeasure {
+            controlButtonView.nextButton.isEnabled = false
+        } else {
+            controlButtonView.nextButton.isEnabled = true
+        }
+    }
+    
+    // 시작 버튼 활성화 업데이트
+    private func updatePlayPauseButton(_ isEnabled: Bool) {
+        DispatchQueue.main.async {
+            self.controlButtonView.playPauseButton.isEnabled = isEnabled
         }
     }
     
@@ -266,31 +294,8 @@ class ScorePracticeViewController: UIViewController {
 //    func remotePauseButtonTapped() {
 //        stopButtonTapped() // 즉시 일시정지
 //    }
-
-    private func checkUpdatePreviousButtonState() {
-        // 처음 마디에 위치할 때 이전마디 처음으로 버튼 비활성화
-        if let startMeasureNumber = currentScore.parts.last?.measures[1]?[0].number {
-            if currentMeasure == startMeasureNumber || currentMeasure == 0 {
-                controlButtonView.previousButton.isEnabled = false
-                controlButtonView.refreshButton.isEnabled = false
-            } else {
-                controlButtonView.previousButton.isEnabled = true
-                controlButtonView.refreshButton.isEnabled = true
-            }
-        } else {
-            ErrorHandler.handleError(error: "Unexpectedly found nil while unwrapping an Optional value")
-        }
-    }
     
-    private func checkUpdateNextButtonState() {
-        if currentMeasure == totalMeasure {
-            controlButtonView.nextButton.isEnabled = false
-        } else {
-            controlButtonView.nextButton.isEnabled = true
-        }
-    }
-    
-    // MARK: - [1] 워치에서 버튼 눌렀을 때 notification을 받아서 아이폰 함수를 호출
+    // [1] 워치에서 버튼 눌렀을 때 notification을 받아서 아이폰 함수를 호출
     @objc private func handleWatchPlayNotification() {
         // 워치에서 play 알림 수신 시 playButtonTapped 호출
         playButtonTapped()
@@ -301,7 +306,7 @@ class ScorePracticeViewController: UIViewController {
         stopButtonTapped()
     }
     
-    //    //MARK: - [2] 워치에서 타이머 직접 수행
+    //    // [2] 워치에서 타이머 직접 수행
     //    // 워치에서 Play 알림을 수신했을 때 호출
     //    @objc private func handleWatchPlayNotification(_ notification: Notification) {
     //        if let startTime = notification.object as? TimeInterval {
@@ -314,7 +319,7 @@ class ScorePracticeViewController: UIViewController {
     //        remotePauseButtonTapped()
     //    }
     
-    // MARK: Button 액션
+    // MARK: 네비게이션 버튼 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
         IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
@@ -328,38 +333,8 @@ class ScorePracticeViewController: UIViewController {
         navigationController?.pushViewController(settingViewController, animated: true)
     }
     
+    // MARK: 컨트롤러 버튼 액션
     @objc private func playButtonTapped() {
-        guard let outputPathURL = midiFilePathURL else {
-            ErrorHandler.handleError(error: "MIDI file URL is nil.")
-            return
-        }
-        
-        // MIDI 파일이 존재하는지 확인
-        if !FileManager.default.fileExists(atPath: outputPathURL.path) {
-            ErrorHandler.handleError(error: "MIDI file not found at path \(outputPathURL.path)")
-            return
-        }
-        // MIDI 파일 재생 여부에 따른 처리
-        if controlButtonView.playPauseButton.isPlaying {
-            // 재생 중일 때 일시정지
-            sendPauseStatusToWatch()
-            // MIDI 일시정지
-            musicPlayer.pauseMIDI()
-            controlButtonView.playPauseButton.isPlaying = false
-        } else {
-            // 현재 시간으로부터 4초 후, 평균 워치지연시간 0.14
-            let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
-            sendPlayStatusToWatch(startTimeInterVal: futureTime)
-            let delay = futureTime - Date().timeIntervalSince1970
-            // MIDI 재생
-            // TODO: 딜레이 조절해야됨
-            musicPlayer.playMIDI(delay: delay)
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
-                self.countDownLottieView?.play()
-            }
-            controlButtonView.playPauseButton.isPlaying = true
-        }
-//        playPauseButton.isPlaying.toggle() // 재생/일시정지 상태 변경
         if IOStoWatchConnectivityManager.shared.playStatus == .play {
             // 현재 재생 중이면 일시정지로 변경
             IOStoWatchConnectivityManager.shared.playStatus = .pause
@@ -406,18 +381,6 @@ class ScorePracticeViewController: UIViewController {
             musicPlayer.playMIDI(startTime: startTime, delay: 1)
             IOStoWatchConnectivityManager.shared.playStatus = .play
             sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: futureTime)
-        }
-    }
-    
-    @objc private func presentBPMModal() {
-        let setBPMViewController = SetBPMViewController()
-        present(setBPMViewController, animated: true, completion: nil)
-    }
-    
-    // 시작 버튼 활성화 업데이트
-    private func updatePlayPauseButton(_ isEnabled: Bool) {
-        DispatchQueue.main.async {
-            self.controlButtonView.playPauseButton.isEnabled = isEnabled
         }
     }
     
@@ -515,21 +478,17 @@ extension ScorePracticeViewController {
     func handlePlayStatusChange(_ status: PlayStatus) {
         switch status {
         case .ready:
-            // 준비 상태: 재생 버튼만 표시
             controlButtonView.playPauseButton.isPlaying = false
         case .play:
-            // 재생 상태: 일시정지 버튼 표시
-            controlButtonView.playPauseButton.isPlaying = true
             // MIDI 재생 시작
             if !isJumpMeasure {
                 startMIDIPlayback()
             } else {
                 isJumpMeasure = false
+                controlButtonView.playPauseButton.isPlaying = true
             }
         case .pause:
-            controlButtonView.playPauseButton.isPlaying = false
-            // MIDI 일시정지
-            musicPlayer.pauseMIDI()
+            pauseMIDIPlayer()
         case .stop:
             controlButtonView.playPauseButton.isPlaying = false
             // MIDI 재생 중지
@@ -558,5 +517,15 @@ extension ScorePracticeViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
             self.countDownLottieView?.play()
         }
+        
+        controlButtonView.playPauseButton.isPlaying = true
+    }
+    
+    func pauseMIDIPlayer() {
+        // 재생 중일 때 일시정지
+        sendPauseStatusToWatch()
+        // MIDI 일시정지
+        musicPlayer.pauseMIDI()
+        controlButtonView.playPauseButton.isPlaying = false
     }
 }
