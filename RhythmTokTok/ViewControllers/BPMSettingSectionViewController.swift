@@ -17,7 +17,10 @@ class BPMSettingSectionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let sheet = sheetPresentationController {
-            sheet.detents = [.medium()]
+            let customDetent = UISheetPresentationController.Detent.custom(resolver: { context in
+                return context.maximumDetentValue * 0.77 // 화면 높이의 77%
+            })
+            sheet.detents = [customDetent]
             sheet.prefersGrabberVisible = true
         }
     }
@@ -57,14 +60,14 @@ class BPMSettingSectionViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // titleLabel 제약 조건
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             
             // bpmTextField 제약 조건
-            bpmTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            bpmTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            bpmTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            bpmTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
+            bpmTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            bpmTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             bpmTextField.widthAnchor.constraint(equalToConstant: 335),
             bpmTextField.heightAnchor.constraint(equalToConstant: 64),
             
