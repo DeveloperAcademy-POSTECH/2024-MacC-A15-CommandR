@@ -6,7 +6,14 @@
 //
 import UIKit
 
+// 모달이 닫혔을 때 어두운 배경을 제거하기
+protocol BPMSettingDelegate: AnyObject {
+    func removeOverlay()
+}
+
 class BPMSettingSectionViewController: UIViewController {
+    var delegate: BPMSettingDelegate?
+    
     // TODO: currentBPM 은 추후에 CoreData Entity 에서 현재 설정값 가져와야 함
     var currentBPM: Int = 120
     var onBPMSelected: ((Int) -> Void)?
@@ -16,13 +23,17 @@ class BPMSettingSectionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let sheet = sheetPresentationController {
-            let customDetent = UISheetPresentationController.Detent.custom(resolver: { context in
-                return context.maximumDetentValue * 0.77 // 화면 높이의 77%
-            })
-            sheet.detents = [customDetent]
-            sheet.prefersGrabberVisible = true
-        }
+    
+        // 모달 뷰의 모서리 설정
+        view.layer.cornerRadius = 24
+
+        // 키패드가 띄워지도록 자동 포커스
+        bpmTextField.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.removeOverlay() // 모달이 닫힐 때 delegate 를 호출하여 어두운 오버레이를 없앰
     }
     
     override func viewDidLoad() {
@@ -30,16 +41,27 @@ class BPMSettingSectionViewController: UIViewController {
         
         setupUI()
         bpmTextField.text = "\(currentBPM)"
+        if let sheet = sheetPresentationController {
+            let customDetent = UISheetPresentationController.Detent.custom(resolver: { context in
+                return context.maximumDetentValue * 0.3
+            })
+            sheet.detents = [customDetent]
+            sheet.prefersGrabberVisible = true
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
+        
     }
     
     private func setupUI() {
         view.backgroundColor = .white
         
+        // 빠르기 설정 라벨
         let titleLabel = UILabel()
         titleLabel.text = "빠르기 설정"
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        // 텍스트 필드
         bpmTextField.borderStyle = .none
         bpmTextField.layer.borderWidth = 2
         bpmTextField.layer.cornerRadius = 12
@@ -48,6 +70,7 @@ class BPMSettingSectionViewController: UIViewController {
         bpmTextField.font = UIFont(name: "Pretendard-Medium", size: 36)
         bpmTextField.translatesAutoresizingMaskIntoConstraints = false
 
+        // 텍스트 필드 클리어 버튼
         let clearButton = UIButton(type: .custom)
         clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         clearButton.tintColor = UIColor(named: "lable_quaternary")
@@ -66,19 +89,23 @@ class BPMSettingSectionViewController: UIViewController {
         bpmTextField.rightView = rightPaddingView
         bpmTextField.rightViewMode = .always
 
+        // 설정 완료 버튼
         let confirmButton = UIButton(type: .system)
         confirmButton.setTitle("설정 완료", for: .normal)
-        confirmButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        confirmButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        confirmButton.setTitleColor(.white, for: .normal)
+        confirmButton.backgroundColor = UIColor(named: "button_primary")
         confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, bpmTextField, confirmButton])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, bpmTextField])
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(stackView)
+        view.addSubview(confirmButton)
         
         NSLayoutConstraint.activate([
             // titleLabel 제약 조건
@@ -93,8 +120,13 @@ class BPMSettingSectionViewController: UIViewController {
             bpmTextField.widthAnchor.constraint(equalToConstant: 335),
             bpmTextField.heightAnchor.constraint(equalToConstant: 64),
             
-            confirmButton.topAnchor.constraint(equalTo: bpmTextField.bottomAnchor, constant: 16),
-            confirmButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            confirmButton.topAnchor.constraint(equalTo: bpmTextField.bottomAnchor, constant: 32),
+            confirmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            confirmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            confirmButton.heightAnchor.constraint(equalToConstant: 56),
+            confirmButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            confirmButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor) // 키보드 바로 위에 배치
+
         ])
     }
     
