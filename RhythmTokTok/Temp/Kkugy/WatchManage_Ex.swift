@@ -7,7 +7,7 @@
 import UIKit
 import WatchConnectivity
 
-extension WatchManager {
+extension IOStoWatchConnectivityManager {
     // 마디 점프 요청
     func sendJumpMeasureToWatch(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
         self.selectedScoreTitle = scoreTitle
