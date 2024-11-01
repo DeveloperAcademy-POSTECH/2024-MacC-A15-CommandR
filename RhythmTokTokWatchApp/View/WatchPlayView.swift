@@ -42,6 +42,7 @@ struct WatchPlayView: View {
                     fontSize: 20,
                     isAnimating: connectivityManager.playStatus == .play
                 )
+                .multilineTextAlignment(.center)
                 .padding(.top, 8)
                 Spacer()
                 Button(action: {
