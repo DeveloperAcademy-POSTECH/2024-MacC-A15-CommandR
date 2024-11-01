@@ -20,7 +20,7 @@ extension ScoreEntity {
     @NSManaged public var id: String?
     @NSManaged public var title: String?
     @NSManaged public var isHapticOn: Bool
-    @NSManaged public var soundType: String?
+    @NSManaged public var soundOption: String?
     @NSManaged public var notes: NSOrderedSet?
 
 }

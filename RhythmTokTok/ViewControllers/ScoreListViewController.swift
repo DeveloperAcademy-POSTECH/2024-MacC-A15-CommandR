@@ -10,7 +10,6 @@ import UniformTypeIdentifiers
 class ScoreListViewController: UIViewController {
     
     var selectedFileURL: URL?
-    // ScoreListView를 뷰로 사용
     var scoreListView: ScoreListView! {
         return view as? ScoreListView
     }
@@ -94,11 +93,12 @@ class ScoreListViewController: UIViewController {
     
     // TODO: 검색 기능 추가 예정
     @objc func didTapSearch() {
-        //MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
+        // MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
         let viewController = ViewController()
         navigationController?.pushViewController(viewController, animated: true)
     }
     
+    // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
     @objc func didTapSettings() {
         let settingViewController = SettingViewController()
         navigationController?.pushViewController(settingViewController, animated: true)
@@ -133,7 +133,8 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListItemCellView.identifier, for: indexPath) as? ListItemCellView else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListItemCellView.identifier,
+                                                       for: indexPath) as? ListItemCellView else {
             return UITableViewCell()
         }
         cell.configure(with: scoreList[indexPath.row].title)
