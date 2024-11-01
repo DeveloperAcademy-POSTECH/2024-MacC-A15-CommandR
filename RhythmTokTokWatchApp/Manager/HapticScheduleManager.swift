@@ -34,7 +34,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
     // WKExtendedRuntimeSessionDelegate methods
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
         // 백그라운드에서 isHapticActive 반응형으로 동작 예약
-        print("sessionStart")
         self.$isHapticActive
                     .sink { [weak self] isStarted in
                         if isStarted {
@@ -48,8 +47,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
                             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                                 self.startHapticWithBeats(batchSize: 20)
                             }
-                        } else {
-                            print("실행중")
                         }
                     }
                     .store(in: &cancellables)
@@ -153,7 +150,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
     // 햅틱과 타이머를 중지하는 함수
     func stopHaptic() {
         // 배열에 저장된 모든 타이머를 해제
-        print("기존 타이머 삭제")
         for timer in timers {
             timer.cancel()
         }

@@ -26,8 +26,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             sendPlayStatus(status: playStatus, startTime: nil)
         }
     }
-    
-    
     // 워치로부터 받은 상태, 시간
     @Published var receivedPlayStatus: PlayStatus = .ready
     @Published var receivedStartTime: TimeInterval?
@@ -123,7 +121,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendScoreSelection(scoreTitle: String, hapticSequence: [Double]) {
         self.selectedScoreTitle = scoreTitle
-//        print("워치로 전송 햅틱 : \(hapticSequence)")
         let message: [String: Any] = [
             "scoreTitle": scoreTitle,
             "hapticSequence": hapticSequence

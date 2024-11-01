@@ -58,7 +58,7 @@ class ScorePracticeViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 기존 재생 정지
-        self.stopButtonTapped()
+        self.refreshButtonTapped()
         // 다른 화면으로 이동할 때 네비게이션 바를 다시 표시하도록 설정
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
@@ -66,11 +66,9 @@ class ScorePracticeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
         Task { await createMIDIFile(score: currentScore) }
-        
         setupActions()
         setupBindings()
         updateWatchAppStatus()
@@ -143,7 +141,7 @@ class ScorePracticeViewController: UIViewController {
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        controlButtonView.refreshButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        controlButtonView.refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
         controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
         controlButtonView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
@@ -177,7 +175,9 @@ class ScorePracticeViewController: UIViewController {
         musicPlayer.$isEnd
             .sink { [weak self] isEnd in
                 if isEnd {
-                    self?.controlButtonView.playPauseButton.isPlaying = false
+//                    self?.playButtonTapped()
+                    IOStoWatchConnectivityManager.shared.playStatus = .ready
+                    // TODO: 여기에 총 햅틱 워치로 다시 셋팅하는 로직 필요
                 }
             }
             .store(in: &cancellables)
@@ -264,18 +264,21 @@ class ScorePracticeViewController: UIViewController {
     // 워치에서 버튼 눌렀을 때 notification을 받아서 아이폰 함수를 호출
     @objc private func handleWatchPlayNotification() {
         // 워치에서 play 알림 수신 시 playButtonTapped 호출
-        playButtonTapped()
+        print("재생 요청 받음")
+        IOStoWatchConnectivityManager.shared.playStatus = .play
     }
     
     @objc private func handleWatchPauseNotification() {
         // 워치에서 pause 알림 수신 시 stopButtonTapped 호출
-        playButtonTapped()
+        print("일시정지 요청 받음")
+        IOStoWatchConnectivityManager.shared.playStatus = .pause
     }
     
     // MARK: 네비게이션 버튼 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
-        IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: "", hapticSequence: [])
+        IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: "",
+                                                                hapticSequence: [])
         navigationController?.popViewController(animated: true)
     }
     
@@ -297,10 +300,7 @@ class ScorePracticeViewController: UIViewController {
         }
     }
     
-    @objc private func stopButtonTapped() {
-        sendStopStatusToWatch()
-        musicPlayer.stopMIDI()
-        controlButtonView.playPauseButton.isPlaying = false
+    @objc private func refreshButtonTapped() {
         IOStoWatchConnectivityManager.shared.playStatus = .stop
     }
     
@@ -308,7 +308,6 @@ class ScorePracticeViewController: UIViewController {
         if currentMeasure != 0 {
             currentMeasure -= 1
         }
-        
         jumpMeasure()
     }
     
@@ -447,9 +446,9 @@ class ScorePracticeViewController: UIViewController {
         case .pause:
             pauseMIDIPlayer()
         case .stop:
-            controlButtonView.playPauseButton.isPlaying = false
-            // MIDI 재생 중지
+            sendStopStatusToWatch()
             musicPlayer.stopMIDI()
+            controlButtonView.playPauseButton.isPlaying = false
         case .done:
             controlButtonView.playPauseButton.isPlaying = false
         }
