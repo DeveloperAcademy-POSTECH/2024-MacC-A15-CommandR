@@ -178,7 +178,7 @@ class ScorePracticeViewController: UIViewController {
         IOStoWatchConnectivityManager.shared.$playStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newStatus in
-                self?.handlePlayStatusChange(newStatus)
+                self?.updateWatchAppStatus()
             }
             .store(in: &cancellables)
 
@@ -323,6 +323,8 @@ class ScorePracticeViewController: UIViewController {
     
     @objc private func settingButtonTapped() {
         let settingViewController = SettingViewController()
+        navigationItem.title = "설정"
+        navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(settingViewController, animated: true)
     }
     
