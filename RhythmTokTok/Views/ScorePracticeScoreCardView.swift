@@ -37,7 +37,7 @@ class ScorePracticeScoreCardView: UIView {
         titleLabel.text = "처리중"
         titleLabel.textAlignment = .left
         titleLabel.textColor = UIColor(named: "lable_primary")
-        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreCardView.addSubview(titleLabel)
 

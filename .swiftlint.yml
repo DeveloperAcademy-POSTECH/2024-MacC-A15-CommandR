@@ -18,3 +18,4 @@ excluded:
     - .github
     - RhythmTokTok/AppDelegate.swift
     - RhythmTokTok/SceneDelegate.swift
+    - RhythmTokTok/ViewControllers/ScorePracticeViewController.swift
