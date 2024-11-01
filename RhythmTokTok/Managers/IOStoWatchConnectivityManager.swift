@@ -123,7 +123,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendScoreSelection(scoreTitle: String, hapticSequence: [Double]) {
         self.selectedScoreTitle = scoreTitle
-        print("워치로 전송 햅틱 : \(hapticSequence)")
+//        print("워치로 전송 햅틱 : \(hapticSequence)")
         let message: [String: Any] = [
             "scoreTitle": scoreTitle,
             "hapticSequence": hapticSequence
@@ -191,19 +191,3 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
     }
 }
-    
-    //    // [2] 워치에서 타이머 직접 실행
-    //    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
-    //        DispatchQueue.main.async {
-    //            if let playStatusString = applicationContext["playStatus"] as? String,
-    //               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
-    //                self.receivedPlayStatus = receivedPlayStatus
-    //                if receivedPlayStatus == .play, let startTime = applicationContext["startTime"] as? TimeInterval {
-    //                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: startTime)
-    //                } else if receivedPlayStatus == .pause {
-    //                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
-    //                }
-    //            }
-    //        }
-    //    }
-    

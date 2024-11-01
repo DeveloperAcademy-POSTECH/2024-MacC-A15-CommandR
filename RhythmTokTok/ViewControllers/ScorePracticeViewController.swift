@@ -5,11 +5,9 @@
 //  Created by sungkug_apple_developer_ac on 10/15/24.
 //
 import Combine
-import Lottie
-import SwiftUI
 import UIKit
-import WatchConnectivity
 
+// TODO: 코드 길어서 분리해야됨
 class ScorePracticeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var countDownLottieView: CountDownLottieView? // 로띠뷰
@@ -290,10 +288,8 @@ class ScorePracticeViewController: UIViewController {
     
     // MARK: 컨트롤러 버튼 액션
     @objc private func playButtonTapped() {
-        print("click")
         if IOStoWatchConnectivityManager.shared.playStatus == .play {
             // 현재 재생 중이면 일시정지로 변경
-            print("pause")
             IOStoWatchConnectivityManager.shared.playStatus = .pause
         } else {
             // 재생 상태로 변경
@@ -473,7 +469,6 @@ class ScorePracticeViewController: UIViewController {
         
         // 현재 시간으로부터 4초 후 재생 시작
         let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
-        print("\(futureTime)")
         sendPlayStatusToWatch(startTimeInterVal: futureTime)
         let delay = futureTime - Date().timeIntervalSince1970
         self.musicPlayer.playMIDI(delay: delay)
@@ -486,7 +481,6 @@ class ScorePracticeViewController: UIViewController {
     
     func pauseMIDIPlayer() {
         // 재생 중일 때 일시정지
-        // MIDI 일시정지
         musicPlayer.pauseMIDI()
         sendPauseStatusToWatch()
         controlButtonView.playPauseButton.isPlaying = false
