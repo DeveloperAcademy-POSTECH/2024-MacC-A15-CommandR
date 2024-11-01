@@ -1,16 +1,15 @@
 //
-//  WatchSessionManager.swift
+//  WatchConnectivityManager.swift
 //  RhythmTokTok
 //
 //  Created by Byeol Kim on 10/9/24.
 //
-// ConnectivityManager.swift
 
 import Foundation
 import WatchConnectivity
 import Combine
 
-class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
+class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     
     var hapticManager = HapticScheduleManager()
     @Published var isConnected: Bool = false
@@ -55,9 +54,11 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     // MARK: - iPhone으로부터 Application Context 수신
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                print("check1")
+                return }
             session.activate()
-            
+            print("check2")
             if let isHapticGuideOn = applicationContext["watchHapticGuide"] as? Bool {
                 self.isHapticGuideOn = isHapticGuideOn
                 print("워치에서 수신한 watchHapticGuide 설정: \(self.isHapticGuideOn)")
@@ -77,7 +78,7 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             }
             // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
             if let playStatusString = applicationContext["playStatus"] as? String,
-                    let playStatus = PlayStatus(rawValue: playStatusString) {
+               let playStatus = PlayStatus(rawValue: playStatusString) {
                 self.playStatus = playStatus
                 print("재생 상태 업데이트: \(playStatus.rawValue)")
                 
@@ -105,35 +106,56 @@ class ConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
             }
         }
     }
-    
-    func sendPlayStatusToPhone(status: PlayStatus) {
-        let message: [String: Any] = ["playStatus": status.rawValue]
-        WCSession.default.sendMessage(message, replyHandler: nil) { error in
-            print("iPhone으로 메시지 전송 중 오류 발생: \(error.localizedDescription)")
-        }
+    //M ARK: - [1] 아이폰에서만 함수실행할때
+    func playButtonTapped() {
+        playStatus = .play
+        sendPlayStatusToiOS(status: .play)
     }
     
-    // 워치에서 버튼을 누르면 이 메소드를 호출하도록 설정
-    func playButtonTapped() {
-        if playStatus == .play {
-            // 현재 재생 중이면 일시정지로 변경
-            playStatus = .pause
-            sendPlayStatusToPhone(status: .pause)
-            hapticManager.stopHaptic() // 햅틱 중지
-        } else {
-            // 재생 상태로 변경
-            playStatus = .play
-            sendPlayStatusToPhone(status: .play)
-            
-            // 이전에 받은 햅틱 시퀀스 실행
-            if isHapticGuideOn {
-                // 진동 가이드가 활성화된 경우
-                let startTime = Date().timeIntervalSince1970
-                hapticManager.startHaptic(beatTime: hapticSequence, startTimeInterval: startTime)
-            } else {
-                // 진동 가이드가 비활성화된 경우
-                print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
-            }
+    // 일시정지 버튼을 누르면 호출되는 함수
+    func pauseButtonTapped() {
+        playStatus = .pause
+        sendPlayStatusToiOS(status: .pause)
+        hapticManager.stopHaptic()
+    }
+    
+    private func sendPlayStatusToiOS(status: PlayStatus) {
+        let message = ["playStatus": status.rawValue]
+        do {
+            try WCSession.default.updateApplicationContext(message)
+        } catch {
+            print("Error sending play status: \(error.localizedDescription)")
         }
     }
 }
+
+
+//    //MARK: - [2] 워치에서 직접 타이머 설정
+//    // 재생 버튼을 눌렀을 때
+//    func playButtonTapped() {
+//        playStatus = .play
+//        let startTime = Date().timeIntervalSince1970 + 4 // 4초 후 재생 시작
+//        sendPlayStatusToiOS(status: .play, startTime: startTime)
+//        hapticManager.startHaptic(beatTime: hapticSequence, startTimeInterval: startTime) // 4초 뒤에 햅틱 재생
+//    }
+//
+//    // 일시정지 버튼을 눌렀을 때
+//    func pauseButtonTapped() {
+//        playStatus = .pause
+//        sendPlayStatusToiOS(status: .pause)
+//        hapticManager.stopHaptic() // 햅틱 중지
+//        print("Pause action sent to iOS and haptic stopped.")
+//    }
+//
+//    private func sendPlayStatusToiOS(status: PlayStatus, startTime: TimeInterval? = nil) {
+//        var message: [String: Any] = ["playStatus": status.rawValue]
+//        if let startTime = startTime {
+//            message["startTime"] = startTime
+//        }
+//        do {
+//            try WCSession.default.updateApplicationContext(message)
+//            print("Sent play status to iOS with startTime: \(startTime ?? 0)")
+//        } catch {
+//            ErrorHandler.handleError(error: "Error sending play status: \(error.localizedDescription)")
+//        }
+//    }

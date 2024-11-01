@@ -195,14 +195,12 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             if let beats = Int(trimmedString), let _ = currentMeasure {
                 currentBeat = beats
                 currentMeasure?.beats = beats
-                print("currentBeat: \(beats)")
             }
             
         case "beat-type":
             if let beatType = Int(trimmedString), let _ = currentMeasure {
                 currentBeatType = beatType
                 currentMeasure?.beatType = beatType
-                print("currentBeatType: \(beatType)")
             }
             
         default:
