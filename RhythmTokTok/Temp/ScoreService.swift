@@ -18,7 +18,7 @@ class ScoreService {
         score.bpm = bpm
         score.createdAt = createdAt
         score.isHapticOn = isHapticOn
-        score.soundType = soundType
+        score.soundOption = soundType
         if let notesArray = notes {
             score.notes = NSOrderedSet(array: notesArray)
         }
@@ -54,7 +54,7 @@ class ScoreService {
         score.title = newTitle ?? score.title
         score.bpm = newBpm ?? score.bpm
         score.isHapticOn = newIsHapticOn ?? score.isHapticOn
-        score.soundType = newSoundType ?? score.soundType
+        score.soundOption = newSoundType ?? score.soundOption
         if let notesArray = newNotes {
             score.notes = NSOrderedSet(array: notesArray)
         }

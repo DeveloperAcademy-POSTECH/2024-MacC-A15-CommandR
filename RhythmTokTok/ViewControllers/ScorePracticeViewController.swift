@@ -175,7 +175,7 @@ class ScorePracticeViewController: UIViewController {
         IOStoWatchConnectivityManager.shared.$playStatus
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newStatus in
-                self?.handlePlayStatusChange(newStatus)
+                self?.updateWatchAppStatus()
             }
             .store(in: &cancellables)
     }
@@ -320,6 +320,8 @@ class ScorePracticeViewController: UIViewController {
     
     @objc private func settingButtonTapped() {
         let settingViewController = SettingViewController()
+        navigationItem.title = "설정"
+        navigationItem.backButtonTitle = ""
         navigationController?.pushViewController(settingViewController, animated: true)
     }
     
@@ -479,8 +481,6 @@ class ScorePracticeViewController: UIViewController {
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
-        
-        
         IOStoWatchConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
     }
     
