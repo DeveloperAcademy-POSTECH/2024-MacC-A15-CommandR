@@ -64,67 +64,6 @@ struct WatchScoreTitleView: View {
         .frame(height: fontSize + 4) // 텍스트 높이 설정
     }
     
-    //
-    //    var body: some View {
-    //        GeometryReader { geometry in
-    //            let containerWidth = geometry.size.width
-    //
-    //            ZStack(alignment: .leading) {
-    //                // Hidden Text to measure width without constraints
-    //                Text(text)
-    //                    .font(Font.custom("Pretendard-Bold", size: fontSize))
-    //                    .background(
-    //                        GeometryReader { textGeometry in
-    //                            Color.clear
-    //                                .onAppear {
-    //                                    self.textWidth = textGeometry.size.width
-    //                                }
-    //                        }
-    //                    )
-    //                    .hidden()
-    //
-    //                if isAnimating {
-    //                    Text(text)
-    //                        .font(Font.custom("Pretendard-Bold", size: fontSize))
-    //                        .lineLimit(1)
-    //                        .background(
-    //                            GeometryReader { textGeometry in
-    //                                Color.clear
-    //                                    .onAppear {
-    //                                        self.textWidth = textGeometry.size.width
-    //                                    }
-    //                            }
-    //                        )
-    //                        .offset(x: offset)
-    //                        .onAppear {
-    //                            self.containerWidth = containerWidth
-    //                            startAnimation()
-    //                        }
-    //                        .onDisappear {
-    //                            stopAnimation()
-    //                        }
-    //                    //                    .onChange(of: isAnimating) { newValue in
-    //                    //                        if newValue {
-    //                    //                            startAnimation()
-    //                    //                        } else {
-    //                    //                            stopAnimation()
-    //                    //                        }
-    //                    //                    }
-    //                } else {
-    //                    Text(text)
-    //                        .font(Font.custom("Pretendard-Bold", size: fontSize))
-    //                        .multilineTextAlignment(.center)
-    //                        .lineLimit(1)
-    //                        .truncationMode(.tail)
-    //                        .frame(maxWidth: containerWidth)
-    //                }
-    //
-    //
-    //            }
-    //            //        .frame(height: fontSize + 4) // 텍스트 높이 설정
-    //        }
-    //    }
-    
     /// 애니메이션 시작
     private func startAnimation() {
         stopAnimation() // 기존 타이머 중지
@@ -158,3 +97,65 @@ struct WatchScoreTitleView: View {
         offset = 0 // 오프셋 초기화
     }
 }
+
+//MARK: - 이전 코드인데 참고용으로 일단 남겨둠. view 리팩토링하고 지울 예정.
+//
+//    var body: some View {
+//        GeometryReader { geometry in
+//            let containerWidth = geometry.size.width
+//
+//            ZStack(alignment: .leading) {
+//                // Hidden Text to measure width without constraints
+//                Text(text)
+//                    .font(Font.custom("Pretendard-Bold", size: fontSize))
+//                    .background(
+//                        GeometryReader { textGeometry in
+//                            Color.clear
+//                                .onAppear {
+//                                    self.textWidth = textGeometry.size.width
+//                                }
+//                        }
+//                    )
+//                    .hidden()
+//
+//                if isAnimating {
+//                    Text(text)
+//                        .font(Font.custom("Pretendard-Bold", size: fontSize))
+//                        .lineLimit(1)
+//                        .background(
+//                            GeometryReader { textGeometry in
+//                                Color.clear
+//                                    .onAppear {
+//                                        self.textWidth = textGeometry.size.width
+//                                    }
+//                            }
+//                        )
+//                        .offset(x: offset)
+//                        .onAppear {
+//                            self.containerWidth = containerWidth
+//                            startAnimation()
+//                        }
+//                        .onDisappear {
+//                            stopAnimation()
+//                        }
+//                    //                    .onChange(of: isAnimating) { newValue in
+//                    //                        if newValue {
+//                    //                            startAnimation()
+//                    //                        } else {
+//                    //                            stopAnimation()
+//                    //                        }
+//                    //                    }
+//                } else {
+//                    Text(text)
+//                        .font(Font.custom("Pretendard-Bold", size: fontSize))
+//                        .multilineTextAlignment(.center)
+//                        .lineLimit(1)
+//                        .truncationMode(.tail)
+//                        .frame(maxWidth: containerWidth)
+//                }
+//
+//
+//            }
+//            //        .frame(height: fontSize + 4) // 텍스트 높이 설정
+//        }
+//    }

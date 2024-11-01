@@ -16,16 +16,16 @@ struct WatchCountdownView: View {
             Image("BasicBackground")
                 .resizable()
                 .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
+                .ignoresSafeArea()
             
             if let countdownNumber = countdownNumber {
                 Text("\(countdownNumber)")
                     .font(.system(size: 100, weight: .bold))
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .edgesIgnoringSafeArea(.all)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }
         }
+        .ignoresSafeArea()
     }
 }
 

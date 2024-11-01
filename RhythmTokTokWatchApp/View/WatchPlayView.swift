@@ -25,7 +25,6 @@ struct WatchPlayView: View {
     }
     
     var body: some View {
-        
         ZStack {
             VStack {
                 HStack(alignment: .center) {
@@ -34,7 +33,8 @@ struct WatchPlayView: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .padding(.top, 10)
+                .padding(.top, 26)
+                .padding(.trailing, 10)
                 
                 // 곡 타이틀 표시
                 WatchScoreTitleView(
@@ -67,7 +67,7 @@ struct WatchPlayView: View {
                         .fill(Color.blue05)
                 )
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, 10)
+                .padding(.bottom, 20)
             }
             
             // 카운트다운 뷰 (countdownNumber가 nil이 아닐 때만 표시)

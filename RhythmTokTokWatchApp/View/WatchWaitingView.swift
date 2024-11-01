@@ -21,7 +21,7 @@ struct WatchWaitingView: View {
 
             if connectivityManager.isSelectedScore {
                 WatchPlayView()
-                .padding()
+                    .ignoresSafeArea()
             } else {
 
                     Text("아이폰에서\n연습하고 싶은 곡을\n선택해 주세요.")
