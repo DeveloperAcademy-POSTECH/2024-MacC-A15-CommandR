@@ -13,11 +13,30 @@ import WatchConnectivity
 class ScorePracticeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var countDownLottieView: CountDownLottieView? // 로띠뷰
-
-    var currentScore: Score // 현재 악보 score
-    var currentMeasure: Int = 0// 현재 진행중인 마디
-    var totalMeasure = 0
+    private var currentScore: Score // 현재 악보 score
+    private var currentMeasure: Int = 0// 현재 진행중인 마디
+    private var totalMeasure = 0
     
+    // 악보 관리용
+    private var mediaManager = MediaManager()
+    private let musicPlayer = MusicPlayer()
+    private var midiFilePathURL: URL?
+    private var isPlayingMIDIFile = false
+    private var isJumpMeasure = false
+    
+    // View
+    private let practicNavBar = PracticeNavigationBar()
+    private let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "boarders_secondary")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let progressBar = ProgressBarView()
+    private let statusTags = StatusTagView()
+    private let scoreCardView = ScorePracticeScoreCardView()
+    private let controlButtonView = ControlButtonView()
+
     init(currentScore: Score) {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
@@ -26,23 +45,6 @@ class ScorePracticeViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    var mediaManager = MediaManager()
-    let practicNavBar = PracticeNavigationBar()
-    let divider: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(named: "boarders_secondary")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    let progressBar = ProgressBarView()
-    let statusTags = StatusTagView()
-    let scoreCardView = ScorePracticeScoreCardView()
-    private let controlButtonView = ControlButtonView()
-    // 악보 관리용
-    private var midiFilePathURL: URL?
-    private var isPlayingMIDIFile = false
-    private let musicPlayer = MusicPlayer()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -57,6 +59,8 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        // 기존 재생 정지
+        self.stopButtonTapped()
         // 다른 화면으로 이동할 때 네비게이션 바를 다시 표시하도록 설정
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
@@ -386,6 +390,7 @@ class ScorePracticeViewController: UIViewController {
     }
     
     private func jumpMeasure() {
+        isJumpMeasure = true
         let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
                                                          division: Double(currentScore.divisions))
         scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
@@ -397,6 +402,7 @@ class ScorePracticeViewController: UIViewController {
             let futureTime = Date().addingTimeInterval(1).timeIntervalSince1970
             
             musicPlayer.playMIDI(startTime: startTime, delay: 1)
+            IOStoWatchConnectivityManager.shared.playStatus = .play
             sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: futureTime)
         }
     }
@@ -473,7 +479,8 @@ class ScorePracticeViewController: UIViewController {
         
         if isLaunched {
             let scoreTitle = currentScore.title
-            IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence)
+            IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle,
+                                                                           hapticSequence: hapticSequence)
         }
     }
     
@@ -485,7 +492,9 @@ class ScorePracticeViewController: UIViewController {
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
-        IOStoWatchConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle, hapticSequence: hapticSequence, status: .play, startTime: startTimeInterVal)
+        IOStoWatchConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle,
+                                                                    hapticSequence: hapticSequence,
+                                                                    status: .play, startTime: startTimeInterVal)
     }
     
     // 워치로 일시정지 예약 메시지 전송
@@ -506,25 +515,25 @@ extension ScorePracticeViewController {
         case .ready:
             // 준비 상태: 재생 버튼만 표시
             controlButtonView.playPauseButton.isPlaying = false
-
         case .play:
             // 재생 상태: 일시정지 버튼 표시
             controlButtonView.playPauseButton.isPlaying = true
             // MIDI 재생 시작
-            startMIDIPlayback()
+            if !isJumpMeasure {
+                startMIDIPlayback()
+            } else {
+                isJumpMeasure = false
+            }
         case .pause:
-            // 일시정지 상태: 재생 버튼 표시
             controlButtonView.playPauseButton.isPlaying = false
             // MIDI 일시정지
             musicPlayer.pauseMIDI()
         case .stop:
-            // 정지 상태: 재생 버튼만 표시
             controlButtonView.playPauseButton.isPlaying = false
             // MIDI 재생 중지
             musicPlayer.stopMIDI()
         case .done:
-            // 완료 상태: 필요에 따라 처리
-            break
+            controlButtonView.playPauseButton.isPlaying = false
         }
     }
     

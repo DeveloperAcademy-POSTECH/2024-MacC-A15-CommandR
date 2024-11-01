@@ -8,7 +8,7 @@ import UIKit
 
 class MeasureControllerButton: UIButton {
     
-    init(icon: UIImage?, title: String, backGroundColor: UIColor, foregoundColor: UIColor, strokeColor: UIColor = .clear) {
+    init(icon: UIImage?, title: String, backGroundColor: UIColor, foregoundColor: UIColor, strokeColor: UIColor = .clear, pressedColor: UIColor) {
         super.init(frame: .zero)
         
         var config = UIButton.Configuration.plain()
@@ -23,6 +23,12 @@ class MeasureControllerButton: UIButton {
         config.background.cornerRadius = 12
         
         self.configuration = config
+        
+        self.configurationUpdateHandler = { button in
+            var updatedConfig = button.configuration
+            updatedConfig?.background.backgroundColor = button.isHighlighted ? pressedColor : backGroundColor
+            button.configuration = updatedConfig
+        }
     }
     
     required init?(coder: NSCoder) {
