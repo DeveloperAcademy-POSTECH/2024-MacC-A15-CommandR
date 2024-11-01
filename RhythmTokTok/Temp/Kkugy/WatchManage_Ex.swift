@@ -9,11 +9,10 @@ import WatchConnectivity
 
 extension IOStoWatchConnectivityManager {
     // 마디 점프 요청
-    func sendJumpMeasureToWatch(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
+    func sendUpdateStatusWithHapticSequence(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
         self.selectedScoreTitle = scoreTitle
         let watchHapticGuide = UserSettingData.shared.isHapticGuideOn
 
-        print("워치로 전송 햅틱 : \(hapticSequence)")
         let message: [String: Any] = [
             "scoreTitle": scoreTitle,
             "hapticSequence": hapticSequence,

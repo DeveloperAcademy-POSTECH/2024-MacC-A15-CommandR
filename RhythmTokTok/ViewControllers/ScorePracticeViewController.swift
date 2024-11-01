@@ -13,11 +13,11 @@ import WatchConnectivity
 class ScorePracticeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var countDownLottieView: CountDownLottieView? // 로띠뷰
+  
+    // 악보 관리용
     private var currentScore: Score // 현재 악보 score
     private var currentMeasure: Int = 0// 현재 진행중인 마디
     private var totalMeasure = 0
-    
-    // 악보 관리용
     private var mediaManager = MediaManager()
     private let musicPlayer = MusicPlayer()
     private var midiFilePathURL: URL?
@@ -322,7 +322,7 @@ class ScorePracticeViewController: UIViewController {
     // MARK: 네비게이션 버튼 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
-        IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: "", hapticSequence: [])
+        IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: "", hapticSequence: [])
         navigationController?.popViewController(animated: true)
     }
     
@@ -372,7 +372,7 @@ class ScorePracticeViewController: UIViewController {
                                                          division: Double(currentScore.divisions))
         scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
         Task {
-            let hapticSequence = try await mediaManager.getClipHapticSequence(part: currentScore.parts.last!,
+            let hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: currentScore.parts.last!,
                                                                               divisions: currentScore.divisions,
                                                                               startNumber: currentMeasure,
                                                                               endNumber: totalMeasure)
@@ -410,7 +410,7 @@ class ScorePracticeViewController: UIViewController {
                 var hapticSequence: [Double]?
                 
                 if let startMeasureNumber, let endMeasureNumber {
-                    hapticSequence = try await mediaManager.getClipHapticSequence(part: score.parts.last!,
+                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
                                                                                   divisions: score.divisions,
                                                                                   startNumber: startMeasureNumber,
                                                                                   endNumber: endMeasureNumber)
@@ -444,32 +444,39 @@ class ScorePracticeViewController: UIViewController {
         
         if isLaunched {
             let scoreTitle = currentScore.title
-            IOStoWatchConnectivityManager.shared.sendScoreSelectionToWatch(scoreTitle: scoreTitle,
+            IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
                                                                            hapticSequence: hapticSequence)
         }
     }
     
     // 워치로 실행 예약 메시지 전송
     func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
-        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .play, startTime: startTimeInterVal)
+        IOStoWatchConnectivityManager.shared.sendPlayStatus(status: .play, startTime: startTimeInterVal)
     }
     
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
-        IOStoWatchConnectivityManager.shared.sendJumpMeasureToWatch(scoreTitle: scoreTitle,
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: scoreTitle,
                                                                     hapticSequence: hapticSequence,
                                                                     status: .play, startTime: startTimeInterVal)
     }
     
     // 워치로 일시정지 예약 메시지 전송
     func sendPauseStatusToWatch() {
-        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .pause, startTime: nil)
+        Task {
+            let hapticSequence = try await mediaManager.getClipPauseHapticSequence(part:  currentScore.parts.last!,
+                                                                                   divisions: currentScore.divisions,
+                                                                                   pauseTime: musicPlayer.currentTime)
+            IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title,
+                                                                                    hapticSequence: hapticSequence,
+                                                                                    status: .pause, startTime: 0)
+        }
     }
     
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
-        IOStoWatchConnectivityManager.shared.sendPlayStatusToWatch(status: .stop, startTime: nil)
+        IOStoWatchConnectivityManager.shared.sendPlayStatus(status: .stop, startTime: nil)
     }
 }
 
@@ -523,9 +530,9 @@ extension ScorePracticeViewController {
     
     func pauseMIDIPlayer() {
         // 재생 중일 때 일시정지
-        sendPauseStatusToWatch()
         // MIDI 일시정지
         musicPlayer.pauseMIDI()
+        sendPauseStatusToWatch()
         controlButtonView.playPauseButton.isPlaying = false
     }
 }

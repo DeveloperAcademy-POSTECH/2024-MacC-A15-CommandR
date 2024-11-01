@@ -33,9 +33,6 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var isNextLine = false // 바라인으로 마무리 여부 확인용
     private var noteCountToMeasureMaxLength: [Int: Double] = [0: 0]// 음표 갯수별 최대가로 길이관리
     private var noteCountToMeasureMinLength: [Int: Double] = [0: 0]// 음표 갯수별 최소가로 길이관리
-
-    
-
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
 

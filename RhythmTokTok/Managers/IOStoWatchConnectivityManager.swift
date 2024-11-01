@@ -23,7 +23,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     @Published var playStatus: PlayStatus = .ready {
         didSet {
             // playStatus가 변경될 때마다 워치로 메시지 전송
-            sendPlayStatusToWatch(status: playStatus, startTime: nil)
+            sendPlayStatus(status: playStatus, startTime: nil)
         }
     }
     
@@ -121,7 +121,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // MARK: - 워치로 메시지 보내는 부분
     // TODO: - 워치 동시성 체크 필요
     // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
-    func sendScoreSelectionToWatch(scoreTitle: String, hapticSequence: [Double]) {
+    func sendScoreSelection(scoreTitle: String, hapticSequence: [Double]) {
         self.selectedScoreTitle = scoreTitle
         print("워치로 전송 햅틱 : \(hapticSequence)")
         let message: [String: Any] = [
@@ -140,7 +140,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     }
     
     // 2. 연습뷰에서 [재생 상태]를 보냄. 재생인 경우 [시작시간] 보냄. (연습뷰에서 재생 관련 버튼 조작시 작동)
-    func sendPlayStatusToWatch(status: PlayStatus, startTime: TimeInterval?) {
+    func sendPlayStatus(status: PlayStatus, startTime: TimeInterval?) {
         // 워치가 연결되어 있는지 확인 (페어링 및 앱 설치 여부)
         guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
             self.isWatchAppConnected = false
