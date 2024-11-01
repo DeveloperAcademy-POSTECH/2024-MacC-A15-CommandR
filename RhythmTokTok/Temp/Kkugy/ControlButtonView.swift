@@ -6,19 +6,17 @@
 //
 
 import UIKit
-
 class ControlButtonView: UIView {
     let playPauseButton = PlayPauseButton()
-    let stopButton = UIButton(type: .system)
-    let previousButton = UIButton(type: .system)
-    let nextButton = UIButton(type: .system)
-
-    var isPlaying: Bool = false {
-        didSet {
-            let image = UIImage(systemName: isPlaying ? "pause.fill" : "play.fill")
-            playPauseButton.setImage(image, for: .normal)
-        }
-    }
+    let refreshButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
+                                             title: "처음부터", backGroundColor: .clear,
+                                                foregoundColor: .lableQuaternary, strokeColor: .buttonInactive, pressedColor: .gray01)
+    let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
+                                                 title: "이전마디", backGroundColor: .gray02,
+                                                 foregoundColor: .lableSecondary, pressedColor: .gray03)
+    let nextButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.right"),
+                                             title: "다음마디", backGroundColor: .gray02,
+                                             foregoundColor: .lableSecondary, pressedColor: .gray03)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,36 +29,27 @@ class ControlButtonView: UIView {
     }
 
     private func setupButtons() {
-        let measureStack = UIStackView(arrangedSubviews: [previousButton, nextButton])
+        
+        let measureStack = UIStackView(arrangedSubviews: [previousButton, refreshButton, nextButton])
         measureStack.axis = .horizontal
-        measureStack.distribution = .fillEqually
-        measureStack.spacing = 10
+        measureStack.distribution = .fillProportionally
+        measureStack.spacing = 8
         measureStack.translatesAutoresizingMaskIntoConstraints = false
         
-        let playStack = UIStackView(arrangedSubviews: [playPauseButton, stopButton])
-        playStack.axis = .horizontal
-        playStack.distribution = .fillEqually
-        playStack.spacing = 10
-        playStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        let mainStack = UIStackView(arrangedSubviews: [playStack, measureStack])
-        mainStack.axis = .vertical
-        mainStack.distribution = .fillEqually
-        mainStack.spacing = 8
-        mainStack.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(mainStack)
+        let mainVStack = UIStackView(arrangedSubviews: [playPauseButton, measureStack])
+        mainVStack.axis = .vertical
+        mainVStack.distribution = .fillEqually
+        mainVStack.spacing = 8
+        mainVStack.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mainVStack)
 
         NSLayoutConstraint.activate([
-            mainStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            mainStack.topAnchor.constraint(equalTo: topAnchor),
-            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            mainVStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainVStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainVStack.topAnchor.constraint(equalTo: topAnchor),
+            mainVStack.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            refreshButton.widthAnchor.constraint(equalToConstant: 120)
         ])
-
-        let playImage = UIImage(systemName: "play.fill")
-        playPauseButton.setImage(playImage, for: .normal)
-        stopButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
-        previousButton.setImage(UIImage(systemName: "backward.end.fill"), for: .normal)
-        nextButton.setImage(UIImage(systemName: "forward.end.fill"), for: .normal)
     }
 }
