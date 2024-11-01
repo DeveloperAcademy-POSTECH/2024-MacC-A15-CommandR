@@ -40,10 +40,32 @@ class BPMSettingSectionViewController: UIViewController {
         titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        bpmTextField.borderStyle = .roundedRect
+        bpmTextField.borderStyle = .none
+        bpmTextField.layer.borderWidth = 2
+        bpmTextField.layer.cornerRadius = 12
+        bpmTextField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
         bpmTextField.keyboardType = .numberPad
+        bpmTextField.font = UIFont(name: "Pretendard-Medium", size: 36)
         bpmTextField.translatesAutoresizingMaskIntoConstraints = false
+
+        let clearButton = UIButton(type: .custom)
+        clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        clearButton.tintColor = UIColor(named: "lable_quaternary")
+        clearButton.addTarget(self, action: #selector(clearTextField), for: .touchUpInside)
+        clearButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         
+        // 오른쪽 여백을 포함한 클리어버튼의 컨테이너 뷰 생성 (예: 오른쪽 여백 포함 32)
+        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 24))
+        rightPaddingView.addSubview(clearButton)
+        
+        // 텍스트필드 왼쪽 여백
+        bpmTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 24))
+        bpmTextField.leftViewMode = .always
+        
+        // 텍스트필드 클리어버튼 + 오른쪽 여백
+        bpmTextField.rightView = rightPaddingView
+        bpmTextField.rightViewMode = .always
+
         let confirmButton = UIButton(type: .system)
         confirmButton.setTitle("설정 완료", for: .normal)
         confirmButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -65,7 +87,7 @@ class BPMSettingSectionViewController: UIViewController {
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             
             // bpmTextField 제약 조건
-            bpmTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 32),
+            bpmTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
             bpmTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             bpmTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             bpmTextField.widthAnchor.constraint(equalToConstant: 335),
@@ -89,5 +111,9 @@ class BPMSettingSectionViewController: UIViewController {
         // BPM 값 전달 및 모달 닫기
         onBPMSelected?(bpmValue)
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func clearTextField() {
+        bpmTextField.text = ""
     }
 }
