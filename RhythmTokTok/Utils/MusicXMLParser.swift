@@ -36,6 +36,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     
     // 마디의 duration에 대한 통계
     var measureDurationsCount: [Int: Int] = [:]
+    var currentBeat: Int?
+    var currentBeatType: Int?
 
     private var xmlData: Data?
     private var continuation: CheckedContinuation<Score, Never>?  // 파싱 마치고 리턴 관리
@@ -127,7 +129,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             }
             
             currentMeasure = Measure(number: measureNumber, notes: [],
-                                     currentTimes: previousTimes, startTime: previousTimes[1] ?? 0)  // 두 개의 스태프 관리
+                                     currentTimes: previousTimes, startTime: previousTimes[1] ?? 0,
+                                     beats: 0, beatType: 0)  // 두 개의 스태프 관리
         }
 
         // 노트(note) 태그를 만났을 때
@@ -146,6 +149,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         
         // Note 관련 정보 파싱
         parseNoteAttributes(trimmedString)
+        
         
         // Page layout 및 system layout 관련 정보 파싱
         if let currentScale = Double(trimmedString), isPageLayout || newSystem {
@@ -186,6 +190,21 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 note.accidental = alter == 1 ? .sharp : .flat
                 currentNote = note
             }
+            
+        case "beats":
+            if let beats = Int(trimmedString), let _ = currentMeasure {
+                currentBeat = beats
+                currentMeasure?.beats = beats
+                print("currentBeat: \(beats)")
+            }
+            
+        case "beat-type":
+            if let beatType = Int(trimmedString), let _ = currentMeasure {
+                currentBeatType = beatType
+                currentMeasure?.beatType = beatType
+                print("currentBeatType: \(beatType)")
+            }
+            
         default:
             break
         }
@@ -259,9 +278,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 // 마디의 duration에 대한 통계를 유지
                 measureDurationsCount[totalNotesDuration, default: 0] += 1
                 
-                // 현재까지 가장 많이 발생한 duration에 해당하는 값을 기준으로 삼아 보정작업을 진행함
-                measureDurationsCount.removeValue(forKey: 0)
-                let measureFullDuration = measureDurationsCount.max(by: { $0.value < $1.value })?.key ?? 0
+                // 마디에 저장된 비트 혹은 통계를 통해 현 마디에 있어야 할 길이를 구함
+                let measureFullDuration = getMeasureFullDuration()
                 
                 // 마디 내에서 부족한 길이를 구함
                 let remainingDuration = measureFullDuration - totalNotesDuration
@@ -275,7 +293,6 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 }
             }
                
-
             // TODO: 마디 줄 파싱 로직 더 좋은 방법 구상 필요
             // 초기값 최댓값으로 설정
             var minWidth = scoreWidth
@@ -326,5 +343,19 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         }
         
         currentElement = ""
+    }
+    
+    private func getMeasureFullDuration() -> Int {
+        //currentBeat, currentBeatType이 있다면 그것을 기준으로 삼기
+        if let currentBeat = currentBeat, let currentBeatType = currentBeatType {
+            let measureFullDuration = currentBeat * currentBeatType
+            return measureFullDuration
+        } else {
+            // currentBeat, currentBeatType,
+            // 현재까지 가장 많이 발생한 duration에 해당하는 값을 기준으로 삼아 보정작업을 진행함
+            measureDurationsCount.removeValue(forKey: 0)
+            let measureFullDuration = measureDurationsCount.max(by: { $0.value < $1.value })?.key ?? 0
+            return measureFullDuration
+        }
     }
 }
