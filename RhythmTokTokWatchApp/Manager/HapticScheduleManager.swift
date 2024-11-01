@@ -34,6 +34,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
     // WKExtendedRuntimeSessionDelegate methods
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
         // 백그라운드에서 isHapticActive 반응형으로 동작 예약
+        print("sessionStart")
         self.$isHapticActive
                     .sink { [weak self] isStarted in
                         if isStarted {

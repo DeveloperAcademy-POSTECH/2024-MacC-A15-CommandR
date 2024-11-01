@@ -524,7 +524,7 @@
 				EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */,
 				EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */,
 				EE4203A62CD3D26A0081F2A1 /* RadioButton.swift */,
-				1ED9FED02CBF653800472C51 /* BPMButton.swift */,
+				1ED9FED02CBF653800472C51 /* BPMLabel.swift */,
 				EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */,
 				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
 				1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */,
