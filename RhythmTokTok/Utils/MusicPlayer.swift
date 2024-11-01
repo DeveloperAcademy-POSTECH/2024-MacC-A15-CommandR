@@ -10,6 +10,7 @@ import AVFoundation
 // MusicPlayer: AVPlayer를 사용하여 오디오 파일을 재생 및 제어하는 클래스
 class MusicPlayer: ObservableObject {
     @Published var currentTime: TimeInterval = 0
+    @Published var isEnd: Bool = false
     
     private var player: AVAudioPlayer?
     private var midiPlayer: AVMIDIPlayer? // MIDI 재생 플레이어
@@ -18,6 +19,7 @@ class MusicPlayer: ObservableObject {
     var musicSequence: MusicSequence?
     private var soundFont: String = "Piano"
     private var soundSettingObserver: Any?
+    private var totalDuration = 0.0 // MIDI파일 총 시간
     
     // Store MIDI file URL separately
     private var midiFileURL: URL?
@@ -82,6 +84,11 @@ class MusicPlayer: ObservableObject {
         stopTimer()
     }
     
+    // 미디파일 총 시간
+    func getTotalDuration() -> Double {
+        return totalDuration
+    }
+    
     // MARK: - MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
         // 필요할 때 다시 꺼내 쓸 수 있도록 midiURL 저장
@@ -108,7 +115,12 @@ class MusicPlayer: ObservableObject {
             let bankURL = Bundle.main.url(forResource: soundFont, withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
-            midiPlayer?.prepareToPlay()
+            
+            if let midiPlayer {
+                midiPlayer.prepareToPlay()
+                totalDuration = midiPlayer.duration
+            }
+  
         } catch {
             ErrorHandler.handleError(error: error)
         }
@@ -119,14 +131,16 @@ class MusicPlayer: ObservableObject {
         if let midiPlayer = midiPlayer {
 //            // 이전에 일시 정지된 위치에서 재개
 //            midiPlayer.currentPosition = lastPosition
-            midiPlayer.stop()
+            print("MIDI 시작")
             stopTimer()
+            isEnd = false
             // 시작 틱 위치
             midiPlayer.currentPosition = startTime
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 midiPlayer.play {
                     print("MIDI playback completed.")
+                    self.isEnd = true
                 }
                 self.startTimer()
             }
@@ -167,7 +181,7 @@ class MusicPlayer: ObservableObject {
     private func startTimer() {
         stopTimer() // 기존 타이머가 있으면 중지
         // MIDI Player 현재 위치 업데이트
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             self.currentTime = self.midiPlayer?.currentPosition ?? 0.0
         }
