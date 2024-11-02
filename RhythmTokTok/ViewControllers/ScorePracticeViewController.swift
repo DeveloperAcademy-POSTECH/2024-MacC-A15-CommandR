@@ -16,6 +16,7 @@ class ScorePracticeViewController: UIViewController {
     private var currentScore: Score // 현재 악보 score
     private var currentMeasure: Int = 0// 현재 진행중인 마디
     private var totalMeasure = 0
+    private var totalHapticSequence: [Double] = []
     private var mediaManager = MediaManager()
     private let musicPlayer = MusicPlayer()
     private var midiFilePathURL: URL?
@@ -173,11 +174,9 @@ class ScorePracticeViewController: UIViewController {
             .store(in: &cancellables)
 
         musicPlayer.$isEnd
-            .sink { [weak self] isEnd in
+            .sink { isEnd in
                 if isEnd {
-//                    self?.playButtonTapped()
-                    IOStoWatchConnectivityManager.shared.playStatus = .ready
-                    // TODO: 여기에 총 햅틱 워치로 다시 셋팅하는 로직 필요
+                    IOStoWatchConnectivityManager.shared.playStatus = .done
                 }
             }
             .store(in: &cancellables)
@@ -361,6 +360,7 @@ class ScorePracticeViewController: UIViewController {
                 // 햅틱 시퀀스 관리
                 var hapticSequence: [Double]?
                 
+                // MARK: 구간 선택 부분
                 if let startMeasureNumber, let endMeasureNumber {
                     hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
                                                                                   divisions: score.divisions,
@@ -372,6 +372,7 @@ class ScorePracticeViewController: UIViewController {
                 }
                 
                 if let validHapticSequence = hapticSequence {
+                    totalHapticSequence = validHapticSequence
                     // 워치로 곡 선택 메시지 전송
                     await sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
                 } else {
@@ -428,7 +429,7 @@ class ScorePracticeViewController: UIViewController {
     
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
-        IOStoWatchConnectivityManager.shared.sendPlayStatus(status: .stop, startTime: nil)
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title, hapticSequence: totalHapticSequence, status: .stop, startTime: 0)
     }
     
     func handlePlayStatusChange(_ status: PlayStatus) {

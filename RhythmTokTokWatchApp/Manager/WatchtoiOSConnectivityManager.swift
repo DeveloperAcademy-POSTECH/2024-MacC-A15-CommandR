@@ -56,10 +56,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {
-                print("check1")
                 return }
             session.activate()
-            print("check2")
             if let isHapticGuideOn = applicationContext["watchHapticGuide"] as? Bool {
                 self.isHapticGuideOn = isHapticGuideOn
                 print("워치에서 수신한 watchHapticGuide 설정: \(self.isHapticGuideOn)")
