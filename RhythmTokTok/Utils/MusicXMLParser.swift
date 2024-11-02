@@ -128,7 +128,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
 
         // 노트(note) 태그를 만났을 때
         if elementName == "note" {
-            currentNote = Note(pitch: "", duration: 0, octave: 0, type: "", voice: 0, staff: 0, startTime: 0)
+            currentNote = Note(pitch: "", duration: 0, octave: 0, type: "", voice: 0, staff: 1, startTime: 0)
         }
         
         // 쉼표 처리: `rest` 태그를 만났을 때

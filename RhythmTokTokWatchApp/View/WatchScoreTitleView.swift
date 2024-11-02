@@ -57,7 +57,6 @@ struct WatchScoreTitleView: View {
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .frame(maxWidth: containerWidth)
->>>>>>> 3ba0816 (feat: 곡 제목 애니메이션 구현)
                 }
             }
         }
