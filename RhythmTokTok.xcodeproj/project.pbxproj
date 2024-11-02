@@ -10,6 +10,8 @@
 		0232D49A2CD4B04100FDBFAF /* minuetGmajor.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4982CD4B04100FDBFAF /* minuetGmajor.xml */; };
 		0232D49B2CD4B04100FDBFAF /* kankan.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4972CD4B04100FDBFAF /* kankan.xml */; };
 		0232D49C2CD4B04100FDBFAF /* star.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4992CD4B04100FDBFAF /* star.xml */; };
+		0232D4A02CD5F5A600FDBFAF /* shinsadong.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */; };
+		0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49E2CD5F5A600FDBFAF /* cry.xml */; };
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
 		02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */; };
 		02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEF2CB10A13003CEC8A /* ViewController.swift */; };
@@ -159,6 +161,8 @@
 		0232D4972CD4B04100FDBFAF /* kankan.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = kankan.xml; sourceTree = "<group>"; };
 		0232D4982CD4B04100FDBFAF /* minuetGmajor.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = minuetGmajor.xml; sourceTree = "<group>"; };
 		0232D4992CD4B04100FDBFAF /* star.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = star.xml; sourceTree = "<group>"; };
+		0232D49E2CD5F5A600FDBFAF /* cry.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = cry.xml; sourceTree = "<group>"; };
+		0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = shinsadong.xml; sourceTree = "<group>"; };
 		02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTok.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -414,6 +418,8 @@
 				1ED9FEE12CC26E6000472C51 /* red.xml */,
 				1ED9FED62CBF8BAC00472C51 /* canon.xml */,
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
+				0232D49E2CD5F5A600FDBFAF /* cry.xml */,
+				0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */,
 				1ED9FEBD2CBD571300472C51 /* Lotties */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
 			);
@@ -774,6 +780,8 @@
 				1E54A8F82CB7D26900753A3E /* MoonRiver.xml in Resources */,
 				729220582CBE799D008C8FCF /* Countdown.json in Resources */,
 				1E3E09382CB2AAB400EE1868 /* dohigh.mp3 in Resources */,
+				0232D4A02CD5F5A600FDBFAF /* shinsadong.xml in Resources */,
+				0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */,
 				0232D49A2CD4B04100FDBFAF /* minuetGmajor.xml in Resources */,
 				0232D49B2CD4B04100FDBFAF /* kankan.xml in Resources */,
 				0232D49C2CD4B04100FDBFAF /* star.xml in Resources */,

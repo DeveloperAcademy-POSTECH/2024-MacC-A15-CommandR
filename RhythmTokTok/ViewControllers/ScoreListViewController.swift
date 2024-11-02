@@ -60,9 +60,9 @@ class ScoreListViewController: UIViewController {
     // MARK: - 임시 파일 score생성
     private func generateMusicXMLAudio() {
 //        let xmls = ["red", "mannam", "MoonRiver"]
-        let xmls = ["kankan", "minuetGmajor", "star"]
+        let xmls = ["cry", "shinsadong", "kankan", "minuetGmajor", "star"]
 //        let scoreNames = ["붉은 노을 - 이문세", "만남 - 노사연", "Moon River"]
-        let scoreNames = ["캉캉", "미뉴엣 G 장조", "반짝반짝 작은별"]
+        let scoreNames = ["울어라 열풍아", "신사동 그사람", "캉캉", "미뉴엣 G 장조", "반짝반짝 작은별"]
         
         for (index, xmlName) in xmls.enumerated() {
             guard let xmlPath = Bundle.main.url(forResource: xmlName, withExtension: "xml") else {
