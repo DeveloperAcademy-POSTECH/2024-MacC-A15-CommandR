@@ -20,7 +20,7 @@ class MusicPlayer: ObservableObject {
     private var soundFont: String = "Piano"
     private var soundSettingObserver: Any?
     private var totalDuration = 0.0 // MIDI파일 총 시간
-    private var isPauseOrRefresh = false
+    private var isTemporarilyStopped = false
     
     // Store MIDI file URL separately
     private var midiFileURL: URL?
@@ -143,21 +143,21 @@ class MusicPlayer: ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 midiPlayer.play {
                     print("MIDI playback completed.")
-                    if !self.isPauseOrRefresh {
+                    if !self.isTemporarilyStopped {
                         self.isEnd = true
                         self.lastPosition = 0
                     }
                 }
                 self.startTimer()
             }
-            isPauseOrRefresh = false
+            isTemporarilyStopped = false
         }
     }
     
     // MIDI 파일 일시 정지
     func pauseMIDI() {
         guard let midiPlayer = midiPlayer else { return }
-        isPauseOrRefresh = true
+        isTemporarilyStopped = true
         // 현재 재생 시간을 저장
         lastPosition = midiPlayer.currentPosition
         midiPlayer.stop()
@@ -183,7 +183,7 @@ class MusicPlayer: ObservableObject {
         midiPlayer.currentPosition = 0
         currentTime = 0
         lastPosition = 0
-        isPauseOrRefresh = true
+        isTemporarilyStopped = true
         stopTimer()
     }
     
