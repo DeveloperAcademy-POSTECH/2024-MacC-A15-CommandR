@@ -8,7 +8,7 @@
 import UIKit
 class ControlButtonView: UIView {
     let playPauseButton = PlayPauseButton()
-    let refreshButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
+    let resetButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
                                              title: "처음부터", backGroundColor: .clear,
                                                 foregoundColor: .lableQuaternary, strokeColor: .buttonInactive, pressedColor: .gray01)
     let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
@@ -30,7 +30,7 @@ class ControlButtonView: UIView {
 
     private func setupButtons() {
         
-        let measureStack = UIStackView(arrangedSubviews: [previousButton, refreshButton, nextButton])
+        let measureStack = UIStackView(arrangedSubviews: [previousButton, resetButton, nextButton])
         measureStack.axis = .horizontal
         measureStack.distribution = .fillProportionally
         measureStack.spacing = 8
@@ -49,7 +49,7 @@ class ControlButtonView: UIView {
             mainVStack.topAnchor.constraint(equalTo: topAnchor),
             mainVStack.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            refreshButton.widthAnchor.constraint(equalToConstant: 120)
+            resetButton.widthAnchor.constraint(equalToConstant: 120)
         ])
     }
 }

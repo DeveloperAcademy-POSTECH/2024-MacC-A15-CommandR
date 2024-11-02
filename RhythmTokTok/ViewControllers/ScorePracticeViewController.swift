@@ -57,9 +57,6 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // 기존 재생 정지
-        self.refreshButtonTapped()
-        // 다른 화면으로 이동할 때 네비게이션 바를 다시 표시하도록 설정
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
@@ -141,7 +138,7 @@ class ScorePracticeViewController: UIViewController {
         practicNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         practicNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        controlButtonView.refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
+        controlButtonView.resetButton.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
         controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
         controlButtonView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
@@ -214,10 +211,10 @@ class ScorePracticeViewController: UIViewController {
         if let startMeasureNumber = currentScore.parts.last?.measures[1]?[0].number {
             if currentMeasure == startMeasureNumber || currentMeasure == 0 {
                 controlButtonView.previousButton.isEnabled = false
-                controlButtonView.refreshButton.isEnabled = false
+                controlButtonView.resetButton.isEnabled = false
             } else {
                 controlButtonView.previousButton.isEnabled = true
-                controlButtonView.refreshButton.isEnabled = true
+                controlButtonView.resetButton.isEnabled = true
             }
         } else {
             ErrorHandler.handleError(error: "Unexpectedly found nil while unwrapping an Optional value")
@@ -295,7 +292,7 @@ class ScorePracticeViewController: UIViewController {
         }
     }
     
-    @objc private func refreshButtonTapped() {
+    @objc private func resetButtonTapped() {
         IOStoWatchConnectivityManager.shared.playStatus = .stop
     }
     
@@ -314,7 +311,6 @@ class ScorePracticeViewController: UIViewController {
     }
     
     private func jumpMeasure() {
-//        isJumpMeasure = true
         let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
                                                          division: Double(currentScore.divisions))
         scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
@@ -403,7 +399,8 @@ class ScorePracticeViewController: UIViewController {
         IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title, hapticSequence: [], status: .play, startTime: startTimeInterVal)
     }
     
-    func secdDoneStatusToWatch() {
+    func sendDoneStatusToWatch() {
+        controlButtonView.playPauseButton.isPlaying = false
         IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title, hapticSequence: totalHapticSequence, status: .done, startTime: 0)
     }
     
@@ -443,12 +440,9 @@ class ScorePracticeViewController: UIViewController {
         case .pause:
             pauseMIDIPlayer()
         case .stop:
-            musicPlayer.stopMIDI()
-            sendStopStatusToWatch()
-            controlButtonView.playPauseButton.isPlaying = false
+            resetMIDIPlayer()
         case .done:
-            controlButtonView.playPauseButton.isPlaying = false
-            secdDoneStatusToWatch()
+            sendDoneStatusToWatch()
         }
     }
     
@@ -480,6 +474,12 @@ class ScorePracticeViewController: UIViewController {
         // 재생 중일 때 일시정지
         musicPlayer.pauseMIDI()
         sendPauseStatusToWatch()
+        controlButtonView.playPauseButton.isPlaying = false
+    }
+    
+    func resetMIDIPlayer() {
+        musicPlayer.stopMIDI()
+        sendStopStatusToWatch()
         controlButtonView.playPauseButton.isPlaying = false
     }
 }
