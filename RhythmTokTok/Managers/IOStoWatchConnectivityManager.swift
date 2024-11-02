@@ -80,6 +80,12 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     
     // MARK: - 워치 런치
     func launchWatch() async -> Bool {
+        guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
+            // Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않음
+            self.isWatchAppConnected = false
+            ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
+            return false
+        }
         // 비동기적으로 권한 요청
         return await withCheckedContinuation { continuation in
             healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { (success, error) in

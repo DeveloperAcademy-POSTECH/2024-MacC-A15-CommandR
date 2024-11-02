@@ -65,7 +65,6 @@ class ScorePracticeViewController: UIViewController {
         configureUI()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
-        Task { await createMIDIFile(score: currentScore) }
         setupActions()
         setupBindings()
         updateWatchAppStatus()
@@ -258,7 +257,6 @@ class ScorePracticeViewController: UIViewController {
         
     // 워치에서 버튼 눌렀을 때 notification을 받아서 아이폰 함수를 호출
     @objc private func handleWatchPlayNotification() {
-        print("요청받음")
         IOStoWatchConnectivityManager.shared.playStatus = .play
     }
     
@@ -372,6 +370,7 @@ class ScorePracticeViewController: UIViewController {
                 }
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+
                 updatePlayPauseButton(true)
                 print("MIDI file successfully loaded and ready to play.")
             } else {
@@ -386,7 +385,7 @@ class ScorePracticeViewController: UIViewController {
     // 워치로 곡 선택 메시지 전송
     func sendHapticSequenceToWatch(hapticSequence: [Double]) async {
         let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-        
+
         if isLaunched {
             let scoreTitle = currentScore.title
             IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
