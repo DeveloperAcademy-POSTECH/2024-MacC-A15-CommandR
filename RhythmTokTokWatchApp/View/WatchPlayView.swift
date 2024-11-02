@@ -8,8 +8,8 @@ import SwiftUI
 
 struct WatchPlayView: View {
     @EnvironmentObject var connectivityManager: WatchtoiOSConnectivityManager
-    @State private var countdownNumber: Int? = nil
-    @State private var timer: Timer? = nil
+    @State private var countdownNumber: Int?
+    @State private var timer: Timer?
     
     private var scoreStatusText: String {
         switch connectivityManager.playStatus {
@@ -33,7 +33,6 @@ struct WatchPlayView: View {
                         .foregroundColor(.blue)
                         .font(.headline)
                 }
-                .padding(.top, 26)
                 .padding(.trailing, 10)
                 
                 // 곡 타이틀 표시
@@ -54,21 +53,25 @@ struct WatchPlayView: View {
                         connectivityManager.playButtonTapped()
                     }
                 } label: {
-                    Image(systemName: connectivityManager.playStatus != .play &&
-                          connectivityManager.playStatus != .jump ?
-                          "play.fill" : "pause.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 24)
-                    .foregroundColor(.white)
-                }.frame(width: 142, height: 64)
-                    .background(
+                    ZStack {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.blue05)
-                    )
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.bottom, 20)
+                        
+                        Image(systemName: connectivityManager.playStatus != .play &&
+                              connectivityManager.playStatus != .jump ?
+                              "play.fill" : "pause.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 24)
+                        .foregroundColor(.white)
+                    }
+                    .frame(height: 64)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.horizontal, 10)
+                .padding(.bottom, 24)
             }
+            .padding(.top, 16)
             
             // 카운트다운 뷰 (countdownNumber가 nil이 아닐 때만 표시)
             if countdownNumber != nil {
@@ -76,7 +79,9 @@ struct WatchPlayView: View {
             }
         }
         .onReceive(connectivityManager.$startTime) { newStartTime in
-            if connectivityManager.playStatus == .play, let startTime = newStartTime {
+            if (connectivityManager.playStatus == .play ||
+               connectivityManager.playStatus == .jump),
+               let startTime = newStartTime {
                 scheduleCountdown(startTime: startTime)
             }
         }

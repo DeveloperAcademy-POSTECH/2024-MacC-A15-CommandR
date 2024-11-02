@@ -269,6 +269,7 @@ class ScorePracticeViewController: UIViewController {
     // MARK: 네비게이션 버튼 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
+        musicPlayer.stopMIDI()
         IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: "", hapticSequence: [], status: .ready, startTime: 0)
         navigationController?.popViewController(animated: true)
     }
