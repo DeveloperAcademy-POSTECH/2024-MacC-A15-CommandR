@@ -44,21 +44,17 @@ struct WatchScoreTitleView: View {
                 )
                 .offset(x: offset)
                 .onAppear {
-                    // 뷰가 나타날 때 애니메이션 시작 조건 확인
-                    if isAnimating && textWidth > containerWidth {
+                    if isAnimating {
                         startAnimation()
                     }
                 }
                 .onDisappear {
-                    // 뷰가 사라질 때 애니메이션 중지
                     stopAnimation()
                 }
                 .onChange(of: isAnimating) { _, newValue in
                     // 애니메이션 상태 변경 시 애니메이션 시작 또는 중지
                     if newValue {
-                        if textWidth > containerWidth {
-                            startAnimation()
-                        }
+                        startAnimation()
                     } else {
                         stopAnimation()
                     }
