@@ -79,8 +79,7 @@ struct WatchPlayView: View {
             }
         }
         .onReceive(connectivityManager.$startTime) { newStartTime in
-            if (connectivityManager.playStatus == .play ||
-               connectivityManager.playStatus == .jump),
+            if connectivityManager.playStatus == .play,
                let startTime = newStartTime {
                 scheduleCountdown(startTime: startTime)
             }
