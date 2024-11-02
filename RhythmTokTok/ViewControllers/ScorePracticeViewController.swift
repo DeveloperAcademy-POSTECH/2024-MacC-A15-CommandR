@@ -261,6 +261,7 @@ class ScorePracticeViewController: UIViewController {
         
     // 워치에서 버튼 눌렀을 때 notification을 받아서 아이폰 함수를 호출
     @objc private func handleWatchPlayNotification() {
+        print("요청받음")
         IOStoWatchConnectivityManager.shared.playStatus = .play
     }
     
@@ -285,7 +286,7 @@ class ScorePracticeViewController: UIViewController {
     
     // MARK: 컨트롤러 버튼 액션
     @objc private func playButtonTapped() {
-        if IOStoWatchConnectivityManager.shared.playStatus == .play {
+        if IOStoWatchConnectivityManager.shared.playStatus == .play || IOStoWatchConnectivityManager.shared.playStatus == .jump {
             // 현재 재생 중이면 일시정지로 변경
             IOStoWatchConnectivityManager.shared.playStatus = .pause
         } else {

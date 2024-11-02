@@ -144,6 +144,7 @@ class MusicPlayer: ObservableObject {
                 midiPlayer.play {
                     print("MIDI playback completed.")
                     if !self.isTemporarilyStopped {
+                        print("마무리")
                         self.isEnd = true
                         self.lastPosition = 0
                     }
@@ -158,7 +159,6 @@ class MusicPlayer: ObservableObject {
     func pauseMIDI() {
         guard let midiPlayer = midiPlayer else { return }
         isTemporarilyStopped = true
-        // 현재 재생 시간을 저장
         lastPosition = midiPlayer.currentPosition
         midiPlayer.stop()
         stopTimer()
@@ -179,11 +179,11 @@ class MusicPlayer: ObservableObject {
     func stopMIDI() {
         guard let midiPlayer = midiPlayer else { return }
         // 처음으로
+        isTemporarilyStopped = true
         midiPlayer.stop()
         midiPlayer.currentPosition = 0
         currentTime = 0
         lastPosition = 0
-        isTemporarilyStopped = true
         stopTimer()
     }
     
