@@ -65,6 +65,7 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
         configureUI()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)

@@ -10,7 +10,7 @@ class HapticSettingSectionView: UIView {
     // 토글 상태를 전달하기 위한 클로저
     var onToggleChanged: ((Bool) -> Void)?
     // 토글 상태를 저장하는 프로퍼티
-    private var isOn: Bool = true
+    private var isOn: Bool = UserSettingData.shared.getIsHapticOn()
 
     let titleLabel: UILabel = {
         let label = UILabel()
