@@ -8,6 +8,8 @@ import SwiftUI
 
 struct WatchPlayView: View {
     @EnvironmentObject var connectivityManager: WatchtoiOSConnectivityManager
+    @State private var countdownNumber: Int? = nil
+    @State private var timer: Timer? = nil
     
     private var scoreStatusText: String {
         switch connectivityManager.playStatus {
@@ -23,7 +25,6 @@ struct WatchPlayView: View {
     }
     
     var body: some View {
-        
         ZStack {
             VStack {
                 HStack(alignment: .center) {
@@ -31,17 +32,18 @@ struct WatchPlayView: View {
                     Text(scoreStatusText)
                         .foregroundColor(.blue)
                         .font(.headline)
-                        .padding(.trailing)
                 }
-                .padding(.top, 20)
-                Spacer()
-                // 메인 콘텐츠
-                MarqueeTextView(
+                .padding(.top, 26)
+                .padding(.trailing, 10)
+                
+                // 곡 타이틀 표시
+                WatchScoreTitleView(
                     text: connectivityManager.selectedScoreTitle,
                     fontSize: 20,
                     isAnimating: connectivityManager.playStatus == .play
                 )
-                
+                .multilineTextAlignment(.center)
+                .padding(.top, 8)
                 Spacer()
                 Button(action: {
                     if connectivityManager.playStatus == .play {
@@ -62,11 +64,73 @@ struct WatchPlayView: View {
                 .frame(width: 142, height: 64)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.blue)
+                        .fill(Color.blue05)
                 )
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, 10)
+                .padding(.bottom, 20)
             }
+            
+            // 카운트다운 뷰 (countdownNumber가 nil이 아닐 때만 표시)
+            if countdownNumber != nil {
+                WatchCountdownView(countdownNumber: $countdownNumber)
+            }
+        }
+        .onReceive(connectivityManager.$startTime) { newStartTime in
+            if connectivityManager.playStatus == .play, let startTime = newStartTime {
+                scheduleCountdown(startTime: startTime)
+            }
+        }
+        .onDisappear {
+            stopCountdown()
+        }
+    }
+    
+    private func scheduleCountdown(startTime: TimeInterval) {
+        stopCountdown()
+        
+        let currentTime = Date().timeIntervalSince1970
+        let countdownStartTime = startTime - 3
+        let delay = countdownStartTime - currentTime
+        
+        if delay > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                startCountdown()
+            }
+        } else {
+            startCountdown()
+        }
+    }
+    
+    private func startCountdown() {
+        countdownNumber = 3
+        playHaptic(for: 3)
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            if let currentNumber = countdownNumber, currentNumber > 1 {
+                countdownNumber = currentNumber - 1
+                playHaptic(for: currentNumber - 1)
+            } else {
+                countdownNumber = nil
+                stopCountdown()
+            }
+        }
+    }
+    
+    private func stopCountdown() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    private func playHaptic(for number: Int) {
+        switch number {
+        case 3:
+            WKInterfaceDevice.current().play(.retry)
+        case 2:
+            WKInterfaceDevice.current().play(.retry)
+        case 1:
+            WKInterfaceDevice.current().play(.retry)
+        default:
+            break
         }
     }
 }

@@ -18,6 +18,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var playStatus: PlayStatus = .ready
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
+    @Published var startTime: TimeInterval? = nil
     
     override init() {
         super.init()
@@ -86,6 +87,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 case .play:
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
+                        self.startTime = startTime
                         if self.isHapticGuideOn {
                             // 진동 가이드가 활성화된 경우
                             self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
