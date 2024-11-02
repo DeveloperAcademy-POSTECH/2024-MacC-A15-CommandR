@@ -15,7 +15,7 @@ struct Measure {
     // 특정 스태프에 음표 추가
     mutating func addNote(_ note: Note) {
         var updatedNote = note
-        let staff = note.staff
+        let staff = note.staff // 높은음자리표 낮은음자리표 구분 (높은음자리표 : 1, 낮은음자리표 : 2)
         // 해당 스태프의 현재 시간을 가져옴 (없으면 0)
         let currentStaffTime = currentTimes[staff] ?? 0
 //        print("업데이트 [\(staff)]노트 시간 \(currentStaffTime)")
