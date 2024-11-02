@@ -45,7 +45,7 @@ struct WatchPlayView: View {
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
                 Spacer()
-                Button(action: {
+                Button {
                     if connectivityManager.playStatus == .play || connectivityManager.playStatus == .jump {
                         // 재생 중일 때 일시정지 동작
                         connectivityManager.pauseButtonTapped()
@@ -53,22 +53,21 @@ struct WatchPlayView: View {
                         // 일시정지 또는 준비 상태일 때 재생 동작
                         connectivityManager.playButtonTapped()
                     }
-                }) {
+                } label: {
                     Image(systemName: connectivityManager.playStatus != .play &&
                           connectivityManager.playStatus != .jump ?
                           "play.fill" : "pause.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 24)
-                        .foregroundColor(.white)
-                }
-                .frame(width: 142, height: 64)
-                .background(
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.blue05)
-                )
-                .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, 20)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 24)
+                    .foregroundColor(.white)
+                }.frame(width: 142, height: 64)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.blue05)
+                    )
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.bottom, 20)
             }
             
             // 카운트다운 뷰 (countdownNumber가 nil이 아닐 때만 표시)
