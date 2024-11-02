@@ -5,7 +5,8 @@ class UserSettingData {
     static let shared = UserSettingData()
     
 //    private var currentScore: ScoreSetting = ScoreSetting(title: currentScoreTitle, bpm: getBPM(), soundOption: getSoundOption(), isHapticOn: getIsHapticOn())
-    private var currentScore: ScoreSetting = ScoreSetting(title: "", bpm:0, soundOption: .voice, isHapticOn: false)
+    
+    private var currentScore: ScoreSetting = ScoreSetting(title: "", bpm: 0, soundOption: .voice, isHapticOn: false)
     var currentScoreTitle = ""
     
     // 악보별 세팅 데이터 구조 + 기본값 설정
@@ -18,15 +19,6 @@ class UserSettingData {
     
     private init() {
         print("UserSettingData init")
-        let userDefaults = UserDefaults.standard
-
-        // Get all keys and values from UserDefaults
-        let allUserDefaults = userDefaults.dictionaryRepresentation()
-
-        // Print each key-value pair
-        for (key, value) in allUserDefaults {
-            print("\(key): \(value)")
-        }
     }
     
     // 악보 Key 설정
@@ -34,6 +26,14 @@ class UserSettingData {
         currentScore.title = scoreTitle
         currentScoreTitle = currentScore.title
         print("currentScoreTitle: \(currentScoreTitle)")
+        
+        let allSettings = getAllSettings()
+        if allSettings[scoreTitle] == nil {
+            
+            print("loadSetting: \(scoreTitle) not found")
+            let newSetting = ScoreSetting(title: scoreTitle, bpm: 120, soundOption: .melody, isHapticOn: true) // 기본값 설정
+            saveSetting(for: scoreTitle, setting: newSetting)
+        }
     }
 
     // 악보별 BPM 설정
@@ -75,11 +75,11 @@ class UserSettingData {
     private func loadSetting(for scoreTitle: String) -> ScoreSetting {
         let allSettings = getAllSettings()
         if let setting = allSettings[scoreTitle] {
-            print("loadSetting: \(scoreTitle)")
+//            print("loadSetting: \(scoreTitle)")
             return setting
         }
         print("loadSetting: \(scoreTitle) not found")
-        return ScoreSetting(title: "", bpm: 120, soundOption: .melody, isHapticOn: true) // 기본값 설정
+        return ScoreSetting(title: currentScoreTitle, bpm: 120, soundOption: .melody, isHapticOn: true) // 기본값 설정
     }
     
     // 한번 다 불러서 타이틀에 맞는 객체 있으면 업데이트

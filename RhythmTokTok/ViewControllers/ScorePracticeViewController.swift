@@ -48,7 +48,7 @@ class ScorePracticeViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         Task { await createMIDIFile(score: currentScore) }
-        
+        UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
         statusTags.updateTag()
         scoreCardView.bpmLabel.updateSpeedText()
         checkUpdatePreviousButtonState()
@@ -65,7 +65,6 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
         configureUI()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
