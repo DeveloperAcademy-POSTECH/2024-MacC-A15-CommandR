@@ -46,7 +46,7 @@ struct WatchPlayView: View {
                 .padding(.top, 8)
                 Spacer()
                 Button(action: {
-                    if connectivityManager.playStatus == .play && connectivityManager.playStatus == .jump {
+                    if connectivityManager.playStatus == .play || connectivityManager.playStatus == .jump {
                         // 재생 중일 때 일시정지 동작
                         connectivityManager.pauseButtonTapped()
                     } else {
