@@ -344,9 +344,9 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     }
     
     private func getMeasureFullDuration() -> Int {
-        //currentBeat, currentBeatType이 있다면 그것을 기준으로 삼기
+        // currentBeat, currentBeatType이 있다면 그것을 기준으로 삼기
         if let currentBeat = currentBeat, let currentBeatType = currentBeatType {
-            let measureFullDuration = currentBeat * currentBeatType
+            let measureFullDuration = self.score.divisions * currentBeat * (4 / currentBeatType)
             return measureFullDuration
         } else {
             // currentBeat, currentBeatType,
