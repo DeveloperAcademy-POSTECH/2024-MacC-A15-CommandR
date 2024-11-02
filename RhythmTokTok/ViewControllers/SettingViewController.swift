@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 
 class SettingViewController: UIViewController {
+    var dimmedBackgroundView: UIView?
     let settingView = SettingView()
     
     // Core Data 컨텍스트
@@ -47,13 +48,23 @@ class SettingViewController: UIViewController {
     }
     
     private func presentBPMSettingModal() {
+        // BPM 세팅 올라올 때 어두운 오버레이 뷰 설정
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            dimmedBackgroundView = UIView(frame: view.bounds)
+            dimmedBackgroundView?.backgroundColor = UIColor(named: "modal")
+            dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            window.addSubview(dimmedBackgroundView!)
+        }
+
         let bpmSettingVC = BPMSettingSectionViewController()
+
         bpmSettingVC.modalPresentationStyle = .pageSheet
+        bpmSettingVC.delegate = self
         bpmSettingVC.currentBPM = settingView.bpmSettingSection.bpm // 현재 BPM 값 전달
         bpmSettingVC.onBPMSelected = { [weak self] selectedBPM in
             self?.settingView.bpmSettingSection.bpm = selectedBPM
-            // Core Data에 BPM 값 저장
-            self?.saveBPMToCoreData(bpm: selectedBPM)
+            self?.saveBPMToCoreData(bpm: selectedBPM) // Core Data에 BPM 값 저장
         }
         present(bpmSettingVC, animated: true, completion: nil)
     }
@@ -157,3 +168,10 @@ class SettingViewController: UIViewController {
     }
     
 }
+
+extension SettingViewController: BPMSettingDelegate {
+    func removeOverlay() {
+        dimmedBackgroundView?.removeFromSuperview()
+    }
+}
+    
