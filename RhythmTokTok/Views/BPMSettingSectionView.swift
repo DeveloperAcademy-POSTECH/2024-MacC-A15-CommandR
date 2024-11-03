@@ -28,7 +28,7 @@ class BPMSettingSectionView: UIView {
     // BPM 버튼 관련 요소들
     var bpm: Int = UserSettingData.shared.getBPM() {
         didSet {
-            bpmLabel.text = "\(bpm) bpm"
+            bpmLabel.text = "\(bpm) BPM"
             bpmDescriptionLabel.text = "| \(BPMDescription.description(for: bpm))"
         }
     }
@@ -93,7 +93,7 @@ class BPMSettingSectionView: UIView {
         super.init(frame: frame)
         setupViews()
         setupConstraints()
-        bpmLabel.text = "\(bpm) bpm"
+        bpmLabel.text = "\(bpm) BPM"
         bpmDescriptionLabel.text = bpmDescription
         
         // 버튼 액션 추가
@@ -104,7 +104,7 @@ class BPMSettingSectionView: UIView {
         super.init(coder: coder)
         setupViews()
         setupConstraints()
-        bpmLabel.text = "\(bpm) bpm"
+        bpmLabel.text = "\(bpm) BPM"
         bpmDescriptionLabel.text = bpmDescription
         bpmButton.addTarget(self, action: #selector(bpmButtonTapped), for: .touchUpInside)
     }
