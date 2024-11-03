@@ -96,8 +96,8 @@ class ScoreListViewController: UIViewController {
     // TODO: 검색 기능 추가 예정
     @objc func didTapSearch() {
         // MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
-        let viewController = ViewController()
-        navigationController?.pushViewController(viewController, animated: true)
+//        let viewController = ViewController()
+//        navigationController?.pushViewController(viewController, animated: true)
     }
     
     // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)

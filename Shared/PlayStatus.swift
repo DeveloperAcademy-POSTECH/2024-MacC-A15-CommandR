@@ -10,6 +10,7 @@ import Foundation
 enum PlayStatus: String {
     case ready
     case play
+    case jump
     case pause
     case stop
     case done
