@@ -41,6 +41,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState,
                  error: Error?) {
         if activationState == .activated {
+            Logger.shared.sessionStart = String((Int(Logger.shared.sessionStart) ?? 0) + 1)
             print("워치에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
                 self.isConnected = session.isReachable
