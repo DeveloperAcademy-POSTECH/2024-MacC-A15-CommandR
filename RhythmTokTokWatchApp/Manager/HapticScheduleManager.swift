@@ -34,22 +34,32 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
     // WKExtendedRuntimeSessionDelegate methods
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
         // 백그라운드에서 isHapticActive 반응형으로 동작 예약
+        Logger.shared.activatedSession = String((Int(Logger.shared.activatedSession) ?? 0) + 1)
+        
         self.$isHapticActive
-                    .sink { [weak self] isStarted in
-                        if isStarted {
-                            guard let self = self else {
-                                return
-                            }
-                            let currentTimestamp = Date().timeIntervalSince1970
-                            let delay = startTimeInterval - currentTimestamp
-                            // 햅틱 시작 예약
-                            print("delay 시간 : \(delay)")
-                            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                                self.startHapticWithBeats(batchSize: 100)
-                            }
-                        }
+            .sink { [weak self] isStarted in
+                if isStarted {
+                    guard let self = self else {
+                        return
                     }
-                    .store(in: &cancellables)
+                    
+                    let scheduledTime = Date(timeIntervalSince1970: startTimeInterval)
+                    
+                    // 햅틱 시작 예약
+                    Logger.shared.watchLogTimeInterval(startTimeInterval, message: "예약 시간")
+                    
+                    // Timer를 사용하여 예약된 시간에 실행
+                    let timer = Timer(fireAt: scheduledTime, interval: 0, target: self, selector: #selector(self.triggerHaptic), userInfo: nil, repeats: false)
+                    RunLoop.main.add(timer, forMode: .common)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    // 타이머가 호출할 메서드
+    @objc private func triggerHaptic() {
+        Logger.shared.watchLog("햅틱 실행예약 시간")
+        startHapticWithBeats(batchSize: 100)
     }
 
     func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
