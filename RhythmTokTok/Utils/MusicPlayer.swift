@@ -128,7 +128,7 @@ class MusicPlayer: ObservableObject {
         // AVMIDIPlayer 초기화
         do {
             
-            let bankURL = Bundle.main.url(forResource: soundFont, withExtension: "sf2")! // 사운드 폰트 파일 경로
+            let bankURL = Bundle.main.url(forResource: getSoundFont(), withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             
