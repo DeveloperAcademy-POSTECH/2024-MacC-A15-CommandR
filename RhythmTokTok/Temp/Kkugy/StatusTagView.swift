@@ -94,7 +94,10 @@ class StatusTagView: UIView {
         }
         
         if hapticSetting {
-            hapticLabel.text = "🫨 워치 진동 ON"
+            let text = "🫨 워치 진동 ON"
+            let attributedString = NSMutableAttributedString(string: text)
+            attributedString.addAttribute(.foregroundColor, value: UIColor.green, range: (text as NSString).range(of: "ON"))
+            hapticLabel.attributedText = attributedString
         } else {
             hapticLabel.text = "🚫 워치 진동 OFF"
         }

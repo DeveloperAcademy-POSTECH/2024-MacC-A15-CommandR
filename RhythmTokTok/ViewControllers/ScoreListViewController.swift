@@ -27,7 +27,7 @@ class ScoreListViewController: UIViewController {
         setupTableView()
         
         // 하단 버튼 액션 연결
-        scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
+//        scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
     
     // 네비게이션 바 설정
@@ -42,10 +42,10 @@ class ScoreListViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.tintColor = .black
         
-        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
-        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(didTapSettings))
+//        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+//        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(didTapSettings))
         
-        navigationItem.rightBarButtonItems = [settingsButton, searchButton]
+//        navigationItem.rightBarButtonItems = [settingsButton]
     }
     
     // 테이블 뷰 설정
@@ -102,8 +102,8 @@ class ScoreListViewController: UIViewController {
     
     // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
     @objc func didTapSettings() {
-        let settingViewController = SettingViewController()
-        navigationController?.pushViewController(settingViewController, animated: true)
+//        let settingViewController = SettingViewController()
+//        navigationController?.pushViewController(settingViewController, animated: true)
     }
     
     // PDF 파일 선택 버튼 액션
