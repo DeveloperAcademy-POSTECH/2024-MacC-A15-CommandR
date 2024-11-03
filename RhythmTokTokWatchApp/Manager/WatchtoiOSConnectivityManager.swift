@@ -18,7 +18,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var playStatus: PlayStatus = .ready
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
-    @Published var startTime: TimeInterval? = nil
+    @Published var startTime: TimeInterval?
     
     override init() {
         super.init()
@@ -71,7 +71,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 self.hapticSequence = hapticSequence
                 self.isSelectedScore = !scoreTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(scoreTitle)")
-                print("곡 햅틱: \(hapticSequence)")
+                print("곡 햅틱 갯수: \(hapticSequence.count)")
             } else {
                 print("햅틱 셋팅 없음")
             }

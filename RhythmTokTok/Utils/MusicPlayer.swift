@@ -156,6 +156,7 @@ class MusicPlayer: ObservableObject {
             isEnd = false
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                Logger.shared.log("Logger: MIDI파일 실행")
                 midiPlayer.play {
                     print("MIDI playback completed.")
                     if !self.isTemporarilyStopped {

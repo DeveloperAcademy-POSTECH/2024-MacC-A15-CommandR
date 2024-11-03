@@ -458,15 +458,29 @@ class ScorePracticeViewController: UIViewController {
         }
         
         // 현재 시간으로부터 4초 후 재생 시작
-        let futureTime = Date().addingTimeInterval(4).timeIntervalSince1970
-        sendPlayStatusToWatch(startTimeInterVal: futureTime)
-        let delay = futureTime - Date().timeIntervalSince1970
-        self.musicPlayer.playMIDI(delay: delay)
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
-            self.countDownLottieView?.play()
-        }
+        let futureTime = Date().addingTimeInterval(4)
+        Logger.shared.logTimeInterval(futureTime.timeIntervalSince1970, message: "Logger: 아이폰 예약 시간")
+        sendPlayStatusToWatch(startTimeInterVal: futureTime.timeIntervalSince1970)
+        
+        // 카운트다운 3초 전에 카운트다운 애니메이션 시작
+        let countDownTime = futureTime.addingTimeInterval(-3)
+        let countDownTimer = Timer(fireAt: countDownTime, interval: 0, target: self, selector: #selector(startCountDownAnimation), userInfo: nil, repeats: false)
+        RunLoop.main.add(countDownTimer, forMode: .common)
+        
+        // 예약된 시간에 MIDI 재생 시작
+        let playTimer = Timer(fireAt: futureTime, interval: 0, target: self, selector: #selector(actionStart), userInfo: nil, repeats: false)
+        RunLoop.main.add(playTimer, forMode: .common)
         
         controlButtonView.playPauseButton.isPlaying = true
+    }
+
+    @objc func startCountDownAnimation() {
+        Logger.shared.log("Logger: 아이폰 카운트다운 시간")
+        countDownLottieView?.play()
+    }
+
+    @objc func actionStart() {
+        self.musicPlayer.playMIDI(delay: 0)
     }
     
     func pauseMIDIPlayer() {
