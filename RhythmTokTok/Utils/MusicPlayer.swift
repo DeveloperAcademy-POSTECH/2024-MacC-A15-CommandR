@@ -56,6 +56,17 @@ class MusicPlayer: ObservableObject {
         }
     }
     
+    private func getSoundFont() -> String {
+        switch UserSettingData.shared.getSoundOption() {
+        case .melody:
+            return "Piano"
+        case .beat:
+            return "Drum Set JD Rockset 5"
+        default:
+            return "Piano"
+        }
+    }
+    
     // 오디오 파일 로드
     func loadAudioFile(url: URL) {
         do {
@@ -113,7 +124,7 @@ class MusicPlayer: ObservableObject {
         // AVMIDIPlayer 초기화
         do {
             
-            let bankURL = Bundle.main.url(forResource: soundFont, withExtension: "sf2")! // 사운드 폰트 파일 경로
+            let bankURL = Bundle.main.url(forResource: getSoundFont(), withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             
