@@ -1082,8 +1082,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1124,8 +1124,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1171,8 +1171,8 @@
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need to share your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1213,8 +1213,8 @@
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need to share your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (
