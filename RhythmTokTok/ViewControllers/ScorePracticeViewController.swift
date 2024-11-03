@@ -8,7 +8,7 @@ import Combine
 import UIKit
 
 // TODO: 코드 길어서 분리해야됨
-class ScorePracticeViewController: UIViewController {
+class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate {
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var countDownLottieView: CountDownLottieView? // 로띠뷰
   
@@ -62,6 +62,9 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 스와이프 제스처 인식기 설정
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
         configureUI()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
