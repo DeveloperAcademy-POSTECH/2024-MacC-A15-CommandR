@@ -181,6 +181,15 @@ class MusicPlayer: ObservableObject {
         print("MIDI playback paused at \(lastPosition) seconds.")
     }
     
+    func jumpMIDI(jumpPosition: TimeInterval) {
+        guard let midiPlayer = midiPlayer else { return }
+        isTemporarilyStopped = true
+        lastPosition = jumpPosition
+        midiPlayer.stop()
+        stopTimer()
+        print("MIDI playback jump at \(lastPosition) seconds.")
+    }
+    
     // MIDI 파일 재개
     func resumeMIDI() {
         guard let midiPlayer = midiPlayer else { return }

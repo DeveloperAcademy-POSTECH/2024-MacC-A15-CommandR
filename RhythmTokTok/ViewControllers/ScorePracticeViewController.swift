@@ -281,7 +281,7 @@ class ScorePracticeViewController: UIViewController {
     
     // MARK: 컨트롤러 버튼 액션
     @objc private func playButtonTapped() {
-        if IOStoWatchConnectivityManager.shared.playStatus == .play || IOStoWatchConnectivityManager.shared.playStatus == .jump {
+        if IOStoWatchConnectivityManager.shared.playStatus == .play {
             // 현재 재생 중이면 일시정지로 변경
             IOStoWatchConnectivityManager.shared.playStatus = .pause
         } else {
@@ -298,31 +298,14 @@ class ScorePracticeViewController: UIViewController {
         if currentMeasure != 0 {
             currentMeasure -= 1
         }
-        jumpMeasure()
+        IOStoWatchConnectivityManager.shared.playStatus = .jump
     }
     
     @objc private func nextButtonTapped() {
         if currentMeasure != totalMeasure {
             currentMeasure += 1
         }
-        jumpMeasure()
-    }
-    
-    private func jumpMeasure() {
-        let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
-                                                         division: Double(currentScore.divisions))
-        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
-        Task {
-            let hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: currentScore.parts.last!,
-                                                                              divisions: currentScore.divisions,
-                                                                              startNumber: currentMeasure,
-                                                                              endNumber: totalMeasure)
-            let futureTime = Date().addingTimeInterval(1).timeIntervalSince1970
-            
-            musicPlayer.playMIDI(startTime: startTime, delay: 1)
-            IOStoWatchConnectivityManager.shared.playStatus = .jump
-            sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: futureTime)
-        }
+        IOStoWatchConnectivityManager.shared.playStatus = .jump
     }
     
     // MARK: MIDI 파일, 햅틱 시퀀스 관리
@@ -435,7 +418,7 @@ class ScorePracticeViewController: UIViewController {
         case .play:
             startMIDIPlayback()
         case .jump:
-            controlButtonView.playPauseButton.isPlaying = true
+            jumpMeasure()
         case .pause:
             pauseMIDIPlayer()
         case .stop:
@@ -494,5 +477,22 @@ class ScorePracticeViewController: UIViewController {
         musicPlayer.stopMIDI()
         sendStopStatusToWatch()
         controlButtonView.playPauseButton.isPlaying = false
+    }
+    
+    private func jumpMeasure() {
+        print("점프 마디 번호 : \(currentMeasure),")
+        let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
+                                                         division: Double(currentScore.divisions))
+        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
+        Task {
+            let hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: currentScore.parts.last!,
+                                                                              divisions: currentScore.divisions,
+                                                                              startNumber: currentMeasure,
+                                                                              endNumber: totalMeasure)
+            print("점프 햅틱 갯수 : \(hapticSequence.count),")
+            musicPlayer.jumpMIDI(jumpPosition: startTime)
+            sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
+            controlButtonView.playPauseButton.isPlaying = false
+        }
     }
 }

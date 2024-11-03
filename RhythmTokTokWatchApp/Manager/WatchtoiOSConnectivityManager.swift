@@ -82,7 +82,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 print("재생 상태 업데이트: \(playStatus.rawValue)")
                 
                 switch playStatus {
-                case .play, .jump:
+                case .play:
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
                         self.startTime = startTime
@@ -96,7 +96,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                     } else {
                         ErrorHandler.handleError(error: "시작 시간 누락")
                     }
-                case .pause, .stop:
+                case .pause, .stop, .jump:
                     self.hapticManager.stopHaptic()
                 case .ready, .done:
                     break

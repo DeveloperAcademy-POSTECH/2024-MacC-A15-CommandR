@@ -15,9 +15,9 @@ struct WatchPlayView: View {
         switch connectivityManager.playStatus {
         case .ready, .stop:
             return "준비"
-        case .play, .jump:
+        case .play:
             return "재생중"
-        case .pause:
+        case .pause, .jump:
             return "일시정지"
         case .done:
             return "연습완료"
@@ -45,7 +45,7 @@ struct WatchPlayView: View {
                 .padding(.top, 8)
                 Spacer()
                 Button {
-                    if connectivityManager.playStatus == .play || connectivityManager.playStatus == .jump {
+                    if connectivityManager.playStatus == .play {
                         // 재생 중일 때 일시정지 동작
                         connectivityManager.pauseButtonTapped()
                     } else {
@@ -57,8 +57,7 @@ struct WatchPlayView: View {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.blue05)
                         
-                        Image(systemName: connectivityManager.playStatus != .play &&
-                              connectivityManager.playStatus != .jump ?
+                        Image(systemName: connectivityManager.playStatus != .play ?
                               "play.fill" : "pause.fill")
                         .resizable()
                         .scaledToFit()
