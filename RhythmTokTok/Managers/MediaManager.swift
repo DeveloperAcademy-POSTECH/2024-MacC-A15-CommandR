@@ -8,7 +8,7 @@
 import AVFoundation
 import AudioToolbox
 
-struct MediaManager {
+class MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
     private var tempoBPM: Double = Double(UserSettingData.shared.getBPM())
@@ -38,7 +38,7 @@ struct MediaManager {
     }
     
     // TODO: 뷰모델로 빼도 될 것 같다
-    mutating func setCurrentPart(part: Part, division: Double) {
+    func setCurrentPart(part: Part, division: Double) {
         self.currentPart = part
     }
     
@@ -434,6 +434,7 @@ struct MediaManager {
         
         // 기준 division과의 보정 값
         let divisionCorrectionFactor = standardDivision / division
+        tempoBPM = Double(UserSettingData.shared.getBPM())
         let correctedTempoBPM = tempoBPM * standardDivision
         // 템포 설정 (0 번째 시점에서 보정된 템포 이벤트 추가)
         MusicTrackNewExtendedTempoEvent(tempoTrack!, 0, correctedTempoBPM)
