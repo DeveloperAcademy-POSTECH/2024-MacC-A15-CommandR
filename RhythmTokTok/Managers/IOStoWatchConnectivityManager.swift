@@ -122,9 +122,10 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         self.selectedScoreTitle = scoreTitle
         let message: [String: Any] = [
             "scoreTitle": scoreTitle,
+            "playStatus": PlayStatus.ready.rawValue,
             "hapticSequence": hapticSequence
         ]
-        
+        print("전체 햅틱 갯수 \(hapticSequence.count)")
         do {
             try WCSession.default.updateApplicationContext(message)
             self.isWatchAppConnected = true
@@ -155,7 +156,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         do {
             try WCSession.default.updateApplicationContext(message)
             self.isWatchAppConnected = true
-            print("워치로 곡 선택 메시지 전송 완료: \(message)")
+//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
             self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")

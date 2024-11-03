@@ -79,6 +79,8 @@
 		1ED9FEE22CC26E6000472C51 /* red.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEE12CC26E6000472C51 /* red.xml */; };
 		1ED9FEE32CC26E6000472C51 /* mannam-f 2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEE02CC26E6000472C51 /* mannam-f 2.xml */; };
 		1ED9FEE42CC26E6000472C51 /* mannam.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEDF2CC26E6000472C51 /* mannam.xml */; };
+		1EF5145D2CD763FD00F68084 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5145C2CD763DA00F68084 /* Logger.swift */; };
+		1EF5145E2CD764A400F68084 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5145C2CD763DA00F68084 /* Logger.swift */; };
 		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
 		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* IOStoWatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* IOStoWatchConnectivityManager.swift */; };
@@ -234,6 +236,7 @@
 		1ED9FEDF2CC26E6000472C51 /* mannam.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = mannam.xml; sourceTree = "<group>"; };
 		1ED9FEE02CC26E6000472C51 /* mannam-f 2.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "mannam-f 2.xml"; sourceTree = "<group>"; };
 		1ED9FEE12CC26E6000472C51 /* red.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = red.xml; sourceTree = "<group>"; };
+		1EF5145C2CD763DA00F68084 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* IOStoWatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOStoWatchConnectivityManager.swift; sourceTree = "<group>"; };
@@ -590,6 +593,7 @@
 				1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */,
 				1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */,
 				1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */,
+				1EF5145C2CD763DA00F68084 /* Logger.swift */,
 				1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */,
 				1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */,
 			);
@@ -877,6 +881,7 @@
 				EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
 				D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */,
+				1EF5145D2CD763FD00F68084 /* Logger.swift in Sources */,
 				EE42039C2CD277B20081F2A1 /* HapticSettingSectionView.swift in Sources */,
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
 				1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */,
@@ -914,6 +919,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D36E430D2CB642630038994B /* WatchtoiOSConnectivityManager.swift in Sources */,
+				1EF5145E2CD764A400F68084 /* Logger.swift in Sources */,
 				D3693D6F2CD3C7EE00E37D2C /* WatchCountdownView.swift in Sources */,
 				D36E430D2CB642630038994B /* WatchtoiOSConnectivityManager.swift in Sources */,
 				D3D6D1B92CBE8B6300D22886 /* WatchScoreTitleView.swift in Sources */,
@@ -1082,8 +1088,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1124,8 +1130,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "이 앱은 카메라를 사용하여 사진을 촬영합니다.";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1171,8 +1177,8 @@
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need to share your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1213,8 +1219,8 @@
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need to share your workout data.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need to update your workout data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와의 상호작용을 위해 해당 권한이 필요합니다.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (

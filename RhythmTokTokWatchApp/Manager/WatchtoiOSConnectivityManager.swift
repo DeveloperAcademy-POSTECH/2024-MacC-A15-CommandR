@@ -18,7 +18,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var playStatus: PlayStatus = .ready
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
-    @Published var startTime: TimeInterval? = nil
+    @Published var startTime: TimeInterval?
     
     override init() {
         super.init()
@@ -71,7 +71,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 self.hapticSequence = hapticSequence
                 self.isSelectedScore = !scoreTitle.isEmpty
                 print("곡 선택 완료, 곡 제목: \(scoreTitle)")
-                print("곡 햅틱: \(hapticSequence)")
+                print("곡 햅틱 갯수: \(hapticSequence.count)")
             } else {
                 print("햅틱 셋팅 없음")
             }
@@ -82,7 +82,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 print("재생 상태 업데이트: \(playStatus.rawValue)")
                 
                 switch playStatus {
-                case .play, .jump:
+                case .play:
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
                         print("시작 시간 수신: \(startTime)")
                         self.startTime = startTime
@@ -96,7 +96,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                     } else {
                         ErrorHandler.handleError(error: "시작 시간 누락")
                     }
-                case .pause, .stop:
+                case .pause, .stop, .jump:
                     self.hapticManager.stopHaptic()
                 case .ready, .done:
                     break
