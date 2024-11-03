@@ -28,7 +28,7 @@ class BPMSettingSectionView: UIView {
     // BPM 버튼 관련 요소들
     var bpm: Int = UserSettingData.shared.getBPM() {
         didSet {
-            bpmLabel.text = "\(bpm) bpm"
+            bpmLabel.text = "\(bpm) BPM"
             bpmDescriptionLabel.text = "| \(BPMDescription.description(for: bpm))"
         }
     }
