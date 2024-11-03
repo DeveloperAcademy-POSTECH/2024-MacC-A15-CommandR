@@ -464,7 +464,7 @@ struct MediaManager {
                 note: UInt8(UserSettingData.shared.getSoundOption() == .melody ?
                             note.pitchNoteNumber() :
                             60), // pitch를 MIDI note number로 변환
-                velocity: 64, // 음의 강도 (나중에 수정 가능)
+                velocity: UserSettingData.shared.getSoundOption() == .mute ? 1 : 64, // 음의 강도 (나중에 수정 가능)
                 releaseVelocity: 0,
                 duration: 0
             )
