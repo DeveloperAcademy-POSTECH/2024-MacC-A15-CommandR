@@ -51,6 +51,8 @@ class MusicPlayer: ObservableObject {
             soundFont = "Piano"
         case .beat:
             soundFont = "Drum Set JD Rockset 5"
+        case .mute:
+            soundFont = "mutedClap"
         default:
             soundFont = "Piano"
         }
@@ -62,6 +64,8 @@ class MusicPlayer: ObservableObject {
             return "Piano"
         case .beat:
             return "Drum Set JD Rockset 5"
+        case .mute:
+            return "mutedClap"
         default:
             return "Piano"
         }
