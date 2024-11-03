@@ -267,8 +267,13 @@ class ScorePracticeViewController: UIViewController {
     // MARK: 네비게이션 버튼 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
-        IOStoWatchConnectivityManager.shared.playStatus = .stop
-        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: "", hapticSequence: [], status: .ready, startTime: 0)
+        musicPlayer.stopMIDI()
+        IOStoWatchConnectivityManager.shared.playStatus = .ready
+        IOStoWatchConnectivityManager.shared
+            .sendUpdateStatusWithHapticSequence(scoreTitle: "",
+                                                hapticSequence: [],
+                                                status: .ready, startTime: 0)
+        
         navigationController?.popViewController(animated: true)
     }
     
@@ -281,6 +286,7 @@ class ScorePracticeViewController: UIViewController {
     
     // MARK: 컨트롤러 버튼 액션
     @objc private func playButtonTapped() {
+        print("현재 버튼 상태 \(IOStoWatchConnectivityManager.shared.playStatus)")
         if IOStoWatchConnectivityManager.shared.playStatus == .play {
             // 현재 재생 중이면 일시정지로 변경
             IOStoWatchConnectivityManager.shared.playStatus = .pause
@@ -480,7 +486,7 @@ class ScorePracticeViewController: UIViewController {
     }
     
     private func jumpMeasure() {
-        print("점프 마디 번호 : \(currentMeasure),")
+//        print("점프 마디 번호 : \(currentMeasure),")
         let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
                                                          division: Double(currentScore.divisions))
         scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
@@ -489,7 +495,7 @@ class ScorePracticeViewController: UIViewController {
                                                                               divisions: currentScore.divisions,
                                                                               startNumber: currentMeasure,
                                                                               endNumber: totalMeasure)
-            print("점프 햅틱 갯수 : \(hapticSequence.count),")
+//            print("점프 햅틱 갯수 : \(hapticSequence.count),")
             musicPlayer.jumpMIDI(jumpPosition: startTime)
             sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
             controlButtonView.playPauseButton.isPlaying = false

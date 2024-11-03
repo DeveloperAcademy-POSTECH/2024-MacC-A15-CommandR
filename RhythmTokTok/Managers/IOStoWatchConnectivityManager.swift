@@ -122,6 +122,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         self.selectedScoreTitle = scoreTitle
         let message: [String: Any] = [
             "scoreTitle": scoreTitle,
+            "playStatus": PlayStatus.ready.rawValue,
             "hapticSequence": hapticSequence
         ]
         print("전체 햅틱 갯수 \(hapticSequence.count)")
