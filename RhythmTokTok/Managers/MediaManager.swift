@@ -93,6 +93,7 @@ class MediaManager {
             .flatMap { $0.value }
         
         if let currentIndex = measures.firstIndex(where: { $0.number == currentMeasure }) {
+//            print("찾았다 인덱스: \(currentIndex), ")
             let startTime = convertTicksToTime(convertTick: measures[currentIndex].startTime,
                                                division: division)
 

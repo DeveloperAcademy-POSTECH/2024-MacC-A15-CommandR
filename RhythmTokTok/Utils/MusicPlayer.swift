@@ -156,6 +156,7 @@ class MusicPlayer: ObservableObject {
             isEnd = false
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                Logger.shared.log("Logger: MIDI파일 실행")
                 midiPlayer.play {
                     print("MIDI playback completed.")
                     if !self.isTemporarilyStopped {
@@ -178,6 +179,15 @@ class MusicPlayer: ObservableObject {
         midiPlayer.stop()
         stopTimer()
         print("MIDI playback paused at \(lastPosition) seconds.")
+    }
+    
+    func jumpMIDI(jumpPosition: TimeInterval) {
+        guard let midiPlayer = midiPlayer else { return }
+        isTemporarilyStopped = true
+        lastPosition = jumpPosition
+        midiPlayer.stop()
+        stopTimer()
+        print("MIDI playback jump at \(lastPosition) seconds.")
     }
     
     // MIDI 파일 재개
