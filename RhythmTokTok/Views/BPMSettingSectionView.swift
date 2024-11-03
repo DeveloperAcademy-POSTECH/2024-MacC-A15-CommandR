@@ -26,16 +26,14 @@ class BPMSettingSectionView: UIView {
     }()
     
     // BPM 버튼 관련 요소들
-    var bpm: Int = 120 {
+    var bpm: Int = UserSettingData.shared.getBPM() {
         didSet {
             bpmLabel.text = "\(bpm) bpm"
-            updateBPMDescription()
+            bpmDescriptionLabel.text = "| \(BPMDescription.description(for: bpm))"
         }
     }
     
-    var bpmDescription: String = "| 조금 빠르게" {
-        didSet { bpmDescriptionLabel.text = bpmDescription }
-    }
+    lazy var bpmDescription: String = "| \(BPMDescription.description(for: bpm))"
     
     let bpmLabel: UILabel = {
         let label = UILabel()
@@ -47,25 +45,11 @@ class BPMSettingSectionView: UIView {
     
     let bpmDescriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "| 조금 빠르게"
+        label.text = ""
         label.font = UIFont(name: "Pretendard-Regular", size: 18)
         label.textColor = .gray
         return label
     }()
-    
-    // TODO: 추후에 enum 관리로 변경
-    private func updateBPMDescription() {
-        switch bpm {
-        case 0..<60: bpmDescription = "| 매우 느리게"
-        case 60..<80: bpmDescription = "| 느리게"
-        case 80..<100: bpmDescription = "| 조금 느리게"
-        case 100..<120: bpmDescription = "| 보통"
-        case 120..<140: bpmDescription = "| 조금 빠르게"
-        case 140..<160: bpmDescription = "| 빠르게"
-        case 160...: bpmDescription = "| 매우 빠르게"
-        default: bpmDescription = "| 기본 속도"
-        }
-    }
     
     let chevronImageView: UIImageView = {
         let imageView = UIImageView()

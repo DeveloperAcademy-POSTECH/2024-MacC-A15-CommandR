@@ -34,6 +34,7 @@ class RadioButtonOptionItemPicker: UIView {
             if let selectedValue = selectedValue, data.value == selectedValue {
                 option.radioButton.isChecked = true
                 selectedOption = option
+                print("selectedValue \(selectedValue)")
             }
 
             // 제약 조건 설정

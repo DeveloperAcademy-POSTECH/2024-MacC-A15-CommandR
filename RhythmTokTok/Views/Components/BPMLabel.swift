@@ -13,7 +13,7 @@ class BPMLabel: UIView {
     private var valueLabel = UILabel()
     private var speedText: String = "보통"
     // TODO: CoreData 변경 필요
-    private var speedValue: Int = UserSettingData.shared.bpm
+    private var speedValue: Int = UserSettingData.shared.getBPM()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,18 +60,12 @@ class BPMLabel: UIView {
     // 속도 상태에 따른 텍스트 변경
     func updateSpeedText() {
         // TODO: 나중에 범위 값 설정 후 조정, CoreData로 변경 필요
-        speedValue = UserSettingData.shared.bpm
-        
-        if speedValue < 100 {
-            speedText = "조금 느리게"
-        } else if speedValue < 120 {
-            speedText = "보통"
-        } else {
-            speedText = "조금 빠르게"
-        }
+        speedValue = UserSettingData.shared.getBPM()
+        speedText = BPMDescription.description(for: speedValue)
 
         // 속도 상태 라벨과 값 라벨 업데이트
         speedStatusLabel.text = speedText
         valueLabel.text = " (\(speedValue)bpm)"
     }
+    
 }

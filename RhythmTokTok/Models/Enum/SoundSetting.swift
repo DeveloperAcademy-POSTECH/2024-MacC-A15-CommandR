@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum SoundSetting: String {
-    case voice = "계이름으로 듣기"
-    case melody = "멜로디로 듣기"
-    case beat = "박자만 듣기"
-    case mute = "소리 없음"
+enum SoundSetting: String, Codable {
+    case voice
+    case melody
+    case beat
+    case mute
 }

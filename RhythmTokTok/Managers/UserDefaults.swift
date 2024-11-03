@@ -1,75 +1,107 @@
-//
-//  UserDefault.swift
-//  RhythmTokTok
-//
-//  Created by Byeol Kim on 10/9/24.
-//
-
 import Foundation
 
 class UserSettingData {
     
     static let shared = UserSettingData()
     
-    private let soundSettingKey = "soundSetting"
-    private let watchHapticGuideKey = "watchHapticGuide"
-    private let fontSizeKey = "fontSize"
-    private let bpmKey = "bpm"
+//    private var currentScore: ScoreSetting = ScoreSetting(title: currentScoreTitle, bpm: getBPM(), soundOption: getSoundOption(), isHapticOn: getIsHapticOn())
     
-    private init() {}
+    private var currentScore: ScoreSetting = ScoreSetting(title: "", bpm: 0, soundOption: .voice, isHapticOn: false)
+    var currentScoreTitle = ""
     
-    // 소리 설정
-    var soundSetting: SoundSetting {
-        get {
-            if let value = UserDefaults.standard.string(forKey: soundSettingKey),
-               let setting = SoundSetting(rawValue: value) {
-                return setting
-            }
-            return .voice // 기본값
+    // 악보별 세팅 데이터 구조 + 기본값 설정
+    struct ScoreSetting: Codable {
+        var title: String
+        var bpm: Int
+        var soundOption: SoundSetting
+        var isHapticOn: Bool
+    }
+    
+    private init() {
+        print("UserSettingData init")
+    }
+    
+    // 악보 Key 설정
+    func setCurrentScoreTitle(_ scoreTitle: String) {
+        currentScore.title = scoreTitle
+        currentScoreTitle = currentScore.title
+        print("currentScoreTitle: \(currentScoreTitle)")
+        
+        let allSettings = getAllSettings()
+        if allSettings[scoreTitle] == nil {
+            
+            print("loadSetting: \(scoreTitle) not found")
+            let newSetting = ScoreSetting(title: scoreTitle, bpm: 120, soundOption: .melody, isHapticOn: true) // 기본값 설정
+            saveSetting(for: scoreTitle, setting: newSetting)
         }
-        set {
-            UserDefaults.standard.set(newValue.rawValue, forKey: soundSettingKey)
+    }
+
+    // 악보별 BPM 설정
+    func setBPM(bpm: Int) {
+        var setting = loadSetting(for: currentScoreTitle)
+        setting.bpm = min(max(bpm, 20), 208)
+        saveSetting(for: currentScoreTitle, setting: setting)
+    }
+    
+    func getBPM() -> Int {
+        return loadSetting(for: currentScoreTitle).bpm
+    }
+    
+    // 악보별 SoundOption 설정
+    func setSoundOption(soundOption: SoundSetting) {
+        var setting = loadSetting(for: currentScoreTitle)
+        setting.soundOption = soundOption
+        saveSetting(for: currentScoreTitle, setting: setting)
+    }
+    
+    func getSoundOption() -> SoundSetting {
+        return loadSetting(for: currentScoreTitle).soundOption
+    }
+    
+    // 악보별 Haptic 설정
+    func setIsHapticOn(isHapticOn: Bool) {
+        var setting = loadSetting(for: currentScoreTitle)
+        setting.isHapticOn = isHapticOn
+        saveSetting(for: currentScoreTitle, setting: setting)
+    }
+    
+    func getIsHapticOn() -> Bool {
+        return loadSetting(for: currentScoreTitle).isHapticOn
+    }
+    
+    // 악보별 세팅 저장 및 불러오기
+    
+    // 한번 다 불러서 타이틀에 맞는 객체 있으면 리턴
+    private func loadSetting(for scoreTitle: String) -> ScoreSetting {
+        let allSettings = getAllSettings()
+        if let setting = allSettings[scoreTitle] {
+//            print("loadSetting: \(scoreTitle)")
+            return setting
+        }
+        print("loadSetting: \(scoreTitle) not found")
+        return ScoreSetting(title: currentScoreTitle, bpm: 120, soundOption: .melody, isHapticOn: true) // 기본값 설정
+    }
+    
+    // 한번 다 불러서 타이틀에 맞는 객체 있으면 업데이트
+    private func saveSetting(for scoreTitle: String, setting: ScoreSetting) {
+        var allSettings = getAllSettings()
+        allSettings[scoreTitle] = setting
+        saveAllSettings(allSettings)
+    }
+    
+    // 실제로 저장하는 로직
+    private func getAllSettings() -> [String: ScoreSetting] {
+        if let data = UserDefaults.standard.data(forKey: currentScore.title),
+           let settings = try? JSONDecoder().decode([String: ScoreSetting].self, from: data) {
+            return settings
+        }
+        return [:] // 기본값: 빈 딕셔너리
+    }
+    
+    private func saveAllSettings(_ settings: [String: ScoreSetting]) {
+        if let data = try? JSONEncoder().encode(settings) {
+            UserDefaults.standard.set(data, forKey: currentScore.title)
         }
     }
     
-    // Watch 진동 가이드 설정
-    var isHapticGuideOn: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: watchHapticGuideKey) != nil {
-                return UserDefaults.standard.bool(forKey: watchHapticGuideKey)
-            } else {
-                return true // 기본값 true로 설정
-            }
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: watchHapticGuideKey)
-        }
-    }
-    
-    // 글자 크기 설정 (1: 작은, 2: 보통, 3: 큼, 4: 매우 큼)
-    var fontSize: Int {
-        get {
-            let size = UserDefaults.standard.integer(forKey: fontSizeKey)
-            return size >= 1 && size <= 4 ? size : 2 // 기본값 보통
-        }
-        set {
-            let clampedValue = min(max(newValue, 1), 4)
-            UserDefaults.standard.set(clampedValue, forKey: fontSizeKey)
-            // 글자 크기 변경 시 알림 전송
-            NotificationCenter.default.post(name: .fontSizeChanged, object: nil, userInfo: ["fontSize": clampedValue])
-        }
-    }
-    
-    // BPM 설정 (기본값: 120, 범위: 60 ~ 180)
-      var bpm: Int {
-          get {
-              let storedBPM = UserDefaults.standard.integer(forKey: bpmKey)
-              return storedBPM >= 60 && storedBPM <= 180 ? storedBPM : 120 // 기본값 120
-          }
-          set {
-              let clampedBPM = min(max(newValue, 60), 180)
-              UserDefaults.standard.set(clampedBPM, forKey: bpmKey)
-              NotificationCenter.default.post(name: .bpmChanged, object: nil, userInfo: ["bpm": clampedBPM])
-          }
-      }
-  }
+}

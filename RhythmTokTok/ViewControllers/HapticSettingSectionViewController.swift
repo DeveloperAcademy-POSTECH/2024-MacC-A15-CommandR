@@ -27,9 +27,8 @@ class HapticSettingViewController: UIViewController {
         ])
 
         // 토글 상태 변경 시 처리
-        hapticSettingView.onToggleChanged = { [weak self] isOn in
-            print("진동 가이드 설정 상태: \(isOn)")
-            // 추가적인 로직을 여기서 구현할 수 있습니다.
+        hapticSettingView.onToggleChanged = { [weak self] value in
+            print("진동 가이드 설정 상태: \(value)")
         }
     }
 }
