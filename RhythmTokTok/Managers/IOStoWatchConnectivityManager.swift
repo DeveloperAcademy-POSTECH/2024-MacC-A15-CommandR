@@ -18,14 +18,8 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     let allTypes = Set([HKObjectType.workoutType()])
     let configuration = HKWorkoutConfiguration()
     
-    // TODO: isPaired로 관리 가능한지 확인 부탁드려요
     @Published var isWatchAppConnected: Bool = false
-    @Published var playStatus: PlayStatus = .ready {
-        didSet {
-            // playStatus가 변경될 때마다 워치로 메시지 전송
-            sendPlayStatus(status: playStatus, startTime: nil)
-        }
-    }
+    @Published var playStatus: PlayStatus = .ready
     // 워치로부터 받은 상태, 시간
     @Published var receivedPlayStatus: PlayStatus = .ready
     @Published var receivedStartTime: TimeInterval?
@@ -86,6 +80,12 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     
     // MARK: - 워치 런치
     func launchWatch() async -> Bool {
+        guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
+            // Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않음
+            self.isWatchAppConnected = false
+            ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
+            return false
+        }
         // 비동기적으로 권한 요청
         return await withCheckedContinuation { continuation in
             healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { (success, error) in
@@ -117,7 +117,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     }
     
     // MARK: - 워치로 메시지 보내는 부분
-    // TODO: - 워치 동시성 체크 필요
     // 1. 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendScoreSelection(scoreTitle: String, hapticSequence: [Double]) {
         self.selectedScoreTitle = scoreTitle
@@ -136,41 +135,35 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
     }
     
-    // 2. 연습뷰에서 [재생 상태]를 보냄. 재생인 경우 [시작시간] 보냄. (연습뷰에서 재생 관련 버튼 조작시 작동)
-    func sendPlayStatus(status: PlayStatus, startTime: TimeInterval?) {
-        // 워치가 연결되어 있는지 확인 (페어링 및 앱 설치 여부)
-        guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
-            self.isWatchAppConnected = false
-            ErrorHandler.handleError(error: "워치가 연결되지 않았거나 앱이 설치되어 있지 않음")
-            return
-        }
-        
+    // 마디 점프 요청
+    func sendUpdateStatusWithHapticSequence(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
+        self.selectedScoreTitle = scoreTitle
         let watchHapticGuide = UserSettingData.shared.getIsHapticOn()
+
         var message: [String: Any] = [
+            "scoreTitle": scoreTitle,
             "playStatus": status.rawValue,
-            "watchHapticGuide": watchHapticGuide
+            "watchHapticGuide": watchHapticGuide,
+            "startTime": startTime
         ]
         
-        if status == .play {
-            guard let startTime = startTime else {
-                ErrorHandler.handleError(error: "예약 시간이 설정되어 있지 않음")
-                return
-            }
-            // startTime을 메시지 딕셔너리에 직접 추가
-            message["startTime"] = startTime
+        // play 상태가 아닐때만 
+        if status != .play {
+            message["hapticSequence"] = hapticSequence
         }
         
         do {
             try WCSession.default.updateApplicationContext(message)
             self.isWatchAppConnected = true
-            print("워치로 메시지 전송 완료: \(message)")
+            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
             self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }
     
-    // MARK: - [1] 아이폰에서만 재생 실행되는 거
+    
+    // 워치 playStatus 변환 요청
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async {
             if let playStatusString = applicationContext["playStatus"] as? String,

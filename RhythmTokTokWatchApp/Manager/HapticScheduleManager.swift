@@ -45,7 +45,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
                             // 햅틱 시작 예약
                             print("delay 시간 : \(delay)")
                             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                                self.startHapticWithBeats(batchSize: 20)
+                                self.startHapticWithBeats(batchSize: 100)
                             }
                         }
                     }
@@ -112,7 +112,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
         let currentBatch = Array(beatTimes.prefix(batchSize))  // 현재 배치만큼 가져옴
         
         for beatTime in currentBatch {
-            print("타이머 설정 시간: \(beatTime)초")
+//            print("타이머 설정 시간: \(beatTime)초")
 
             let timer = DispatchSource.makeTimerSource()
             timer.schedule(deadline: .now() + beatTime, leeway: .milliseconds(1))
