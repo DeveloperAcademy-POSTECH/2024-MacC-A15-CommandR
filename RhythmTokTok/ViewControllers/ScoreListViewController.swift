@@ -20,8 +20,10 @@ class ScoreListViewController: UIViewController {
         super.viewDidLoad()
         
         generateMusicXMLAudio()
+        
+        //MARK: - ListView상단 바 제거, 나중에 검색 넣어야해서 주석처리함.
         // 네비게이션 바 설정
-        setupNavigationBar()
+//        setupNavigationBar()
         
         // 테이블 뷰 설정
         setupTableView()
