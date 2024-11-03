@@ -6,11 +6,14 @@
 //
 import Combine
 import UIKit
+import AVFoundation
 
 // TODO: 코드 길어서 분리해야됨
 class ScorePracticeViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()  // Combine에서 구독을 관리할 Set
     private var countDownLottieView: CountDownLottieView? // 로띠뷰
+    var countdownTimer: Timer?
+    var countdownTime: Int = 3 // 원하는 카운트다운 시간 (초 단위)
   
     // 악보 관리용
     private var currentScore: Score // 현재 악보 score
@@ -462,11 +465,27 @@ class ScorePracticeViewController: UIViewController {
         sendPlayStatusToWatch(startTimeInterVal: futureTime)
         let delay = futureTime - Date().timeIntervalSince1970
         self.musicPlayer.playMIDI(delay: delay)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + delay - 3) {
             self.countDownLottieView?.play()
         }
         
+        // 타이머 설정
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            if self.countdownTime > 0 {
+                self.playSystemAlertSound() // 시스템 알림음 재생
+                self.countdownTime -= 1
+            } else {
+                timer.invalidate() // 타이머 종료
+                self.countDownLottieView?.stop() // Lottie 애니메이션 중지
+            }
+        }
+        
         controlButtonView.playPauseButton.isPlaying = true
+    }
+    
+    func playSystemAlertSound() {
+        AudioServicesPlaySystemSound(1052) // 기본 제공 알림음 재생
     }
     
     func pauseMIDIPlayer() {

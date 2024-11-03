@@ -93,7 +93,6 @@ class SettingViewController: UIViewController {
 //            print("BPM 값이 Core Data에 저장되었습니다.")
 //            print("scoreEntity: \(scoreEntity)")
 
-
         } catch {
             ErrorHandler.handleError(error: "Core Data 저장 중 에러 발생: \(error)")
         }
