@@ -49,7 +49,7 @@ class ControlButtonView: UIView {
             mainVStack.topAnchor.constraint(equalTo: topAnchor),
             mainVStack.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            resetButton.widthAnchor.constraint(equalToConstant: 120)
+            resetButton.widthAnchor.constraint(equalToConstant: 60)
         ])
     }
 }
