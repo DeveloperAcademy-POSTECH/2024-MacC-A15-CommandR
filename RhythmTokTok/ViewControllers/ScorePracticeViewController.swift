@@ -46,7 +46,6 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
         navigationController?.setNavigationBarHidden(true, animated: animated)
         Task { await createMIDIFile(score: currentScore) }
         UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
@@ -58,13 +57,11 @@ class ScorePracticeViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("viewWillDisappear")
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
         configureUI()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)

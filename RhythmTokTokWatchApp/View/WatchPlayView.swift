@@ -126,15 +126,17 @@ struct WatchPlayView: View {
     }
     
     private func playHaptic(for number: Int) {
-        switch number {
-        case 3:
-            WKInterfaceDevice.current().play(.retry)
-        case 2:
-            WKInterfaceDevice.current().play(.retry)
-        case 1:
-            WKInterfaceDevice.current().play(.retry)
-        default:
-            break
+        if connectivityManager.isHapticGuideOn {
+            switch number {
+            case 3:
+                WKInterfaceDevice.current().play(.retry)
+            case 2:
+                WKInterfaceDevice.current().play(.retry)
+            case 1:
+                WKInterfaceDevice.current().play(.retry)
+            default:
+                break
+            }
         }
     }
 }
