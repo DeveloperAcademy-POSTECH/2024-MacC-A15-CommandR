@@ -115,7 +115,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             currentMeasureWidth = measureWidth
             // 이전 마디의 currentTimes
             var previousTimes = [1: 0, 2: 0]
-            print("마디 \(measureNumberString)")
+//            print("마디 \(measureNumberString)")
             if let lastPart = score.parts.last,
                let lastLine = lastPart.measures.keys.sorted().last, let lastMeasure = lastPart.measures[lastLine]?.last {
 //                print("마지막 틱 \(lastMeasure.currentTimes)")
@@ -287,7 +287,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 currentWidth = 0
                 isNextLine = false
             }
-            print("생성")
+//            print("생성")
         }
         
         if elementName == "part" {

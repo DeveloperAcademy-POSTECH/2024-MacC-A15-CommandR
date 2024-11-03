@@ -46,7 +46,7 @@ class MusicPlayer: ObservableObject {
     
     // soundFont 변수를 현재의 soundSetting값을 반영하여 업데이트하기
     private func updateSoundFont() {
-        switch UserSettingData.shared.soundSetting {
+        switch UserSettingData.shared.getSoundOption() {
         case .melody:
             soundFont = "Piano"
         case .beat:

@@ -108,6 +108,7 @@
 		D3DDA07A2CC5516F00125C86 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */; };
 		D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
 		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
+		EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1B9BB52CD647A000073215 /* BPMDescription.swift */; };
 		EE4203962CD226800081F2A1 /* BPMSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */; };
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
 		EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */; };
@@ -258,6 +259,7 @@
 		D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		EE1B9BB52CD647A000073215 /* BPMDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMDescription.swift; sourceTree = "<group>"; };
 		EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
 		EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingSectionView.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 		1EF8A0A62CB53E6B00ADB783 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				EE1B9BB52CD647A000073215 /* BPMDescription.swift */,
 				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
 				D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */,
@@ -888,6 +891,7 @@
 				1ED9FEC72CBE4B2F00472C51 /* ScorePracticeViewController.swift in Sources */,
 				EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */,
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,
+				EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */,
 				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,

@@ -79,8 +79,8 @@ class StatusTagView: UIView {
 
     func updateTag() {
         // TODO: 나중에 CoreData로 변결
-        let soundSetting = UserSettingData.shared.soundSetting
-        let hapticSetting =  UserSettingData.shared.isHapticGuideOn
+        let soundSetting = UserSettingData.shared.getSoundOption()
+        let hapticSetting =  UserSettingData.shared.getIsHapticOn()
         
         switch soundSetting {
         case .beat:

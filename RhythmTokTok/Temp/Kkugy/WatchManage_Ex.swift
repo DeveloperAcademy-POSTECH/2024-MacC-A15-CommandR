@@ -11,7 +11,7 @@ extension IOStoWatchConnectivityManager {
     // 마디 점프 요청
     func sendUpdateStatusWithHapticSequence(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
         self.selectedScoreTitle = scoreTitle
-        let watchHapticGuide = UserSettingData.shared.isHapticGuideOn
+        let watchHapticGuide = UserSettingData.shared.getIsHapticOn()
 
         let message: [String: Any] = [
             "scoreTitle": scoreTitle,
@@ -24,7 +24,7 @@ extension IOStoWatchConnectivityManager {
         do {
             try WCSession.default.updateApplicationContext(message)
             self.isWatchAppConnected = true
-            print("워치로 곡 선택 메시지 전송 완료: \(message)")
+//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
             self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")

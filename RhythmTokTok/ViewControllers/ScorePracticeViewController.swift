@@ -48,7 +48,7 @@ class ScorePracticeViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         Task { await createMIDIFile(score: currentScore) }
-        
+        UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
         statusTags.updateTag()
         scoreCardView.bpmLabel.updateSpeedText()
         checkUpdatePreviousButtonState()

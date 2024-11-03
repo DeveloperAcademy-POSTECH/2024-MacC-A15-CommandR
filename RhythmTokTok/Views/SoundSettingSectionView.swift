@@ -26,7 +26,7 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
     ]
     
     public lazy var radioButtonPicker: RadioButtonOptionItemPicker = {
-        let picker = RadioButtonOptionItemPicker(options: pickerOptions)
+        let picker = RadioButtonOptionItemPicker(options: pickerOptions, selectedValue: UserSettingData.shared.getSoundOption().rawValue)
         picker.delegate = self
         picker.translatesAutoresizingMaskIntoConstraints = false
         return picker
