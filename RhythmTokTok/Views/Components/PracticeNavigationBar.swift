@@ -86,8 +86,8 @@ class PracticeNavigationBar: UIView {
             rightButtonStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             // 버튼 크기 설정
-            watchConnectImageView.widthAnchor.constraint(equalToConstant: 20),
-            watchConnectImageView.heightAnchor.constraint(equalToConstant: 25),
+            watchConnectImageView.widthAnchor.constraint(equalToConstant: 24),
+            watchConnectImageView.heightAnchor.constraint(equalToConstant: 24),
             watchConnectImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             settingButton.widthAnchor.constraint(equalToConstant: 24),
