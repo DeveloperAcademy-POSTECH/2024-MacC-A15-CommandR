@@ -31,7 +31,7 @@ class UserSettingData {
         if allSettings[scoreTitle] == nil {
             
             print("loadSetting: \(scoreTitle) not found")
-            let newSetting = ScoreSetting(title: scoreTitle, bpm: 120, soundOption: .melody, isHapticOn: true) // 기본값 설정
+            let newSetting = ScoreSetting(title: scoreTitle, bpm: 60, soundOption: .melody, isHapticOn: true) // 기본값 설정
             saveSetting(for: scoreTitle, setting: newSetting)
         }
     }
@@ -79,7 +79,7 @@ class UserSettingData {
             return setting
         }
         print("loadSetting: \(scoreTitle) not found")
-        return ScoreSetting(title: currentScoreTitle, bpm: 120, soundOption: .melody, isHapticOn: true) // 기본값 설정
+        return ScoreSetting(title: currentScoreTitle, bpm: 60, soundOption: .melody, isHapticOn: true) // 기본값 설정
     }
     
     // 한번 다 불러서 타이틀에 맞는 객체 있으면 업데이트
