@@ -603,22 +603,6 @@
         <beam number="1">end</beam>
         <beam number="2">end</beam>
         </note>
-      <note default-x="531.75" default-y="-10" print-object="no">
-        <rest/>
-        <duration>3</duration>
-        <voice>1</voice>
-        <type>eighth</type>
-        <dot default-x="543.79" default-y="-5"/>
-        </note>
-      <backup>
-        <duration>15</duration>
-        </backup>
-      <forward>
-        <duration>8</duration>
-        </forward>
-      <forward>
-        <duration>3</duration>
-        </forward>
       <note default-x="481.09" default-y="-20">
         <pitch>
           <step>B</step>
@@ -668,12 +652,6 @@
         <duration>4</duration>
         <voice>1</voice>
         <type>quarter</type>
-        </note>
-      <note default-x="211.34" default-y="-20">
-        <rest/>
-        <duration>8</duration>
-        <voice>1</voice>
-        <type>half</type>
         </note>
       </measure>
     <measure number="9" width="186.5">
@@ -959,6 +937,17 @@
         <voice>1</voice>
         <type>eighth</type>
         <stem>down</stem>
+        <beam number="1">continue</beam>
+        </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>5</octave>
+          </pitch>
+        <duration>8</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <stem>down</stem>
         <beam number="1">end</beam>
         </note>
       </measure>
@@ -974,7 +963,7 @@
           <step>B</step>
           <octave>5</octave>
           </pitch>
-        <duration>4</duration>
+        <duration>2</duration>
         <voice>1</voice>
         <type>quarter</type>
         <stem>down</stem>
@@ -1144,7 +1133,7 @@
           <step>G</step>
           <octave>5</octave>
           </pitch>
-        <duration>3</duration>
+        <duration>2</duration>
         <voice>1</voice>
         <type>eighth</type>
         <dot default-x="294.41" default-y="5"/>
