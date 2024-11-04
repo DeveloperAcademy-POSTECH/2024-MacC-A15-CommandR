@@ -15,7 +15,7 @@ class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "설정"
-        
+        self.navigationController?.navigationBar.tintColor = .lableSecondary
         // SettingView에서 이벤트를 받아서 처리
         settingView.onBPMButtonTapped = { [weak self] in
             self?.presentBPMSettingModal()
