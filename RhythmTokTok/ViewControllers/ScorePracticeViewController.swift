@@ -47,6 +47,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         fatalError("init(coder:) has not been implemented")
     }
     
+    // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -62,6 +63,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        // 스와이프 제스처 초기화
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
     }
     
     override func viewDidLoad() {
