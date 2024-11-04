@@ -289,6 +289,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @objc private func settingButtonTapped() {
+        resetMIDIPlayer()
         let settingViewController = SettingViewController()
         navigationItem.title = "설정"
         navigationItem.backButtonTitle = ""
@@ -478,7 +479,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 self.countdownTime -= 1
             } else {
                 timer.invalidate() // 타이머 종료
-                self.countDownLottieView?.stop() // Lottie 애니메이션 중지
+                self.countDownLottieView?.stop()
+                self.countdownTime = 3 // Lottie 애니메이션 중지
             }
         }
         
