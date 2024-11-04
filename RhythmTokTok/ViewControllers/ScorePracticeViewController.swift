@@ -47,9 +47,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         fatalError("init(coder:) has not been implemented")
     }
     
+    // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        countdownTime = 3
         Task { await createMIDIFile(score: currentScore) }
         UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
         statusTags.updateTag()
@@ -61,6 +63,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        // 스와이프 제스처 초기화
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
     }
     
     override func viewDidLoad() {
@@ -284,6 +289,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @objc private func settingButtonTapped() {
+        resetButtonTapped()
         let settingViewController = SettingViewController()
         navigationItem.title = "설정"
         navigationItem.backButtonTitle = ""
@@ -473,7 +479,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 self.countdownTime -= 1
             } else {
                 timer.invalidate() // 타이머 종료
-                self.countDownLottieView?.stop() // Lottie 애니메이션 중지
+                self.countDownLottieView?.stop()
+                self.countdownTime = 3 // Lottie 애니메이션 중지
             }
         }
         

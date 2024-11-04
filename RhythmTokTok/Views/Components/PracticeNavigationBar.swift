@@ -30,7 +30,7 @@ class PracticeNavigationBar: UIView {
     let backButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-        button.tintColor = .black // 원하는 색상으로 변경
+        button.tintColor = .lableSecondary
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
