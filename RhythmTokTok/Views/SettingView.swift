@@ -70,7 +70,7 @@ class SettingView: UIView {
         
         // 제약 조건 설정
         NSLayoutConstraint.activate([
-            divider0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            divider0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             divider0.leadingAnchor.constraint(equalTo: leadingAnchor),
             divider0.trailingAnchor.constraint(equalTo: trailingAnchor),
             divider0.heightAnchor.constraint(equalToConstant: 1),
