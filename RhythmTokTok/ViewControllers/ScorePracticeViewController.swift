@@ -289,7 +289,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @objc private func settingButtonTapped() {
-        resetMIDIPlayer()
+        resetButtonTapped()
         let settingViewController = SettingViewController()
         navigationItem.title = "설정"
         navigationItem.backButtonTitle = ""
