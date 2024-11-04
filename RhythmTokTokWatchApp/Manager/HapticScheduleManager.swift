@@ -32,6 +32,11 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
         session?.delegate = self
         session?.start()
     }
+    
+    func stopExtendedSession() {
+        Logger.shared.watchStatus = "멈춤"
+        session?.invalidate()
+    }
 
     // WKExtendedRuntimeSessionDelegate methods
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
@@ -71,6 +76,8 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
     func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession,
                                 didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason,
                                 error: (any Error)?) {
+//        Logger.shared.watchStatus = "재활성화함"
+//        startExtendedSession()
         ErrorHandler.handleError(error: error as Any)
  
     }
@@ -167,5 +174,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
         }
         timers.removeAll()  // 배열 비우기
         self.isHapticActive = false
+//        stopExtendedSession()
     }
 }

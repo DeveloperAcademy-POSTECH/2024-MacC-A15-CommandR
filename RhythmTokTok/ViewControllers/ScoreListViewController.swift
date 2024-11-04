@@ -174,7 +174,7 @@ extension ScoreListViewController: UIDocumentPickerDelegate {
     // 선택한 파일 확인 뷰로 이동
     private func navigateToCheckPDFViewController(with fileURL: URL) {
         let checkPDFViewController = CheckPDFViewController()
-        vr.fileURL = fileURL
+        checkPDFViewController.fileURL = fileURL
         
         navigationController?.pushViewController(checkPDFViewController, animated: true)
     }

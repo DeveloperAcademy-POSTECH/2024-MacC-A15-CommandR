@@ -8,11 +8,11 @@
 import Foundation
 import WatchConnectivity
 import Combine
+import WatchKit
 
 class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     
     var hapticManager = HapticScheduleManager()
-    @Published var isConnected: Bool = false
     @Published var isSelectedScore: Bool = false
     @Published var selectedScoreTitle: String = ""
     @Published var playStatus: PlayStatus = .ready
@@ -37,18 +37,34 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         print("watchOS 앱에서 WCSession 활성화 요청")
     }
     
+    func activationStateDescription(for state: WCSessionActivationState) -> String {
+        switch state {
+        case .notActivated:
+            return "Not Activated"
+        case .inactive:
+            return "Inactive"
+        case .activated:
+            return "Activated"
+        @unknown default:
+            return "Unknown"
+        }
+    }
+    
     // MARK: - WCSessionDelegate 메서드
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState,
                  error: Error?) {
+        Logger.shared.watchStatus = activationStateDescription(for: activationState)
+
         if activationState == .activated {
-            Logger.shared.sessionStart = String((Int(Logger.shared.sessionStart) ?? 0) + 1)
             print("워치에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
-                self.isConnected = session.isReachable
+                Logger.shared.sessionStart = String((Int(Logger.shared.sessionStart) ?? 0) + 1)
+//                Logger.shared.watchStatus = String(self.hapticManager.isHapticActive)
                 self.hapticManager.startExtendedSession()
             }
         }
         if let error = error {
+            Logger.shared.sessionStart = String("-1")
             ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
         }
     }
@@ -58,7 +74,10 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {
                 return }
-            session.activate()
+//            setupSession()
+//            hapticManager.startExtendedSession()
+
+//            session.activate()
             if let isHapticGuideOn = applicationContext["watchHapticGuide"] as? Bool {
                 self.isHapticGuideOn = isHapticGuideOn
                 print("워치에서 수신한 watchHapticGuide 설정: \(self.isHapticGuideOn)")
@@ -99,7 +118,9 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                     }
                 case .pause, .stop, .jump:
                     self.hapticManager.stopHaptic()
-                case .ready, .done:
+                case .ready:
+                    WKInterfaceController.reloadRootPageControllers(withNames: [], contexts: [], orientation: .horizontal, pageIndex: 0)
+                case .done:
                     break
                 }
             } else {
