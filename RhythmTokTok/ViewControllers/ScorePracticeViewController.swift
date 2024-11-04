@@ -50,6 +50,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        countdownTime = 3
         Task { await createMIDIFile(score: currentScore) }
         UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
         statusTags.updateTag()
