@@ -12,12 +12,14 @@ import WatchKit
 
 class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, ObservableObject {
     @Published var isHapticActive: Bool = false
+    @Published var hapticType: WKHapticType = .start // 선택된 햅틱 타입
+    
     var cancellables = Set<AnyCancellable>()
 
     private var session: WKExtendedRuntimeSession?
     private var timers: [DispatchSourceTimer] = [] // 햅틱 타임스케쥴러 관리 배열
     private var currentBatchIndex = 0 // 현재 실행 중인 배치 인덱스
-    private var hapticType: WKHapticType = .start
+//    private var hapticType: WKHapticType = .start
     private var beatTimes: [Double] = []
     private var startTimeInterval: TimeInterval = 0
 
@@ -102,7 +104,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
         timer.schedule(deadline: .now(), repeating: interval, leeway: .milliseconds(50))
         timer.setEventHandler {
             DispatchQueue.main.async {
-                WKInterfaceDevice.current().play(.start) // 선택된 햅틱 타입 적용
+                WKInterfaceDevice.current().play(self.hapticType) // 선택된 햅틱 타입 적용
             }
         }
         timer.resume()
@@ -128,7 +130,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
             timer.schedule(deadline: .now() + beatTime, leeway: .milliseconds(1))
             timer.setEventHandler {
                 DispatchQueue.main.async {
-                    WKInterfaceDevice.current().play(.start)  // 햅틱 실행
+                    WKInterfaceDevice.current().play(self.hapticType)  // 선택된 햅틱 타입 적용
                 }
             }
             timer.resume()
