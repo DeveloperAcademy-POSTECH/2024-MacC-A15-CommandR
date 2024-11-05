@@ -11,7 +11,7 @@ class ControlButtonView: UIView {
     let resetButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
                                              title: "처음부터", backGroundColor: .clear,
                                               foregoundColor: .lableSecondary,
-                                              strokeColor: .buttonInactive, pressedColor: .gray01)
+                                              strokeColor: .borderActive, pressedColor: .gray01)
     let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
                                                  title: "이전마디", backGroundColor: .gray02,
                                                  foregoundColor: .lableSecondary, pressedColor: .gray03)

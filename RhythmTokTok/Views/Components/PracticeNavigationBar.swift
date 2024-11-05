@@ -101,7 +101,7 @@ class PracticeNavigationBar: UIView {
             if isConnected {
                 self.watchConnectImageView.image = UIImage(named: "watchActive")?
                     .withRenderingMode(.alwaysTemplate)
-                self.watchConnectImageView.tintColor = .green
+                self.watchConnectImageView.tintColor = .success
             } else {
                 self.watchConnectImageView.image = UIImage(named: "watchOff")?
                     .withRenderingMode(.alwaysTemplate)
