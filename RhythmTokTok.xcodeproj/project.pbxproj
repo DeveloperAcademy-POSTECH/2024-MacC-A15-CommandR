@@ -94,6 +94,7 @@
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
 		D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34EEB612CC2A80F007BE568 /* PlayStatus.swift */; };
 		D34EEB632CC2A8ED007BE568 /* PlayStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34EEB612CC2A80F007BE568 /* PlayStatus.swift */; };
+		D35FC8C72CDA3C0100923736 /* WatchHapticOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35FC8C62CDA3C0100923736 /* WatchHapticOptionView.swift */; };
 		D3693D6F2CD3C7EE00E37D2C /* WatchCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3693D6E2CD3C7EE00E37D2C /* WatchCountdownView.swift */; };
 		D36E430D2CB642630038994B /* WatchtoiOSConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* WatchtoiOSConnectivityManager.swift */; };
 		D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */; };
@@ -249,6 +250,7 @@
 		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
 		D34EEB612CC2A80F007BE568 /* PlayStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayStatus.swift; sourceTree = "<group>"; };
+		D35FC8C62CDA3C0100923736 /* WatchHapticOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchHapticOptionView.swift; sourceTree = "<group>"; };
 		D3693D6E2CD3C7EE00E37D2C /* WatchCountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCountdownView.swift; sourceTree = "<group>"; };
 		D36E430C2CB642630038994B /* WatchtoiOSConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchtoiOSConnectivityManager.swift; sourceTree = "<group>"; };
 		D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetting.swift; sourceTree = "<group>"; };
@@ -643,6 +645,7 @@
 			isa = PBXGroup;
 			children = (
 				02CFE1232CB1156C008454B8 /* WatchWaitingView.swift */,
+				D35FC8C62CDA3C0100923736 /* WatchHapticOptionView.swift */,
 				D3693D6E2CD3C7EE00E37D2C /* WatchCountdownView.swift */,
 				D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */,
 				D3D6D1B82CBE8B6300D22886 /* WatchScoreTitleView.swift */,
@@ -924,6 +927,7 @@
 				D36E430D2CB642630038994B /* WatchtoiOSConnectivityManager.swift in Sources */,
 				D3D6D1B92CBE8B6300D22886 /* WatchScoreTitleView.swift in Sources */,
 				02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */,
+				D35FC8C72CDA3C0100923736 /* WatchHapticOptionView.swift in Sources */,
 				02CFE1242CB1156C008454B8 /* WatchWaitingView.swift in Sources */,
 				02CFE1222CB1156C008454B8 /* RhythmTokTokWatchApp.swift in Sources */,
 				D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */,
