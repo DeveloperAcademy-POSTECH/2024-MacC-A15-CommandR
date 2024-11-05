@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct MeasureButton: View{
+struct MeasureButton: View {
     var currentRow: Int
     var currentCol: Int
     @Binding var selectedMeasures: [[Int]]
