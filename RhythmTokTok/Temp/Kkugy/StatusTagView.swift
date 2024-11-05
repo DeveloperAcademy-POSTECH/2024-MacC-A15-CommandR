@@ -40,11 +40,13 @@ class StatusTagView: UIView {
 
         soundSetLabel.text = ""
         soundSetLabel.textAlignment = .center
+        soundSetLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
         soundSetLabel.textColor = UIColor(named: "lable_tertiary")
         soundSetLabel.translatesAutoresizingMaskIntoConstraints = false
         
         hapticLabel.text = ""
         hapticLabel.textAlignment = .center
+        hapticLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
         hapticLabel.textColor = UIColor(named: "lable_tertiary")
         hapticLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -96,7 +98,9 @@ class StatusTagView: UIView {
         if hapticSetting {
             let text = "🫨 워치 진동 ON"
             let attributedString = NSMutableAttributedString(string: text)
-            attributedString.addAttribute(.foregroundColor, value: UIColor.success, range: (text as NSString).range(of: "ON"))
+            attributedString.addAttribute(.foregroundColor,
+                                          value: UIColor.success,
+                                          range: (text as NSString).range(of: "ON"))
             hapticLabel.attributedText = attributedString
         } else {
             hapticLabel.text = "🚫 워치 진동 OFF"
