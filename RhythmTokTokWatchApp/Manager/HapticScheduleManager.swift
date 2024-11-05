@@ -39,6 +39,12 @@ class HapticScheduleManager: NSObject, ObservableObject {
             .store(in: &cancellables)
     }
     
+    func cancelHapticSubscriptions() {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        print("All haptic subscriptions canceled")
+    }
+    
     // 타이머가 호출할 메서드
     @objc private func triggerHaptic() {
         startHapticWithBeats(batchSize: 100)
@@ -78,8 +84,6 @@ class HapticScheduleManager: NSObject, ObservableObject {
         }
         timer.resume()
         timers.append(timer)
-        
-//        isHapticActive = true
     }
     
     // 타이밍에 따라 햅틱 시퀀스 배치로 나누어 타이머 실행

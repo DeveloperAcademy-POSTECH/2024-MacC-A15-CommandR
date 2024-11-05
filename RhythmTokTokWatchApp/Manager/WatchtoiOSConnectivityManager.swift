@@ -21,6 +21,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     private var hapticManager = HapticScheduleManager()
     private var workoutSession: HKWorkoutSession?
     private let healthStore = HKHealthStore()
+    private var isPlayWorkoutSession = false
 
     override init() {
         super.init()
@@ -33,7 +34,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     }
     
     // MARK: HeathKit Workout Session 처리
-    func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
+    func workoutSession(_ workoutSession: HKWorkoutSession,
+                        didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
         print("워크아웃 상태 변화")
     }
     
@@ -50,13 +52,18 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: config)
             workoutSession?.delegate = self
             workoutSession?.startActivity(with: Date())
+            isPlayWorkoutSession = true
         } catch {
             ErrorHandler.handleError(error: error)
         }
     }
     
     func stopWorkoutSession() {
+        self.hapticManager.cancelHapticSubscriptions()
+        self.hapticManager.stopHaptic()
         workoutSession?.end()
+        isPlayWorkoutSession = false
+        workoutSession = nil
     }
     
     // MARK: Watch Connectivity Session 처리
@@ -93,6 +100,19 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
+            if !isPlayWorkoutSession {
+                DispatchQueue.main.async {
+                    self.startWorkoutSession()
+                    self.hapticManager.setupHapticActivationListener()
+                }
+            }
+            
+            // 워크아웃 종료 수신
+            if applicationContext["stopWorkout"] as? Bool ?? false {
+                stopWorkoutSession()
+                return
+            } 
+
             // Haptic Guide 설정 업데이트
             self.updateHapticGuideSetting(applicationContext)
             
@@ -120,6 +140,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             self.selectedScoreTitle = scoreTitle
             self.hapticSequence = hapticSequence
             self.isSelectedScore = !scoreTitle.isEmpty
+            print("받은 햅틱: \(hapticSequence)")
         } else {
             ErrorHandler.handleError(error: "받은 햅틱이 없습니다")
         }
