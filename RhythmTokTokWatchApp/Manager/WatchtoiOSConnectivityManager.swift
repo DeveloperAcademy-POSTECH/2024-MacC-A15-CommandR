@@ -5,26 +5,57 @@
 //  Created by Byeol Kim on 10/9/24.
 //
 
-import Foundation
-import WatchConnectivity
 import Combine
+import Foundation
+import HealthKit
+import WatchConnectivity
 import WatchKit
 
-class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
-    
-    var hapticManager = HapticScheduleManager()
+class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelegate, HKWorkoutSessionDelegate {
     @Published var isSelectedScore: Bool = false
     @Published var selectedScoreTitle: String = ""
     @Published var playStatus: PlayStatus = .ready
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
     @Published var startTime: TimeInterval?
+    private var hapticManager = HapticScheduleManager()
+    private var workoutSession: HKWorkoutSession?
+    private let healthStore = HKHealthStore()
+    
     
     override init() {
         super.init()
         setupSession()
     }
     
+    // MARK: HeathKit Workout Session 처리
+    func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
+        print("워크아웃 상태 변화")
+    }
+    
+    func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: any Error) {
+        print("워크아웃 활성화 실패")
+    }
+    
+    func startWorkoutSession() {
+        let config = HKWorkoutConfiguration()
+        config.activityType = .other
+        config.locationType = .indoor
+        
+        do {
+            workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: config)
+            workoutSession?.delegate = self
+            workoutSession?.startActivity(with: Date())
+        } catch {
+            ErrorHandler.handleError(error: error)
+        }
+    }
+    
+    func stopWorkoutSession() {
+        workoutSession?.end()
+    }
+    
+    // MARK: Watch Connectivity Session 처리
     private func setupSession() {
         guard WCSession.isSupported() else {
             ErrorHandler.handleError(error: "WCSession 지원되지 않음")
@@ -53,18 +84,14 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     // MARK: - WCSessionDelegate 메서드
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState,
                  error: Error?) {
-        Logger.shared.watchStatus = activationStateDescription(for: activationState)
 
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
-                Logger.shared.sessionStart = String((Int(Logger.shared.sessionStart) ?? 0) + 1)
-//                Logger.shared.watchStatus = String(self.hapticManager.isHapticActive)
-                self.hapticManager.startExtendedSession()
+                self.hapticManager.setupHapticActivationListener()
             }
         }
         if let error = error {
-            Logger.shared.sessionStart = String("-1")
             ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
         }
     }
@@ -74,9 +101,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {
                 return }
-//            setupSession()
-//            hapticManager.startExtendedSession()
-
 //            session.activate()
             if let isHapticGuideOn = applicationContext["watchHapticGuide"] as? Bool {
                 self.isHapticGuideOn = isHapticGuideOn
@@ -90,10 +114,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 self.selectedScoreTitle = scoreTitle
                 self.hapticSequence = hapticSequence
                 self.isSelectedScore = !scoreTitle.isEmpty
-                print("곡 선택 완료, 곡 제목: \(scoreTitle)")
-                print("곡 햅틱 갯수: \(hapticSequence.count)")
             } else {
-                print("햅틱 셋팅 없음")
+                ErrorHandler.handleError(error: "받은 햅틱이 없습니다")
             }
             // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
             if let playStatusString = applicationContext["playStatus"] as? String,
@@ -104,11 +126,10 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 switch playStatus {
                 case .play:
                     if let startTime = applicationContext["startTime"] as? TimeInterval {
-                        print("시작 시간 수신: \(startTime)")
                         self.startTime = startTime
                         if self.isHapticGuideOn {
                             // 진동 가이드가 활성화된 경우
-                            self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
+                            startHapticSequence(startTime: startTime)
                         } else {
                             // 진동 가이드가 비활성화된 경우
                             print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
@@ -119,7 +140,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 case .pause, .stop, .jump:
                     self.hapticManager.stopHaptic()
                 case .ready:
-                    WKInterfaceController.reloadRootPageControllers(withNames: [], contexts: [], orientation: .horizontal, pageIndex: 0)
+                    WKInterfaceController.reloadRootPageControllers(withNames: [],
+                                                                    contexts: [], orientation: .horizontal, pageIndex: 0)
                 case .done:
                     break
                 }
@@ -128,6 +150,12 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             }
         }
     }
+    
+    func startHapticSequence(startTime: TimeInterval) {
+        startWorkoutSession()
+        self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
+    }
+    
     // 아이폰으로 상태 변화 요청
     func playButtonTapped() {
         playStatus = .play
