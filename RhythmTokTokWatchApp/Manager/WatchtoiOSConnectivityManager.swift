@@ -72,19 +72,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         print("watchOS 앱에서 WCSession 활성화 요청")
     }
     
-    func activationStateDescription(for state: WCSessionActivationState) -> String {
-        switch state {
-        case .notActivated:
-            return "Not Activated"
-        case .inactive:
-            return "Inactive"
-        case .activated:
-            return "Activated"
-        @unknown default:
-            return "Unknown"
-        }
-    }
-    
     // MARK: - WCSessionDelegate 메서드
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState,
                  error: Error?) {
@@ -104,55 +91,70 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     // MARK: - iPhone으로부터 Application Context 수신
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else {
-                return }
-//            session.activate()
-            if let isHapticGuideOn = applicationContext["watchHapticGuide"] as? Bool {
-                self.isHapticGuideOn = isHapticGuideOn
-                print("워치에서 수신한 watchHapticGuide 설정: \(self.isHapticGuideOn)")
-            }
+            guard let self = self else { return }
             
-            // 1. 곡 선택 후 [제목], [햅틱 시퀀스] 받음
-            if let scoreTitle = applicationContext["scoreTitle"] as? String,
-               let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
-                self.hapticManager.stopHaptic()
-                self.selectedScoreTitle = scoreTitle
-                self.hapticSequence = hapticSequence
-                self.isSelectedScore = !scoreTitle.isEmpty
-            } else {
-                ErrorHandler.handleError(error: "받은 햅틱이 없습니다")
-            }
-            // 2. 연습뷰에서 [재생 상태]를 받음. 재생인 경우 [시작 시간] 받음.
-            if let playStatusString = applicationContext["playStatus"] as? String,
-               let playStatus = PlayStatus(rawValue: playStatusString) {
-                self.playStatus = playStatus
-                print("재생 상태 업데이트: \(playStatus.rawValue)")
-                
-                switch playStatus {
-                case .play:
-                    if let startTime = applicationContext["startTime"] as? TimeInterval {
-                        self.startTime = startTime
-                        if self.isHapticGuideOn {
-                            // 진동 가이드가 활성화된 경우
-                            self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
-                        } else {
-                            // 진동 가이드가 비활성화된 경우
-                            print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
-                        }
+            // Haptic Guide 설정 업데이트
+            self.updateHapticGuideSetting(applicationContext)
+            
+            // 곡 제목과 햅틱 시퀀스 업데이트
+            self.updateScoreAndHapticSequence(applicationContext)
+            
+            // 재생 상태 업데이트
+            self.updatePlayStatus(applicationContext)
+        }
+    }
+
+    // MARK: - Haptic Guide 설정 업데이트
+    private func updateHapticGuideSetting(_ applicationContext: [String: Any]) {
+        if let isHapticGuideOn = applicationContext["watchHapticGuide"] as? Bool {
+            self.isHapticGuideOn = isHapticGuideOn
+            print("워치에서 수신한 watchHapticGuide 설정: \(self.isHapticGuideOn)")
+        }
+    }
+
+    // MARK: - 곡 제목과 햅틱 시퀀스 업데이트
+    private func updateScoreAndHapticSequence(_ applicationContext: [String: Any]) {
+        if let scoreTitle = applicationContext["scoreTitle"] as? String,
+           let hapticSequence = applicationContext["hapticSequence"] as? [Double] {
+            self.hapticManager.stopHaptic()
+            self.selectedScoreTitle = scoreTitle
+            self.hapticSequence = hapticSequence
+            self.isSelectedScore = !scoreTitle.isEmpty
+        } else {
+            ErrorHandler.handleError(error: "받은 햅틱이 없습니다")
+        }
+    }
+
+    // MARK: - 재생 상태 업데이트
+    private func updatePlayStatus(_ applicationContext: [String: Any]) {
+        if let playStatusString = applicationContext["playStatus"] as? String,
+           let playStatus = PlayStatus(rawValue: playStatusString) {
+            self.playStatus = playStatus
+            print("재생 상태 업데이트: \(playStatus.rawValue)")
+            
+            switch playStatus {
+            case .play:
+                if let startTime = applicationContext["startTime"] as? TimeInterval {
+                    self.startTime = startTime
+                    if self.isHapticGuideOn {
+                        // 진동 가이드가 활성화된 경우
+                        self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
                     } else {
-                        ErrorHandler.handleError(error: "시작 시간 누락")
+                        ErrorHandler.handleError(error: "진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
                     }
-                case .pause, .stop, .jump:
-                    self.hapticManager.stopHaptic()
-                case .ready:
-                    WKInterfaceController.reloadRootPageControllers(withNames: [],
-                                                                    contexts: [], orientation: .horizontal, pageIndex: 0)
-                case .done:
-                    break
+                } else {
+                    ErrorHandler.handleError(error: "시작 시간 누락")
                 }
-            } else {
-                ErrorHandler.handleError(error: "알 수 없는 재생 상태")
+            case .pause, .stop, .jump:
+                self.hapticManager.stopHaptic()
+            case .ready:
+                WKInterfaceController.reloadRootPageControllers(withNames: [],
+                                                                contexts: [], orientation: .horizontal, pageIndex: 0)
+            case .done:
+                break
             }
+        } else {
+            ErrorHandler.handleError(error: "알 수 없는 재생 상태")
         }
     }
     
