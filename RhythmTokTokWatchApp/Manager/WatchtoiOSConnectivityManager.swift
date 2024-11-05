@@ -21,11 +21,15 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     private var hapticManager = HapticScheduleManager()
     private var workoutSession: HKWorkoutSession?
     private let healthStore = HKHealthStore()
-    
-    
+
     override init() {
         super.init()
         setupSession()
+    }
+    
+    deinit {
+        // 메모리 해제시 워크아웃 종료
+        stopWorkoutSession()
     }
     
     // MARK: HeathKit Workout Session 처리
@@ -88,6 +92,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
+                self.startWorkoutSession()
                 self.hapticManager.setupHapticActivationListener()
             }
         }
@@ -129,7 +134,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                         self.startTime = startTime
                         if self.isHapticGuideOn {
                             // 진동 가이드가 활성화된 경우
-                            startHapticSequence(startTime: startTime)
+                            self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
                         } else {
                             // 진동 가이드가 비활성화된 경우
                             print("진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
@@ -149,11 +154,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
                 ErrorHandler.handleError(error: "알 수 없는 재생 상태")
             }
         }
-    }
-    
-    func startHapticSequence(startTime: TimeInterval) {
-        startWorkoutSession()
-        self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
     }
     
     // 아이폰으로 상태 변화 요청

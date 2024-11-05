@@ -10,38 +10,16 @@ import UserNotifications
 import WatchConnectivity
 import WatchKit
 
-class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, ObservableObject {
+class HapticScheduleManager: NSObject, ObservableObject {
     @Published var isHapticActive: Bool = false
     @Published var hapticType: WKHapticType = .start // 선택된 햅틱 타입
-    
-    var cancellables = Set<AnyCancellable>()
 
-    private var session: WKExtendedRuntimeSession?
     private var timers: [DispatchSourceTimer] = [] // 햅틱 타임스케쥴러 관리 배열
     private var currentBatchIndex = 0 // 현재 실행 중인 배치 인덱스
 //    private var hapticType: WKHapticType = .start
     private var beatTimes: [Double] = []
     private var startTimeInterval: TimeInterval = 0
-
-    // MARK: WKExtendedRuntimeSession 로직
-    // 백그라운드에서 햅틱 적용을 위해 WKExtendedRuntimeSession 사용
-    func startExtendedSession() {
-        // 세션 시작시 초기화
-        self.isHapticActive = false
-        session = WKExtendedRuntimeSession()
-        session?.delegate = self
-        session?.start()
-    }
-    
-    func stopExtendedSession() {
-        session?.invalidate()
-    }
-
-    // WKExtendedRuntimeSessionDelegate methods
-    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        // 백그라운드에서 isHapticActive 반응형으로 동작 예약
-        Logger.shared.activatedSession = String((Int(Logger.shared.activatedSession) ?? 0) + 1)
-    }
+    private var cancellables = Set<AnyCancellable>()
     
     func setupHapticActivationListener() {
         self.$isHapticActive
@@ -64,19 +42,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
     // 타이머가 호출할 메서드
     @objc private func triggerHaptic() {
         startHapticWithBeats(batchSize: 100)
-    }
-
-    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("Extended session will expire soon")
-    }
-    
-    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession,
-                                didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason,
-                                error: (any Error)?) {
-//        Logger.shared.watchStatus = "재활성화함"
-//        startExtendedSession()
-        ErrorHandler.handleError(error: error as Any)
- 
     }
         
     // MARK: Haptic 관리 로직
@@ -171,6 +136,5 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
         }
         timers.removeAll()  // 배열 비우기
         self.isHapticActive = false
-//        stopExtendedSession()
     }
 }
