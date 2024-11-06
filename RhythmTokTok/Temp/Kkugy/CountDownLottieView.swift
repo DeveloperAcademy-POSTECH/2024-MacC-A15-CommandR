@@ -58,4 +58,8 @@ class CountDownLottieView {
         backgroundView.isHidden = true
         animationView.isHidden = true
     }
+    
+    func showBackground() {
+        backgroundView.isHidden = false
+    }
 }

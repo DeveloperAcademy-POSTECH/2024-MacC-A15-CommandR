@@ -5,6 +5,7 @@
 //  Created by sungkug_apple_developer_ac on 10/15/24.
 //
 
+import Combine
 import UIKit
 
 class ScorePracticeScoreCardView: UIView {
@@ -26,6 +27,13 @@ class ScorePracticeScoreCardView: UIView {
         setupView()
     }
     
+    var textPublisher = PassthroughSubject<String, Never>()
+    
+    func updateCurrentMeasureLabelText(_ text: String) {
+        currentMeasureLabel.text = text
+        textPublisher.send(text)
+    }
+    
     private func setupView() {
         scoreCardView.backgroundColor = UIColor(named: "background_secondary")
         scoreCardView.layer.cornerRadius = 12
@@ -44,7 +52,7 @@ class ScorePracticeScoreCardView: UIView {
         bpmLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreCardView.addSubview(bpmLabel)
         
-        currentMeasureLabel.text = "0"
+        currentMeasureLabel.text = "1"
         currentMeasureLabel.textAlignment = .left
         currentMeasureLabel.textColor = UIColor.blue05
         currentMeasureLabel.font = .systemFont(ofSize: 24, weight: .regular)

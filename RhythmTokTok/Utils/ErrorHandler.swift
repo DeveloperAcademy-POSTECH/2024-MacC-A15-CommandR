@@ -9,8 +9,8 @@ import Foundation
 
 class ErrorHandler {
     /// 통합 에러 핸들러
-    static func handleError(fileName: String = #file, functionName: String = #function,
-                                lineNumber: Int = #line, error: Any) {
+    static func handleError(fileName: String = #file,
+                            functionName: String = #function, lineNumber: Int = #line, error: Any) {
         let file = (fileName as NSString).lastPathComponent
         
         // errorMessage 변수를 먼저 정의

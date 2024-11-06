@@ -18,7 +18,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
     @Published var startTime: TimeInterval?
-    private var hapticManager = HapticScheduleManager()
+    var hapticManager = HapticScheduleManager()
     private var workoutSession: HKWorkoutSession?
     private let healthStore = HKHealthStore()
     private var isPlayWorkoutSession = false
@@ -140,7 +140,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             self.selectedScoreTitle = scoreTitle
             self.hapticSequence = hapticSequence
             self.isSelectedScore = !scoreTitle.isEmpty
-            print("받은 햅틱: \(hapticSequence)")
         } else {
             ErrorHandler.handleError(error: "받은 햅틱이 없습니다")
         }
@@ -151,7 +150,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         if let playStatusString = applicationContext["playStatus"] as? String,
            let playStatus = PlayStatus(rawValue: playStatusString) {
             self.playStatus = playStatus
-            print("재생 상태 업데이트: \(playStatus.rawValue)")
             
             switch playStatus {
             case .play:

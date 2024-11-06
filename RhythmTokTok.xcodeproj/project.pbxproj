@@ -81,11 +81,8 @@
 		1ED9FEE42CC26E6000472C51 /* mannam.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1ED9FEDF2CC26E6000472C51 /* mannam.xml */; };
 		1EF5145D2CD763FD00F68084 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5145C2CD763DA00F68084 /* Logger.swift */; };
 		1EF5145E2CD764A400F68084 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5145C2CD763DA00F68084 /* Logger.swift */; };
-		1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */; };
-		1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B32CB55A3300ADB783 /* ListView.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* IOStoWatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* IOStoWatchConnectivityManager.swift */; };
 		1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */; };
-		1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */; };
 		616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0972CC3F76300F2C72D /* ScoreView.swift */; };
 		616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0D72CC5269100F2C72D /* MeasureButton.swift */; };
 		61B209602CD771F000E51C67 /* mutedClap.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 61B2095F2CD771F000E51C67 /* mutedClap.sf2 */; };
@@ -238,11 +235,8 @@
 		1ED9FEE02CC26E6000472C51 /* mannam-f 2.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "mannam-f 2.xml"; sourceTree = "<group>"; };
 		1ED9FEE12CC26E6000472C51 /* red.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = red.xml; sourceTree = "<group>"; };
 		1EF5145C2CD763DA00F68084 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		1EF8A0B32CB55A3300ADB783 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* IOStoWatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOStoWatchConnectivityManager.swift; sourceTree = "<group>"; };
 		1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accidental.swift; sourceTree = "<group>"; };
-		1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		616BD0972CC3F76300F2C72D /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		616BD0D72CC5269100F2C72D /* MeasureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureButton.swift; sourceTree = "<group>"; };
 		61B2095F2CD771F000E51C67 /* mutedClap.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mutedClap.sf2; sourceTree = "<group>"; };
@@ -507,7 +501,6 @@
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0B02CB55A1B00ADB783 /* DataManager.swift */,
 				EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */,
 				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
 				EE7B28A52CBE5CC200325725 /* ScoreManager.swift */,
@@ -584,7 +577,6 @@
 		1EF8A0AA2CB559C000ADB783 /* Wendy */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0BD2CB55A7F00ADB783 /* ServerManager.swift */,
 			);
 			path = Wendy;
 			sourceTree = "<group>";
@@ -620,7 +612,6 @@
 		1EF8A0AE2CB559DB00ADB783 /* Yusol */ = {
 			isa = PBXGroup;
 			children = (
-				1EF8A0B32CB55A3300ADB783 /* ListView.swift */,
 			);
 			path = Yusol;
 			sourceTree = "<group>";
@@ -866,11 +857,9 @@
 				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
 				1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */,
 				D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */,
-				1EF8A0B42CB55A3700ADB783 /* ListView.swift in Sources */,
 				EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */,
 				1EF8A0B82CB55A4B00ADB783 /* IOStoWatchConnectivityManager.swift in Sources */,
 				616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */,
-				1EF8A0B12CB55A2500ADB783 /* DataManager.swift in Sources */,
 				1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */,
 				1ED9FEC32CBE4A8300472C51 /* ScorePracticeScoreCardView.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
@@ -907,7 +896,6 @@
 				02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */,
 				1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */,
 				D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */,
-				1EF8A0BE2CB55A8700ADB783 /* ServerManager.swift in Sources */,
 				1ED9FECF2CBE8ED000472C51 /* PlayPauseButton.swift in Sources */,
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
 				EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */,
