@@ -14,7 +14,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var countDownLottieView: CountDownLottieView? // 로띠뷰
     var countdownTimer: Timer?
     var countdownTime: Int = 3 // 원하는 카운트다운 시간 (초 단위)
-  
+    private var jumpMeasureWorkItem: DispatchWorkItem?
+    
     // 악보 관리용
     private var currentScore: Score // 현재 악보 score
     private var currentMeasure: Int = 0// 현재 진행중인 마디
@@ -37,7 +38,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private let statusTags = StatusTagView()
     private let scoreCardView = ScorePracticeScoreCardView()
     private let controlButtonView = ControlButtonView()
-
+    
     init(currentScore: Score) {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
@@ -86,18 +87,18 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         let containerView = UIView()
         containerView.backgroundColor = .white
         self.view = containerView
-
+        
         // 필요한 서브 뷰 추가 및 기본 설정
         [practicNavBar, divider, scoreCardView, progressBar, statusTags, controlButtonView].forEach {
             containerView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-
+        
         // 추가 UI 초기화 설정
         scoreCardView.titleLabel.text = currentScore.title
         progressBar.setProgress(0.0, animated: false)
         countDownLottieView = CountDownLottieView(view: self.view, animationName: "Countdown")
-
+        
         // 제약 조건 추가
         setupConstraints()
     }
@@ -133,7 +134,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             scoreCardView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 8),
             scoreCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             scoreCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
+            
             // 컨트롤러뷰
             controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             controlButtonView.topAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: 102),
@@ -178,7 +179,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 self?.handlePlayStatusChange(newStatus)
             }
             .store(in: &cancellables)
-
+        
         musicPlayer.$isEnd
             .sink { isEnd in
                 if isEnd {
@@ -207,7 +208,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         progressBar.setProgress(CGFloat(progress), animated: false)
     }
-        
+    
     private func handleWatchAppConnectionChange(_ isConnected: Bool) {
         if isConnected {
             self.practicNavBar.setWatchImage(isConnected: true)
@@ -265,7 +266,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             }
         }
     }
-        
+    
     // 워치에서 버튼 눌렀을 때 notification을 받아서 아이폰 함수를 호출
     @objc private func handleWatchPlayNotification() {
         IOStoWatchConnectivityManager.shared.playStatus = .play
@@ -316,6 +317,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         if currentMeasure != 0 {
             currentMeasure -= 1
         }
+        
         IOStoWatchConnectivityManager.shared.playStatus = .jump
     }
     
@@ -354,9 +356,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 // MARK: 구간 선택 부분
                 if let startMeasureNumber, let endMeasureNumber {
                     hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
-                                                                                  divisions: score.divisions,
-                                                                                  startNumber: startMeasureNumber,
-                                                                                  endNumber: endMeasureNumber)
+                                                                                         divisions: score.divisions,
+                                                                                         startNumber: startMeasureNumber,
+                                                                                         endNumber: endMeasureNumber)
                 } else {
                     hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
                                                                               divisions: score.divisions)
@@ -371,7 +373,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 }
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
-
+                
                 updatePlayPauseButton(true)
                 print("MIDI file successfully loaded and ready to play.")
             } else {
@@ -386,11 +388,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // 워치로 곡 선택 메시지 전송
     func sendHapticSequenceToWatch(hapticSequence: [Double]) async {
         let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-
+        
         if isLaunched {
             let scoreTitle = currentScore.title
             IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
-                                                                           hapticSequence: hapticSequence)
+                                                                    hapticSequence: hapticSequence)
         }
     }
     
@@ -408,7 +410,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
         IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: scoreTitle,
-                                                                    hapticSequence: hapticSequence,
+                                                                                hapticSequence: hapticSequence,
                                                                                 status: .jump, startTime: startTimeInterVal)
     }
     
@@ -486,12 +488,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         controlButtonView.playPauseButton.isPlaying = true
     }
-
+    
     @objc func startCountDownAnimation() {
         Logger.shared.log("Logger: 아이폰 카운트다운 시간")
         countDownLottieView?.play()
     }
-
+    
     @objc func actionStart() {
         self.musicPlayer.playMIDI(delay: 0)
     }
@@ -514,19 +516,32 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func jumpMeasure() {
-//        print("점프 마디 번호 : \(currentMeasure),")
-        let startTime = mediaManager.getMeasureStartTime(currentMeasure: Int(currentMeasure),
-                                                         division: Double(currentScore.divisions))
-        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
-        Task {
-            let hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: currentScore.parts.last!,
-                                                                              divisions: currentScore.divisions,
-                                                                              startNumber: currentMeasure,
-                                                                              endNumber: totalMeasure)
-//            print("점프 햅틱 갯수 : \(hapticSequence.count),")
-            musicPlayer.jumpMIDI(jumpPosition: startTime)
-            sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
-            controlButtonView.playPauseButton.isPlaying = false
+        // 이전 작업 취소
+        jumpMeasureWorkItem?.cancel()
+        
+        // 새로운 DispatchWorkItem 생성
+        jumpMeasureWorkItem = DispatchWorkItem { [weak self] in
+            guard let self = self else { return }
+            Task {
+                let startTime = self.mediaManager.getMeasureStartTime(currentMeasure: Int(self.currentMeasure),
+                                                                      division: Double(self.currentScore.divisions))
+                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
+                                                                                              divisions: self.currentScore.divisions,
+                                                                                              startNumber: self.currentMeasure,
+                                                                                              endNumber: self.totalMeasure)
+                self.musicPlayer.jumpMIDI(jumpPosition: startTime)
+                self.sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
+                print("점프 햅틱 갯수 : \(hapticSequence.count),")
+                self.controlButtonView.playPauseButton.isPlaying = false
+            }
         }
+        
+        // DispatchWorkItem 실행
+        if let workItem = jumpMeasureWorkItem {
+            DispatchQueue.main.async(execute: workItem)
+        }
+        
+        // 라벨 업데이트는 바로 실행
+        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
     }
 }
