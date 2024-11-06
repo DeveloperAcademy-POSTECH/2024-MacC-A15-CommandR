@@ -44,7 +44,7 @@ class ScorePracticeScoreCardView: UIView {
         bpmLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreCardView.addSubview(bpmLabel)
         
-        currentMeasureLabel.text = "0"
+        currentMeasureLabel.text = "1"
         currentMeasureLabel.textAlignment = .left
         currentMeasureLabel.textColor = UIColor.blue05
         currentMeasureLabel.font = .systemFont(ofSize: 24, weight: .regular)

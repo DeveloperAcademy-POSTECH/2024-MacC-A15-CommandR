@@ -59,7 +59,7 @@ class MediaManager {
     // TODO: 나중에 시간 및 마디 번호 관리용 프로퍼티를 만들어서 최적화 필요
     func getCurrentMeasureNumber(currentTime: Double, division: Double) -> Int {
         guard let currentPart = currentPart else {
-            return 0
+            return 1
         }
 
         let measures = currentPart.measures

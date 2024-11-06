@@ -518,7 +518,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private func jumpMeasure() {
         // 이전 작업 취소
         jumpMeasureWorkItem?.cancel()
-        
         // 새로운 DispatchWorkItem 생성
         jumpMeasureWorkItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
