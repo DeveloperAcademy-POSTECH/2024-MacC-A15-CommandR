@@ -87,7 +87,7 @@
 //        let practiceViewButton = UIButton(type: .system)
 //        practiceViewButton.setTitle("연습뷰가기", for: .normal)
 //        practiceViewButton.translatesAutoresizingMaskIntoConstraints = false
-//        practiceViewButton.addTarget(self, action: #selector(navigateToMusicPracticeViewController), for: .touchUpInside)
+//        practiceViewButton.addTarget(self, action: #selector(navigateToScorePracticeViewController), for: .touchUpInside)
 //        view.addSubview(practiceViewButton)
 //        
 //        let listViewButton = UIButton(type: .system)
@@ -164,9 +164,9 @@
 //    }
 //    
 //    // 필요한 인수를 제공하여 메서드 호출 수정
-//    @objc func navigateToMusicPracticeViewController() {
-//        let musicPracticeViewController = ScorePracticeViewController(currentScore: Score())
-//        navigationController?.pushViewController(musicPracticeViewController, animated: true)
+//    @objc func navigateToScorePracticeViewController() {
+//        let scorePracticeViewController = ScorePracticeViewController(currentScore: Score())
+//        navigationController?.pushViewController(scorePracticeViewController, animated: true)
 //    }
 //    
 //    // 화면 표시용 테스트 버튼
