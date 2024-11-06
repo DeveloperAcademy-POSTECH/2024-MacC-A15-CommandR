@@ -471,6 +471,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         sendPlayStatusToWatch(startTimeInterVal: futureTime.timeIntervalSince1970)
         
         // 카운트다운 3초 전에 카운트다운 애니메이션 시작
+        countDownLottieView?.showBackground()
         let countDownTime = futureTime.addingTimeInterval(-3)
         let countDownTimer = Timer(fireAt: countDownTime, interval: 0, target: self, selector: #selector(startCountDownAnimation), userInfo: nil, repeats: false)
         RunLoop.main.add(countDownTimer, forMode: .common)
