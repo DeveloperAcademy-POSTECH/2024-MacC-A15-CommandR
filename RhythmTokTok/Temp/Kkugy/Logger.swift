@@ -13,6 +13,8 @@ class Logger: ObservableObject {
     @Published var watchScheduledTime: String =  "대기중"
     @Published var watchHapticTime: String =  "대기중"
     @Published var activatedSession: String = "0"
+    @Published var sessionStart: String = "0"
+    @Published var watchStatus: String = "처리중"
 
     @Published var iosScheduledTime: String =  "대기중"
     @Published var iosStartTime: String =  "대기중"
