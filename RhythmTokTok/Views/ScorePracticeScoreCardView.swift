@@ -5,6 +5,7 @@
 //  Created by sungkug_apple_developer_ac on 10/15/24.
 //
 
+import Combine
 import UIKit
 
 class ScorePracticeScoreCardView: UIView {
@@ -24,6 +25,13 @@ class ScorePracticeScoreCardView: UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
+    }
+    
+    var textPublisher = PassthroughSubject<String, Never>()
+    
+    func updateCurrentMeasureLabelText(_ text: String) {
+        currentMeasureLabel.text = text
+        textPublisher.send(text)
     }
     
     private func setupView() {

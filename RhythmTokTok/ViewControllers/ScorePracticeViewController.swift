@@ -166,11 +166,16 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             .sink { [weak self] currentTime in
                 self?.updateCurrentMeasureLabel(currentTime: currentTime)
                 self?.updateProgressBar(currentTime: currentTime)
+            }
+            .store(in: &cancellables)
+        
+        scoreCardView.textPublisher
+            .sink { [weak self] current in
                 self?.checkUpdatePreviousButtonState()
                 self?.checkUpdateNextButtonState()
             }
             .store(in: &cancellables)
-        
+    
         // TODO: playerStatus ViewModel로 만들면 좋을 듯
         // WatchManager의 playStatus를 구독하여 UI 업데이트
         IOStoWatchConnectivityManager.shared.$playStatus
@@ -200,7 +205,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         let division = Double(currentScore.divisions)
         currentMeasure = mediaManager.getCurrentMeasureNumber(currentTime: Double(currentTime), division: division)
         
-        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
+        scoreCardView.updateCurrentMeasureLabelText("\(currentMeasure)")
     }
     
     private func updateProgressBar(currentTime: TimeInterval) {
@@ -220,7 +225,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // 처음 마디에 위치할 때 이전마디 처음으로 버튼 비활성화
     private func checkUpdatePreviousButtonState() {
         if let startMeasureNumber = currentScore.parts.last?.measures[1]?[0].number {
-            if currentMeasure == startMeasureNumber || currentMeasure == 0 {
+            if scoreCardView.currentMeasureLabel.text == String(startMeasureNumber) || currentMeasure == 0 {
                 controlButtonView.previousButton.isEnabled = false
                 controlButtonView.resetButton.isEnabled = false
             } else {
@@ -541,6 +546,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         }
         
         // 라벨 업데이트는 바로 실행
-        scoreCardView.currentMeasureLabel.text = "\(currentMeasure)"
+        scoreCardView.updateCurrentMeasureLabelText("\(currentMeasure)")
     }
 }

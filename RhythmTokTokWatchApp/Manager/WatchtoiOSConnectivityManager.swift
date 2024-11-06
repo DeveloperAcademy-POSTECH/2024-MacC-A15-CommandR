@@ -18,7 +18,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
     @Published var startTime: TimeInterval?
-    private var hapticManager = HapticScheduleManager()
+    var hapticManager = HapticScheduleManager()
     private var workoutSession: HKWorkoutSession?
     private let healthStore = HKHealthStore()
     private var isPlayWorkoutSession = false
