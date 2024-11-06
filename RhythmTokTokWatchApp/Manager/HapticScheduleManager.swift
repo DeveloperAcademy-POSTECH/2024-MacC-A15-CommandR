@@ -10,34 +10,18 @@ import UserNotifications
 import WatchConnectivity
 import WatchKit
 
-class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, ObservableObject {
+class HapticScheduleManager: NSObject, ObservableObject {
     @Published var isHapticActive: Bool = false
     @Published var hapticType: WKHapticType = .start // 선택된 햅틱 타입
-    
-    var cancellables = Set<AnyCancellable>()
 
-    private var session: WKExtendedRuntimeSession?
     private var timers: [DispatchSourceTimer] = [] // 햅틱 타임스케쥴러 관리 배열
     private var currentBatchIndex = 0 // 현재 실행 중인 배치 인덱스
 //    private var hapticType: WKHapticType = .start
     private var beatTimes: [Double] = []
     private var startTimeInterval: TimeInterval = 0
-
-    // MARK: WKExtendedRuntimeSession 로직
-    // 백그라운드에서 햅틱 적용을 위해 WKExtendedRuntimeSession 사용
-    func startExtendedSession() {
-        // 세션 시작시 초기화
-        self.isHapticActive = false
-        session = WKExtendedRuntimeSession()
-        session?.delegate = self
-        session?.start()
-    }
-
-    // WKExtendedRuntimeSessionDelegate methods
-    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        // 백그라운드에서 isHapticActive 반응형으로 동작 예약
-        Logger.shared.activatedSession = String((Int(Logger.shared.activatedSession) ?? 0) + 1)
-        
+    private var cancellables = Set<AnyCancellable>()
+    
+    func setupHapticActivationListener() {
         self.$isHapticActive
             .sink { [weak self] isStarted in
                 if isStarted {
@@ -46,10 +30,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
                     }
                     
                     let scheduledTime = Date(timeIntervalSince1970: startTimeInterval)
-                    
-                    // 햅틱 시작 예약
-                    Logger.shared.watchLogTimeInterval(startTimeInterval, message: "예약 시간")
-                    
+                                        
                     // Timer를 사용하여 예약된 시간에 실행
                     let timer = Timer(fireAt: scheduledTime, interval: 0, target: self, selector: #selector(self.triggerHaptic), userInfo: nil, repeats: false)
                     RunLoop.main.add(timer, forMode: .common)
@@ -58,21 +39,15 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
             .store(in: &cancellables)
     }
     
-    // 타이머가 호출할 메서드
-    @objc private func triggerHaptic() {
-        Logger.shared.watchLog("햅틱 실행예약 시간")
-        startHapticWithBeats(batchSize: 100)
-    }
-
-    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("Extended session will expire soon")
+    func cancelHapticSubscriptions() {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        print("All haptic subscriptions canceled")
     }
     
-    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession,
-                                didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason,
-                                error: (any Error)?) {
-        ErrorHandler.handleError(error: error as Any)
- 
+    // 타이머가 호출할 메서드
+    @objc private func triggerHaptic() {
+        startHapticWithBeats(batchSize: 100)
     }
         
     // MARK: Haptic 관리 로직
@@ -109,8 +84,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate, Observa
         }
         timer.resume()
         timers.append(timer)
-        
-//        isHapticActive = true
     }
     
     // 타이밍에 따라 햅틱 시퀀스 배치로 나누어 타이머 실행
