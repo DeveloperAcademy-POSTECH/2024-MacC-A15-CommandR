@@ -79,4 +79,3 @@ class ScoreManager {
         return noteEntity
     }
 }
-

@@ -175,7 +175,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
     }
     
-    
     // 워치 playStatus 변환 요청
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async {

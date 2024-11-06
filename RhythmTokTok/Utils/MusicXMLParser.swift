@@ -150,7 +150,6 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         // Note 관련 정보 파싱
         parseNoteAttributes(trimmedString)
         
-        
         // Page layout 및 system layout 관련 정보 파싱
         if let currentScale = Double(trimmedString), isPageLayout || newSystem {
             parseLayoutAttributes(currentScale)
