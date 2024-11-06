@@ -28,7 +28,7 @@ struct ScoreView: View {
                         .frame(width: 32)
                     
                     ForEach(0..<measureCounts[rowIndex], id: \.self) { colIndex in
-                        MeasureButton(currentRow: rowIndex, currentCol: colIndex, selectedMeasures: $selectedMeasures)
+                        MeasureButton(selectedMeasures: $selectedMeasures, currentRow: rowIndex, currentCol: colIndex)
                     }
                 }
                 .padding(.bottom, 15)
@@ -108,7 +108,3 @@ struct ScoreView: View {
         return num
     }
 }
-
-//#Preview {
-//    ScoreView(currentScore: Score())
-//}

@@ -10,7 +10,6 @@ class ScoreService {
     let context = CoreDataStack.shared.context
     
     // MARK: - Create
-
     func createScore(id: String, title: String, bpm: Int64, createdAt: Date, isHapticOn: Bool, soundType: String?, notes: [NoteEntity]?) {
         let score = ScoreEntity(context: context)
         score.id = id
