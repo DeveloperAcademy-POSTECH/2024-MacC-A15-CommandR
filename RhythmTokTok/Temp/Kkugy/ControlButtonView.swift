@@ -9,7 +9,7 @@ import UIKit
 class ControlButtonView: UIView {
     let playPauseButton = PlayPauseButton()
     let resetButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
-                                             title: "처음부터", backGroundColor: .clear,
+                                              title: "처음부터", backGroundColor: .clear,
                                               foregoundColor: .lableSecondary,
                                               strokeColor: .borderActive, pressedColor: .gray01)
     let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
@@ -18,17 +18,31 @@ class ControlButtonView: UIView {
     let nextButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.right"),
                                              title: "다음마디", backGroundColor: .gray02,
                                              foregoundColor: .lableSecondary, pressedColor: .gray03)
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        resetButton.configurationUpdateHandler = { button in
+            var updatedConfig = button.configuration
+            updatedConfig?.background.strokeColor = button.isEnabled ? .borderActive : UIColor(named: "button_inactive")
+            button.configuration = updatedConfig
+        }
+        
         setupButtons()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        
+        resetButton.configurationUpdateHandler = { button in
+            var updatedConfig = button.configuration
+            updatedConfig?.background.strokeColor = button.isEnabled ? .borderActive : UIColor(named: "button_inactive")
+            button.configuration = updatedConfig
+        }
+        
         setupButtons()
     }
-
+    
     private func setupButtons() {
         
         let measureStack = UIStackView(arrangedSubviews: [previousButton, resetButton, nextButton])
@@ -43,7 +57,7 @@ class ControlButtonView: UIView {
         mainVStack.spacing = 8
         mainVStack.translatesAutoresizingMaskIntoConstraints = false
         addSubview(mainVStack)
-
+        
         NSLayoutConstraint.activate([
             mainVStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             mainVStack.trailingAnchor.constraint(equalTo: trailingAnchor),
