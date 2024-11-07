@@ -12,6 +12,7 @@
 		0232D49C2CD4B04100FDBFAF /* star.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4992CD4B04100FDBFAF /* star.xml */; };
 		0232D4A02CD5F5A600FDBFAF /* shinsadong.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */; };
 		0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49E2CD5F5A600FDBFAF /* cry.xml */; };
+		0232D4AC2CDC721B00FDBFAF /* doraji.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4AB2CDC721B00FDBFAF /* doraji.xml */; };
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
 		02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */; };
 		02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEF2CB10A13003CEC8A /* ViewController.swift */; };
@@ -165,6 +166,7 @@
 		0232D4992CD4B04100FDBFAF /* star.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = star.xml; sourceTree = "<group>"; };
 		0232D49E2CD5F5A600FDBFAF /* cry.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = cry.xml; sourceTree = "<group>"; };
 		0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = shinsadong.xml; sourceTree = "<group>"; };
+		0232D4AB2CDC721B00FDBFAF /* doraji.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = doraji.xml; sourceTree = "<group>"; };
 		02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTok.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
 				0232D49E2CD5F5A600FDBFAF /* cry.xml */,
 				0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */,
+				0232D4AB2CDC721B00FDBFAF /* doraji.xml */,
 				61F12AAC2CDA58E20005EFED /* metronome.xml */,
 				1ED9FEBD2CBD571300472C51 /* Lotties */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
@@ -765,6 +768,7 @@
 				02BFECF82CB10A15003CEC8A /* Assets.xcassets in Resources */,
 				02BFECFB2CB10A15003CEC8A /* Base in Resources */,
 				1E3E09302CB2AAB400EE1868 /* re.mp3 in Resources */,
+				0232D4AC2CDC721B00FDBFAF /* doraji.xml in Resources */,
 				1E3E094F2CB3EE9F00EE1868 /* speechSi.mp3 in Resources */,
 				1E3E09312CB2AAB400EE1868 /* doh.mp3 in Resources */,
 				1E3E09322CB2AAB400EE1868 /* ra.mp3 in Resources */,
