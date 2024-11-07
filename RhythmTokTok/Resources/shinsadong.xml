@@ -73,7 +73,15 @@
       </score-part>
     </part-list>
   <part id="P1">
-    <measure number="1" width="243.46">
+  <measure number="1">
+      <note default-x="13" default-y="-20">
+        <rest/>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        </note>
+  </measure>
+    <measure number="2" width="243.46">
       <print>
         <system-layout>
           <system-margins>
@@ -156,7 +164,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="2" width="144.18">
+    <measure number="3" width="144.18">
       <note default-x="13" default-y="-5">
         <pitch>
           <step>E</step>
@@ -217,7 +225,7 @@
         <stem>down</stem>
         </note>
       </measure>
-    <measure number="3" width="188.36">
+    <measure number="4" width="188.36">
       <note default-x="13" default-y="-20">
         <rest/>
         <duration>2</duration>
@@ -307,7 +315,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="4" width="228.38">
+    <measure number="5" width="228.38">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -372,7 +380,7 @@
         <stem>up</stem>
         </note>
       </measure>
-    <measure number="5" width="196.95">
+    <measure number="6" width="196.95">
       <note default-x="13" default-y="-20">
         <rest/>
         <duration>2</duration>
@@ -444,7 +452,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="6" width="200.67">
+    <measure number="7" width="200.67">
       <note default-x="13" default-y="-20">
         <rest/>
         <duration>2</duration>
@@ -532,7 +540,7 @@
         <stem>down</stem>
         </note>
       </measure>
-    <measure number="7" width="626">
+    <measure number="8" width="626">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -626,7 +634,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="8" width="267.03">
+    <measure number="9" width="267.03">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -654,7 +662,7 @@
         <type>quarter</type>
         </note>
       </measure>
-    <measure number="9" width="186.5">
+    <measure number="10" width="186.5">
       <note default-x="13" default-y="-20">
         <rest/>
         <duration>2</duration>
@@ -714,7 +722,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="10" width="172.48">
+    <measure number="11" width="172.48">
       <note default-x="13" default-y="-20">
         <pitch>
           <step>B</step>
@@ -792,7 +800,7 @@
           </notations>
         </note>
       </measure>
-    <measure number="11" width="626">
+    <measure number="12" width="626">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -885,7 +893,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="12" width="190.58">
+    <measure number="13" width="190.58">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -951,7 +959,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="13" width="248.88">
+    <measure number="14" width="248.88">
       <note default-x="13" default-y="-20">
         <rest/>
         <duration>2</duration>
@@ -1035,7 +1043,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="14" width="186.54">
+    <measure number="15" width="186.54">
       <note default-x="13" default-y="10">
         <pitch>
           <step>A</step>
@@ -1091,7 +1099,7 @@
         <stem>down</stem>
         </note>
       </measure>
-    <measure number="15" width="626">
+    <measure number="16" width="626">
       <print new-page="yes">
         <system-layout>
           <system-margins>
@@ -1185,7 +1193,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="16" width="257.76">
+    <measure number="17" width="257.76">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -1276,7 +1284,7 @@
         <stem>down</stem>
         </note>
       </measure>
-    <measure number="17" width="195.83">
+    <measure number="18" width="195.83">
       <note default-x="13" default-y="-20">
         <rest/>
         <duration>2</duration>
@@ -1336,7 +1344,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="18" width="172.41">
+    <measure number="19" width="172.41">
       <note default-x="13" default-y="-10">
         <pitch>
           <step>D</step>
@@ -1392,7 +1400,7 @@
         <stem>down</stem>
         </note>
       </measure>
-    <measure number="19" width="626">
+    <measure number="20" width="626">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -1473,7 +1481,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="20" width="139.69">
+    <measure number="21" width="139.69">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -1495,14 +1503,14 @@
         <stem>down</stem>
         </note>
       </measure>
-    <measure number="21" width="61.77">
+    <measure number="22" width="61.77">
       <note default-x="23.49" default-y="-10" print-object="no">
         <rest measure="yes"/>
         <duration>8</duration>
         <voice>1</voice>
         </note>
       </measure>
-    <measure number="22" width="67.27">
+    <measure number="23" width="67.27">
       <note default-x="13" default-y="-20">
         <rest/>
         <duration>8</duration>
@@ -1513,14 +1521,14 @@
         <bar-style>light-light</bar-style>
         </barline>
       </measure>
-    <measure number="23" width="48.77">
+    <measure number="24" width="48.77">
       <note default-x="16.99" default-y="-10" print-object="no">
         <rest measure="yes"/>
         <duration>8</duration>
         <voice>1</voice>
         </note>
       </measure>
-    <measure number="24" width="163.23">
+    <measure number="25" width="163.23">
       <note default-x="13" default-y="-10">
         <pitch>
           <step>D</step>
@@ -1580,7 +1588,7 @@
         <beam number="1">end</beam>
         </note>
       </measure>
-    <measure number="25" width="145.27">
+    <measure number="26" width="145.27">
       <note default-x="13" default-y="-5">
         <pitch>
           <step>E</step>
