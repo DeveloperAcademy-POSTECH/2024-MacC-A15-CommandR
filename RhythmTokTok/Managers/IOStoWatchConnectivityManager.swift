@@ -117,18 +117,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     }
     
     // MARK: - 워치로 메시지 보내는 부분
-    // 워크아웃 세션 종료
-    func sendStopWorkoutSession() {
-        let message: [String: Any] = ["stopWorkout": true]
-        do {
-            try WCSession.default.updateApplicationContext(message)
-            self.isWatchAppConnected = true
-//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
-        } catch {
-            ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
-        }
-    }
-    
     // 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendScoreSelection(scoreTitle: String, hapticSequence: [Double]) {
         self.selectedScoreTitle = scoreTitle

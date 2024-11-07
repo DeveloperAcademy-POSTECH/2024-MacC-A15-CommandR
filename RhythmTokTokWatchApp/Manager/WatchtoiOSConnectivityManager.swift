@@ -11,7 +11,7 @@ import HealthKit
 import WatchConnectivity
 import WatchKit
 
-class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelegate, HKWorkoutSessionDelegate {
+class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var isSelectedScore: Bool = false
     @Published var selectedScoreTitle: String = ""
     @Published var playStatus: PlayStatus = .ready
@@ -29,42 +29,9 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     }
     
     deinit {
-        // 메모리 해제시 워크아웃 종료
-        stopWorkoutSession()
+        // 메모리 해제시 로직
     }
     
-    // MARK: HeathKit Workout Session 처리
-    func workoutSession(_ workoutSession: HKWorkoutSession,
-                        didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        print("워크아웃 상태 변화")
-    }
-    
-    func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: any Error) {
-        print("워크아웃 활성화 실패")
-    }
-    
-    func startWorkoutSession() {
-        let config = HKWorkoutConfiguration()
-        config.activityType = .other
-        config.locationType = .indoor
-        
-        do {
-            workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: config)
-            workoutSession?.delegate = self
-            workoutSession?.startActivity(with: Date())
-            isPlayWorkoutSession = true
-        } catch {
-            ErrorHandler.handleError(error: error)
-        }
-    }
-    
-    func stopWorkoutSession() {
-        self.hapticManager.cancelHapticSubscriptions()
-        self.hapticManager.stopHaptic()
-        workoutSession?.end()
-        isPlayWorkoutSession = false
-        workoutSession = nil
-    }
     
     // MARK: Watch Connectivity Session 처리
     private func setupSession() {
@@ -86,7 +53,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
             DispatchQueue.main.async {
-                self.startWorkoutSession()
                 self.hapticManager.setupHapticActivationListener()
             }
         }
@@ -100,19 +66,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            if !isPlayWorkoutSession {
-                DispatchQueue.main.async {
-                    self.startWorkoutSession()
-                    self.hapticManager.setupHapticActivationListener()
-                }
-            }
-            
-            // 워크아웃 종료 수신
-            if applicationContext["stopWorkout"] as? Bool ?? false {
-                stopWorkoutSession()
-                return
-            } 
-
             // Haptic Guide 설정 업데이트
             self.updateHapticGuideSetting(applicationContext)
             
