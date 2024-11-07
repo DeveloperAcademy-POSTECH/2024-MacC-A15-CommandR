@@ -86,6 +86,7 @@
 		616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0972CC3F76300F2C72D /* ScoreView.swift */; };
 		616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0D72CC5269100F2C72D /* MeasureButton.swift */; };
 		61B209602CD771F000E51C67 /* mutedClap.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 61B2095F2CD771F000E51C67 /* mutedClap.sf2 */; };
+		61F12AAD2CDA58E20005EFED /* metronome.xml in Resources */ = {isa = PBXBuildFile; fileRef = 61F12AAC2CDA58E20005EFED /* metronome.xml */; };
 		723CA00B2CD3639E00CC91EF /* Countdown.Watch.json in Resources */ = {isa = PBXBuildFile; fileRef = 723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */; };
 		729220562CBE48DB008C8FCF /* change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* change.json */; };
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
@@ -240,6 +241,7 @@
 		616BD0972CC3F76300F2C72D /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		616BD0D72CC5269100F2C72D /* MeasureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureButton.swift; sourceTree = "<group>"; };
 		61B2095F2CD771F000E51C67 /* mutedClap.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mutedClap.sf2; sourceTree = "<group>"; };
+		61F12AAC2CDA58E20005EFED /* metronome.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = metronome.xml; sourceTree = "<group>"; };
 		723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.Watch.json; sourceTree = "<group>"; };
 		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				1E3E093F2CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml */,
 				0232D49E2CD5F5A600FDBFAF /* cry.xml */,
 				0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */,
+				61F12AAC2CDA58E20005EFED /* metronome.xml */,
 				1ED9FEBD2CBD571300472C51 /* Lotties */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
 			);
@@ -757,6 +760,7 @@
 				1ED9FEE32CC26E6000472C51 /* mannam-f 2.xml in Resources */,
 				1ED9FEE42CC26E6000472C51 /* mannam.xml in Resources */,
 				02BFED042CB10B52003CEC8A /* .swiftlint.yml in Resources */,
+				61F12AAD2CDA58E20005EFED /* metronome.xml in Resources */,
 				1E3E094B2CB3EE3D00EE1868 /* speechSol.mp3 in Resources */,
 				02BFECF82CB10A15003CEC8A /* Assets.xcassets in Resources */,
 				02BFECFB2CB10A15003CEC8A /* Base in Resources */,
