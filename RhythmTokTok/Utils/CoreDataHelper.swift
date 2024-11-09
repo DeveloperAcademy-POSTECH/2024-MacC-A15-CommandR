@@ -16,19 +16,17 @@ class CoreDataHelper {
         
         do {
             let count = try context.count(for: fetchRequest)
-            if count == 0 {
+            print("count : \(count)")
+            if count == 0 { // swiftlint:disable:this empty_count
                 // 예시 사용
-                if let directoryPath = Bundle.main.resourcePath {
-                    let dummyScoresPath = "\(directoryPath)/DummyScores"
-                    if let fileNames = getFileNames(in: dummyScoresPath) {
-                        print("Files in DummyScores:", fileNames)
-                        
-                        for fileName in fileNames {
-                            // TODO: - Note 데이터 넣어야 함
-                            // Score - Part [Measure]
-                            insertDummyScoreEntity(context: context, title: fileName)
-                        }
+                if let filePaths = Bundle.main.urls(forResourcesWithExtension: "xml", subdirectory: "DummyScores") {
+                    for fileURL in filePaths {
+                        let fileName = fileURL.deletingPathExtension().lastPathComponent
+                        print("File Name: \(fileName)")
+                        insertDummyScoreEntity(context: context, title: fileName)
                     }
+                } else {
+                    print("File not found")
                 }
             }
         } catch {
@@ -54,27 +52,25 @@ class CoreDataHelper {
         }
     }
     
-    // 특정디렉토리에 있는 파일명 전부 가져오기
-    static func getFileNames(in directoryPath: String) -> [String]? {
-        let fileManager = FileManager.default
-        var fileNames = [String]()
+    // 폴더 내 파일 이름 가져오기
+    static func getFileNames(in directoryName: String) -> [String]? {
+        guard let resourceURL = Bundle.main.resourceURL else {
+            print("리소스 URL을 가져올 수 없습니다.")
+            return nil
+        }
         
+        // DummyScores 폴더의 URL 구성
+        let folderURL = resourceURL.appendingPathComponent(directoryName)
+        let fileManager = FileManager.default
         do {
-            // 지정된 디렉토리의 모든 파일 목록을 가져옴
-            let items = try fileManager.contentsOfDirectory(atPath: directoryPath)
+            // 폴더 내 모든 파일의 URL 가져오기
+            let fileURLs = try fileManager.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
             
-            // 각 파일의 이름을 배열에 추가
-            for item in items {
-                let itemPath = directoryPath + "/" + item
-                var isDirectory: ObjCBool = false
-                if fileManager.fileExists(atPath: itemPath, isDirectory: &isDirectory), !isDirectory.boolValue {
-                    fileNames.append(item) // 파일명만 추가
-                }
-            }
-            
+            // 파일 이름만 추출하여 배열에 저장
+            let fileNames = fileURLs.map { $0.lastPathComponent }
             return fileNames
         } catch {
-            print("디렉토리 읽기 오류: \(error)")
+            print("디렉토리 읽기 오류: \(error.localizedDescription)")
             return nil
         }
     }

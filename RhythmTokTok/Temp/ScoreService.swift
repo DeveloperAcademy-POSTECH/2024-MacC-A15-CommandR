@@ -25,7 +25,6 @@ class ScoreService {
     }
     
     // MARK: - Read
-    
     func fetchAllScores() -> [ScoreEntity] {
         let fetchRequest: NSFetchRequest<ScoreEntity> = ScoreEntity.fetchRequest()
         do {

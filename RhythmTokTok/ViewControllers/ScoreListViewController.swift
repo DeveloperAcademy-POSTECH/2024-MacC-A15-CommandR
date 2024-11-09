@@ -21,6 +21,7 @@ class ScoreListViewController: UIViewController {
         super.viewDidLoad()
         
         generateMusicXMLAudio()
+        print("viewDidLoad")
         
         // MARK: - ListView상단 바 제거, 나중에 검색 넣어야해서 주석처리함.
 //         네비게이션 바 설정
@@ -68,39 +69,15 @@ class ScoreListViewController: UIViewController {
     }
     
     // MARK: - 임시 파일 score생성
-    // TODO: - 데이터에서 가지고 와야 함
     private func generateMusicXMLAudio() {
-        let xmls = ["doraji", "cry", "shinsadong", "kankan", "minuetGmajor", "star", "metronome"]
-        let scoreNames = ["도라지타령", "울어라 열풍아", "신사동 그사람", "캉캉", "미뉴엣 G 장조", "반짝반짝 작은별", "메트로놈"]
-      
-        for (index, xmlName) in xmls.enumerated() {
-            guard let xmlPath = Bundle.main.url(forResource: xmlName, withExtension: "xml") else {
-                ErrorHandler.handleError(error: "Failed to find MusicXML file in bundle.")
-                return
-            }
-            
-            Task {
-                do {
-                    let xmlData = try Data(contentsOf: xmlPath)
-                    print("Successfully loaded MusicXML data.")
-                    let parser = MusicXMLParser()
-                    let score = await parser.parseMusicXML(from: xmlData)
-                    score.title = scoreNames[index]
-                    
-                    updateScore(score: score)
-                    
-                } catch {
-                    ErrorHandler.handleError(error: error)
-                }
-            }
-        }
-        
         // 1. 데이터 조회
         // 2. for문 돌리면서 타이틀 가져오기 + id 정보
         let scoreService = ScoreService()
         let storedScores = scoreService.fetchAllScores()
         
+        print("loading score")
         for storedScore in storedScores {
+            print(storedScore.title ?? "")
             var modelScore = Score()
             modelScore.title = storedScore.title ?? ""
             modelScore.id = storedScore.id ?? ""
