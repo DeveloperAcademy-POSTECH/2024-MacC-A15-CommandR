@@ -11,6 +11,7 @@ import SwiftUI
 
 struct WatchWaitingView: View {
     @EnvironmentObject var connectivityManager: WatchtoiOSConnectivityManager
+    @StateObject var logger = Logger.shared
     
     var body: some View {
 //        TabView {

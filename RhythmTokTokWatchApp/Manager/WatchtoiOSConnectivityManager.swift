@@ -19,9 +19,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var isHapticGuideOn: Bool = true
     @Published var startTime: TimeInterval?
     var hapticManager = HapticScheduleManager()
-    private var workoutSession: HKWorkoutSession?
-    private let healthStore = HKHealthStore()
-    private var isPlayWorkoutSession = false
 
     override init() {
         super.init()
@@ -31,7 +28,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     deinit {
         // 메모리 해제시 로직
     }
-    
     
     // MARK: Watch Connectivity Session 처리
     private func setupSession() {
@@ -52,12 +48,12 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
 
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
-            DispatchQueue.main.async {
-                self.hapticManager.setupHapticActivationListener()
-            }
+            hapticManager.startExtendedSession()
+            sendSessionStatusToIOS(hapticManager.isSessionActive)
         }
         if let error = error {
             ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
+            sendSessionStatusToIOS(false)
         }
     }
     
@@ -65,7 +61,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
+            hapticManager.startExtendedSession()
+
             // Haptic Guide 설정 업데이트
             self.updateHapticGuideSetting(applicationContext)
             
@@ -143,12 +140,24 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         hapticManager.stopHaptic()
     }
     
+    // MARK: 아이폰으로 Context 전달
+    // 플레이 상태 전달
     private func sendPlayStatusToiOS(status: PlayStatus) {
         let message = ["playStatus": status.rawValue]
         do {
             try WCSession.default.updateApplicationContext(message)
         } catch {
-            print("Error sending play status: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: error)
+        }
+    }
+    
+    // Background Session 활성화 여부 상태 전달
+    private func sendSessionStatusToIOS(_ isActive: Bool) {
+        let message = ["SessionStatus": isActive]
+        do {
+            try WCSession.default.updateApplicationContext(message)
+        } catch {
+            ErrorHandler.handleError(error: error)
         }
     }
 }
