@@ -41,7 +41,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         let session = WCSession.default
         session.delegate = self
         session.activate()
-        observeHapticSessionActive()
         print("watchOS 앱에서 WCSession 활성화 요청")
     }
     
@@ -65,6 +64,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
 
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
+            observeHapticSessionActive()
             hapticManager.startExtendedSession()
         }
         if let error = error {

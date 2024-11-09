@@ -32,7 +32,6 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         // 기존 세션이 활성 상태나 예약 상태인지 확인
         if let session = extendedSession, session.state == .scheduled || session.state == .running {
             // 기존 세션이 있으면 종료
-//            cancelExtendedRuntimeSession()
             return
         }
         
@@ -45,7 +44,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     
     func cancelExtendedRuntimeSession() {
         // 예약된 세션이 있으면 무효화하여 취소
-        if let session = extendedSession {
+        if let session = extendedSession, session.state == .scheduled || session.state == .running {
             session.invalidate()
             extendedSession = nil
         }
