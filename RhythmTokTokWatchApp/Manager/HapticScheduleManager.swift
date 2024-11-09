@@ -12,7 +12,7 @@ import WatchKit
 
 class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     @Published var isHapticActive: Bool = false
-    var isSessionActive: Bool = false
+    @Published var isSessionActive: Bool = false
     var hapticType: WKHapticType = .start // 선택된 햅틱 타입
 
     private var timers: [DispatchSourceTimer] = [] // 햅틱 타임스케쥴러 관리 배열
@@ -32,7 +32,8 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         // 기존 세션이 활성 상태나 예약 상태인지 확인
         if let session = extendedSession, session.state == .scheduled || session.state == .running {
             // 기존 세션이 있으면 종료
-            cancelExtendedRuntimeSession()
+//            cancelExtendedRuntimeSession()
+            return
         }
         
         // 새로운 세션 생성 및 시작

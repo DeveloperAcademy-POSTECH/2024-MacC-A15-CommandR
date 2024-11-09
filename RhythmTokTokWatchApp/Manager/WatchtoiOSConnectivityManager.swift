@@ -19,6 +19,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var isHapticGuideOn: Bool = true
     @Published var startTime: TimeInterval?
     var hapticManager = HapticScheduleManager()
+    private var cancellables = Set<AnyCancellable>()
 
     override init() {
         super.init()
@@ -27,6 +28,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     
     deinit {
         // 메모리 해제시 로직
+        cancellables.removeAll()
     }
     
     // MARK: Watch Connectivity Session 처리
@@ -39,7 +41,23 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         let session = WCSession.default
         session.delegate = self
         session.activate()
+        observeHapticSessionActive()
         print("watchOS 앱에서 WCSession 활성화 요청")
+    }
+    
+    // MARK: 백그라운드 세션 활성화 구독
+    private func observeHapticSessionActive() {
+        hapticManager.$isSessionActive
+            .sink { [weak self] isActive in
+                guard let self = self else { return }
+                
+                if isActive {
+                    sendSessionStatusToIOS(true)
+                } else {
+                    sendSessionStatusToIOS(false)
+                }
+            }
+            .store(in: &cancellables)
     }
     
     // MARK: - WCSessionDelegate 메서드
@@ -49,11 +67,9 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
             hapticManager.startExtendedSession()
-            sendSessionStatusToIOS(hapticManager.isSessionActive)
         }
         if let error = error {
             ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
-            sendSessionStatusToIOS(false)
         }
     }
     

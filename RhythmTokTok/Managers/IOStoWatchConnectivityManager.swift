@@ -178,6 +178,9 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
                     NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
                 }
             }
+            if let sessionStatus = applicationContext["sessionStatus"] as? Bool {
+                // TODO: 여기서 워치랑 통신 가능 상태 관리하는 변수 처리
+            }
         }
     }
 }
