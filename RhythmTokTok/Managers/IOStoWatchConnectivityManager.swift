@@ -85,6 +85,23 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
             return false
         }
+        
+        // HealthKit 권한 요청
+        let authorizationSuccess = await withCheckedContinuation { continuation in
+            healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { success, error in
+                if success {
+                    continuation.resume(returning: true)
+                } else {
+                    ErrorHandler.handleError(error: error ?? "HealthKit 권한 요청 실패")
+                    continuation.resume(returning: false)
+                }
+            }
+        }
+        
+        guard authorizationSuccess else {
+            self.isWatchAppConnected = false
+            return false
+        }
 
         // `startAppTask` 및 `timeoutTask` 병렬 실행
         let startAppTask = Task { () -> Bool in
