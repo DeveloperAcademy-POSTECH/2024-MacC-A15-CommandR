@@ -50,7 +50,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         hapticManager.$isSessionActive
             .sink { [weak self] isActive in
                 guard let self = self else { return }
-                
                 if isActive {
                     sendSessionStatusToIOS(true)
                 } else {
