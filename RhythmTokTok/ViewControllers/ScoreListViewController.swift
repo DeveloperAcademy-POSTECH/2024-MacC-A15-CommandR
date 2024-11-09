@@ -28,8 +28,8 @@ class ScoreListViewController: UIViewController {
         // 테이블 뷰 설정
         setupTableView()
         
-        // 하단 버튼 액션 연결
-//        scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
+//         하단 버튼 액션 연결
+        scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
     
     // 네비게이션 바 설정
