@@ -12,8 +12,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - 앱 실행시 더미 데이터 삽입
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let context = persistentContainer.viewContext
-        scoreService.checkAndInsertDummyData()
+        Task {
+            await scoreService.checkAndInsertDummyData()
+        }
         return true
     }
     

@@ -14,7 +14,7 @@ class CoreDataStack {
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "RhythmTokTok")
         
-        //프로퍼티 변경시에 자동 반영 해준다고 함
+        // 프로퍼티 변경시에 자동 반영 해준다고 함
         let description = container.persistentStoreDescriptions.first
         description?.shouldMigrateStoreAutomatically = true
         description?.shouldInferMappingModelAutomatically = true

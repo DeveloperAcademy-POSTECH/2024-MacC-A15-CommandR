@@ -75,7 +75,6 @@ class ScoreListViewController: UIViewController {
         
         print("loading score")
         for storedScore in storedScores {
-            print(storedScore.title ?? "")
             var modelScore = Score()
             modelScore.title = storedScore.title ?? ""
             modelScore.id = storedScore.id ?? ""

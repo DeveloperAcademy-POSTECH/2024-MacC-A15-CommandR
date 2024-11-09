@@ -12,6 +12,7 @@
 		0232D4AC2CDC721B00FDBFAF /* doraji.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4AB2CDC721B00FDBFAF /* doraji.xml */; };
 		0232D4E72CDDC52A00FDBFAF /* DummyScores in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4E62CDDC52400FDBFAF /* DummyScores */; };
 		023E35242CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */; };
+		023E352D2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */; };
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
 		02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */; };
 		02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEF2CB10A13003CEC8A /* ViewController.swift */; };
@@ -134,7 +135,6 @@
 		EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B952CCFB88200079D75 /* ScoreService.swift */; };
 		EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */; };
 		EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */; };
-		EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */; };
 		EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */; };
 		EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A52CBE5CC200325725 /* ScoreManager.swift */; };
 		EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */; };
@@ -176,6 +176,7 @@
 		0232D4AB2CDC721B00FDBFAF /* doraji.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = doraji.xml; sourceTree = "<group>"; };
 		0232D4E62CDDC52400FDBFAF /* DummyScores */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DummyScores; path = RhythmTokTok/Resources/DummyScores; sourceTree = SOURCE_ROOT; };
 		023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTok.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -296,7 +297,6 @@
 		EE7A8B952CCFB88200079D75 /* ScoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScoreService.swift; path = RhythmTokTok/Temp/ScoreService.swift; sourceTree = SOURCE_ROOT; };
 		EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		EE7B28A52CBE5CC200325725 /* ScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
 		EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListView.swift; sourceTree = "<group>"; };
@@ -695,7 +695,7 @@
 			children = (
 				EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */,
 				EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */,
-				EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */,
+				023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */,
 				EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */,
 				023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */,
 				EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */,
@@ -881,7 +881,6 @@
 				D32330972CDE5272007D1003 /* RequestProcessingViewController.swift in Sources */,
 				EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */,
 				023E35242CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift in Sources */,
-				EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
 				EE4203A92CD3D2C40081F2A1 /* RadioButtonOptionItem.swift in Sources */,
 				EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */,
@@ -927,6 +926,7 @@
 				616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */,
+				023E352D2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
 				1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,

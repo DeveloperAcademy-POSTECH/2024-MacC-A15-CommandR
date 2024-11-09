@@ -10,7 +10,7 @@ class ScoreService {
     let context = CoreDataStack.shared.context
     
     // 확인하고 더미데이터 넣기
-    func checkAndInsertDummyData() {
+    func checkAndInsertDummyData() async {
         let fetchRequest: NSFetchRequest<ScoreEntity> = ScoreEntity.fetchRequest()
         
         do {
@@ -18,12 +18,21 @@ class ScoreService {
             print("count : \(count)")
             if count == 0 { // swiftlint:disable:this empty_count
                 if let filePaths = Bundle.main.urls(forResourcesWithExtension: "xml", subdirectory: "DummyScores") {
+                    
                     for fileURL in filePaths {
-                        let fileName = fileURL.deletingPathExtension().lastPathComponent
-                        print("File Name: \(fileName)")
-                        
-                        createScore(id: UUID().uuidString, title: fileName, bpm: 60, createdAt: Date(), isHapticOn: true, soundType: "melody", notes: [])
-                        // TODO: - note 저장하기
+                        do {
+                            print("task 실행")
+                            let fileName = fileURL.deletingPathExtension().lastPathComponent
+                            let xmlData = try Data(contentsOf: fileURL)
+                            print("Successfully loaded MusicXML data.")
+                            let parser = MusicXMLParser()
+                            let score = await parser.parseMusicXML(from: xmlData)
+                            score.title = fileName
+                            
+                            ScoreManager().addScoreWithNotes(scoreData: score)
+                        } catch {
+                            ErrorHandler.handleError(error: error)
+                        }
                     }
                 } else {
                     print("File not found")
