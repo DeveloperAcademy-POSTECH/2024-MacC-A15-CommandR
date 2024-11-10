@@ -223,7 +223,7 @@ class MediaManager {
     
     // 일시정지 시 햅틱 시퀀스 재산출
     func getClipPauseHapticSequence(part: Part, divisions: Int, pauseTime: TimeInterval) async throws -> [TimeInterval] {
-        var totalHapticSequence = try await getHapticSequence(part: part, divisions: divisions)
+        let totalHapticSequence = try await getHapticSequence(part: part, divisions: divisions)
         
         if let startIndex = totalHapticSequence.firstIndex(where: { $0 > pauseTime }) {
             var clipHaticSequence = Array(totalHapticSequence[startIndex...])
@@ -261,31 +261,6 @@ class MediaManager {
         }
 
         return adjustedNotes
-    }
-
-    // MARK: - WAV 파일 생성 부분
-    private func filePath(for pitch: String) -> URL? {
-        // pitch가 비어있을 경우 `silence`를 반환
-        if pitch.isEmpty {
-            return Pitch.silence.fileURL
-        }
-        
-        if let pitchEnum = Pitch(rawValue: pitch) {
-            return pitchEnum.fileURL
-        } else {
-            ErrorHandler.handleError(error: "Pitch not found in enum: \(pitch)")
-            return nil
-        }
-    }
-    
-    private func getChannelCount(of url: URL) -> AVAudioChannelCount {
-        do {
-            let audioFile = try AVAudioFile(forReading: url)
-            return audioFile.processingFormat.channelCount
-        } catch {
-            ErrorHandler.handleError(error: error)
-            return 1
-        }
     }
 
     // MARK: - MIDI 파일 생성 부분
@@ -376,5 +351,49 @@ class MediaManager {
         }
         print("MIDI file created at: \(midiFileURL)")
         return midiFileURL
+    }
+    
+    // MARK: 매트로놈 MIDI파일 생성
+    func createMetronomeMIDIFile(division: Double, outputURL: URL) throws -> URL {
+        var musicSequence: MusicSequence?
+        var musicTrack: MusicTrack?
+        var tempoTrack: MusicTrack?
+        
+        // MusicSequence 생성
+        NewMusicSequence(&musicSequence)
+        
+        // MusicTrack 추가
+        MusicSequenceNewTrack(musicSequence!, &musicTrack)
+        
+        // 템포 트랙 추가
+        MusicSequenceGetTempoTrack(musicSequence!, &tempoTrack)
+        
+        // 템포 설정
+        let correctedTempoBPM = tempoBPM * (standardDivision / division)
+        MusicTrackNewExtendedTempoEvent(tempoTrack!, 0, correctedTempoBPM)
+        
+        // 드럼 사운드 추가
+        let noteVelocity: UInt8 = 100 // 노트 강도 설정
+        let noteOn: UInt8 = 60 // 드럼 사운드 노트
+        let beatInterval = 60.0 / tempoBPM // 템포에 따른 한 박자 간격 시간
+        
+        // 전체 길이를 설정 (4/4에서 160박자, 즉 40마디)
+        let totalDurationInBeats = 160.0
+        
+         for beat in stride(from: 0.0, to: totalDurationInBeats, by: beatInterval) {
+             var noteMessage = MIDINoteMessage(channel: 9, note: noteOn, velocity: noteVelocity, releaseVelocity: 0, duration: Float(beatInterval))
+             MusicTrackNewMIDINoteEvent(musicTrack!, beat, &noteMessage)
+         }
+        
+        // MIDI 파일 저장
+        let destinationURL = outputURL
+        let status = MusicSequenceFileCreate(musicSequence!, destinationURL as CFURL, .midiType, .eraseFile, Int16(division))
+        
+        if status != noErr {
+            ErrorHandler.handleError(error: "Failed to create MetronomeMIDI file. Error code: \(status)")
+            throw NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: nil)
+        }
+        
+        return destinationURL
     }
 }
