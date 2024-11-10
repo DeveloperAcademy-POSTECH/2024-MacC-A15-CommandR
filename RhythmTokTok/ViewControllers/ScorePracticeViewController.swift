@@ -79,7 +79,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
         setupActions()
         setupBindings()
-        updateWatchAppStatus()
+//        updateWatchAppStatus()
     }
     
     private func configureUI() {
@@ -372,7 +372,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 if let validHapticSequence = hapticSequence {
                     totalHapticSequence = validHapticSequence
                     // 워치로 곡 선택 메시지 전송
-                    await sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
+                    sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
+                    
                 } else {
                     print("No valid haptic sequence found.")
                 }
@@ -390,14 +391,15 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     // MARK: 워치 통신 부분
-    // 워치로 곡 선택 메시지 전송
-    func sendHapticSequenceToWatch(hapticSequence: [Double]) async {
-        let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-        
-        if isLaunched {
-            let scoreTitle = currentScore.title
-            IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
-                                                                    hapticSequence: hapticSequence)
+    // 워치로 곡 선택 메시지 전송, 비동기 처리
+    func sendHapticSequenceToWatch(hapticSequence: [Double]) {
+        Task {
+            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
+            if isLaunched {
+                let scoreTitle = currentScore.title
+                IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
+                                                                        hapticSequence: hapticSequence)
+            }
         }
     }
     

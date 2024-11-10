@@ -80,39 +80,64 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // MARK: - 워치 런치
     func launchWatch() async -> Bool {
         guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
-            // Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않음
             self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
             return false
         }
-        // 비동기적으로 권한 요청
-        return await withCheckedContinuation { continuation in
-            healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { (success, error) in
-                if !success {
-                    // 권한 요청 실패 시 처리
-                    self.isWatchAppConnected = false
-                    ErrorHandler.handleError(error: error ?? "unknown error")
-                    continuation.resume(returning: false) // 실패 시 false 반환
-                    return
-                }
-                
-                // 설정 적용
-                self.configuration.activityType = .other
-                self.configuration.locationType = .indoor
-                
-                Task {
-                    do {
-                        try await self.healthStore.startWatchApp(toHandle: self.configuration)
-                        continuation.resume(returning: true) // 성공 시 true 반환
-                    } catch {
-                        // 오류 처리
-                        self.isWatchAppConnected = false
-                        ErrorHandler.handleError(error: error)
-                        continuation.resume(returning: false) // 실패 시 false 반환
-                    }
+        
+        // HealthKit 권한 요청
+        let authorizationSuccess = await withCheckedContinuation { continuation in
+            healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { success, error in
+                if success {
+                    continuation.resume(returning: true)
+                } else {
+                    ErrorHandler.handleError(error: error ?? "HealthKit 권한 요청 실패")
+                    continuation.resume(returning: false)
                 }
             }
         }
+        
+        guard authorizationSuccess else {
+            self.isWatchAppConnected = false
+            return false
+        }
+
+        // `startAppTask` 및 `timeoutTask` 병렬 실행
+        let startAppTask = Task { () -> Bool in
+            do {
+                try await self.healthStore.startWatchApp(toHandle: self.configuration)
+                self.isWatchAppConnected = true
+                return true
+            } catch {
+                self.isWatchAppConnected = false
+                return false
+            }
+        }
+        
+        let timeoutTask = Task { () -> Bool in
+            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 타임아웃
+            return false
+        }
+
+        // `timeoutTask`가 먼저 완료되면 `startAppTask` 취소
+        let result: Bool
+        if let completedResult = await withCheckedContinuation({ continuation in
+            Task {
+                if await timeoutTask.value == false {
+                    startAppTask.cancel()
+                    continuation.resume(returning: false)
+                    ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
+                } else {
+                    continuation.resume(returning: await startAppTask.value)
+                }
+            }
+        }) {
+            result = completedResult
+        } else {
+            result = false
+        }
+        
+        return result
     }
     
     // MARK: - 워치로 메시지 보내는 부분
