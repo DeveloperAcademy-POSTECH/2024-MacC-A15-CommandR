@@ -8,7 +8,7 @@
 import UIKit
 
 class TitleInputView: UIView {
-    var textView: UITextView!
+    var textField: UITextField!
     var titleLabel: UILabel!
     var subtitleLabel: UILabel!
 
@@ -38,18 +38,31 @@ class TitleInputView: UIView {
         subtitleLabel.textColor = UIColor.gray
         addSubview(subtitleLabel)
 
-        // Container View setup
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = UIColor.systemGray6
-        containerView.layer.cornerRadius = 10
-        addSubview(containerView)
+        // TextField setup
+        textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = UIFont(name: "Pretendard-Medium", size: 18)
+        textField.layer.borderWidth = 2
+        textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
+        textField.backgroundColor = UIColor.systemGray6 // Set light gray background
+        textField.layer.cornerRadius = 12
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 24))
+        textField.leftViewMode = .always
+        textField.placeholder = "예) 봄날은 간다 - 아코디언"
         
-        // TextView setup
-        textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.font = UIFont.systemFont(ofSize: 18)
-        containerView.addSubview(textView)
+        // Clear button for text field
+        let clearButton = UIButton(type: .custom)
+        clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        clearButton.tintColor = UIColor(named: "label_quaternary") ?? .lightGray
+        clearButton.addTarget(self, action: #selector(clearTextField), for: .touchUpInside)
+        clearButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        
+        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 24))
+        rightPaddingView.addSubview(clearButton)
+        textField.rightView = rightPaddingView
+        textField.rightViewMode = .always
+        
+        addSubview(textField)
 
         // Title and subtitle constraints
         NSLayoutConstraint.activate([
@@ -60,20 +73,16 @@ class TitleInputView: UIView {
             subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
         ])
 
-        // Container constraints
+        // TextField constraints
         NSLayoutConstraint.activate([
-            containerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            containerView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 20),
-            containerView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8),
-            containerView.heightAnchor.constraint(equalToConstant: 150)
+            textField.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 20),
+            textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            textField.heightAnchor.constraint(equalToConstant: 64)
         ])
-        
-        // TextView constraints within container
-        NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
-            textView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
-            textView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
-            textView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10)
-        ])
+    }
+
+    @objc private func clearTextField() {
+        textField.text = ""
     }
 }
