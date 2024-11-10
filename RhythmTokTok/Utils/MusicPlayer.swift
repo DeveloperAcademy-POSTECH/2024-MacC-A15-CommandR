@@ -16,6 +16,7 @@ class MusicPlayer: ObservableObject {
     private var metronomeMIDIPlayer: AVMIDIPlayer? // 매트로놈 MIDI 재생 플레이어
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0 // 일시정지용
+//    private var metronomeLastPosition: TimeInterval = 0 // 매트로놈 일시정지용
     var musicSequence: MusicSequence?
     private var soundFont: String = "Piano"
     private var soundSettingObserver: Any?
@@ -151,29 +152,31 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 실행
     func playMIDI(startTime: TimeInterval = 0, delay: TimeInterval) {
-        if let midiPlayer = midiPlayer {
+        if let midiPlayer, let metronomeMIDIPlayer {
             if startTime == 0, lastPosition != 0 {
                 // 이전에 일시 정지된 위치에서 재개
                 midiPlayer.currentPosition = lastPosition
+                metronomeMIDIPlayer.currentPosition = lastPosition
                 lastPosition = 0
             } else {
                 // 시작 틱 위치
                 midiPlayer.currentPosition = startTime
+                metronomeMIDIPlayer.currentPosition = startTime
             }
             isEnd = false
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
+                    metronomeMIDIPlayer.play()
+                }
                 midiPlayer.play {
                     print("MIDI playback completed.")
                     if !self.isTemporarilyStopped {
                         print("마무리")
                         self.isEnd = true
                         self.lastPosition = 0
+                        metronomeMIDIPlayer.stop()
                     }
-                }
-                
-                if let metronomeMIDIPlayer = self.metronomeMIDIPlayer{
-                    metronomeMIDIPlayer.play()
                 }
                 
                 self.startTimer()
@@ -184,19 +187,21 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 일시 정지
     func pauseMIDI() {
-        guard let midiPlayer = midiPlayer else { return }
+        guard let midiPlayer = midiPlayer, let metronomeMIDIPlayer = metronomeMIDIPlayer else { return }
         isTemporarilyStopped = true
         lastPosition = midiPlayer.currentPosition
         midiPlayer.stop()
+        metronomeMIDIPlayer.stop()
         stopTimer()
         print("MIDI playback paused at \(lastPosition) seconds.")
     }
     
     func jumpMIDI(jumpPosition: TimeInterval) {
-        guard let midiPlayer = midiPlayer else { return }
+        guard let midiPlayer, let metronomeMIDIPlayer else { return }
         isTemporarilyStopped = true
         lastPosition = jumpPosition
         midiPlayer.stop()
+        metronomeMIDIPlayer.stop()
         stopTimer()
         print("MIDI playback jump at \(lastPosition) seconds.")
     }
@@ -213,7 +218,7 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 처음으로 셋팅
     func stopMIDI() {
-        guard let midiPlayer = midiPlayer else { return }
+        guard let midiPlayer, let metronomeMIDIPlayer else { return }
         // 처음으로
         isTemporarilyStopped = true
         midiPlayer.stop()
@@ -221,6 +226,8 @@ class MusicPlayer: ObservableObject {
         currentTime = 0
         lastPosition = 0
         stopTimer()
+        metronomeMIDIPlayer.stop()
+        metronomeMIDIPlayer.currentPosition = 0
     }
     
     // 타이머 시작
