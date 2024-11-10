@@ -55,7 +55,7 @@ class ScoreListViewController: UIViewController {
     }
     @objc func didTapRequestButton() {
         let requestViewController = RequestProcessingViewController()
-        navigationController?.pushViewController(requestViewController, animated: false)
+        navigationController?.pushViewController(requestViewController, animated: true)
     }
     // 테이블 뷰 설정
     func setupTableView() {

@@ -52,11 +52,11 @@ class RequestView: UIView {
         super.init(coder: coder)
         setupView()
     }
-
+    
     private func setupView() {
         self.layer.cornerRadius = 12
         self.backgroundColor = .white
-
+        
         // UI 요소들 추가
         addSubview(contentStackView)
         addSubview(requestActionButton)
@@ -73,18 +73,20 @@ class RequestView: UIView {
         contentStackView.addArrangedSubview(dateLabel)
         
         // 추가적인 스타일 설정
-        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = .black
-        dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        dateLabel.textColor = .darkGray
+        titleLabel.font = UIFont(name: "Pretendard-Bold", size: 18)
+        titleLabel.textColor = UIColor(named: "lable_secondary")
+        dateLabel.font = UIFont(name: "Pretendard-Regular", size: 14)
+        dateLabel.textColor = UIColor(named: "lable_tertiary")
+        requestActionButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
         requestActionButton.layer.cornerRadius = 8
-
+        
         // 오토레이아웃 제약 조건 설정
         NSLayoutConstraint.activate([
             // 컨텐츠 스택뷰 제약 조건
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            contentStackView.trailingAnchor.constraint(lessThanOrEqualTo: requestActionButton.leadingAnchor, constant: -10),
+            contentStackView.trailingAnchor.constraint(lessThanOrEqualTo: requestActionButton.leadingAnchor,
+                                                       constant: -10),
             
             // 버튼 제약 조건
             requestActionButton.centerYAnchor.constraint(equalTo: centerYAnchor),

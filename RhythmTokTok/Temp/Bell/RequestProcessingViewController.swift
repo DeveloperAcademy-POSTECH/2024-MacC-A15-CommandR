@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RequestProcessingViewController: UIViewController {
+class RequestProcessingViewController: UIViewController, UIGestureRecognizerDelegate {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     
@@ -15,12 +15,19 @@ class RequestProcessingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         // 전체 배경색 변경
         view.backgroundColor = UIColor(named: "background_tertiary")
         
         // 네비게이션 바 타이틀 설정
         self.title = "요청 목록"
+        
+        // 네비게이션 바 타이틀의 색상, 폰트, 크기 설정
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor(named: "lable_primary") ?? .black,
+            .font: UIFont(name: "Pretendard-Medium", size: 18) ?? UIFont.systemFont(ofSize: 18)
+        ]
         
         // Back 버튼 이미지 변경
         let backImage = UIImage(named: "back")
@@ -115,12 +122,12 @@ class RequestProcessingViewController: UIViewController {
             let headerStackView = UIStackView()
             headerStackView.axis = .horizontal
             headerStackView.alignment = .leading
-            headerStackView.spacing = 1
+            headerStackView.spacing = 2
             
             // 헤더 레이블 추가
             let headerLabel = UILabel()
-            headerLabel.font = UIFont.boldSystemFont(ofSize: 22)
-            headerLabel.textColor = .black
+            headerLabel.font = UIFont(name: "Pretendard-Bold", size: 22)
+            headerLabel.textColor = UIColor(named: "lable_primary")
             
             // 상태별 텍스트 설정
             let headerText: String
@@ -159,7 +166,7 @@ class RequestProcessingViewController: UIViewController {
                 
                 let infoLabel = UILabel()
                 infoLabel.text = "🚨 악보 완성까지 약 1~2일이 소요될 수 있어요"
-                infoLabel.font = UIFont.systemFont(ofSize: 14)
+                infoLabel.font = UIFont(name: "Pretendard-Regular", size: 14)
                 infoLabel.textColor = UIColor(named: "lable_tertiary")
                 infoLabel.numberOfLines = 0
                 infoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -169,9 +176,13 @@ class RequestProcessingViewController: UIViewController {
                     infoLabel.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 8),
                     infoLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 8),
                     infoLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -8),
-                    infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -8)
+                    infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -8),
+                    infoLabel.heightAnchor.constraint(equalToConstant: 24)
                 ])
                 stackView.addArrangedSubview(infoView)
+                
+                // infoView와 그 다음 요소 사이의 간격을 16으로 설정
+                stackView.setCustomSpacing(16, after: infoView)
             }
             
             // 요청 뷰들 추가
