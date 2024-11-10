@@ -29,7 +29,7 @@ class ScoreService {
                             let score = await parser.parseMusicXML(from: xmlData)
                             score.title = fileName
                             
-                            ScoreManager().addScoreWithNotes(scoreData: score)
+                            ScoreManager.shared.addScoreWithNotes(scoreData: score)
                         } catch {
                             ErrorHandler.handleError(error: error)
                         }

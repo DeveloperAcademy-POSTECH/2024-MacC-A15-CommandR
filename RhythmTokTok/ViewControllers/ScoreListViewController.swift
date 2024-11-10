@@ -53,7 +53,7 @@ class ScoreListViewController: UIViewController {
 //        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
 //        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(didTapSettings))
         
-//        navigationItem.rightBarButtonItems = [settingsButton]
+        //        navigationItem.rightBarButtonItems = [settingsButton]
     }
     @objc func didTapRequestButton() {
         let requestViewController = RequestProcessingViewController()
@@ -75,25 +75,81 @@ class ScoreListViewController: UIViewController {
         
         print("loading score")
         for storedScore in storedScores {
-            var modelScore = Score()
-            modelScore.title = storedScore.title ?? ""
-            modelScore.id = storedScore.id ?? ""
-            scoreList.append(modelScore)
+            var score = convertScore(storedScore)
+            scoreList.append(score)
         }
         scoreListView.tableView.reloadData() // 테이블뷰 업데이트
+    }
+    
+    // 저장된 CoreData Score를 Score Model로 변환하는 함수
+    // TODO: - 리스트에서 변환된 전체 Score정보를 가지고 있을 필요가 없음. id랑 title 만 가지고 있도록 수정해야 함..
+    private func convertScore(_ scoreEntity: ScoreEntity) -> Score {
+        let modelScore = Score()
+        modelScore.title = scoreEntity.title ?? ""
+        modelScore.id = scoreEntity.id ?? ""
+        
+        var measuresDict: [Int: [Measure]] = [:]
+        var partID = "P1" // 기본값 P1
+        scoreEntity.notes?.forEach { note in // 역으로 note를 Part, Measure에 넣어주기
+            partID = (note as AnyObject).part!
+            // 1. Measure에 Note를 넣는다
+            if let pitch = (note as AnyObject).pitch as? String,
+               let localDuration = (note as AnyObject).dura,
+               let octave = (note as AnyObject).octave,
+               let voice = (note as AnyObject).voice,
+               let staff = (note as AnyObject).staff,
+               let startTime = (note as AnyObject).startTime,
+               let measureNumber = (note as AnyObject).measure as? Int {
+                
+                var modelNote = Note(
+                    pitch: pitch,
+                    duration: Int(localDuration),
+                    octave: Int(octave),
+                    type: (note as AnyObject).type ?? "",
+                    voice: Int(voice),
+                    staff: Int(staff),
+                    startTime: Int(startTime)
+                )
+                
+                // measureNumber에 해당하는 Measure 배열 가져오기
+                if var existingMeasures = measuresDict[measureNumber] {
+                    // 이미 존재하는 Measure에 Note 추가
+                    if var lastMeasure = existingMeasures.last {
+                        lastMeasure.addNote(modelNote)
+                    } else {
+                        // Measure가 존재하지 않으면 새로 생성하고 추가
+                        var newMeasure = Measure(number: measureNumber, notes: [], currentTimes: [:])
+                        newMeasure.addNote(modelNote)
+                        existingMeasures.append(newMeasure)
+                    }
+                    measuresDict[measureNumber] = existingMeasures
+                } else {
+                    // 새로운 Measure 생성 후 Note 추가
+                    var newMeasure = Measure(number: measureNumber, notes: [], currentTimes: [:])
+                    newMeasure.addNote(modelNote)
+                    measuresDict[measureNumber] = [newMeasure]
+                }
+            }
+        }
+        // 2. Part에 Measure 넣는다
+        let part = Part(id: partID, measures: measuresDict)
+        // 3. Score에 Part 넣는다 TODO: - 현재는 하나라서.. part가 여러개일 경우 로직 수정 필요
+        modelScore.parts = [part] // partID
+        
+        return modelScore
     }
     
     // TODO: 검색 기능 추가 예정
     @objc func didTapSearch() {
         // MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
-//        let viewController = ViewController()
-//        navigationController?.pushViewController(viewController, animated: true)
+        //        let viewController = ViewController()
+        //        navigationController?.pushViewController(viewController, animated: true)
     }
     
     // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
     @objc func didTapSettings() {
-//        let settingViewController = SettingViewController()
-//        navigationController?.pushViewController(settingViewController, animated: true)
+        //        let settingViewController = SettingViewController()
+        //        navigationController?.pushViewController(settingViewController, animated: true)
     }
     
     // PDF 파일 선택 버튼 액션

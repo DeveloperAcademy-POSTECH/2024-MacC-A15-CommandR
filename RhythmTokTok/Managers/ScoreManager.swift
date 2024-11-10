@@ -65,7 +65,7 @@ class ScoreManager {
         noteEntity.staff = Int64(note.staff)
         noteEntity.accidental = Int64(note.accidental.rawValue)  // Enum에서 Int로 변환
         noteEntity.isRest = note.isRest
-        noteEntity.duration = Int64(note.duration)
+        noteEntity.dura = Int64(note.duration)
         noteEntity.pitch = note.pitch
         noteEntity.octave = Int16(note.octave)
         noteEntity.type = note.type
