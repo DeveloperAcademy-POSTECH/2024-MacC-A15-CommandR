@@ -10,17 +10,71 @@ import UserNotifications
 import WatchConnectivity
 import WatchKit
 
-class HapticScheduleManager: NSObject, ObservableObject {
+class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
     @Published var isHapticActive: Bool = false
-    @Published var hapticType: WKHapticType = .start // 선택된 햅틱 타입
+    @Published var isSessionActive: Bool = false
+    var hapticType: WKHapticType = .start // 선택된 햅틱 타입
 
     private var timers: [DispatchSourceTimer] = [] // 햅틱 타임스케쥴러 관리 배열
     private var currentBatchIndex = 0 // 현재 실행 중인 배치 인덱스
-//    private var hapticType: WKHapticType = .start
     private var beatTimes: [Double] = []
     private var startTimeInterval: TimeInterval = 0
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: Test Smart Alarm
+    var extendedSession: WKExtendedRuntimeSession?
+    
+    deinit {
+        cancelExtendedRuntimeSession()
+    }
+
+    func startExtendedSession() {
+        // 기존 세션이 활성 상태나 예약 상태인지 확인
+        if let session = extendedSession, session.state == .scheduled || session.state == .running {
+            // 기존 세션이 있으면 종료
+            return
+        }
+        
+        // 새로운 세션 생성 및 시작
+        extendedSession = WKExtendedRuntimeSession()
+        extendedSession?.delegate = self
+        extendedSession?.start()
+        print("Extended runtime session started.")
+    }
+    
+    func cancelExtendedRuntimeSession() {
+        // 예약된 세션이 있으면 무효화하여 취소
+        if let session = extendedSession, session.state == .scheduled || session.state == .running {
+            session.invalidate()
+            extendedSession = nil
+        }
+        stopHaptic()
+        cancellables.removeAll()  // 모든 구독 해제
+        isSessionActive = false
+    }
+    
+    // 세션 활성화 실패
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession,
+                                didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason,
+                                error: (any Error)?) {
+        print("Extended session did Invalidate")
+        cancelExtendedRuntimeSession()
+    }
+
+    // 세션 활성화 성공
+    func extendedRuntimeSessionDidStart(_ session: WKExtendedRuntimeSession) {
+        isSessionActive = true
+        setupHapticActivationListener()
+    }
+
+    func extendedRuntimeSessionWillExpire(_ session: WKExtendedRuntimeSession) {
+        print("Extended session will expire soon.")
+    }
+
+    func extendedRuntimeSessionDidInvalidate(_ session: WKExtendedRuntimeSession) {
+        print("Extended session did invalidate.")
+    }
+        
     func setupHapticActivationListener() {
         self.$isHapticActive
             .sink { [weak self] isStarted in
