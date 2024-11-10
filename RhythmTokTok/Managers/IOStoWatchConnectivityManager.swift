@@ -45,7 +45,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // MARK: - WCSessionDelegate 메서드
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if activationState == .activated {
-            isWatchAppConnected = true
             print("iPhone에서 WCSession 활성화 완료")
         }
         if let error = error {
@@ -71,9 +70,9 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     
     private func updateWatchAppReachability(_ session: WCSession) {
         DispatchQueue.main.async {
-            if session.isReachable {
-                self.isWatchAppConnected = true
-            }
+//            if session.isReachable {
+//                self.isWatchAppConnected = true
+//            }
             print("isWatchAppReachable: \(self.isWatchAppConnected)")
         }
     }
@@ -117,18 +116,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     }
     
     // MARK: - 워치로 메시지 보내는 부분
-    // 워크아웃 세션 종료
-    func sendStopWorkoutSession() {
-        let message: [String: Any] = ["stopWorkout": true]
-        do {
-            try WCSession.default.updateApplicationContext(message)
-            self.isWatchAppConnected = true
-//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
-        } catch {
-            ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
-        }
-    }
-    
     // 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendScoreSelection(scoreTitle: String, hapticSequence: [Double]) {
         self.selectedScoreTitle = scoreTitle
@@ -140,7 +127,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         print("전체 햅틱 갯수 \(hapticSequence.count)")
         do {
             try WCSession.default.updateApplicationContext(message)
-            self.isWatchAppConnected = true
 //            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
             self.isWatchAppConnected = false
@@ -167,11 +153,10 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         
         do {
             try WCSession.default.updateApplicationContext(message)
-            self.isWatchAppConnected = true
 //            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
-            self.isWatchAppConnected = false
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
+            self.isWatchAppConnected = false
         }
     }
     
@@ -189,6 +174,11 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
                 } else if receivedPlayStatus == .pause {
                     NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
                 }
+            }
+            if let sessionStatus = applicationContext["SessionStatus"] as? Bool {
+                // TODO: 여기서 워치랑 통신 가능 상태 관리하는 변수 처리
+                self.isWatchAppConnected = sessionStatus
+                print("전달 \(sessionStatus)")
             }
         }
     }
