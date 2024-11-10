@@ -12,7 +12,6 @@ class MusicPlayer: ObservableObject {
     @Published var currentTime: TimeInterval = 0
     @Published var isEnd: Bool = false
     
-    private var player: AVAudioPlayer?
     private var midiPlayer: AVMIDIPlayer? // MIDI 재생 플레이어
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0 // 일시정지용
@@ -71,41 +70,12 @@ class MusicPlayer: ObservableObject {
         }
     }
     
-    // 오디오 파일 로드
-    func loadAudioFile(url: URL) {
-        do {
-            player = try AVAudioPlayer(contentsOf: url)
-            player?.volume = 5.0
-            player?.numberOfLoops = -1
-            player?.prepareToPlay()
-            print("Audio player initialized successfully.")
-        } catch {
-            ErrorHandler.handleError(error: error)
-        }
-    }
-    
-    // wav 재생
-    func playWav() {
-        print("Playing audio...")
-        player?.play()
-        startTimer()
-        print("Playing audio, duration: \(player?.duration ?? 0) seconds")
-        print("Current time: \(player?.currentTime ?? 0 )")
-    }
-    
-    // wav 일시정지
-    func pauseWav() {
-        print("Pausing audio...")
-        player?.pause()
-        stopTimer()
-    }
-    
     // 미디파일 총 시간
     func getTotalDuration() -> Double {
         return totalDuration
     }
     
-    // MARK: - MIDI 파일 관리
+    // MARK: - 멜로디 MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
         // 필요할 때 다시 꺼내 쓸 수 있도록 midiURL 저장
         self.midiFileURL = midiURL
