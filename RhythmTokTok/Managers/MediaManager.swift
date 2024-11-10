@@ -12,29 +12,16 @@ class MediaManager {
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
     private var tempoBPM: Double = Double(UserSettingData.shared.getBPM())
-    private var outputPath = FileManager.default
-        .temporaryDirectory.appendingPathComponent("output2.wav").path()
     private var midiOutputPath = FileManager.default
-        .temporaryDirectory.appendingPathComponent("midifile.mid").path() // MIDI 파일 경로
+        .temporaryDirectory.appendingPathComponent("midifile.mid").path() // MIDI 멜로디 파일 경로
+    private var metronomeOutputPath = FileManager.default
+        .temporaryDirectory.appendingPathComponent("metronome.mid").path() // MIDI 매트로놈 파일 경로
     private var currentPart: Part?
 
     func getScore(xmlData: Data) async throws -> Score {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         
         return parsedScore
-    }
-    
-    func getMediaFile(parsedScore: Score) async throws -> URL {
-        let notes = parsedScore.parts.flatMap { part in
-            part.measures
-                .sorted(by: { $0.key < $1.key })
-                .flatMap { (_, measures) in
-                measures.flatMap { $0.notes }
-            }
-        }
-        let outputURL = try await createMediaFile(from: notes)
-
-        return outputURL
     }
     
     // TODO: 뷰모델로 빼도 될 것 같다
@@ -298,121 +285,6 @@ class MediaManager {
         } catch {
             ErrorHandler.handleError(error: error)
             return 1
-        }
-    }
-    
-    private func createMediaFile(from notes: [Note]) async throws -> URL {
-        let outputURL = URL(fileURLWithPath: outputPath)
-
-        do {
-            let firstNoteFileURL = filePath(for: notes[0].pitch)!
-            let channelCount = getChannelCount(of: firstNoteFileURL)
-            let sampleRate = 44100.0
-            let format = AVAudioFormat(commonFormat: .pcmFormatFloat32,
-                                       sampleRate: sampleRate, channels: channelCount, interleaved: false)
-            let file = try AVAudioFile(forWriting: outputURL, settings: format!.settings)
-
-            for note in notes {
-                guard let fileURL = filePath(for: note.pitch) else {
-                    ErrorHandler.handleError(error: "Audio file not found for pitch: \(note.pitch)")
-                    continue
-                }
-                
-                let durationInSeconds = Double(note.duration) / Double(tempoBPM) * 60.0 / 24
-                try writeSample(fileURL: fileURL, duration: durationInSeconds, format: format!, audioFile: file)
-            }
-            
-            return outputURL
-        } catch {
-            ErrorHandler.handleError(error: error)
-            throw error
-        }
-    }
-    
-    // 채널 카운트를 변환하는 함수
-    private func convertChannelCount(buffer: AVAudioPCMBuffer,
-                                     to targetChannelCount: AVAudioChannelCount) -> AVAudioPCMBuffer? {
-        // 대상 포맷 생성
-        guard let targetFormat = AVAudioFormat(
-            commonFormat: buffer.format.commonFormat,
-            sampleRate: buffer.format.sampleRate,
-            channels: targetChannelCount,
-            interleaved: buffer.format.isInterleaved)
-        else {
-            ErrorHandler.handleError(error: "Failed to create target format for channel conversion.")
-            return nil
-        }
-        
-        // AVAudioConverter 생성
-        guard let converter = AVAudioConverter(from: buffer.format, to: targetFormat) else {
-            ErrorHandler.handleError(error: "Failed to create AVAudioConverter.")
-            return nil
-        }
-        
-        // 변환된 버퍼 생성
-        guard let convertedBuffer = AVAudioPCMBuffer(pcmFormat: targetFormat,
-                                                     frameCapacity: buffer.frameCapacity) else {
-            ErrorHandler.handleError(error: "Failed to create converted buffer.")
-            return nil
-        }
-        
-        var error: NSError?
-        
-        // 변환 작업 수행
-        converter.convert(to: convertedBuffer, error: &error) { _, outStatus in
-            outStatus.pointee = .haveData
-            return buffer
-        }
-        
-        if let error = error {
-            ErrorHandler.handleError(error: error)
-            return nil
-        }
-        
-        return convertedBuffer
-    }
-    
-    private func writeSample(fileURL: URL, duration: Double, format: AVAudioFormat, audioFile: AVAudioFile) throws {
-        let sourceAudioFile = try AVAudioFile(forReading: fileURL)
-        
-        guard let sourceBuffer = AVAudioPCMBuffer(pcmFormat: sourceAudioFile.processingFormat,
-                                                  frameCapacity: AVAudioFrameCount(sourceAudioFile.length)) else {
-            ErrorHandler.handleError(error: "Failed to create buffer for source file.")
-            return
-        }
-        
-        try sourceAudioFile.read(into: sourceBuffer)
-                
-        var bufferToWrite = sourceBuffer
-        
-        // 채널 카운트가 다를 경우 변환
-        if sourceBuffer.format.channelCount != format.channelCount {
-            guard let convertedBuffer = convertChannelCount(buffer: sourceBuffer, to: format.channelCount) else {
-                ErrorHandler.handleError(error: "Failed to convert buffer channel count.")
-                return
-            }
-            bufferToWrite = convertedBuffer
-        }
-        
-        // 볼륨 스케일 적용
-        for channel in 0..<Int(bufferToWrite.format.channelCount) {
-            if let channelData = bufferToWrite.floatChannelData?[channel] {
-                for frame in 0..<Int(bufferToWrite.frameLength) {
-                    channelData[frame] *= volumeScale
-                }
-            }
-        }
-        
-        // 변환된 버퍼의 프레임 길이 조정
-        let frameCount = AVAudioFrameCount(duration * format.sampleRate)
-        bufferToWrite.frameLength = min(frameCount, bufferToWrite.frameCapacity)
-                
-        // 버퍼를 오디오 파일에 쓰기
-        do {
-            try audioFile.write(from: bufferToWrite)
-        } catch {
-            ErrorHandler.handleError(error: error)
-            throw error
         }
     }
 
