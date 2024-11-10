@@ -12,7 +12,8 @@ class MusicPlayer: ObservableObject {
     @Published var currentTime: TimeInterval = 0
     @Published var isEnd: Bool = false
     
-    private var midiPlayer: AVMIDIPlayer? // MIDI 재생 플레이어
+    private var midiPlayer: AVMIDIPlayer? // 멜로디 MIDI 재생 플레이어
+    private var metronomeMIDIPlayer: AVMIDIPlayer? // 매트로놈 MIDI 재생 플레이어
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0 // 일시정지용
     var musicSequence: MusicSequence?
@@ -23,7 +24,8 @@ class MusicPlayer: ObservableObject {
     
     // Store MIDI file URL separately
     private var midiFileURL: URL?
-    
+    private var metronomeMIDIFileURL: URL?
+
     init() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
@@ -73,6 +75,41 @@ class MusicPlayer: ObservableObject {
     // 미디파일 총 시간
     func getTotalDuration() -> Double {
         return totalDuration
+    }
+    
+    // MARK: 매트로놈 MIDI 파일 관리
+    func loadMetronomeMIDIFile(midiURL: URL?) {
+        
+        // MusicSequence 생성
+        NewMusicSequence(&musicSequence)
+        
+        guard let midiURL else { return }
+        if let musicSequence = musicSequence {
+            // MIDI 파일을 시퀀스로 로드
+            let status = MusicSequenceFileLoad(musicSequence, midiURL as CFURL, .midiType, MusicSequenceLoadFlags())
+            
+            if status == noErr {
+                print("MIDI file successfully loaded into MusicSequence.")
+            } else {
+                ErrorHandler.handleError(error: "Error loading MIDI file: \(status)")
+            }
+        }
+        
+        // AVMIDIPlayer 초기화
+        do {
+            
+            let bankURL = Bundle.main.url(forResource: "Drum Set JD Rockset 5", withExtension: "sf2")! // 사운드 폰트 파일 경로
+            
+            metronomeMIDIPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
+            
+            if let midiPlayer {
+                midiPlayer.prepareToPlay()
+                totalDuration = midiPlayer.duration
+            }
+  
+        } catch {
+            ErrorHandler.handleError(error: error)
+        }
     }
     
     // MARK: - 멜로디 MIDI 파일 관리
@@ -126,7 +163,6 @@ class MusicPlayer: ObservableObject {
             isEnd = false
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                Logger.shared.log("Logger: MIDI파일 실행")
                 midiPlayer.play {
                     print("MIDI playback completed.")
                     if !self.isTemporarilyStopped {
@@ -135,6 +171,11 @@ class MusicPlayer: ObservableObject {
                         self.lastPosition = 0
                     }
                 }
+                
+                if let metronomeMIDIPlayer = self.metronomeMIDIPlayer{
+                    metronomeMIDIPlayer.play()
+                }
+                
                 self.startTimer()
             }
             isTemporarilyStopped = false

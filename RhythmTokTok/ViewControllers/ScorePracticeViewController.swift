@@ -24,6 +24,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var mediaManager = MediaManager()
     private let musicPlayer = MusicPlayer()
     private var midiFilePathURL: URL?
+    private var metronomeMIDIFilePathURL: URL?
     private var isPlayingMIDIFile = false
     
     // View
@@ -379,12 +380,20 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 }
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
-                
-                updatePlayPauseButton(true)
                 print("MIDI file successfully loaded and ready to play.")
             } else {
                 ErrorHandler.handleError(error: "MIDI file URL is nil.")
             }
+            
+            // Metronome MIDI'
+            metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
+            
+            if let metronomeMIDIFilePathURL {
+                print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
+                musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
+                updatePlayPauseButton(true)
+            }
+        
         } catch {
             ErrorHandler.handleError(error: error)
         }

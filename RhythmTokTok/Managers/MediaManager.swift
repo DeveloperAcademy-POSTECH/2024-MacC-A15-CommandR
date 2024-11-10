@@ -90,6 +90,13 @@ class MediaManager {
         return 0
     }
     
+    // 매트로놈 MIDI파일
+    func getMetronomeMIDIFile(parsedScore: Score) async throws -> URL {
+        let outputURL = try await createMetronomeMIDIFile(division: Double(parsedScore.divisions))
+        
+        return outputURL
+    }
+ 
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
         let notes = parsedScore.parts.flatMap { part in
             part.measures
@@ -354,46 +361,63 @@ class MediaManager {
     }
     
     // MARK: 매트로놈 MIDI파일 생성
-    func createMetronomeMIDIFile(division: Double, outputURL: URL) throws -> URL {
+    func createMetronomeMIDIFile(division: Double) async throws -> URL {
         var musicSequence: MusicSequence?
         var musicTrack: MusicTrack?
         var tempoTrack: MusicTrack?
-        
+
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
-        
-        // MusicTrack 추가
+
+        // Metronome MusicTrack 생성
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
-        
-        // 템포 트랙 추가
+
+        // TempoTrack 생성 및 보정된 템포 설정
         MusicSequenceGetTempoTrack(musicSequence!, &tempoTrack)
-        
-        // 템포 설정
-        let correctedTempoBPM = tempoBPM * (standardDivision / division)
+        let correctedTempoBPM = tempoBPM * standardDivision
         MusicTrackNewExtendedTempoEvent(tempoTrack!, 0, correctedTempoBPM)
-        
+
         // 드럼 사운드 추가
-        let noteVelocity: UInt8 = 100 // 노트 강도 설정
-        let noteOn: UInt8 = 60 // 드럼 사운드 노트
-        let beatInterval = 60.0 / tempoBPM // 템포에 따른 한 박자 간격 시간
-        
-        // 전체 길이를 설정 (4/4에서 160박자, 즉 40마디)
-        let totalDurationInBeats = 160.0
-        
-         for beat in stride(from: 0.0, to: totalDurationInBeats, by: beatInterval) {
-             var noteMessage = MIDINoteMessage(channel: 9, note: noteOn, velocity: noteVelocity, releaseVelocity: 0, duration: Float(beatInterval))
-             MusicTrackNewMIDINoteEvent(musicTrack!, beat, &noteMessage)
-         }
-        
+        let noteVelocity: UInt8 = 60
+        let noteOn: UInt8 = 60
+        let beatInterval = MusicTimeStamp(standardDivision) // 바뀐 부분: BPM에 맞춘 4분음표 간격 계산
+
+        // 보정된 전체 길이 설정
+        let totalDurationInBeats = MusicTimeStamp(160.0 * standardDivision) // 바뀐 부분: BPM에 따른 전체 길이 계산
+
+        // 여러 박자를 반복하여 드럼 노트 추가
+        for beat in stride(from: 0.0, to: totalDurationInBeats, by: beatInterval) {
+            // 노트 온 이벤트 생성 및 추가
+            var noteOnMessage = MIDINoteMessage(
+                channel: 9,
+                note: noteOn,
+                velocity: noteVelocity,
+                releaseVelocity: 0,
+                duration: Float(beatInterval)
+            )
+            MusicTrackNewMIDINoteEvent(musicTrack!, beat, &noteOnMessage)
+            
+            // 노트 오프 이벤트 생성 및 추가
+            let noteOffTime = beat + (beatInterval * 0.9) // 오프 시간 조정
+            var noteOffMessage = MIDINoteMessage(
+                channel: 9,
+                note: noteOn,
+                velocity: 0, // 0으로 설정해 음을 끔
+                releaseVelocity: 0,
+                duration: 0
+            )
+            MusicTrackNewMIDINoteEvent(musicTrack!, noteOffTime, &noteOffMessage)
+        }
+
         // MIDI 파일 저장
-        let destinationURL = outputURL
-        let status = MusicSequenceFileCreate(musicSequence!, destinationURL as CFURL, .midiType, .eraseFile, Int16(division))
-        
+        let destinationURL = URL(fileURLWithPath: metronomeOutputPath)
+        let status = MusicSequenceFileCreate(musicSequence!, destinationURL as CFURL, .midiType, .eraseFile, Int16(standardDivision))
+
         if status != noErr {
-            ErrorHandler.handleError(error: "Failed to create MetronomeMIDI file. Error code: \(status)")
+            ErrorHandler.handleError(error: "Failed to create Metronome MIDI file. Error code: \(status)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: nil)
         }
-        
+
         return destinationURL
     }
 }
