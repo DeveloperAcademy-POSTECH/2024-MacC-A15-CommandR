@@ -7,10 +7,11 @@
 
 import UIKit
 
-class TitleInputView: UIView {
+class TitleInputView: UIView, UITextFieldDelegate {
     var textField: UITextField!
     var titleLabel: UILabel!
     var subtitleLabel: UILabel!
+    private let maxCharacterLimit = 20
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,8 +45,9 @@ class TitleInputView: UIView {
         textField.font = UIFont(name: "Pretendard-Medium", size: 18)
         textField.layer.borderWidth = 2
         textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
-        textField.backgroundColor = UIColor.systemGray6 // Set light gray background
         textField.layer.cornerRadius = 12
+        textField.backgroundColor = UIColor.systemGray6 // Set light gray background
+        textField.delegate = self // Set the delegate
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 24))
         textField.leftViewMode = .always
         textField.placeholder = "예) 봄날은 간다 - 아코디언"
@@ -84,5 +86,22 @@ class TitleInputView: UIView {
 
     @objc private func clearTextField() {
         textField.text = ""
+        updateBorderColor()
+    }
+    
+    // UITextFieldDelegate method to monitor changes
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        updateBorderColor()
+    }
+
+    private func updateBorderColor() {
+        // Change border color and subtitle label color based on text length
+        if let text = textField.text, text.count > maxCharacterLimit {
+            textField.layer.borderColor = UIColor.red.cgColor
+            subtitleLabel.textColor = UIColor.red
+        } else {
+            textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
+            subtitleLabel.textColor = UIColor.gray
+        }
     }
 }
