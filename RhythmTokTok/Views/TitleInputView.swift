@@ -11,6 +11,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
     var textField: UITextField!
     var titleLabel: UILabel!
     var subtitleLabel: UILabel!
+    var completeButton: UIButton!
     private let maxCharacterLimit = 20
 
     override init(frame: CGRect) {
@@ -46,8 +47,8 @@ class TitleInputView: UIView, UITextFieldDelegate {
         textField.layer.borderWidth = 2
         textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
         textField.layer.cornerRadius = 12
-        textField.backgroundColor = UIColor.systemGray6 // Set light gray background
-        textField.delegate = self // Set the delegate
+        textField.backgroundColor = UIColor.systemGray6
+        textField.delegate = self
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 24))
         textField.leftViewMode = .always
         textField.placeholder = "예) 봄날은 간다 - 아코디언"
@@ -65,6 +66,17 @@ class TitleInputView: UIView, UITextFieldDelegate {
         textField.rightViewMode = .always
         
         addSubview(textField)
+        
+        // Complete button setup
+        completeButton = UIButton(type: .system)
+        completeButton.translatesAutoresizingMaskIntoConstraints = false
+        completeButton.setTitle("입력 완료", for: .normal)
+        completeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 18)
+        completeButton.setTitleColor(.white, for: .normal)
+        completeButton.backgroundColor = UIColor.systemBlue
+        completeButton.layer.cornerRadius = 12
+        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
+        addSubview(completeButton)
 
         // Title and subtitle constraints
         NSLayoutConstraint.activate([
@@ -82,11 +94,24 @@ class TitleInputView: UIView, UITextFieldDelegate {
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             textField.heightAnchor.constraint(equalToConstant: 64)
         ])
+
+        // Complete button constraints
+        NSLayoutConstraint.activate([
+            completeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            completeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            completeButton.heightAnchor.constraint(equalToConstant: 64),
+            completeButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
     }
 
     @objc private func clearTextField() {
         textField.text = ""
         updateBorderColor()
+    }
+    
+    @objc private func completeButtonTapped() {
+        // Add action for "입력 완료" button tap, such as validating input and performing next steps
+        print("입력 완료 button tapped!")
     }
     
     // UITextFieldDelegate method to monitor changes
@@ -95,7 +120,6 @@ class TitleInputView: UIView, UITextFieldDelegate {
     }
 
     private func updateBorderColor() {
-        // Change border color and subtitle label color based on text length
         if let text = textField.text, text.count > maxCharacterLimit {
             textField.layer.borderColor = UIColor.red.cgColor
             subtitleLabel.textColor = UIColor.red
