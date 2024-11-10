@@ -22,8 +22,8 @@ class ScoreListViewController: UIViewController {
         generateMusicXMLAudio()
         
         // MARK: - ListView상단 바 제거, 나중에 검색 넣어야해서 주석처리함.
-        // 네비게이션 바 설정
-//        setupNavigationBar()
+//         네비게이션 바 설정
+        setupNavigationBar()
         
         // 테이블 뷰 설정
         setupTableView()
@@ -44,12 +44,19 @@ class ScoreListViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.tintColor = .black
         
+        let requestButtonImage = UIImage(named: "more.horiz")
+        let requestButton = UIBarButtonItem(image: requestButtonImage, style: .plain, target: self, action: #selector(didTapRequestButton))
+        
+        navigationItem.rightBarButtonItem = requestButton
 //        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
 //        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(didTapSettings))
         
 //        navigationItem.rightBarButtonItems = [settingsButton]
     }
-    
+    @objc func didTapRequestButton() {
+        let requestViewController = RequestProcessingViewController()
+        navigationController?.pushViewController(requestViewController, animated: false)
+    }
     // 테이블 뷰 설정
     func setupTableView() {
         scoreListView.tableView.backgroundColor = UIColor.systemGray6
