@@ -12,12 +12,12 @@ class TitleInputViewController: UIViewController {
     }
 
     private func setupUI() {
-        // Initialize TitleInputView and add it as a subview
+        // TitleInputView 생성하고 subview로 넣기
         titleInputView = TitleInputView()
         titleInputView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleInputView)
 
-        // Set constraints for TitleInputView
+        // 제약 조건 설정
         NSLayoutConstraint.activate([
             titleInputView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             titleInputView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -27,7 +27,7 @@ class TitleInputViewController: UIViewController {
     }
 
     private func setupAccessoryButton() {
-        // Create accessory button for the keyboard
+        // 키보드에 붙은 accessoryButton 생성
         let accessoryButton = UIButton(type: .system)
         accessoryButton.setTitle("입력 완료", for: .normal)
         accessoryButton.setTitleColor(.white, for: .normal)
@@ -36,28 +36,26 @@ class TitleInputViewController: UIViewController {
         accessoryButton.translatesAutoresizingMaskIntoConstraints = false
         accessoryButton.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
         
-        // Create a container view for the accessory button to fit it in the keyboard accessory view
+        // 키보드에 붙을 버튼의 컨테이너 뷰 생성
         let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 64))
         accessoryView.backgroundColor = .clear
         accessoryView.addSubview(accessoryButton)
         
-        // Set the accessory button to stretch across the full width of the accessory view
+        // accessoryButton이 가로 세로 너비 설정, 높이 설정
         NSLayoutConstraint.activate([
             accessoryButton.leadingAnchor.constraint(equalTo: accessoryView.leadingAnchor),
             accessoryButton.trailingAnchor.constraint(equalTo: accessoryView.trailingAnchor),
             accessoryButton.centerYAnchor.constraint(equalTo: accessoryView.centerYAnchor),
-            accessoryButton.heightAnchor.constraint(equalToConstant: 64) // Set the height to 64
+            accessoryButton.heightAnchor.constraint(equalToConstant: 64)
         ])
         
-        // Set the accessory view for the textField
+        // 텍스트 필드에 액세서리 뷰를 설정
         titleInputView.textField.inputAccessoryView = accessoryView
     }
 
 
-
     @objc private func accessoryButtonTapped() {
-        // Handle the action when "제목 입력 완료" button is tapped
-        titleInputView.textField.resignFirstResponder() // Dismiss keyboard
-        // You can add any additional completion logic here
+        // 키보드에 붙은 버튼이 터치되었을 떄의 액션
+        titleInputView.textField.resignFirstResponder() // 키보드 dismiss
     }
 }

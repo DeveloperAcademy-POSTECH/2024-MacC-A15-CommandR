@@ -25,14 +25,14 @@ class TitleInputView: UIView, UITextFieldDelegate {
     }
 
     private func setupUI() {
-        // Title label setup
+        // Title label 셋업
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "제목을 입력해 주세요"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
         addSubview(titleLabel)
         
-        // Subtitle label setup
+        // Subtitle label 셋업
         subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "제목은 최대 20글자까지 쓸 수 있어요"
@@ -40,7 +40,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         subtitleLabel.textColor = UIColor.gray
         addSubview(subtitleLabel)
 
-        // TextField setup
+        // TextField 셋업
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.font = UIFont(name: "Pretendard-Medium", size: 18)
@@ -53,7 +53,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         textField.leftViewMode = .always
         textField.placeholder = "예) 봄날은 간다 - 아코디언"
         
-        // Clear button for text field
+        // text field의 취소 버튼
         let clearButton = UIButton(type: .custom)
         clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         clearButton.tintColor = UIColor(named: "label_quaternary") ?? .lightGray
@@ -67,7 +67,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         
         addSubview(textField)
         
-        // Complete button setup
+        // Complete button 셋업
         completeButton = UIButton(type: .system)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         completeButton.setTitle("입력 완료", for: .normal)
@@ -78,7 +78,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
         addSubview(completeButton)
 
-        // Title and subtitle constraints
+        // 제목과 부제목의 제약 조건
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
@@ -87,7 +87,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
             subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
         ])
 
-        // TextField constraints
+        // 텍스트필드 제약조건
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 20),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
@@ -95,7 +95,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
             textField.heightAnchor.constraint(equalToConstant: 64)
         ])
 
-        // Complete button constraints
+        // 완료 버튼 제약 조건
         NSLayoutConstraint.activate([
             completeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             completeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
@@ -110,11 +110,11 @@ class TitleInputView: UIView, UITextFieldDelegate {
     }
     
     @objc private func completeButtonTapped() {
-        // Add action for "입력 완료" button tap, such as validating input and performing next steps
         print("입력 완료 button tapped!")
+        //TODO PDFRequestConfirmationView로 연결
     }
     
-    // UITextFieldDelegate method to monitor changes
+    // 변화를 감지할 UITextFieldDelegate 메서드
     func textFieldDidChangeSelection(_ textField: UITextField) {
         updateBorderColor()
     }
