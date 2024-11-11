@@ -151,7 +151,7 @@ class MusicPlayer: ObservableObject {
     }
     
     // MIDI 파일 실행
-    func playMIDI(startTime: TimeInterval = 0, delay: TimeInterval) {
+    func playMIDI(startTime: TimeInterval = 0) {
         if let midiPlayer, let metronomeMIDIPlayer {
             if startTime == 0, lastPosition != 0 {
                 // 이전에 일시 정지된 위치에서 재개
@@ -165,8 +165,7 @@ class MusicPlayer: ObservableObject {
             }
             isEnd = false
             // 재생 시작
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-            
+            DispatchQueue.main.async {
                 if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
                     metronomeMIDIPlayer.play()
                 }

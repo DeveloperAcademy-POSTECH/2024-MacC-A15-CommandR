@@ -403,7 +403,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         Task {
             let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
             if isLaunched {
-                print("보낸다")
                 let scoreTitle = currentScore.title
                 IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
                                                                         hapticSequence: hapticSequence)
@@ -477,7 +476,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         // 현재 시간으로부터 4초 후 재생 시작
         let futureTime = Date().addingTimeInterval(4)
-        Logger.shared.logTimeInterval(futureTime.timeIntervalSince1970, message: "Logger: 아이폰 예약 시간")
         sendPlayStatusToWatch(startTimeInterVal: futureTime.timeIntervalSince1970)
         
         // 카운트다운 3초 전에 카운트다운 애니메이션 시작
@@ -511,7 +509,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @objc func actionStart() {
-        self.musicPlayer.playMIDI(delay: 0)
+        self.musicPlayer.playMIDI()
     }
     
     func playSystemAlertSound() {

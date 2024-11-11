@@ -84,12 +84,11 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
                     guard let self = self else {
                         return
                     }
-                    
                     let scheduledTime = Date(timeIntervalSince1970: startTimeInterval)
-                                        
                     // Timer를 사용하여 예약된 시간에 실행
                     let timer = Timer(fireAt: scheduledTime, interval: 0, target: self, selector: #selector(self.triggerHaptic), userInfo: nil, repeats: false)
                     RunLoop.main.add(timer, forMode: .common)
+                    startTimeInterval = 0
                 }
             }
             .store(in: &cancellables)
