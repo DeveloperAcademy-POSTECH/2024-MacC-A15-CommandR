@@ -24,17 +24,18 @@ class ScoreManager {
         score.isHapticOn = true
         score.isScoreDeleted = false
         score.soundOption = "melody"
+        score.divisions = Int64(scoreData.divisions)
         
         // Note를 담을 Ordered Set 생성
         let notesSet = NSMutableOrderedSet()
         
         // 줄 번호 키값도 순회하게 만듦
         scoreData.parts.forEach { part in
-            part.measures.forEach { (_, measures) in
+            part.measures.forEach { (lineNumber, measures) in
                 measures.forEach { measure in
                     measure.notes.forEach { note in
-                        let noteEntity = createNoteEntity(from: note, partId: part.id, measureNumber: measure.number, score: score)
-                        print("noteEntity: \(noteEntity)")
+                        let noteEntity = createNoteEntity(from: note, partId: part.id, lineNumber: lineNumber, measureNumber: measure.number, score: score)
+//                        print("noteEntity: \(noteEntity)")
                         notesSet.add(noteEntity)
                     }
                 }
@@ -55,17 +56,18 @@ class ScoreManager {
     }
     
     // NoteEntity 초기화 함수
-    func createNoteEntity(from note: Note, partId: String, measureNumber: Int, score: ScoreEntity) -> NoteEntity {
+    func createNoteEntity(from note: Note, partId: String, lineNumber: Int, measureNumber: Int, score: ScoreEntity) -> NoteEntity {
         let noteEntity = NoteEntity(context: context)
         noteEntity.id = UUID().uuidString  // 고유 ID
         noteEntity.score = score  // Score와 연결
         noteEntity.part = partId  // 파트 설정
-        noteEntity.measure = Int64(measureNumber)  // Measure 번호 설정
+        noteEntity.measureNumber = Int64(measureNumber)  // Measure 번호 설정
+        noteEntity.lineNumber = Int64(lineNumber)  // Measure 번호 설정
         noteEntity.startTime = Int64(note.startTime)
         noteEntity.staff = Int64(note.staff)
         noteEntity.accidental = Int64(note.accidental.rawValue)  // Enum에서 Int로 변환
         noteEntity.isRest = note.isRest
-        noteEntity.dura = Int64(note.duration)
+        noteEntity.duration = Int64(note.duration)
         noteEntity.pitch = note.pitch
         noteEntity.octave = Int16(note.octave)
         noteEntity.type = note.type

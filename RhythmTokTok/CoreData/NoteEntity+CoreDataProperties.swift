@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension NoteEntity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<NoteEntity> {
@@ -17,10 +16,11 @@ extension NoteEntity {
     }
 
     @NSManaged public var accidental: Int64
-    @NSManaged public var dura: Int64
+    @NSManaged public var duration: Int64
     @NSManaged public var id: String?
     @NSManaged public var isRest: Bool
-    @NSManaged public var measure: Int64
+    @NSManaged public var lineNumber: Int64
+    @NSManaged public var measureNumber: Int64
     @NSManaged public var octave: Int16
     @NSManaged public var part: String?
     @NSManaged public var pitch: String?

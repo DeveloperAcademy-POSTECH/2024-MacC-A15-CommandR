@@ -75,7 +75,7 @@ class ScoreListViewController: UIViewController {
         
         print("loading score")
         for storedScore in storedScores {
-            var score = convertScore(storedScore)
+            let score = convertScore(storedScore)
             scoreList.append(score)
         }
         scoreListView.tableView.reloadData() // 테이블뷰 업데이트
@@ -87,54 +87,80 @@ class ScoreListViewController: UIViewController {
         let modelScore = Score()
         modelScore.title = scoreEntity.title ?? ""
         modelScore.id = scoreEntity.id ?? ""
+        modelScore.divisions = Int(scoreEntity.divisions ?? 1)
         
         var measuresDict: [Int: [Measure]] = [:]
         var partID = "P1" // 기본값 P1
         scoreEntity.notes?.forEach { note in // 역으로 note를 Part, Measure에 넣어주기
-            partID = (note as AnyObject).part!
             // 1. Measure에 Note를 넣는다
-            if let pitch = (note as AnyObject).pitch as? String,
-               let localDuration = (note as AnyObject).dura,
-               let octave = (note as AnyObject).octave,
-               let voice = (note as AnyObject).voice,
-               let staff = (note as AnyObject).staff,
-               let startTime = (note as AnyObject).startTime,
-               let measureNumber = (note as AnyObject).measure as? Int {
+            if var noteEntity = note as? NoteEntity {
+                let pitch = noteEntity.pitch ?? ""
+                let duration = noteEntity.duration
+                let octave = noteEntity.octave
+                let type = noteEntity.type ?? ""
+                let voice = noteEntity.voice
+                let staff = noteEntity.staff
+                let startTime = noteEntity.startTime
+                let measureNumber = noteEntity.measureNumber
+                let lineNumber = noteEntity.lineNumber
+                partID = noteEntity.part!
                 
+                print("staff: ------ \(staff), startTime: ------ \(startTime)")
+                // 필요에 따라 여기서 Note 객체를 만들고 처리
                 var modelNote = Note(
                     pitch: pitch,
-                    duration: Int(localDuration),
+                    duration: Int(duration),
                     octave: Int(octave),
-                    type: (note as AnyObject).type ?? "",
+                    type: type,
                     voice: Int(voice),
                     staff: Int(staff),
-                    startTime: Int(startTime)
+                    startTime: Int(startTime),
+                    isRest: noteEntity.isRest,
+                    accidental: Accidental(rawValue: Int(noteEntity.accidental ?? 0)) ?? Accidental.natural
                 )
                 
                 // measureNumber에 해당하는 Measure 배열 가져오기
-                if var existingMeasures = measuresDict[measureNumber] {
-                    // 이미 존재하는 Measure에 Note 추가
-                    if var lastMeasure = existingMeasures.last {
-                        lastMeasure.addNote(modelNote)
-                    } else {
-                        // Measure가 존재하지 않으면 새로 생성하고 추가
-                        var newMeasure = Measure(number: measureNumber, notes: [], currentTimes: [:])
-                        newMeasure.addNote(modelNote)
-                        existingMeasures.append(newMeasure)
+                if var measureArray = measuresDict[Int(lineNumber)] {
+                    // 1. Measure가 있는지 확인해서 있으면 note 추가
+                    var measureFound = false
+                    for idx in 0..<measureArray.count {
+                        if measureArray[idx].number == Int(measureNumber) {
+                            print("exstingLines measureNumber: \(measureNumber), measureArrayCount: \(measureArray.count)")
+                            measureArray[idx].notes.append(modelNote)
+                            measureFound = true
+                            break
+                        }
                     }
-                    measuresDict[measureNumber] = existingMeasures
+                    
+                    // 2. 해당 Measure가 없으면 새 Measure 생성 후 추가
+                    if !measureFound {
+                        print("nonononononono measureNumber: \(measureNumber), measureArrayCount: \(measureArray.count)")
+                        var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:])
+                        newMeasure.notes.append(modelNote)
+                        measureArray.append(newMeasure)
+                    }
+                    
+                    // 수정된 existingLines를 다시 measuresDict에 저장
+                    measuresDict[Int(lineNumber)] = measureArray
                 } else {
-                    // 새로운 Measure 생성 후 Note 추가
-                    var newMeasure = Measure(number: measureNumber, notes: [], currentTimes: [:])
+                    print("new Line: \(lineNumber)")
+                    // 1. 새로운 line을 생성하고, 새로운 Measure를 생성하여 note 추가
+                    var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:])
                     newMeasure.addNote(modelNote)
-                    measuresDict[measureNumber] = [newMeasure]
+                    
+                    // 새로운 line에 Measure를 추가
+                    measuresDict[Int(lineNumber)] = [newMeasure]
                 }
             }
         }
         // 2. Part에 Measure 넣는다
+        // measuresDict를 [Int: [Measure]]로 변환
+        // Part 구조체 초기화
         let part = Part(id: partID, measures: measuresDict)
-        // 3. Score에 Part 넣는다 TODO: - 현재는 하나라서.. part가 여러개일 경우 로직 수정 필요
-        modelScore.parts = [part] // partID
+        //        let part = Part(id: partID, measures: measuresDict)
+        print("----===============part:------\(part)")
+        // 3. Score에 Part 넣는다
+        modelScore.parts = [part] // TODO: - 현재는 part가 하나.. part가 여러개일 경우 로직 수정 필요
         
         return modelScore
     }
