@@ -31,7 +31,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private let practicNavBar = PracticeNavigationBar()
     private let divider: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "boarders_secondary")
+        view.backgroundColor = UIColor(named: "background_tertiary")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
