@@ -166,7 +166,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         case .downloaded:
             // 악보가 이미 추가된 상태일 때 경고 메시지 표시
             ToastAlert.show(message: "악보가 이미 추가되어 있어요.", in: self.view, iconName: "caution.color")
-        case .scoreReady:
+        case .scoreReady, .deleted:
             addScore(at: index)
         }
     }

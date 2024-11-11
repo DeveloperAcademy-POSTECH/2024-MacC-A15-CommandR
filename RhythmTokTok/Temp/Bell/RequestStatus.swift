@@ -15,7 +15,7 @@ enum RequestStatus {
     
     var headerText: String {
         switch self {
-        case .downloaded, . deleted:
+        case .downloaded, .deleted:
             return "이전 요청 기록"
         case .inProgress:
             return "준비 중인 악보"
