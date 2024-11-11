@@ -59,6 +59,7 @@
 		1E54A8F82CB7D26900753A3E /* MoonRiver.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1E54A8F72CB7D26900753A3E /* MoonRiver.xml */; };
 		1E54A8FB2CBA8EE700753A3E /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FA2CBA8EE100753A3E /* Score.swift */; };
 		1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54A8FC2CBA8F3500753A3E /* Part.swift */; };
+		1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7592642CE1E0220050D10D /* ToolTipView.swift */; };
 		1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */; };
 		1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */; };
 		1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */; };
@@ -216,6 +217,7 @@
 		1E54A8FA2CBA8EE100753A3E /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		1E54A8FC2CBA8F3500753A3E /* Part.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Part.swift; sourceTree = "<group>"; };
 		1E54A9002CBBBCEC00753A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1E7592642CE1E0220050D10D /* ToolTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTipView.swift; sourceTree = "<group>"; };
 		1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlButtonView.swift; sourceTree = "<group>"; };
 		1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTagView.swift; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 				1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */,
 				1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */,
 				1EF5145C2CD763DA00F68084 /* Logger.swift */,
+				1E7592642CE1E0220050D10D /* ToolTipView.swift */,
 				1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */,
 				1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */,
 			);
@@ -872,6 +875,7 @@
 				1ED9FEC32CBE4A8300472C51 /* ScorePracticeScoreCardView.swift in Sources */,
 				02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */,
 				EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */,
+				1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,

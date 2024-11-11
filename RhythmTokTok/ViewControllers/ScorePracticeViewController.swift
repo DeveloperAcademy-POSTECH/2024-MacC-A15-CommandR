@@ -29,6 +29,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     // View
     private let practicNavBar = PracticeNavigationBar()
+    // 툴팁
+    private let toolTipView: ToolTipView = {
+        let toolTip = ToolTipView(status: .lowBattery) // 초기 상태 설정
+//        toolTip.isHidden = true // 기본적으로 숨김 처리
+        return toolTip
+    }()
     private let divider: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "boarders_secondary")
@@ -95,6 +101,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
+        toolTipView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(toolTipView) // ToolTipView 추가
+
         // 추가 UI 초기화 설정
         scoreCardView.titleLabel.text = currentScore.title
         progressBar.setProgress(0.0, animated: false)
@@ -113,6 +122,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             practicNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             practicNavBar.heightAnchor.constraint(equalToConstant: 60),
             
+            // 툴팁 뷰 레이아웃
+            toolTipView.topAnchor.constraint(equalTo: practicNavBar.bottomAnchor, constant: 4),
+            toolTipView.centerXAnchor.constraint(equalTo: practicNavBar.watchConnectImageView.centerXAnchor, constant: -90),
+            toolTipView.widthAnchor.constraint(equalToConstant: 253), // 툴팁의 최대 너비 설정
+            toolTipView.heightAnchor.constraint(equalToConstant: 88),
+
             // divider
             divider.topAnchor.constraint(equalTo: practicNavBar.bottomAnchor, constant: 0),
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
@@ -199,6 +214,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                                                name: .watchPlayButtonTapped, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPauseNotification),
                                                name: .watchPauseButtonTapped, object: nil)
+    }
+    
+    // ToolTipView를 보이거나 숨기는 함수
+    func toggleToolTip(isVisible: Bool, status: AppleWatchStatus) {
+        toolTipView.isHidden = !isVisible
+//        toolTipView.updateStatus(status: status) // 상태 업데이트
     }
     
     // MARK: UI 변경
