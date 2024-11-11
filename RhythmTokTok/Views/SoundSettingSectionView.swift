@@ -7,7 +7,7 @@
 import UIKit
 
 class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
-    // 선택된 옵션을 전달하기 위한 클로저
+    var currentScore: Score?
     var onOptionSelected: ((String) -> Void)?
 
     // UI Elements
@@ -27,7 +27,7 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
     ]
     
     public lazy var radioButtonPicker: RadioButtonOptionItemPicker = {
-        let picker = RadioButtonOptionItemPicker(options: pickerOptions, selectedValue: UserSettingData.shared.getSoundOption().rawValue)
+        let picker = RadioButtonOptionItemPicker(options: pickerOptions, selectedValue: currentScore?.soundOption.rawValue)
         picker.delegate = self
         picker.translatesAutoresizingMaskIntoConstraints = false
         return picker

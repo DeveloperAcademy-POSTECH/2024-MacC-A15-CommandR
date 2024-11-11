@@ -9,6 +9,8 @@ import AVFoundation
 
 // MusicPlayer: AVPlayer를 사용하여 오디오 파일을 재생 및 제어하는 클래스
 class MusicPlayer: ObservableObject {
+    var currentScore: Score?
+    
     @Published var currentTime: TimeInterval = 0
     @Published var isEnd: Bool = false
     
@@ -48,7 +50,7 @@ class MusicPlayer: ObservableObject {
     
     // soundFont 변수를 현재의 soundSetting값을 반영하여 업데이트하기
     private func updateSoundFont() {
-        switch UserSettingData.shared.getSoundOption() {
+        switch currentScore?.soundOption {
         case .melody:
             soundFont = "Piano"
         case .beat:
@@ -61,7 +63,7 @@ class MusicPlayer: ObservableObject {
     }
     
     private func getSoundFont() -> String {
-        switch UserSettingData.shared.getSoundOption() {
+        switch currentScore?.soundOption  {
         case .melody:
             return "Piano"
         case .beat:

@@ -41,7 +41,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         return view
     }()
     private let progressBar = ProgressBarView()
-    private let statusTags = StatusTagView()
+    private let statusTags = StatusTagView(frame: .zero)
     private let scoreCardView = ScorePracticeScoreCardView()
     private let controlButtonView = ControlButtonView()
     
@@ -57,14 +57,16 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         navigationController?.setNavigationBarHidden(true, animated: animated)
         countdownTime = 3
         Task { await createMIDIFile(score: currentScore) }
-        UserSettingData.shared.setCurrentScoreTitle(currentScore.title)
-        statusTags.updateTag()
         scoreCardView.bpmLabel.updateSpeedText()
         checkUpdatePreviousButtonState()
         checkUpdateNextButtonState()
+
+        self.statusTags.currentScore = currentScore
+        statusTags.updateTag()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -286,7 +288,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         musicPlayer.stopMIDI()
         IOStoWatchConnectivityManager.shared.playStatus = .ready
         IOStoWatchConnectivityManager.shared
-            .sendUpdateStatusWithHapticSequence(scoreTitle: "",
+            .sendUpdateStatusWithHapticSequence(currentScore: currentScore,
                                                 hapticSequence: [],
                                                 status: .ready, startTime: 0)
         
@@ -410,20 +412,27 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     // 워치로 실행 예약 메시지 전송
     func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
-        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title, hapticSequence: [], status: .play, startTime: startTimeInterVal)
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                hapticSequence: [],
+                                                                                status: .play,
+                                                                                startTime: startTimeInterVal)
     }
     
     func sendDoneStatusToWatch() {
         controlButtonView.playPauseButton.isPlaying = false
-        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title, hapticSequence: totalHapticSequence, status: .done, startTime: 0)
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                hapticSequence: totalHapticSequence,
+                                                                                status: .done,
+                                                                                startTime: 0)
     }
     
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
         let scoreTitle = currentScore.title
-        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: scoreTitle,
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
                                                                                 hapticSequence: hapticSequence,
-                                                                                status: .jump, startTime: startTimeInterVal)
+                                                                                status: .jump,
+                                                                                startTime: startTimeInterVal)
     }
     
     // 워치로 일시정지 예약 메시지 전송
@@ -432,7 +441,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             let hapticSequence = try await mediaManager.getClipPauseHapticSequence(part: currentScore.parts.last!,
                                                                                    divisions: currentScore.divisions,
                                                                                    pauseTime: musicPlayer.currentTime)
-            IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title,
+            IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
                                                                                     hapticSequence: hapticSequence,
                                                                                     status: .pause, startTime: 0)
         }
@@ -440,7 +449,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
-        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(scoreTitle: currentScore.title, hapticSequence: totalHapticSequence, status: .stop, startTime: 0)
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                hapticSequence: totalHapticSequence,
+                                                                                status: .stop, startTime: 0)
     }
     
     func handlePlayStatusChange(_ status: PlayStatus) {

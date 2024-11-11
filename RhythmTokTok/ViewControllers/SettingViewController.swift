@@ -93,13 +93,9 @@ class SettingViewController: UIViewController {
             }
             scoreEntity.bpm = Int64(bpm) // bpm 값을 저장
             
-            // MARK: 이후에 코어데이터 저장 로직 여기에 넣으면 됨
-            UserSettingData.shared.setBPM(bpm: bpm)
-            
-            // 변경 사항 저장
-            //            try context.save()
-            //            print("BPM 값이 Core Data에 저장되었습니다.")
-            //            print("scoreEntity: \(scoreEntity)")
+            try context.save()
+            print("BPM 값이 Core Data에 저장되었습니다.")
+            print("scoreEntity: \(scoreEntity)")
             
         } catch {
             ErrorHandler.handleError(error: "Core Data 저장 중 에러 발생: \(error)")
@@ -121,13 +117,9 @@ class SettingViewController: UIViewController {
             }
             scoreEntity.soundOption = option // soundOption 속성에 저장
             
-            // MARK: 이후에 코어데이터 저장 로직 여기에 넣으면 됨
-            UserSettingData.shared.setSoundOption(soundOption: SoundSetting(rawValue: option) ?? .mute)
-            
-            // 변경 사항 저장
-            //            try context.save()
-            //            print("소리 옵션이 Core Data에 저장되었습니다.")
-            //            print("scoreEntity: \(scoreEntity)")
+            try context.save()
+            print("소리 옵션이 Core Data에 저장되었습니다.")
+            print("scoreEntity: \(scoreEntity)")
             
         } catch {
             ErrorHandler.handleError(error: "Core Data 저장 중 에러 발생: \(error)")
@@ -161,12 +153,9 @@ class SettingViewController: UIViewController {
             }
             scoreEntity.isHapticOn = isOn // hapticGuideOn 속성에 저장
             
-            // MARK: 이후에 코어데이터 저장 로직 여기에 넣으면 됨
-            UserSettingData.shared.setIsHapticOn(isHapticOn: isOn)
-            
-            //            try context.save()
-            //            print("진동 가이드 토글 상태가 Core Data에 저장되었습니다.")
-            //            print("scoreEntity: \(scoreEntity)")
+            try context.save()
+            print("진동 가이드 토글 상태가 Core Data에 저장되었습니다.")
+            print("scoreEntity: \(scoreEntity)")
             
         } catch {
             ErrorHandler.handleError(error: "Core Data 저장 중 에러 발생: \(error)")
