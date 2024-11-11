@@ -18,7 +18,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     let allTypes = Set([HKObjectType.workoutType()])
     let configuration = HKWorkoutConfiguration()
     
-    @Published var isWatchAppConnected: Bool = false
+    @Published var watchAppStatus: AppleWatchStatus = .notInstalled
     @Published var playStatus: PlayStatus = .ready
     // 워치로부터 받은 상태, 시간
     @Published var receivedPlayStatus: PlayStatus = .ready
@@ -54,12 +54,12 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     }
     
     func sessionDidBecomeInactive(_ session: WCSession) {
-        isWatchAppConnected = false
+        watchAppStatus = .disconnected
         print("WCSession 비활성화됨")
     }
     
     func sessionDidDeactivate(_ session: WCSession) {
-        isWatchAppConnected = false
+        watchAppStatus = .disconnected
         print("WCSession 비활성화됨 - 다시 활성화 준비")
         WCSession.default.activate()
     }
@@ -70,17 +70,17 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     
     private func updateWatchAppReachability(_ session: WCSession) {
         DispatchQueue.main.async {
-//            if session.isReachable {
-//                self.isWatchAppConnected = true
-//            }
-            print("isWatchAppReachable: \(self.isWatchAppConnected)")
+            //            if session.isReachable {
+            //                self.isWatchAppConnected = true
+            //            }
+            print("isWatchAppReachable: \(self.watchAppStatus)")
         }
     }
     
     // MARK: - 워치 런치
     func launchWatch() async -> Bool {
         guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .notInstalled
             ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
             return false
         }
@@ -98,18 +98,19 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
         
         guard authorizationSuccess else {
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .notInstalled
             return false
         }
-
+        
         // `startAppTask` 및 `timeoutTask` 병렬 실행
         let startAppTask = Task { () -> Bool in
             do {
                 try await self.healthStore.startWatchApp(toHandle: self.configuration)
-                self.isWatchAppConnected = true
+                print("test")
                 return true
             } catch {
-                self.isWatchAppConnected = false
+                self.watchAppStatus = .lowBattery
+                print("test2")
                 return false
             }
         }
@@ -118,26 +119,35 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 타임아웃
             return false
         }
-
+        
         // `timeoutTask`가 먼저 완료되면 `startAppTask` 취소
         let result: Bool
         if let completedResult = await withCheckedContinuation({ continuation in
             Task {
-                if await timeoutTask.value == false {
+                async let startResult = startAppTask.value
+                async let timeoutResult = timeoutTask.value
+                
+                if await startResult {
+                    // 첫 번째 Task 성공 시 두 번째 Task 취소 및 true 반환
+                    timeoutTask.cancel()
+                    continuation.resume(returning: true)
+                } else if await timeoutResult == false {
+                    // 첫 번째 Task 실패하고, 두 번째 Task 시간 초과 시 false 반환
                     startAppTask.cancel()
-                    continuation.resume(returning: false)
+                    self.watchAppStatus = .lowBattery
                     ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
-                } else {
-                    continuation.resume(returning: await startAppTask.value)
+                    continuation.resume(returning: false)
                 }
             }
         }) {
+            print("test4\(completedResult)")
             result = completedResult
         } else {
+            print("test3")
             result = false
         }
-        
         return result
+        
     }
     
     // MARK: - 워치로 메시지 보내는 부분
@@ -152,9 +162,9 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         print("전체 햅틱 갯수 \(hapticSequence.count)")
         do {
             try WCSession.default.updateApplicationContext(message)
-//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
+            //            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .disconnected
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }
@@ -163,7 +173,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     func sendUpdateStatusWithHapticSequence(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
         self.selectedScoreTitle = scoreTitle
         let watchHapticGuide = UserSettingData.shared.getIsHapticOn()
-
+        
         var message: [String: Any] = [
             "scoreTitle": scoreTitle,
             "playStatus": status.rawValue,
@@ -171,17 +181,17 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             "startTime": startTime
         ]
         
-        // play 상태가 아닐때만 
+        // play 상태가 아닐때만
         if status != .play {
             message["hapticSequence"] = hapticSequence
         }
         
         do {
             try WCSession.default.updateApplicationContext(message)
-//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
+            //            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .disconnected
         }
     }
     
@@ -201,8 +211,13 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
                 }
             }
             if let sessionStatus = applicationContext["SessionStatus"] as? Bool {
-                // TODO: 여기서 워치랑 통신 가능 상태 관리하는 변수 처리
-                self.isWatchAppConnected = sessionStatus
+                if sessionStatus {
+                    self.watchAppStatus = .connected
+                } else {
+                    if self.watchAppStatus == .connected {
+                        self.watchAppStatus = .backgroundInactive
+                    }
+                }
                 print("전달 \(sessionStatus)")
             }
         }

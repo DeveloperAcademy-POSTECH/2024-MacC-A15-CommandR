@@ -32,7 +32,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // 툴팁
     private let toolTipView: ToolTipView = {
         let toolTip = ToolTipView(status: .lowBattery) // 초기 상태 설정
-//        toolTip.isHidden = true // 기본적으로 숨김 처리
         return toolTip
     }()
     private let divider: UIView = {
@@ -86,7 +85,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
         setupActions()
         setupBindings()
-//        updateWatchAppStatus()
     }
     
     private func configureUI() {
@@ -171,9 +169,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func setupBindings() {
-        IOStoWatchConnectivityManager.shared.$isWatchAppConnected
-            .sink { [weak self] isConnected in
-                self?.handleWatchAppConnectionChange(isConnected)
+        IOStoWatchConnectivityManager.shared.$watchAppStatus
+            .sink { [weak self] watchStatus in
+                self?.handleWatchAppConnectionChange(watchStatus)
             }
             .store(in: &cancellables)
         
@@ -236,11 +234,17 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         progressBar.setProgress(CGFloat(progress), animated: false)
     }
     
-    private func handleWatchAppConnectionChange(_ isConnected: Bool) {
-        if isConnected {
-            self.practicNavBar.setWatchImage(isConnected: true)
-        } else {
-            self.practicNavBar.setWatchImage(isConnected: false)
+    private func handleWatchAppConnectionChange(_ watchStatus: AppleWatchStatus) {
+        DispatchQueue.main.async {
+            if watchStatus == .connected {
+                self.practicNavBar.setWatchImage(isConnected: true)
+                self.toolTipView.setStatus(.connected)
+                self.toolTipView.isHidden = true
+            } else {
+                self.practicNavBar.setWatchImage(isConnected: false)
+                self.toolTipView.setStatus(watchStatus)
+                self.toolTipView.isHidden = false
+            }
         }
     }
     
@@ -271,26 +275,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private func updatePlayPauseButton(_ isEnabled: Bool) {
         DispatchQueue.main.async {
             self.controlButtonView.playPauseButton.isEnabled = isEnabled
-        }
-    }
-    
-    // 워치 앱 상태 업데이트 메서드
-    @objc func updateWatchAppStatus() {
-        Task {
-            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-            
-            if isLaunched {
-                let isWatchAppReachable = IOStoWatchConnectivityManager.shared.isWatchAppConnected
-                if isWatchAppReachable {
-                    self.practicNavBar.setWatchImage(isConnected: true)
-                } else {
-                    self.practicNavBar.setWatchImage(isConnected: false)
-                }
-            } else {
-                // 워치 런칭 실패 시 처리
-                ErrorHandler.handleError(error: "Failed to launch the Watch app.")
-                self.practicNavBar.setWatchImage(isConnected: false)
-            }
         }
     }
     
@@ -426,6 +410,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         Task {
             let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
             if isLaunched {
+                print("보낸다")
                 let scoreTitle = currentScore.title
                 IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
                                                                         hapticSequence: hapticSequence)

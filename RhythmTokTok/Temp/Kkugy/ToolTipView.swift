@@ -7,21 +7,18 @@
 
 import UIKit
 
-enum AppleWatchStatus {
-    case backgroundInactive
-    case disconnected
-    case lowBattery
-    case notInstalled
-}
-
 class ToolTipView: UIView {
     private let containerView = UIView() // 라운드 박스 뷰
     private let arrowView = UIView() // 화살표 뷰
     private let textLabel = UILabel() // 텍스트 레이블
-    private var status: AppleWatchStatus
     private var arrowSize: CGSize = CGSize(width: 16, height: 8)
     private let closeButton = UIButton(type: .system) // 클로즈 버튼
-
+    private var status: AppleWatchStatus {
+        didSet {
+            configureForStatus() // 상태가 변경될 때마다 텍스트 업데이트
+        }
+    }
+    
     init(status: AppleWatchStatus) {
         self.status = status
         super.init(frame: .zero)
@@ -95,6 +92,8 @@ class ToolTipView: UIView {
     
     private func configureForStatus() {
         switch status {
+        case .connected:
+            return
         case .backgroundInactive:
             textLabel.text = "워치를 쳐다봐 주세요.\n워치를 깨우면 앱이 켜져요."
             textLabel.textColor = .white
@@ -111,6 +110,10 @@ class ToolTipView: UIView {
             textLabel.text = "워치 앱이 필요해요.\n설치 후 연결할 수 있어요."
             textLabel.textColor = .white
         }
+    }
+    
+    func setStatus(_ newStatus: AppleWatchStatus) {
+        self.status = newStatus
     }
     
     private func drawArrow() {

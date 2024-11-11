@@ -65,7 +65,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
             observeHapticSessionActive()
-            hapticManager.startExtendedSession()
+//            hapticManager.startExtendedSession()
         }
         if let error = error {
             ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
@@ -76,6 +76,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            print("check")
             hapticManager.startExtendedSession()
 
             // Haptic Guide 설정 업데이트
