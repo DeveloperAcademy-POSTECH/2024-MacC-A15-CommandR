@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol TitleInputViewDelegate: AnyObject {
+    func updateAccessoryButtonState(isEnabled: Bool)
+}
+
 class TitleInputView: UIView, UITextFieldDelegate {
+    weak var delegate: TitleInputViewDelegate?
     var textField: UITextField!
     var titleLabel: UILabel!
     var subtitleLabel: UILabel!
@@ -120,12 +125,18 @@ class TitleInputView: UIView, UITextFieldDelegate {
     }
 
     private func updateBorderColor() {
-        if let text = textField.text, text.count > maxCharacterLimit {
-            textField.layer.borderColor = UIColor.red.cgColor
-            subtitleLabel.textColor = UIColor.red
-        } else {
-            textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
-            subtitleLabel.textColor = UIColor.gray
-        }
-    }
+         if let text = textField.text, text.count > maxCharacterLimit {
+             textField.layer.borderColor = UIColor.red.cgColor
+             subtitleLabel.textColor = UIColor.red
+             completeButton.isEnabled = false
+             completeButton.backgroundColor = UIColor.lightGray
+             delegate?.updateAccessoryButtonState(isEnabled: false) // Update accessory button
+         } else {
+             textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
+             subtitleLabel.textColor = UIColor.gray
+             completeButton.isEnabled = true
+             completeButton.backgroundColor = UIColor.systemBlue
+             delegate?.updateAccessoryButtonState(isEnabled: true) // Update accessory button
+         }
+     }
 }
