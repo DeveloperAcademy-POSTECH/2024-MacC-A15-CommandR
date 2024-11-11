@@ -54,7 +54,7 @@ class CustomAlertViewController: UIViewController {
         
         // MARK: - @lyosha 여기에 컬러 다르게 할 텍스트 지정
         let messageLabel = UILabel()
-        messageLabel.font = UIFont(name: "Pretendard-Regular", size: 16)
+        messageLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
         messageLabel.textAlignment = .left
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         alertContainer.addSubview(messageLabel)

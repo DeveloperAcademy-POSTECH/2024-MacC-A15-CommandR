@@ -44,7 +44,7 @@ class ScoreListViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.tintColor = .black
         
-        let requestButtonImage = UIImage(named: "more.horiz")
+        let requestButtonImage = UIImage(named: "list")
         let requestButton = UIBarButtonItem(image: requestButtonImage, style: .plain, target: self, action: #selector(didTapRequestButton))
         
         navigationItem.rightBarButtonItem = requestButton

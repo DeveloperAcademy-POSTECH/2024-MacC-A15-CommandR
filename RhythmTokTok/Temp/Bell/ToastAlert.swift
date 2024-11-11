@@ -10,7 +10,7 @@ import UIKit
 class ToastAlert {
     static func show(message: String, in view: UIView, iconName: String, duration: TimeInterval = 3.0) {
         let toastContainer = UIView()
-        toastContainer.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastContainer.backgroundColor = UIColor(named: "gray700")
         toastContainer.layer.cornerRadius = 12
         toastContainer.clipsToBounds = true
         toastContainer.alpha = 0.0
@@ -41,13 +41,13 @@ class ToastAlert {
             toastContainer.heightAnchor.constraint(equalToConstant: 64),
             
             // 아이콘 이미지 제약 조건
-            iconImageView.leadingAnchor.constraint(equalTo: toastContainer.leadingAnchor, constant: 16),
+            iconImageView.leadingAnchor.constraint(equalTo: toastContainer.leadingAnchor, constant: 20),
             iconImageView.centerYAnchor.constraint(equalTo: toastContainer.centerYAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 24),
             iconImageView.heightAnchor.constraint(equalToConstant: 24),
             
             // 텍스트 레이블 제약 조건
-            toastLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+            toastLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 12),
             toastLabel.trailingAnchor.constraint(equalTo: toastContainer.trailingAnchor, constant: -16),
             toastLabel.centerYAnchor.constraint(equalTo: toastContainer.centerYAnchor)
         ])
@@ -59,12 +59,14 @@ class ToastAlert {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: .curveEaseOut, animations: {
             toastContainer.alpha = 1.0
             toastContainer.transform = .identity
-        }) { _ in
+        }
+        ) { _ in
             // 사라지는 애니메이션
             UIView.animate(withDuration: 0.5, delay: duration, options: .curveEaseIn, animations: {
                 toastContainer.alpha = 0.0
                 toastContainer.transform = CGAffineTransform(translationX: 0, y: 100)
-            }) { _ in
+            }
+            ) { _ in
                 toastContainer.removeFromSuperview()
             }
         }

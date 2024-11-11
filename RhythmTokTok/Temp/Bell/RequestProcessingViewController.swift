@@ -44,6 +44,10 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         addRequestsToStackView()
     }
     
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
     // Back 버튼 액션
     @objc func backButtonPressed() {
         self.navigationController?.popViewController(animated: true)
@@ -86,7 +90,12 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         let dummyRequest1 = Request(id: UUID(), title: "첫 번째 요청", date: Date(), status: .inProgress)
         let dummyRequest2 = Request(id: UUID(), title: "두 번째 요청", date: Date(), status: .downloaded)
         let dummyRequest3 = Request(id: UUID(), title: "세 번째 요청", date: Date(), status: .scoreReady)
-        requests = [dummyRequest1, dummyRequest2, dummyRequest3]
+        
+        // 일주일 전 날짜
+        let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
+        let dummyRequest4 = Request(id: UUID(), title: "네 번째 요청", date: oneWeekAgo, status: .scoreReady)
+        
+        requests = [dummyRequest1, dummyRequest2, dummyRequest3, dummyRequest4]
     }
     
     private func addRequestsToStackView() {
@@ -98,7 +107,9 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         let statuses: [RequestStatus] = [.scoreReady, .inProgress, .downloaded]
         
         for status in statuses {
-            guard let requestsForStatus = groupedRequests[status] else { continue }
+            guard var requestsForStatus = groupedRequests[status] else { continue }
+            
+            requestsForStatus.sort { $0.date > $1.date }
             
             let headerStackView = UIStackView()
             headerStackView.axis = .horizontal
@@ -152,7 +163,10 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         switch request.status {
         case .inProgress:
             showCancelAlert(for: request, index: index)
-        case .downloaded, .scoreReady:
+        case .downloaded:
+            // 악보가 이미 추가된 상태일 때 경고 메시지 표시
+            ToastAlert.show(message: "악보가 이미 추가되어 있어요.", in: self.view, iconName: "caution.color")
+        case .scoreReady:
             addScore(at: index)
         }
     }
@@ -216,7 +230,7 @@ extension RequestProcessingViewController {
         alertVC.onConfirm = { [weak self] in
             self?.cancelRequest(at: index)
             // TODO: 아이콘 애셋 변경 필요
-            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
+            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
         }
         
         alertVC.modalPresentationStyle = .overFullScreen

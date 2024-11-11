@@ -88,7 +88,7 @@ struct MeasureButton: View {
             Rectangle()
                 .fill(
                     isSelected ?
-                    Color.progress
+                    Color.gray
                     : Color.white
                 )
                 .frame(maxWidth: .infinity, minHeight: 53)
