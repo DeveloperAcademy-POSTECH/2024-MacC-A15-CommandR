@@ -81,8 +81,9 @@ class TitleInputView: UIView, UITextFieldDelegate {
         completeButton.setTitle("입력 완료", for: .normal)
         completeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 18)
         completeButton.setTitleColor(.white, for: .normal)
-        completeButton.backgroundColor = UIColor.systemBlue
+        completeButton.backgroundColor = UIColor.lightGray
         completeButton.layer.cornerRadius = 12
+        completeButton.isEnabled = false
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
         addSubview(completeButton)
     }
@@ -125,18 +126,26 @@ class TitleInputView: UIView, UITextFieldDelegate {
     }
 
     private func updateBorderColor() {
-         if let text = textField.text, text.count > maxCharacterLimit {
-             textField.layer.borderColor = UIColor.red.cgColor
-             subtitleLabel.textColor = UIColor.red
-             completeButton.isEnabled = false
-             completeButton.backgroundColor = UIColor.lightGray
-             delegate?.updateAccessoryButtonState(isEnabled: false) // Update accessory button
-         } else {
-             textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
-             subtitleLabel.textColor = UIColor.gray
-             completeButton.isEnabled = true
-             completeButton.backgroundColor = UIColor.systemBlue
-             delegate?.updateAccessoryButtonState(isEnabled: true) // Update accessory button
-         }
-     }
+        if let text = textField.text, text.isEmpty {
+            // TextField가 비어 있을 때 버튼 비활성화
+            completeButton.isEnabled = false
+            completeButton.backgroundColor = UIColor.lightGray
+            delegate?.updateAccessoryButtonState(isEnabled: false) // Update accessory button
+        } else if let text = textField.text, text.count > maxCharacterLimit {
+            // 글자 수 제한 초과 시 버튼 비활성화 및 텍스트필드 색 변경
+            textField.layer.borderColor = UIColor.red.cgColor
+            subtitleLabel.textColor = UIColor.red
+            completeButton.isEnabled = false
+            completeButton.backgroundColor = UIColor.lightGray
+            delegate?.updateAccessoryButtonState(isEnabled: false) // Update accessory button
+        } else {
+            // 조건이 맞을 시 버튼 활성화
+            textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
+            subtitleLabel.textColor = UIColor.gray
+            completeButton.isEnabled = true
+            completeButton.backgroundColor = UIColor.systemBlue
+            delegate?.updateAccessoryButtonState(isEnabled: true) // Update accessory button
+        }
+    }
+
 }

@@ -34,7 +34,8 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
         accessoryButton = UIButton(type: .system)
         accessoryButton.setTitle("입력 완료", for: .normal)
         accessoryButton.setTitleColor(.white, for: .normal)
-        accessoryButton.backgroundColor = .systemBlue
+        accessoryButton.backgroundColor = UIColor.lightGray
+        accessoryButton.isEnabled = false
         accessoryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         accessoryButton.translatesAutoresizingMaskIntoConstraints = false
         accessoryButton.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
