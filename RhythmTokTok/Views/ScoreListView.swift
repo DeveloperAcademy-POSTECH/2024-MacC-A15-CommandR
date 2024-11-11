@@ -56,7 +56,7 @@ class ScoreListView: UIView {
         
         addSubview(tableHeaderLabel)
         addSubview(tableView)
-//        addSubview(addButton)
+        addSubview(addButton)
         
         // Auto Layout 설정
         NSLayoutConstraint.activate([
@@ -69,13 +69,13 @@ class ScoreListView: UIView {
             tableView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor, constant: 0),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            // 하단 버튼 레이아웃
-//            addButton.widthAnchor.constraint(equalToConstant: 139),
-//            addButton.heightAnchor.constraint(equalToConstant: 56),
-//            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-//            addButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
+//             하단 버튼 레이아웃
+            addButton.widthAnchor.constraint(equalToConstant: 139),
+            addButton.heightAnchor.constraint(equalToConstant: 56),
+            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            addButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }
