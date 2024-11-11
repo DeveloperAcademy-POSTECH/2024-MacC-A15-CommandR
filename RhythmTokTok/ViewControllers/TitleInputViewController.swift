@@ -4,6 +4,7 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
     var titleInputView: TitleInputView!
     var accessoryButton: UIButton!
     var fileURL: URL?
+    private let maxCharacterLimit = 20
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,5 +75,28 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
         pdfConfirmationViewController.filename = filename
         
         navigationController?.pushViewController(pdfConfirmationViewController, animated: true)
+    }
+    
+    func updateBorderColor() {
+        if let text = titleInputView.textField.text, text.isEmpty {
+            // TextField가 비어 있을 때 버튼 비활성화
+            titleInputView.completeButton.isEnabled = false
+            titleInputView.completeButton.backgroundColor = UIColor.lightGray
+            updateAccessoryButtonState(isEnabled: false) // Update accessory button
+        } else if let text = titleInputView.textField.text, text.count > maxCharacterLimit {
+            // 글자 수 제한 초과 시 버튼 비활성화 및 텍스트필드 색 변경
+            titleInputView.textField.layer.borderColor = UIColor.red.cgColor
+            titleInputView.subtitleLabel.textColor = UIColor.red
+            titleInputView.completeButton.isEnabled = false
+            titleInputView.completeButton.backgroundColor = UIColor.lightGray
+            updateAccessoryButtonState(isEnabled: false) // Update accessory button
+        } else {
+            // 조건이 맞을 시 버튼 활성화
+            titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
+            titleInputView.subtitleLabel.textColor = UIColor.gray
+            titleInputView.completeButton.isEnabled = true
+            titleInputView.completeButton.backgroundColor = UIColor.systemBlue
+            updateAccessoryButtonState(isEnabled: true) // Update accessory button
+        }
     }
 }

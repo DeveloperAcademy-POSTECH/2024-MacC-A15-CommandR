@@ -10,6 +10,7 @@ import UIKit
 protocol TitleInputViewDelegate: AnyObject {
     func updateAccessoryButtonState(isEnabled: Bool)
     func didTapCompleteButton(with filename: String)
+    func updateBorderColor()
 }
 
 class TitleInputView: UIView, UITextFieldDelegate {
@@ -18,7 +19,6 @@ class TitleInputView: UIView, UITextFieldDelegate {
     var titleLabel: UILabel!
     var subtitleLabel: UILabel!
     var completeButton: UIButton!
-    private let maxCharacterLimit = 20
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -57,6 +57,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         textField.layer.cornerRadius = 12
         textField.backgroundColor = UIColor.systemGray6
         textField.delegate = self
+        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // Register for text changes
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 24))
         textField.leftViewMode = .always
         textField.placeholder = "예) 봄날은 간다 - 아코디언"
@@ -113,7 +114,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
 
     @objc private func clearTextField() {
         textField.text = ""
-        updateBorderColor()
+        delegate?.updateBorderColor()
     }
     
     @objc private func completeButtonTapped() {
@@ -121,31 +122,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
     }
     
     // 변화를 감지할 UITextFieldDelegate 메서드
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        updateBorderColor()
+    @objc private func textFieldDidChange() {
+        delegate?.updateBorderColor()
     }
-
-    private func updateBorderColor() {
-        if let text = textField.text, text.isEmpty {
-            // TextField가 비어 있을 때 버튼 비활성화
-            completeButton.isEnabled = false
-            completeButton.backgroundColor = UIColor.lightGray
-            delegate?.updateAccessoryButtonState(isEnabled: false) // Update accessory button
-        } else if let text = textField.text, text.count > maxCharacterLimit {
-            // 글자 수 제한 초과 시 버튼 비활성화 및 텍스트필드 색 변경
-            textField.layer.borderColor = UIColor.red.cgColor
-            subtitleLabel.textColor = UIColor.red
-            completeButton.isEnabled = false
-            completeButton.backgroundColor = UIColor.lightGray
-            delegate?.updateAccessoryButtonState(isEnabled: false) // Update accessory button
-        } else {
-            // 조건이 맞을 시 버튼 활성화
-            textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
-            subtitleLabel.textColor = UIColor.gray
-            completeButton.isEnabled = true
-            completeButton.backgroundColor = UIColor.systemBlue
-            delegate?.updateAccessoryButtonState(isEnabled: true) // Update accessory button
-        }
-    }
-
 }
