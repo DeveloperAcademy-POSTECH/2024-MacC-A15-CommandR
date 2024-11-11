@@ -104,9 +104,6 @@ class LoadingViewController: UIViewController {
     }
     
     private func setupActions() {
-        playMusicXMLButton.isEnabled = false
-        playMusicXMLButton.addTarget(self, action: #selector(playMusicXML), for: .touchUpInside)
-        
         playMIDIFileButton.isEnabled = false
         playMIDIFileButton.addTarget(self, action: #selector(playMIDIFile), for: .touchUpInside)
         
@@ -135,21 +132,7 @@ class LoadingViewController: UIViewController {
             }
         }
     }
-    
-    @objc private func playMusicXML() {
-        if isPlayingMusicXML {
-            musicPlayer.pauseWav()
-        } else {
-            guard let outputPathURL = midiFilePathURL else { return }
-            if FileManager.default.fileExists(atPath: outputPathURL.path) {
-                musicPlayer.loadAudioFile(url: outputPathURL)
-                musicPlayer.playWav()
-            } else {
-                ErrorHandler.handleError(error: "Audio file not found at path \(outputPathURL.path)")
-            }
-        }
-        isPlayingMusicXML.toggle()
-    }
+
     
     @objc private func playMIDIFile() {
         guard let outputPathURL = midiFilePathURL else {

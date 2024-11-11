@@ -12,10 +12,11 @@ class MusicPlayer: ObservableObject {
     @Published var currentTime: TimeInterval = 0
     @Published var isEnd: Bool = false
     
-    private var player: AVAudioPlayer?
-    private var midiPlayer: AVMIDIPlayer? // MIDI 재생 플레이어
+    private var midiPlayer: AVMIDIPlayer? // 멜로디 MIDI 재생 플레이어
+    private var metronomeMIDIPlayer: AVMIDIPlayer? // 매트로놈 MIDI 재생 플레이어
     private var timer: Timer?
     private var lastPosition: TimeInterval = 0 // 일시정지용
+//    private var metronomeLastPosition: TimeInterval = 0 // 매트로놈 일시정지용
     var musicSequence: MusicSequence?
     private var soundFont: String = "Piano"
     private var soundSettingObserver: Any?
@@ -24,7 +25,8 @@ class MusicPlayer: ObservableObject {
     
     // Store MIDI file URL separately
     private var midiFileURL: URL?
-    
+    private var metronomeMIDIFileURL: URL?
+
     init() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
@@ -71,41 +73,47 @@ class MusicPlayer: ObservableObject {
         }
     }
     
-    // 오디오 파일 로드
-    func loadAudioFile(url: URL) {
-        do {
-            player = try AVAudioPlayer(contentsOf: url)
-            player?.volume = 5.0
-            player?.numberOfLoops = -1
-            player?.prepareToPlay()
-            print("Audio player initialized successfully.")
-        } catch {
-            ErrorHandler.handleError(error: error)
-        }
-    }
-    
-    // wav 재생
-    func playWav() {
-        print("Playing audio...")
-        player?.play()
-        startTimer()
-        print("Playing audio, duration: \(player?.duration ?? 0) seconds")
-        print("Current time: \(player?.currentTime ?? 0 )")
-    }
-    
-    // wav 일시정지
-    func pauseWav() {
-        print("Pausing audio...")
-        player?.pause()
-        stopTimer()
-    }
-    
     // 미디파일 총 시간
     func getTotalDuration() -> Double {
         return totalDuration
     }
     
-    // MARK: - MIDI 파일 관리
+    // MARK: 매트로놈 MIDI 파일 관리
+    func loadMetronomeMIDIFile(midiURL: URL?) {
+        
+        // MusicSequence 생성
+        NewMusicSequence(&musicSequence)
+        
+        guard let midiURL else { return }
+        if let musicSequence = musicSequence {
+            // MIDI 파일을 시퀀스로 로드
+            let status = MusicSequenceFileLoad(musicSequence, midiURL as CFURL, .midiType, MusicSequenceLoadFlags())
+            
+            if status == noErr {
+                print("MIDI file successfully loaded into MusicSequence.")
+            } else {
+                ErrorHandler.handleError(error: "Error loading MIDI file: \(status)")
+            }
+        }
+        
+        // AVMIDIPlayer 초기화
+        do {
+            
+            let bankURL = Bundle.main.url(forResource: "Drum Set JD Rockset 5", withExtension: "sf2")! // 사운드 폰트 파일 경로
+            
+            metronomeMIDIPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
+            
+            if let midiPlayer {
+                midiPlayer.prepareToPlay()
+                totalDuration = midiPlayer.duration
+            }
+  
+        } catch {
+            ErrorHandler.handleError(error: error)
+        }
+    }
+    
+    // MARK: - 멜로디 MIDI 파일 관리
     func loadMIDIFile(midiURL: URL?) {
         // 필요할 때 다시 꺼내 쓸 수 있도록 midiURL 저장
         self.midiFileURL = midiURL
@@ -144,27 +152,34 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 실행
     func playMIDI(startTime: TimeInterval = 0, delay: TimeInterval) {
-        if let midiPlayer = midiPlayer {
+        if let midiPlayer, let metronomeMIDIPlayer {
             if startTime == 0, lastPosition != 0 {
                 // 이전에 일시 정지된 위치에서 재개
                 midiPlayer.currentPosition = lastPosition
+                metronomeMIDIPlayer.currentPosition = lastPosition
                 lastPosition = 0
             } else {
                 // 시작 틱 위치
                 midiPlayer.currentPosition = startTime
+                metronomeMIDIPlayer.currentPosition = startTime
             }
             isEnd = false
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                Logger.shared.log("Logger: MIDI파일 실행")
+            
+                if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
+                    metronomeMIDIPlayer.play()
+                }
                 midiPlayer.play {
                     print("MIDI playback completed.")
                     if !self.isTemporarilyStopped {
                         print("마무리")
                         self.isEnd = true
                         self.lastPosition = 0
+                        metronomeMIDIPlayer.stop()
                     }
                 }
+                
                 self.startTimer()
             }
             isTemporarilyStopped = false
@@ -173,19 +188,21 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 일시 정지
     func pauseMIDI() {
-        guard let midiPlayer = midiPlayer else { return }
+        guard let midiPlayer = midiPlayer, let metronomeMIDIPlayer = metronomeMIDIPlayer else { return }
         isTemporarilyStopped = true
         lastPosition = midiPlayer.currentPosition
         midiPlayer.stop()
+        metronomeMIDIPlayer.stop()
         stopTimer()
         print("MIDI playback paused at \(lastPosition) seconds.")
     }
     
     func jumpMIDI(jumpPosition: TimeInterval) {
-        guard let midiPlayer = midiPlayer else { return }
+        guard let midiPlayer, let metronomeMIDIPlayer else { return }
         isTemporarilyStopped = true
         lastPosition = jumpPosition
         midiPlayer.stop()
+        metronomeMIDIPlayer.stop()
         stopTimer()
         print("MIDI playback jump at \(lastPosition) seconds.")
     }
@@ -202,7 +219,7 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 처음으로 셋팅
     func stopMIDI() {
-        guard let midiPlayer = midiPlayer else { return }
+        guard let midiPlayer, let metronomeMIDIPlayer else { return }
         // 처음으로
         isTemporarilyStopped = true
         midiPlayer.stop()
@@ -210,6 +227,8 @@ class MusicPlayer: ObservableObject {
         currentTime = 0
         lastPosition = 0
         stopTimer()
+        metronomeMIDIPlayer.stop()
+        metronomeMIDIPlayer.currentPosition = 0
     }
     
     // 타이머 시작
