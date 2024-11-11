@@ -54,7 +54,7 @@ class ScorePracticeScoreCardView: UIView {
         
         currentMeasureLabel.text = "1"
         currentMeasureLabel.textAlignment = .left
-        currentMeasureLabel.textColor = UIColor.blue05
+        currentMeasureLabel.textColor = UIColor.blue500
         currentMeasureLabel.font = .systemFont(ofSize: 24, weight: .regular)
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         

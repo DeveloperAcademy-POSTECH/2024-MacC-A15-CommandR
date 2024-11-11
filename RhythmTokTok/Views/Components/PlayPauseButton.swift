@@ -38,7 +38,7 @@ class PlayPauseButton: UIButton {
         config.image = playImage
         config.title = "재생" // 초기 텍스트는 "재생"
         config.baseForegroundColor = .white // 텍스트 및 이미지 색상
-        config.baseBackgroundColor = .blue05 // 버튼 배경색
+        config.baseBackgroundColor = .blue500 // 버튼 배경색
         config.imagePadding = 18 // 이미지와 텍스트 간격
         config.attributedTitle = AttributedString("재생", attributes:
                 .init([.font: UIFont(name: "Pretendard-Medium", size: 24)!])) // 텍스트 크기 설정
@@ -67,7 +67,7 @@ class PlayPauseButton: UIButton {
             config.image = playImage
             config.attributedTitle = AttributedString("재생", attributes:
                     .init([.font: UIFont(name: "Pretendard-Medium", size: 24)!])) // 텍스트 크기 설정
-            config.baseBackgroundColor = .blue05
+            config.baseBackgroundColor = .blue500
         }
         config.baseForegroundColor = .white
         config.imagePadding = 18
