@@ -133,7 +133,6 @@ class LoadingViewController: UIViewController {
         }
     }
 
-    
     @objc private func playMIDIFile() {
         guard let outputPathURL = midiFilePathURL else {
             ErrorHandler.handleError(error: "MIDI file URL is nil.")
