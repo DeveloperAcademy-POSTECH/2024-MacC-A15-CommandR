@@ -31,7 +31,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private let practicNavBar = PracticeNavigationBar()
     // 툴팁
     private let toolTipView: ToolTipView = {
-        let toolTip = ToolTipView(status: .lowBattery) // 초기 상태 설정
+        let toolTip = ToolTipView(status: .ready) // 초기 상태 설정
         return toolTip
     }()
     private let divider: UIView = {
@@ -69,6 +69,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         // 스와이프 제스처 초기화
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
@@ -214,12 +215,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                                                name: .watchPauseButtonTapped, object: nil)
     }
     
-    // ToolTipView를 보이거나 숨기는 함수
-    func toggleToolTip(isVisible: Bool, status: AppleWatchStatus) {
-        toolTipView.isHidden = !isVisible
-//        toolTipView.updateStatus(status: status) // 상태 업데이트
-    }
-    
     // MARK: UI 변경
     private func updateCurrentMeasureLabel(currentTime: TimeInterval) {
         let division = Double(currentScore.divisions)
@@ -239,11 +234,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             if watchStatus == .connected {
                 self.practicNavBar.setWatchImage(isConnected: true)
                 self.toolTipView.setStatus(.connected)
-                self.toolTipView.isHidden = true
             } else {
                 self.practicNavBar.setWatchImage(isConnected: false)
                 self.toolTipView.setStatus(watchStatus)
-                self.toolTipView.isHidden = false
             }
         }
     }

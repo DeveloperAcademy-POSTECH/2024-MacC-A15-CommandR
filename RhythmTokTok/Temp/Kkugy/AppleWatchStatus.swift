@@ -6,6 +6,7 @@
 //
 
 enum AppleWatchStatus {
+    case ready
     case connected
     case backgroundInactive
     case disconnected

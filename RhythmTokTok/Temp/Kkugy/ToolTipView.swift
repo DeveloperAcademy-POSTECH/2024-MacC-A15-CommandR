@@ -92,23 +92,29 @@ class ToolTipView: UIView {
     
     private func configureForStatus() {
         switch status {
-        case .connected:
+        case .ready, .connected:
+            self.isHidden = true
             return
         case .backgroundInactive:
             textLabel.text = "워치를 쳐다봐 주세요.\n워치를 깨우면 앱이 켜져요."
             textLabel.textColor = .white
+            self.isHidden = false
             
         case .disconnected:
             textLabel.text = "연결이 끊어졌습니다.\n처음부터 다시 시작해 주세요."
             textLabel.textColor = .white
+            self.isHidden = false
             
         case .lowBattery:
             textLabel.text = "앱이 꺼져 있어요.\n워치에서 앱을 열어주세요."
             textLabel.textColor = .white
+            self.isHidden = false
             
         case .notInstalled:
             textLabel.text = "워치 앱이 필요해요.\n설치 후 연결할 수 있어요."
             textLabel.textColor = .white
+            self.isHidden = false
+
         }
     }
     

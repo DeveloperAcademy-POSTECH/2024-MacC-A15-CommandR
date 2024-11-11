@@ -18,7 +18,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     let allTypes = Set([HKObjectType.workoutType()])
     let configuration = HKWorkoutConfiguration()
     
-    @Published var watchAppStatus: AppleWatchStatus = .notInstalled
+    @Published var watchAppStatus: AppleWatchStatus = .ready
     @Published var playStatus: PlayStatus = .ready
     // 워치로부터 받은 상태, 시간
     @Published var receivedPlayStatus: PlayStatus = .ready
@@ -101,53 +101,40 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             self.watchAppStatus = .notInstalled
             return false
         }
-        
-        // `startAppTask` 및 `timeoutTask` 병렬 실행
-        let startAppTask = Task { () -> Bool in
-            do {
-                try await self.healthStore.startWatchApp(toHandle: self.configuration)
-                print("test")
-                return true
-            } catch {
-                self.watchAppStatus = .lowBattery
-                print("test2")
+        let result = await withTaskGroup(of: Bool.self) { group -> Bool in
+            // startAppTask 추가
+            group.addTask {
+                do {
+                    try await self.healthStore.startWatchApp(toHandle: self.configuration)
+                    print("startAppTask 성공")
+                    return true
+                } catch {
+                    return false
+                }
+            }
+            
+            // timeoutTask 추가 (5초 타임아웃)
+            group.addTask {
+                try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
+                print("timeoutTask 완료 (타임아웃)")
+                return false
+            }
+            
+            // 첫 번째로 완료된 작업의 결과를 반환하고 나머지 작업은 취소
+            if let firstResult = await group.next() {
+                group.cancelAll()
+                if !firstResult {
+                    self.watchAppStatus = .lowBattery
+                    ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
+                }
+                print("결과 \(firstResult)")
+                return firstResult
+            } else {
                 return false
             }
         }
         
-        let timeoutTask = Task { () -> Bool in
-            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 타임아웃
-            return false
-        }
-        
-        // `timeoutTask`가 먼저 완료되면 `startAppTask` 취소
-        let result: Bool
-        if let completedResult = await withCheckedContinuation({ continuation in
-            Task {
-                async let startResult = startAppTask.value
-                async let timeoutResult = timeoutTask.value
-                
-                if await startResult {
-                    // 첫 번째 Task 성공 시 두 번째 Task 취소 및 true 반환
-                    timeoutTask.cancel()
-                    continuation.resume(returning: true)
-                } else if await timeoutResult == false {
-                    // 첫 번째 Task 실패하고, 두 번째 Task 시간 초과 시 false 반환
-                    startAppTask.cancel()
-                    self.watchAppStatus = .lowBattery
-                    ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
-                    continuation.resume(returning: false)
-                }
-            }
-        }) {
-            print("test4\(completedResult)")
-            result = completedResult
-        } else {
-            print("test3")
-            result = false
-        }
         return result
-        
     }
     
     // MARK: - 워치로 메시지 보내는 부분
@@ -195,31 +182,17 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
     }
     
-    // 워치 playStatus 변환 요청
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
         DispatchQueue.main.async {
-            if let playStatusString = applicationContext["playStatus"] as? String,
-               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
-                self.receivedPlayStatus = receivedPlayStatus
-                print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
-                
-                // 상태 변경에 대한 알림을 전송
-                if receivedPlayStatus == .play {
-                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
-                } else if receivedPlayStatus == .pause {
-                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
-                }
-            }
-            if let sessionStatus = applicationContext["SessionStatus"] as? Bool {
-                if sessionStatus {
+            if let isActive = userInfo["SessionStatus"] as? Bool {
+                print("Received SessionStatus in background: \(isActive)")
+                if isActive {
                     self.watchAppStatus = .connected
                 } else {
-                    if self.watchAppStatus == .connected {
+                    if self.watchAppStatus == .connected || self.watchAppStatus == .ready {
                         self.watchAppStatus = .backgroundInactive
                     }
-                }
-                print("전달 \(sessionStatus)")
-            }
+                }            }
         }
     }
 }

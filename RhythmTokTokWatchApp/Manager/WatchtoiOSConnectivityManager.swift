@@ -47,6 +47,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     // MARK: 백그라운드 세션 활성화 구독
     private func observeHapticSessionActive() {
         hapticManager.$isSessionActive
+            .prepend(hapticManager.isSessionActive)  // 현재 값을 먼저 방출
             .sink { [weak self] isActive in
                 guard let self = self else { return }
                 if isActive {
@@ -65,7 +66,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         if activationState == .activated {
             print("워치에서 WCSession 활성화 완료")
             observeHapticSessionActive()
-//            hapticManager.startExtendedSession()
         }
         if let error = error {
             ErrorHandler.handleError(error: "WCSession 활성화 실패 - \(error.localizedDescription)")
@@ -76,7 +76,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            print("check")
             hapticManager.startExtendedSession()
 
             // Haptic Guide 설정 업데이트
@@ -87,6 +86,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             
             // 재생 상태 업데이트
             self.updatePlayStatus(applicationContext)
+            
+            sendSessionStatusToIOS(hapticManager.isSessionActive)
         }
     }
 
@@ -169,11 +170,13 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     
     // Background Session 활성화 여부 상태 전달
     private func sendSessionStatusToIOS(_ isActive: Bool) {
-        let message = ["SessionStatus": isActive]
-        do {
-            try WCSession.default.updateApplicationContext(message)
-        } catch {
-            ErrorHandler.handleError(error: error)
+        let userInfo = ["SessionStatus": isActive]
+        
+        if WCSession.default.activationState == .activated {
+            WCSession.default.transferUserInfo(userInfo)
+            print("User info transferred using transferUserInfo with status: \(isActive)")
+        } else {
+            print("WCSession is not activated. Unable to transfer user info.")
         }
     }
 }

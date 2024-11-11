@@ -28,11 +28,10 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
         cancelExtendedRuntimeSession()
     }
 
-    func
-    
-    startExtendedSession() {
+    func startExtendedSession() {
         // 기존 세션이 활성 상태나 예약 상태인지 확인
-        if let session = extendedSession, session.state == .scheduled || session.state == .running {
+        if let session = extendedSession, session.state == .scheduled || session.state == .running ||
+            isSessionActive {
             // 기존 세션이 있으면 종료
             return
         }
@@ -65,6 +64,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
 
     // 세션 활성화 성공
     func extendedRuntimeSessionDidStart(_ session: WKExtendedRuntimeSession) {
+        print("Extended session did activate")
         isSessionActive = true
         setupHapticActivationListener()
     }
