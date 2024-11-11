@@ -22,11 +22,13 @@ class TitleInputView: UIView, UITextFieldDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
+        setupConstraints()
     }
 
     private func setupUI() {
@@ -82,26 +84,24 @@ class TitleInputView: UIView, UITextFieldDelegate {
         completeButton.layer.cornerRadius = 12
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
         addSubview(completeButton)
-
-        // 제목과 부제목의 제약 조건
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
+            // 제목과 부제목의 제약 조건
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
 
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20)
-        ])
-
-        // 텍스트필드 제약조건
-        NSLayoutConstraint.activate([
+            subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            
+            // 텍스트필드 제약조건
             textField.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 20),
             textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            textField.heightAnchor.constraint(equalToConstant: 64)
-        ])
-
-        // 완료 버튼 제약 조건
-        NSLayoutConstraint.activate([
+            textField.heightAnchor.constraint(equalToConstant: 64),
+                
+            // 완료 버튼 제약 조건
             completeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             completeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             completeButton.heightAnchor.constraint(equalToConstant: 64),
