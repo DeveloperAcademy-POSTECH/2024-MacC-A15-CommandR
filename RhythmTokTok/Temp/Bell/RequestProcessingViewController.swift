@@ -187,7 +187,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             
             // 요청 뷰들 추가
             for request in requestsForStatus {
-                let requestView = RequestView()
+                let requestView = RequestCardView()
                 requestView.request = request
                 
                 // 버튼 액션 추가

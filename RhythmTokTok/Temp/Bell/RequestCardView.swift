@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RequestView: UIView {
+class RequestCardView: UIView {
     private let titleLabel = UILabel()
     private let dateLabel = UILabel()
     let requestActionButton = UIButton(type: .system)
