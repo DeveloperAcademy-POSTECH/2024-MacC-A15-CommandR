@@ -398,7 +398,7 @@ class MediaManager {
             MusicTrackNewMIDINoteEvent(musicTrack!, beat, &noteOnMessage)
             
             // 노트 오프 이벤트 생성 및 추가
-            let noteOffTime = beat + (beatInterval * 0.9) // 오프 시간 조정
+            let noteOffTime = beat + beatInterval // 오프 시간 조정
             var noteOffMessage = MIDINoteMessage(
                 channel: 9,
                 note: noteOn,

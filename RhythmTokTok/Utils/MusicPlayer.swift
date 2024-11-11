@@ -166,6 +166,7 @@ class MusicPlayer: ObservableObject {
             isEnd = false
             // 재생 시작
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            
                 if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
                     metronomeMIDIPlayer.play()
                 }
