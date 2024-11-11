@@ -59,7 +59,7 @@ class PlayPauseButton: UIButton {
             config.image = pauseImage
             config.attributedTitle = AttributedString("일시정지", attributes:
                     .init([.font: UIFont(name: "Pretendard-Medium", size: 24)!])) // 텍스트 크기 설정
-            config.baseBackgroundColor = .gray13
+            config.baseBackgroundColor = .gray800
             
         } else {
             let playImage = UIImage(systemName: "play.fill")?

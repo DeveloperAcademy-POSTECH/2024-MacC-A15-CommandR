@@ -9,15 +9,15 @@ import UIKit
 class ControlButtonView: UIView {
     let playPauseButton = PlayPauseButton()
     let resetButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
-                                              title: "처음부터", backGroundColor: .clear,
+                                              title: "처음부터", backGroundColor: .buttonTertiary,
                                               foregoundColor: .lableSecondary,
-                                              strokeColor: .borderActive, pressedColor: .gray01)
+                                              strokeColor: .borderActive, pressedColor: .buttonTertiaryPress)
     let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
-                                                 title: "이전마디", backGroundColor: .gray02,
-                                                 foregoundColor: .lableSecondary, pressedColor: .gray03)
+                                                 title: "이전마디", backGroundColor: .buttonSecondary,
+                                                 foregoundColor: .lableSecondary, pressedColor: .buttonSecondaryPress)
     let nextButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.right"),
-                                             title: "다음마디", backGroundColor: .gray02,
-                                             foregoundColor: .lableSecondary, pressedColor: .gray03)
+                                             title: "다음마디", backGroundColor: .buttonSecondary,
+                                             foregoundColor: .lableSecondary, pressedColor: .buttonSecondaryPress)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
