@@ -36,7 +36,7 @@ class RequestCardView: UIView {
             requestActionButton.setTitle("악보 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_inactive")
             requestActionButton.setTitleColor(.white, for: .normal)
-        case .scoreReady:
+        case .scoreReady, .deleted:
             requestActionButton.setTitle("악보 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_primary")
             requestActionButton.setTitleColor(.white, for: .normal)
