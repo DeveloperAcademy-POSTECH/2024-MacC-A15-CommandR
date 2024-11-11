@@ -167,7 +167,6 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
 
 // PDF 파일 선택에 사용되는 extension
 extension ScoreListViewController: UIDocumentPickerDelegate {
-    
     // 파일 선택에 호출
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let selectedFileURL = urls.first else {
