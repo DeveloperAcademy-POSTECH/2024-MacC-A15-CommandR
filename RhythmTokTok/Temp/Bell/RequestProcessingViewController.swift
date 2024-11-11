@@ -130,16 +130,8 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             headerLabel.textColor = UIColor(named: "lable_primary")
             
             // 상태별 텍스트 설정
-            let headerText: String
-            switch status {
-            case .scoreReady:
-                headerText = "완성된 악보"
-            case .inProgress:
-                headerText = "준비 중인 악보"
-            case .downloaded:
-                headerText = "완료된 악보"
-            }
-            
+            let headerText = status.headerText
+    
             // countLabel 텍스트 설정 및 색상 지정
             let countText = "\(requestsForStatus.count)"
             let attributedText = NSMutableAttributedString(string: "\(headerText) ")
@@ -159,26 +151,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             
             // inProgress 상태일 경우 정보 뷰 추가
             if status == .inProgress {
-                let infoView = UIView()
-                infoView.backgroundColor = UIColor(named: "gray04")
-                infoView.layer.cornerRadius = 8
-                infoView.translatesAutoresizingMaskIntoConstraints = false
-                
-                let infoLabel = UILabel()
-                infoLabel.text = "🚨 악보 완성까지 약 1~2일이 소요될 수 있어요"
-                infoLabel.font = UIFont(name: "Pretendard-Regular", size: 14)
-                infoLabel.textColor = UIColor(named: "lable_tertiary")
-                infoLabel.numberOfLines = 0
-                infoLabel.translatesAutoresizingMaskIntoConstraints = false
-                
-                infoView.addSubview(infoLabel)
-                NSLayoutConstraint.activate([
-                    infoLabel.topAnchor.constraint(equalTo: infoView.topAnchor, constant: 8),
-                    infoLabel.leadingAnchor.constraint(equalTo: infoView.leadingAnchor, constant: 8),
-                    infoLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -8),
-                    infoLabel.bottomAnchor.constraint(equalTo: infoView.bottomAnchor, constant: -8),
-                    infoLabel.heightAnchor.constraint(equalToConstant: 24)
-                ])
+                let infoView = InProgressInfoView()
                 stackView.addArrangedSubview(infoView)
                 
                 // infoView와 그 다음 요소 사이의 간격을 16으로 설정

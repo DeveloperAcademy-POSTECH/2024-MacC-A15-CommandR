@@ -91,6 +91,7 @@
 		723CA00B2CD3639E00CC91EF /* Countdown.Watch.json in Resources */ = {isa = PBXBuildFile; fileRef = 723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */; };
 		729220562CBE48DB008C8FCF /* change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* change.json */; };
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
+		D30101D52CE1DC35005742E6 /* InProgressInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */; };
 		D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D323308C2CDE36E9007D1003 /* ServerManager.swift */; };
 		D323308F2CDE37C9007D1003 /* RequestCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D323308E2CDE37C9007D1003 /* RequestCardView.swift */; };
 		D32330932CDE37FB007D1003 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32330922CDE37FB007D1003 /* Request.swift */; };
@@ -252,6 +253,7 @@
 		723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.Watch.json; sourceTree = "<group>"; };
 		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
+		D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InProgressInfoView.swift; sourceTree = "<group>"; };
 		D323308C2CDE36E9007D1003 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		D323308E2CDE37C9007D1003 /* RequestCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCardView.swift; sourceTree = "<group>"; };
 		D32330922CDE37FB007D1003 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				D32330942CDE382C007D1003 /* RequestStatus.swift */,
 				D323308E2CDE37C9007D1003 /* RequestCardView.swift */,
 				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
+				D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */,
 			);
 			path = Bell;
 			sourceTree = "<group>";
@@ -901,6 +904,7 @@
 				D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */,
 				1EF5145D2CD763FD00F68084 /* Logger.swift in Sources */,
 				EE42039C2CD277B20081F2A1 /* HapticSettingSectionView.swift in Sources */,
+				D30101D52CE1DC35005742E6 /* InProgressInfoView.swift in Sources */,
 				D32330932CDE37FB007D1003 /* Request.swift in Sources */,
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
 				1E91466D2CD0C8B500DBCD00 /* ControlButtonView.swift in Sources */,
