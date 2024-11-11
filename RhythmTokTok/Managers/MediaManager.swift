@@ -153,7 +153,7 @@ class MediaManager {
         return score
     }
     
-    private func handleNoteTie(_ note: inout Note, _ tieStartNotes: inout [String: Note]) {
+    private func handleNoteTie(_ note: Note, _ tieStartNotes: inout [String: Note]) -> Note? {
         let noteKey = "\(note.staff)-\(note.pitch)-\(note.octave)-\(note.voice)" // Unique key
         if let tieType = note.tieType {
             if tieType == "start" {
@@ -170,11 +170,13 @@ class MediaManager {
                 // 그 노트를 사용하여 MIDI파일에 붙임
                 if tieStartNotes[noteKey] != nil {
                     tieStartNotes[noteKey]!.duration += note.duration
-                    note = tieStartNotes[noteKey]!
+                    let modifiedNote = tieStartNotes[noteKey]!
                     tieStartNotes.removeValue(forKey: noteKey)
+                    return modifiedNote
                 }
             }
         }
+        return nil
     }
     
     
@@ -192,8 +194,11 @@ class MediaManager {
             
             // 붙임줄 관련 처리 로직
             if let tieType = note.tieType {
-                handleNoteTie(&note, &tieStartNotes)
-                if tieType == "start" {
+                if let modifiedNote = handleNoteTie(note, &tieStartNotes) {
+                    // tieType이 end일 때 바꿔넣을 note가 return됨
+                    // note 바꿔넣기
+                    note = modifiedNote
+                } else {
                     continue
                 }
             }
@@ -299,8 +304,11 @@ class MediaManager {
             
             // 붙임줄 관련 처리 로직
             if let tieType = note.tieType {
-                handleNoteTie(&note, &tieStartNotes)
-                if tieType == "start" {
+                if let modifiedNote = handleNoteTie(note, &tieStartNotes) {
+                    // tieType이 end일 때 바꿔넣을 note가 return됨
+                    // note 바꿔넣기
+                    note = modifiedNote
+                } else {
                     continue
                 }
             }
