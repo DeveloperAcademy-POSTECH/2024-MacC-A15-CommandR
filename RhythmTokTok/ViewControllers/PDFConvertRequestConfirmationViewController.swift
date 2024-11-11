@@ -7,6 +7,9 @@
 import UIKit
 
 class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertRequestConfirmationViewDelegate {
+    var fileURL: URL?
+    var filename: String?
+    
     private var confirmationView: PDFConvertRequestConfirmationView!
 
         override func viewDidLoad() {

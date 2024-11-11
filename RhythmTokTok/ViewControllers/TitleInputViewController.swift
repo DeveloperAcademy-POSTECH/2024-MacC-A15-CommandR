@@ -3,6 +3,7 @@ import UIKit
 class TitleInputViewController: UIViewController, TitleInputViewDelegate {
     var titleInputView: TitleInputView!
     var accessoryButton: UIButton!
+    var fileURL: URL?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,5 +65,13 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
     func updateAccessoryButtonState(isEnabled: Bool) {
         accessoryButton.isEnabled = isEnabled
         accessoryButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
+    }
+    
+    func didTapCompleteButton(with filename: String) {
+        let pdfConfirmationViewController = PDFConvertRequestConfirmationViewController()
+        pdfConfirmationViewController.fileURL = fileURL
+        pdfConfirmationViewController.filename = filename
+        
+        navigationController?.pushViewController(pdfConfirmationViewController, animated: true)
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 
 protocol TitleInputViewDelegate: AnyObject {
     func updateAccessoryButtonState(isEnabled: Bool)
+    func didTapCompleteButton(with filename: String)
 }
 
 class TitleInputView: UIView, UITextFieldDelegate {
@@ -115,8 +116,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
     }
     
     @objc private func completeButtonTapped() {
-        print("입력 완료 button tapped!")
-        //TODO PDFRequestConfirmationView로 연결
+        delegate?.didTapCompleteButton(with: textField.text!)
     }
     
     // 변화를 감지할 UITextFieldDelegate 메서드
