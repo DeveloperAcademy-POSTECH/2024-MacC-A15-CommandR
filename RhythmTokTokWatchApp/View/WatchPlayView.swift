@@ -55,7 +55,7 @@ struct WatchPlayView: View {
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.blue05)
+                            .fill(Color.blue500)
                         
                         Image(systemName: connectivityManager.playStatus != .play ?
                               "play.fill" : "pause.fill")

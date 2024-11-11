@@ -72,6 +72,8 @@ class CheckPDFViewController: UIViewController {
     @objc private func confirmButtonTapped() {
         print("사용자가 PDF 파일을 확인하고 선택을 완료했습니다.")
         // 모달로 띄운 경우 dismiss 사용
-        self.dismiss(animated: true, completion: nil)
+        let titleInputViewController = TitleInputViewController()
+        navigationController?.pushViewController(titleInputViewController, animated: true)
+        self.dismiss(animated: true, completion: nil)  
     }
 }

@@ -84,6 +84,8 @@
 		1EF5145E2CD764A400F68084 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5145C2CD763DA00F68084 /* Logger.swift */; };
 		1EF8A0B82CB55A4B00ADB783 /* IOStoWatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0B72CB55A4600ADB783 /* IOStoWatchConnectivityManager.swift */; };
 		1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */; };
+		61318FA52CDF8D3A00D8FC26 /* TitleInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */; };
+		61318FA72CDF8D4C00D8FC26 /* TitleInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */; };
 		616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0972CC3F76300F2C72D /* ScoreView.swift */; };
 		616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0D72CC5269100F2C72D /* MeasureButton.swift */; };
 		61B209602CD771F000E51C67 /* mutedClap.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 61B2095F2CD771F000E51C67 /* mutedClap.sf2 */; };
@@ -248,6 +250,8 @@
 		1EF5145C2CD763DA00F68084 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		1EF8A0B72CB55A4600ADB783 /* IOStoWatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOStoWatchConnectivityManager.swift; sourceTree = "<group>"; };
 		1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accidental.swift; sourceTree = "<group>"; };
+		61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInputViewController.swift; sourceTree = "<group>"; };
+		61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInputView.swift; sourceTree = "<group>"; };
 		616BD0972CC3F76300F2C72D /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		616BD0D72CC5269100F2C72D /* MeasureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureButton.swift; sourceTree = "<group>"; };
 		61B2095F2CD771F000E51C67 /* mutedClap.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mutedClap.sf2; sourceTree = "<group>"; };
@@ -411,6 +415,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
 				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
@@ -535,6 +540,7 @@
 		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
 				EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */,
@@ -922,6 +928,7 @@
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
 				1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
+				61318FA52CDF8D3A00D8FC26 /* TitleInputViewController.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
 				EE4203AB2CD3D50C0081F2A1 /* RadioButtonOptionItemPicker.swift in Sources */,
 				1ED9FEC72CBE4B2F00472C51 /* ScorePracticeViewController.swift in Sources */,
@@ -936,6 +943,7 @@
 				02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */,
 				1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */,
 				D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */,
+				61318FA72CDF8D4C00D8FC26 /* TitleInputView.swift in Sources */,
 				1ED9FECF2CBE8ED000472C51 /* PlayPauseButton.swift in Sources */,
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
 				EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */,

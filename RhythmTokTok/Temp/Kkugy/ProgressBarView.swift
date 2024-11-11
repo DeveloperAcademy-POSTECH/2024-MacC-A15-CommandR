@@ -24,7 +24,7 @@ class ProgressBarView: UIView {
 
     private func setupLayers() {
         layer.backgroundColor = UIColor(named: "border_tertiary")?.cgColor
-        progressLayer.backgroundColor = UIColor.blue05.cgColor
+        progressLayer.backgroundColor = UIColor.blue500.cgColor
         layer.addSublayer(progressLayer)
     }
 
