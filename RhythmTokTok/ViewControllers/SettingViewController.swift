@@ -32,17 +32,17 @@ class SettingViewController: UIViewController {
         }
         
         // Core Data에서 저장된 값을 가져와 초기 상태 설정
-        //        if let savedOption = fetchSavedSoundOption() {
-        //            settingView.soundSettingSection.radioButtonPicker.setSelectedValue(savedOption)
-        //        }
-        //
-        //        if let isHapticGuideOn = fetchSavedHapticGuideState() {
-        //            settingView.hapticSettingSection.setToggleState(isOn: isHapticGuideOn)
-        //            // SettingView에서 이벤트를 받아서 처리
-        //            settingView.onBPMButtonTapped = { [weak self] in
-        //                self?.presentBPMSettingModal()
-        //            }
-        //        }
+        if let savedOption = fetchSavedSoundOption() {
+            settingView.soundSettingSection.radioButtonPicker.setSelectedValue(savedOption)
+        }
+        
+        if let isHapticGuideOn = fetchSavedHapticGuideState() {
+            settingView.hapticSettingSection.setToggleState(isOn: isHapticGuideOn)
+            // SettingView에서 이벤트를 받아서 처리
+            settingView.onBPMButtonTapped = { [weak self] in
+                self?.presentBPMSettingModal()
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -194,4 +194,3 @@ extension SettingViewController: BPMSettingDelegate {
         dimmedBackgroundView?.removeFromSuperview()
     }
 }
-
