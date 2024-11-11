@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "more.horiz.svg",
+      "filename" : "Type=Line.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "more.horiz 1.svg",
+      "filename" : "Type=Line 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "more.horiz 2.svg",
+      "filename" : "Type=Line 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
