@@ -93,6 +93,8 @@ class StatusTagView: UIView {
             soundSetLabel.text = "🔇 소리 끄기"
         case .voice:
             soundSetLabel.text = "🗣️ 계이름"
+        case .melodyBeat:
+            soundSetLabel.text = "🗣️ 계이름"
         }
         
         if hapticSetting {
