@@ -12,7 +12,7 @@ class ScoreListViewController: UIViewController {
     
     var selectedFileURL: URL?
     var scoreListView: ScoreListView! {
-        return view as? ScoreListView
+        return view as! ScoreListView
     }
     var scoreList: [Score] = []
     let mediaManager = MediaManager()
@@ -20,9 +20,10 @@ class ScoreListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadScoreList()
-        print("viewDidLoad")
+        // 데이터 삽입 완료 알림을 관찰
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadScoreList), name: .didInsertDummyData, object: nil)
         
+        loadScoreList()
         // MARK: - ListView상단 바 제거, 나중에 검색 넣어야해서 주석처리함.
         //         네비게이션 바 설정
         setupNavigationBar()
@@ -68,6 +69,10 @@ class ScoreListViewController: UIViewController {
         scoreListView.tableView.separatorStyle = .none
     }
     
+    @objc func reloadScoreList() {
+        loadScoreList() // 데이터 다시 불러오기
+    }
+    
     // MARK: 악보리스트 출력
     private func loadScoreList() {
         let scoreService = ScoreService()
@@ -78,7 +83,10 @@ class ScoreListViewController: UIViewController {
             let score = convertScore(storedScore)
             scoreList.append(score)
         }
-        scoreListView.tableView.reloadData() // 테이블뷰 업데이트
+        
+        DispatchQueue.main.async {
+            self.scoreListView.tableView.reloadData() // 테이블뷰 업데이트
+        }
     }
     
     // 저장된 CoreData Score를 Score Model로 변환하는 함수

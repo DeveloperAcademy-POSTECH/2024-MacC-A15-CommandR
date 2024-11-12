@@ -35,7 +35,6 @@ class ScoreManager {
                 measures.forEach { measure in
                     measure.notes.forEach { note in
                         let noteEntity = createNoteEntity(from: note, partId: part.id, lineNumber: lineNumber, measureNumber: measure.number, score: score)
-//                        print("noteEntity: \(noteEntity)")
                         notesSet.add(noteEntity)
                     }
                 }
@@ -72,11 +71,6 @@ class ScoreManager {
         noteEntity.octave = Int16(note.octave)
         noteEntity.type = note.type
         noteEntity.voice = Int16(note.voice)
-        
-        if note.startTime == 0 {
-            print("------startTime 0 note: \(note)")
-        }
-        
         return noteEntity
     }
 }

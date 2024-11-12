@@ -38,6 +38,9 @@ class ScoreService {
                     print("File not found")
                 }
             }
+            
+            // 데이터 삽입 완료 후 Notification 전송
+            NotificationCenter.default.post(name: .didInsertDummyData, object: nil)
         } catch {
             print("Failed to fetch data: \(error)")
         }
