@@ -43,7 +43,7 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
                return
            }
            pageCount = pdfDocument.pageCount
-           confirmationView.pageCount.text = "\(pageCount ?? 0)"
+           confirmationView.pageCount.text = "\(pageCount ?? 0)페이지"
        }
     
     func didTapConfirmationButton() {

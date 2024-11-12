@@ -18,7 +18,7 @@ class PDFConvertRequestConfirmationView: UIView {
     weak var delegate: PDFConvertRequestConfirmationViewDelegate? {
         didSet {
             filenameLabel.text = delegate?.filename
-            pageCount.text = "\(delegate?.pageCount ?? 0)"
+            pageCount.text = "\(delegate?.pageCount ?? 0)페이지"
         }
     }
     
@@ -64,7 +64,7 @@ class PDFConvertRequestConfirmationView: UIView {
         subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "입력한 정보가 맞는지 확인해 주세요"
-        subtitleLabel.font = UIFont.systemFont(ofSize: 14)
+        subtitleLabel.font = UIFont.systemFont(ofSize: 16)
         subtitleLabel.textColor = UIColor.gray
         addSubview(subtitleLabel)
         
@@ -81,19 +81,19 @@ class PDFConvertRequestConfirmationView: UIView {
         scoreInfoLabel = UILabel()
         scoreInfoLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreInfoLabel.text = "악보 정보"
-        scoreInfoLabel.font = UIFont.systemFont(ofSize: 16)
+        scoreInfoLabel.font = UIFont.boldSystemFont(ofSize: 18)
         cardView.addSubview(scoreInfoLabel)
         
         titleLabelInsideCard = UILabel()
         titleLabelInsideCard.translatesAutoresizingMaskIntoConstraints = false
         titleLabelInsideCard.text = "악보 제목"
+        titleLabelInsideCard.textColor = .darkGray
         titleLabelInsideCard.font = UIFont.systemFont(ofSize: 16)
         
         filenameLabel = UILabel()
         filenameLabel.translatesAutoresizingMaskIntoConstraints = false
         filenameLabel.text = delegate?.filename
-        filenameLabel.font = UIFont.systemFont(ofSize: 14)
-        filenameLabel.textColor = .darkGray
+        filenameLabel.font = UIFont.boldSystemFont(ofSize: 16)
         filenameLabel.textAlignment = .right
         
         // HStack [titleLabelInsideCardView, spacer, filenameLabel]
@@ -106,13 +106,13 @@ class PDFConvertRequestConfirmationView: UIView {
         pageCountLabel = UILabel()
         pageCountLabel.translatesAutoresizingMaskIntoConstraints = false
         pageCountLabel.text = "페이지 수"
+        pageCountLabel.textColor = .darkGray
         pageCountLabel.font = UIFont.systemFont(ofSize: 16)
         
         pageCount = UILabel()
         pageCount.translatesAutoresizingMaskIntoConstraints = false
         pageCount.text = "\(0)"
-        pageCount.font = UIFont.systemFont(ofSize: 14)
-        pageCount.textColor = .darkGray
+        pageCount.font = UIFont.boldSystemFont(ofSize: 16)
         pageCount.textAlignment = .right
         
         pageCountHStack = UIStackView(arrangedSubviews: [pageCountLabel, UIView(), pageCount])
@@ -144,26 +144,29 @@ class PDFConvertRequestConfirmationView: UIView {
             subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
             // 카드 뷰의 제약 조건
-            cardView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 8),
+            cardView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 48),
             cardView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             cardView.heightAnchor.constraint(equalToConstant: 190),
             cardView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             
             // Labels inside cardView
-            scoreInfoLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
-            scoreInfoLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            scoreInfoLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 32),
+            scoreInfoLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 24),
+            scoreInfoLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -24),
+            scoreInfoLabel.heightAnchor.constraint(equalToConstant: 27),
+                    
+            pageCountHStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -32),
+            pageCountHStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 24),
+            pageCountHStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -24),
+            pageCountHStack.heightAnchor.constraint(equalToConstant: 24),
             
             // HStack 제약 조건
-            filenameHStack.topAnchor.constraint(equalTo: scoreInfoLabel.bottomAnchor, constant: 8),
-            filenameHStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-            filenameHStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            filenameHStack.heightAnchor.constraint(equalToConstant: 24),
+            filenameHStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 24),
+            filenameHStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -24),
+            filenameHStack.bottomAnchor.constraint(equalTo: pageCountHStack.topAnchor, constant: -20),
             
-            
-            pageCountHStack.topAnchor.constraint(equalTo: filenameHStack.bottomAnchor, constant: 8),
-            pageCountHStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
-            pageCountHStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
-            pageCountHStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16),
-            
+
             // Confirmation button 제약조건
             confirmationButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             confirmationButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
