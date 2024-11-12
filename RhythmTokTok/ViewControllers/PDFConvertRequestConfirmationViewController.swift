@@ -5,10 +5,12 @@
 //  Created by Lyosha's MacBook   on 11/11/24.
 //
 import UIKit
+import PDFKit
 
 class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertRequestConfirmationViewDelegate {
     var fileURL: URL?
     var filename: String?
+    var pageCount: Int?
     
     private var confirmationView: PDFConvertRequestConfirmationView!
 
@@ -16,6 +18,7 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
             super.viewDidLoad()
             view.backgroundColor = .white
             setupConfirmationView()
+            loadPDFPageCount()
         }
     
     private func setupConfirmationView() {
@@ -33,6 +36,15 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
                 confirmationView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
         }
+    
+    private func loadPDFPageCount() {
+           guard let fileURL = fileURL, let pdfDocument = PDFDocument(url: fileURL) else {
+               print("Unable to load PDF document.")
+               return
+           }
+           pageCount = pdfDocument.pageCount
+           confirmationView.pageCount.text = "\(pageCount ?? 0)"
+       }
     
     func didTapConfirmationButton() {
         print("입력 완료 button tapped!")
