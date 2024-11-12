@@ -5,12 +5,6 @@
 //  Created by Lyosha's MacBook   on 11/11/24.
 //
 
-//
-//  TitleInputView\.swift
-//  RhythmTokTok
-//
-//  Created by Hyungeol Lee on 11/9/24.
-//
 
 import UIKit
 
@@ -19,18 +13,19 @@ protocol PDFConvertRequestConfirmationViewDelegate: AnyObject {
     func didTapConfirmationButton()
 }
 
-
 class PDFConvertRequestConfirmationView: UIView {
     weak var delegate: PDFConvertRequestConfirmationViewDelegate? {
         didSet {
             filenameLabel.text = delegate?.filename
         }
     }
+    
     var titleLabel: UILabel!
     var filenameLabel: UILabel!
     var subtitleLabel: UILabel!
     var cardView: UIView!
     var confirmationButton: UIButton!
+    var horizontalStack: UIStackView!
     
     // Labels inside the cardView
     var scoreInfoLabel: UILabel!
@@ -65,7 +60,7 @@ class PDFConvertRequestConfirmationView: UIView {
         subtitleLabel.textColor = UIColor.gray
         addSubview(subtitleLabel)
         
-        //CardView 셋업
+        // CardView 셋업
         cardView = UIView()
         cardView.backgroundColor = UIColor(named: "background_secondary")
         cardView.layer.cornerRadius = 12
@@ -85,18 +80,20 @@ class PDFConvertRequestConfirmationView: UIView {
         titleLabelInsideCard.translatesAutoresizingMaskIntoConstraints = false
         titleLabelInsideCard.text = "악보 제목"
         titleLabelInsideCard.font = UIFont.systemFont(ofSize: 16)
-        cardView.addSubview(titleLabelInsideCard)
         
-        // Setup filename label
         filenameLabel = UILabel()
         filenameLabel.translatesAutoresizingMaskIntoConstraints = false
         filenameLabel.text = delegate?.filename
         filenameLabel.font = UIFont.systemFont(ofSize: 14)
         filenameLabel.textColor = .darkGray
         filenameLabel.textAlignment = .right
-        addSubview(filenameLabel)
         
-        
+        // HStack [titleLabelInsideCardView, spacer, filenameLabel]
+        horizontalStack = UIStackView(arrangedSubviews: [titleLabelInsideCard, UIView(), filenameLabel])
+        horizontalStack.axis = .horizontal
+        horizontalStack.spacing = 8
+        horizontalStack.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(horizontalStack)
         
         pageCountLabel = UILabel()
         pageCountLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +101,7 @@ class PDFConvertRequestConfirmationView: UIView {
         pageCountLabel.font = UIFont.systemFont(ofSize: 16)
         cardView.addSubview(pageCountLabel)
         
-        // confirmaationButton button 셋업
+        // Confirmation button 셋업
         confirmationButton = UIButton(type: .system)
         confirmationButton.translatesAutoresizingMaskIntoConstraints = false
         confirmationButton.setTitle("악보 요청 보내기", for: .normal)
@@ -125,7 +122,7 @@ class PDFConvertRequestConfirmationView: UIView {
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             subtitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             
-            //카드 뷰의 제약 조건
+            // 카드 뷰의 제약 조건
             cardView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 8),
             cardView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             cardView.heightAnchor.constraint(equalToConstant: 190),
@@ -135,24 +132,16 @@ class PDFConvertRequestConfirmationView: UIView {
             scoreInfoLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 12),
             scoreInfoLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             
-            titleLabelInsideCard.topAnchor.constraint(equalTo: scoreInfoLabel.bottomAnchor, constant: 8),
-            titleLabelInsideCard.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            // HStack 제약 조건
+            horizontalStack.topAnchor.constraint(equalTo: scoreInfoLabel.bottomAnchor, constant: 8),
+            horizontalStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            horizontalStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
             
-            
-            // Filename label constraints
-            filenameLabel.centerYAnchor.constraint(equalTo: titleLabelInsideCard.centerYAnchor),
-            filenameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabelInsideCard.trailingAnchor, constant: 8),
-            filenameLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
-            
-            // Spacer effect by keeping titleLabel and filenameLabel spaced within the view
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: filenameLabel.leadingAnchor, constant: -10),
-            
-            pageCountLabel.topAnchor.constraint(equalTo: titleLabelInsideCard.bottomAnchor, constant: 8),
+            pageCountLabel.topAnchor.constraint(equalTo: horizontalStack.bottomAnchor, constant: 8),
             pageCountLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             pageCountLabel.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -12),
             
-            
-            // confirmaationButton butto 버튼제약 조건
+            // Confirmation button 제약조건
             confirmationButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             confirmationButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             confirmationButton.heightAnchor.constraint(equalToConstant: 64),
