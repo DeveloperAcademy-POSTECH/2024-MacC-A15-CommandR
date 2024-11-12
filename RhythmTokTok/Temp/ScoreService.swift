@@ -9,6 +9,31 @@ import CoreData
 class ScoreService {
     let context = CoreDataStack.shared.context
     
+    // 확인하고 더미데이터 넣기
+    func checkAndInsertDummyData() {
+        let fetchRequest: NSFetchRequest<ScoreEntity> = ScoreEntity.fetchRequest()
+        
+        do {
+            let count = try context.count(for: fetchRequest)
+            print("count : \(count)")
+            if count == 0 { // swiftlint:disable:this empty_count
+                if let filePaths = Bundle.main.urls(forResourcesWithExtension: "xml", subdirectory: "DummyScores") {
+                    for fileURL in filePaths {
+                        let fileName = fileURL.deletingPathExtension().lastPathComponent
+                        print("File Name: \(fileName)")
+                        
+                        createScore(id: UUID().uuidString, title: fileName, bpm: 60, createdAt: Date(), isHapticOn: true, soundType: "melody", notes: [])
+                        // TODO: - note 저장하기
+                    }
+                } else {
+                    print("File not found")
+                }
+            }
+        } catch {
+            print("Failed to fetch data: \(error)")
+        }
+    }
+    
     // MARK: - Create
     func createScore(id: String, title: String, bpm: Int64, createdAt: Date, isHapticOn: Bool, soundType: String?, notes: [NoteEntity]?) {
         let score = ScoreEntity(context: context)

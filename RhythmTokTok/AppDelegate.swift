@@ -8,11 +8,12 @@ import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    let scoreService = ScoreService()
     
     // MARK: - 앱 실행시 더미 데이터 삽입
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let context = persistentContainer.viewContext
-        CoreDataHelper.checkAndInsertDummyData(context)
+        scoreService.checkAndInsertDummyData()
         return true
     }
     

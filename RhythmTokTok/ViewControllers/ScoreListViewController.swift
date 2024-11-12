@@ -20,7 +20,7 @@ class ScoreListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        generateMusicXMLAudio()
+        loadScoreList()
         print("viewDidLoad")
         
         // MARK: - ListView상단 바 제거, 나중에 검색 넣어야해서 주석처리함.
@@ -68,10 +68,8 @@ class ScoreListViewController: UIViewController {
         scoreListView.tableView.separatorStyle = .none
     }
     
-    // MARK: - 임시 파일 score생성
-    private func generateMusicXMLAudio() {
-        // 1. 데이터 조회
-        // 2. for문 돌리면서 타이틀 가져오기 + id 정보
+    // MARK: 악보리스트 출력
+    private func loadScoreList() {
         let scoreService = ScoreService()
         let storedScores = scoreService.fetchAllScores()
         
@@ -83,12 +81,6 @@ class ScoreListViewController: UIViewController {
             modelScore.id = storedScore.id ?? ""
             scoreList.append(modelScore)
         }
-        scoreListView.tableView.reloadData() // 테이블뷰 업데이트
-    }
-    
-    private func updateScore(score: Score) {
-        scoreList.append(score)
-        print("score 생성")
         scoreListView.tableView.reloadData() // 테이블뷰 업데이트
     }
     

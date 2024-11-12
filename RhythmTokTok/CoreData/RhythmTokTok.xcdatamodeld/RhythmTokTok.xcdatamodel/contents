@@ -20,6 +20,7 @@
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isHapticOn" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isScoreDeleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="soundOption" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="notes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="NoteEntity" inverseName="score" inverseEntity="NoteEntity"/>
