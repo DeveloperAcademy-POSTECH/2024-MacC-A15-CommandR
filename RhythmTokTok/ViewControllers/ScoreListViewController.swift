@@ -105,7 +105,6 @@ class ScoreListViewController: UIViewController {
                 let lineNumber = noteEntity.lineNumber
                 partID = noteEntity.part!
                 
-                print("staff: ------ \(staff), startTime: ------ \(startTime)")
                 // 필요에 따라 여기서 Note 객체를 만들고 처리
                 var modelNote = Note(
                     pitch: pitch,
@@ -125,7 +124,6 @@ class ScoreListViewController: UIViewController {
                     var measureFound = false
                     for idx in 0..<measureArray.count {
                         if measureArray[idx].number == Int(measureNumber) {
-                            print("exstingLines measureNumber: \(measureNumber), measureArrayCount: \(measureArray.count)")
                             measureArray[idx].notes.append(modelNote)
                             measureFound = true
                             break
@@ -134,8 +132,7 @@ class ScoreListViewController: UIViewController {
                     
                     // 2. 해당 Measure가 없으면 새 Measure 생성 후 추가
                     if !measureFound {
-                        print("nonononononono measureNumber: \(measureNumber), measureArrayCount: \(measureArray.count)")
-                        var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:])
+                        var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
                         newMeasure.notes.append(modelNote)
                         measureArray.append(newMeasure)
                     }
@@ -143,9 +140,8 @@ class ScoreListViewController: UIViewController {
                     // 수정된 existingLines를 다시 measuresDict에 저장
                     measuresDict[Int(lineNumber)] = measureArray
                 } else {
-                    print("new Line: \(lineNumber)")
                     // 1. 새로운 line을 생성하고, 새로운 Measure를 생성하여 note 추가
-                    var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:])
+                    var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
                     newMeasure.addNote(modelNote)
                     
                     // 새로운 line에 Measure를 추가
@@ -154,10 +150,8 @@ class ScoreListViewController: UIViewController {
             }
         }
         // 2. Part에 Measure 넣는다
-        // measuresDict를 [Int: [Measure]]로 변환
         // Part 구조체 초기화
         let part = Part(id: partID, measures: measuresDict)
-        //        let part = Part(id: partID, measures: measuresDict)
         print("----===============part:------\(part)")
         // 3. Score에 Part 넣는다
         modelScore.parts = [part] // TODO: - 현재는 part가 하나.. part가 여러개일 경우 로직 수정 필요

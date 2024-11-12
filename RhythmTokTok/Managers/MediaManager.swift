@@ -30,7 +30,6 @@ class MediaManager {
     }
     
     func getMainPartMeasureCount(score: Score) -> Int {
-        print("part: \(score.parts)")
         guard let currentPart = score.parts.last else {
             return 0
         }
