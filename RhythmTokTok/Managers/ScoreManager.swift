@@ -72,6 +72,11 @@ class ScoreManager {
         noteEntity.octave = Int16(note.octave)
         noteEntity.type = note.type
         noteEntity.voice = Int16(note.voice)
+        
+        if note.startTime == 0 {
+            print("------startTime 0 note: \(note)")
+        }
+        
         return noteEntity
     }
 }

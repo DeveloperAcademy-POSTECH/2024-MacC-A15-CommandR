@@ -106,48 +106,46 @@ class ScoreListViewController: UIViewController {
                 partID = noteEntity.part!
                 
                 // 필요에 따라 여기서 Note 객체를 만들고 처리
-                if !pitch.isEmpty && !type.isEmpty {
-                    var modelNote = Note(
-                        pitch: pitch,
-                        duration: Int(duration),
-                        octave: Int(octave),
-                        type: type,
-                        voice: Int(voice),
-                        staff: Int(staff),
-                        startTime: Int(startTime),
-                        isRest: noteEntity.isRest,
-                        accidental: Accidental(rawValue: Int(noteEntity.accidental ?? 0)) ?? Accidental.natural
-                    )
-                    
-                    // measureNumber에 해당하는 Measure 배열 가져오기
-                    if var measureArray = measuresDict[Int(lineNumber)] {
-                        // 1. Measure가 있는지 확인해서 있으면 note 추가
-                        var measureFound = false
-                        for idx in 0..<measureArray.count {
-                            if measureArray[idx].number == Int(measureNumber) {
-                                measureArray[idx].notes.append(modelNote)
-                                measureFound = true
-                                break
-                            }
+                var modelNote = Note(
+                    pitch: pitch,
+                    duration: Int(duration),
+                    octave: Int(octave),
+                    type: type,
+                    voice: Int(voice),
+                    staff: Int(staff),
+                    startTime: Int(startTime),
+                    isRest: noteEntity.isRest,
+                    accidental: Accidental(rawValue: Int(noteEntity.accidental ?? 0)) ?? Accidental.natural
+                )
+                
+                // measureNumber에 해당하는 Measure 배열 가져오기
+                if var measureArray = measuresDict[Int(lineNumber)] {
+                    // 1. Measure가 있는지 확인해서 있으면 note 추가
+                    var measureFound = false
+                    for idx in 0..<measureArray.count {
+                        if measureArray[idx].number == Int(measureNumber) {
+                            measureArray[idx].notes.append(modelNote)
+                            measureFound = true
+                            break
                         }
-                        
-                        // 2. 해당 Measure가 없으면 새 Measure 생성 후 추가
-                        if !measureFound {
-                            var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
-                            newMeasure.notes.append(modelNote)
-                            measureArray.append(newMeasure)
-                        }
-                        
-                        // 수정된 existingLines를 다시 measuresDict에 저장
-                        measuresDict[Int(lineNumber)] = measureArray
-                    } else {
-                        // 1. 새로운 line을 생성하고, 새로운 Measure를 생성하여 note 추가
-                        var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
-                        newMeasure.addNote(modelNote)
-                        
-                        // 새로운 line에 Measure를 추가
-                        measuresDict[Int(lineNumber)] = [newMeasure]
                     }
+                    
+                    // 2. 해당 Measure가 없으면 새 Measure 생성 후 추가
+                    if !measureFound {
+                        var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
+                        newMeasure.notes.append(modelNote)
+                        measureArray.append(newMeasure)
+                    }
+                    
+                    // 수정된 existingLines를 다시 measuresDict에 저장
+                    measuresDict[Int(lineNumber)] = measureArray
+                } else {
+                    // 1. 새로운 line을 생성하고, 새로운 Measure를 생성하여 note 추가
+                    var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
+                    newMeasure.addNote(modelNote)
+                    
+                    // 새로운 line에 Measure를 추가
+                    measuresDict[Int(lineNumber)] = [newMeasure]
                 }
             }
         }

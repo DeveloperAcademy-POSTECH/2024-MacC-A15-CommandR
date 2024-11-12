@@ -116,7 +116,6 @@ class MediaManager {
     func getPartMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
         var notes: [Note] = []
         
-        print("part: 0303030303092348012801923 \(part)")
         // 현재 무조건적으로 if 문 타게 해놨음, 높은음자리표만 나오게
         if !isChordEnabled {
             notes = part.measures
