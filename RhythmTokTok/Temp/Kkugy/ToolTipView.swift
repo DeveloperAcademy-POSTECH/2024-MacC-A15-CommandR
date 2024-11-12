@@ -37,7 +37,7 @@ class ToolTipView: UIView {
         // 라운드 박스 설정
         containerView.layer.cornerRadius = 12
         containerView.layer.masksToBounds = true
-        containerView.backgroundColor = .gray12
+        containerView.backgroundColor = .gray800
         addSubview(containerView)
         
         // 텍스트 레이블 설정
@@ -54,7 +54,7 @@ class ToolTipView: UIView {
         if let closeImage = UIImage(named: "close") {
             closeButton.setImage(closeImage, for: .normal)
         }
-        closeButton.tintColor = .gray07 // 이미지 색상 설정
+        closeButton.tintColor = .gray800 // 이미지 색상 설정
         closeButton.addTarget(self, action: #selector(didTapClose), for: .touchUpInside)
         containerView.addSubview(closeButton)
 

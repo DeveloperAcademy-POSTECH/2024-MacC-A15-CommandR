@@ -9,12 +9,27 @@ import UIKit
 
 class ToastAlert {
     static func show(message: String, in view: UIView, iconName: String, duration: TimeInterval = 3.0) {
+        // Blur Effect 추가
+        let blurEffect = UIBlurEffect(style: .dark)  // 블러 스타일을 .dark로 설정
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        blurEffectView.layer.cornerRadius = 12
+        blurEffectView.clipsToBounds = true
+        
         let toastContainer = UIView()
-        toastContainer.backgroundColor = UIColor(named: "gray700")
+        toastContainer.backgroundColor = UIColor(named: "gray800")?.withAlphaComponent(0.8)
         toastContainer.layer.cornerRadius = 12
         toastContainer.clipsToBounds = true
         toastContainer.alpha = 0.0
         toastContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        toastContainer.addSubview(blurEffectView)
+        NSLayoutConstraint.activate([
+            blurEffectView.topAnchor.constraint(equalTo: toastContainer.topAnchor),
+            blurEffectView.bottomAnchor.constraint(equalTo: toastContainer.bottomAnchor),
+            blurEffectView.leadingAnchor.constraint(equalTo: toastContainer.leadingAnchor),
+            blurEffectView.trailingAnchor.constraint(equalTo: toastContainer.trailingAnchor)
+        ])
         
         let iconImageView = UIImageView()
         iconImageView.image = UIImage(named: iconName)
