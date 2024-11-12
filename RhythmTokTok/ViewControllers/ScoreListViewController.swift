@@ -59,7 +59,7 @@ class ScoreListViewController: UIViewController {
     }
     // 테이블 뷰 설정
     func setupTableView() {
-        scoreListView.tableView.backgroundColor = UIColor.systemGray6
+        scoreListView.tableView.backgroundColor = UIColor.backgroundTertiary
         scoreListView.tableView.delegate = self
         scoreListView.tableView.dataSource = self
         scoreListView.tableView.register(ListItemCellView.self, forCellReuseIdentifier: ListItemCellView.identifier)
