@@ -48,12 +48,12 @@ class MeasureProgressView: UIView {
 
     private func setupView() {
         // 기본 레이아웃 설정
-        self.backgroundColor = .gray03
+        self.backgroundColor = .gray
         self.layer.cornerRadius = 12
         self.clipsToBounds = true
 
         // ProgressView 설정
-        progressView.backgroundColor = .progress
+        progressView.backgroundColor = .gray
         progressView.layer.cornerRadius = 0
         progressView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(progressView)
