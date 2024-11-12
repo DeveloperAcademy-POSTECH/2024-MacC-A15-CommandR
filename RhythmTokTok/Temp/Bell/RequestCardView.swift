@@ -30,13 +30,13 @@ class RequestCardView: UIView {
         switch request.status {
         case .inProgress:
             requestActionButton.setTitle("요청 취소", for: .normal)
-            requestActionButton.backgroundColor = UIColor(named: "red01")
-            requestActionButton.setTitleColor(UIColor(named: "red05"), for: .normal)
+            requestActionButton.backgroundColor = UIColor(named: "red050")
+            requestActionButton.setTitleColor(UIColor(named: "red500"), for: .normal)
         case .downloaded:
-            requestActionButton.setTitle("악보 보기", for: .normal)
-            requestActionButton.backgroundColor = UIColor(named: "button_secondary")
-            requestActionButton.setTitleColor(UIColor(named: "lable_secondary"), for: .normal)
-        case .scoreReady:
+            requestActionButton.setTitle("악보 추가", for: .normal)
+            requestActionButton.backgroundColor = UIColor(named: "button_inactive")
+            requestActionButton.setTitleColor(.white, for: .normal)
+        case .scoreReady, .deleted:
             requestActionButton.setTitle("악보 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_primary")
             requestActionButton.setTitleColor(.white, for: .normal)

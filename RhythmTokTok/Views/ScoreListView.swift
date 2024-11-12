@@ -24,7 +24,7 @@ class ScoreListView: UIView {
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .gray03
+        tableView.backgroundColor = UIColor(named: "background_tertiary")
         return tableView
     }()
     
