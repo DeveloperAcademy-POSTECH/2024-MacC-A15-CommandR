@@ -7,6 +7,7 @@
 
 // 악보를 관리하는 객체
 class Score {
+    var id: String = ""
     var title: String = ""
     var bpm: Int = UserSettingData.shared.getBPM()
     var parts: [Part] = []

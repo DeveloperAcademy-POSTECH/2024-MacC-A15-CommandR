@@ -6,6 +6,7 @@
 //
 import UIKit
 import UniformTypeIdentifiers
+import CoreData
 
 class ScoreListViewController: UIViewController {
     
@@ -67,10 +68,9 @@ class ScoreListViewController: UIViewController {
     }
     
     // MARK: - 임시 파일 score생성
+    // TODO: - 데이터에서 가지고 와야 함
     private func generateMusicXMLAudio() {
-//        let xmls = ["red", "mannam", "MoonRiver"]
         let xmls = ["doraji", "cry", "shinsadong", "kankan", "minuetGmajor", "star", "metronome"]
-//        let scoreNames = ["붉은 노을 - 이문세", "만남 - 노사연", "Moon River"]
         let scoreNames = ["도라지타령", "울어라 열풍아", "신사동 그사람", "캉캉", "미뉴엣 G 장조", "반짝반짝 작은별", "메트로놈"]
       
         for (index, xmlName) in xmls.enumerated() {
@@ -94,6 +94,19 @@ class ScoreListViewController: UIViewController {
                 }
             }
         }
+        
+        // 1. 데이터 조회
+        // 2. for문 돌리면서 타이틀 가져오기 + id 정보
+        let scoreService = ScoreService()
+        let storedScores = scoreService.fetchAllScores()
+        
+        for storedScore in storedScores {
+            var modelScore = Score()
+            modelScore.title = storedScore.title ?? ""
+            modelScore.id = storedScore.id ?? ""
+            scoreList.append(modelScore)
+        }
+        scoreListView.tableView.reloadData() // 테이블뷰 업데이트
     }
     
     private func updateScore(score: Score) {
@@ -144,8 +157,10 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // TODO: - 실제 테이블 정보
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ListItemCellView.identifier,
                                                        for: indexPath) as? ListItemCellView else {
+            
             return UITableViewCell()
         }
         cell.configure(with: scoreList[indexPath.row].title)

@@ -7,5 +7,5 @@
 
 struct Part {
     let id: String
-    var measures: [Int: [Measure]]
+    var measures: [Int: [Measure]] // 줄번호를 key값으로 Dictionary 형태로 마디정보를 가지고 있음
 }
