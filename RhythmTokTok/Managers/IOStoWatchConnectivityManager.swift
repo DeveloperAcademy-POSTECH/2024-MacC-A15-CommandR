@@ -18,7 +18,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     let allTypes = Set([HKObjectType.workoutType()])
     let configuration = HKWorkoutConfiguration()
     
-    @Published var isWatchAppConnected: Bool = false
+    @Published var watchAppStatus: AppleWatchStatus = .ready
     @Published var playStatus: PlayStatus = .ready
     // 워치로부터 받은 상태, 시간
     @Published var receivedPlayStatus: PlayStatus = .ready
@@ -54,12 +54,12 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     }
     
     func sessionDidBecomeInactive(_ session: WCSession) {
-        isWatchAppConnected = false
+        watchAppStatus = .disconnected
         print("WCSession 비활성화됨")
     }
     
     func sessionDidDeactivate(_ session: WCSession) {
-        isWatchAppConnected = false
+        watchAppStatus = .disconnected
         print("WCSession 비활성화됨 - 다시 활성화 준비")
         WCSession.default.activate()
     }
@@ -70,17 +70,17 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     
     private func updateWatchAppReachability(_ session: WCSession) {
         DispatchQueue.main.async {
-//            if session.isReachable {
-//                self.isWatchAppConnected = true
-//            }
-            print("isWatchAppReachable: \(self.isWatchAppConnected)")
+            //            if session.isReachable {
+            //                self.isWatchAppConnected = true
+            //            }
+            print("isWatchAppReachable: \(self.watchAppStatus)")
         }
     }
     
     // MARK: - 워치 런치
     func launchWatch() async -> Bool {
         guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .notInstalled
             ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
             return false
         }
@@ -98,43 +98,40 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
         
         guard authorizationSuccess else {
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .notInstalled
             return false
         }
-
-        // `startAppTask` 및 `timeoutTask` 병렬 실행
-        let startAppTask = Task { () -> Bool in
-            do {
-                try await self.healthStore.startWatchApp(toHandle: self.configuration)
-                self.isWatchAppConnected = true
-                return true
-            } catch {
-                self.isWatchAppConnected = false
-                return false
-            }
-        }
-        
-        let timeoutTask = Task { () -> Bool in
-            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 타임아웃
-            return false
-        }
-
-        // `timeoutTask`가 먼저 완료되면 `startAppTask` 취소
-        let result: Bool
-        if let completedResult = await withCheckedContinuation({ continuation in
-            Task {
-                if await timeoutTask.value == false {
-                    startAppTask.cancel()
-                    continuation.resume(returning: false)
-                    ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
-                } else {
-                    continuation.resume(returning: await startAppTask.value)
+        let result = await withTaskGroup(of: Bool.self) { group -> Bool in
+            // startAppTask 추가
+            group.addTask {
+                do {
+                    try await self.healthStore.startWatchApp(toHandle: self.configuration)
+                    print("startAppTask 성공")
+                    return true
+                } catch {
+                    return false
                 }
             }
-        }) {
-            result = completedResult
-        } else {
-            result = false
+            
+            // timeoutTask 추가 (5초 타임아웃)
+            group.addTask {
+                try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
+                print("timeoutTask 완료 (타임아웃)")
+                return false
+            }
+            
+            // 첫 번째로 완료된 작업의 결과를 반환하고 나머지 작업은 취소
+            if let firstResult = await group.next() {
+                group.cancelAll()
+                if !firstResult {
+                    self.watchAppStatus = .lowBattery
+                    ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
+                }
+                print("결과 \(firstResult)")
+                return firstResult
+            } else {
+                return false
+            }
         }
         
         return result
@@ -152,9 +149,9 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         print("전체 햅틱 갯수 \(hapticSequence.count)")
         do {
             try WCSession.default.updateApplicationContext(message)
-//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
+            //            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .disconnected
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }
@@ -163,7 +160,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     func sendUpdateStatusWithHapticSequence(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
         self.selectedScoreTitle = scoreTitle
         let watchHapticGuide = UserSettingData.shared.getIsHapticOn()
-
+        
         var message: [String: Any] = [
             "scoreTitle": scoreTitle,
             "playStatus": status.rawValue,
@@ -171,40 +168,30 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             "startTime": startTime
         ]
         
-        // play 상태가 아닐때만 
+        // play 상태가 아닐때만
         if status != .play {
             message["hapticSequence"] = hapticSequence
         }
         
         do {
             try WCSession.default.updateApplicationContext(message)
-//            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
-            self.isWatchAppConnected = false
+            self.watchAppStatus = .disconnected
         }
     }
     
-    // 워치 playStatus 변환 요청
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+    func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
         DispatchQueue.main.async {
-            if let playStatusString = applicationContext["playStatus"] as? String,
-               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
-                self.receivedPlayStatus = receivedPlayStatus
-                print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
-                
-                // 상태 변경에 대한 알림을 전송
-                if receivedPlayStatus == .play {
-                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
-                } else if receivedPlayStatus == .pause {
-                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
-                }
-            }
-            if let sessionStatus = applicationContext["SessionStatus"] as? Bool {
-                // TODO: 여기서 워치랑 통신 가능 상태 관리하는 변수 처리
-                self.isWatchAppConnected = sessionStatus
-                print("전달 \(sessionStatus)")
-            }
+            if let isActive = userInfo["SessionStatus"] as? Bool {
+                print("Received SessionStatus in background: \(isActive)")
+                if isActive {
+                    self.watchAppStatus = .connected
+                } else {
+                    if self.watchAppStatus == .connected || self.watchAppStatus == .ready {
+                        self.watchAppStatus = .backgroundInactive
+                    }
+                }            }
         }
     }
 }

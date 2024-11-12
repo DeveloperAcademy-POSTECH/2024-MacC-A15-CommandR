@@ -29,6 +29,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     // View
     private let practicNavBar = PracticeNavigationBar()
+    // 툴팁
+    private let toolTipView: ToolTipView = {
+        let toolTip = ToolTipView(status: .ready) // 초기 상태 설정
+        return toolTip
+    }()
     private let divider: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(named: "background_tertiary")
@@ -64,6 +69,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         // 스와이프 제스처 초기화
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
@@ -80,7 +86,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
         setupActions()
         setupBindings()
-//        updateWatchAppStatus()
     }
     
     private func configureUI() {
@@ -95,6 +100,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
+        toolTipView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(toolTipView) // ToolTipView 추가
+
         // 추가 UI 초기화 설정
         scoreCardView.titleLabel.text = currentScore.title
         progressBar.setProgress(0.0, animated: false)
@@ -113,6 +121,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             practicNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             practicNavBar.heightAnchor.constraint(equalToConstant: 60),
             
+            // 툴팁 뷰 레이아웃
+            toolTipView.topAnchor.constraint(equalTo: practicNavBar.bottomAnchor, constant: 4),
+            toolTipView.centerXAnchor.constraint(equalTo: practicNavBar.watchConnectImageView.centerXAnchor, constant: -90),
+            toolTipView.widthAnchor.constraint(equalToConstant: 253), // 툴팁의 최대 너비 설정
+            toolTipView.heightAnchor.constraint(equalToConstant: 88),
+
             // divider
             divider.topAnchor.constraint(equalTo: practicNavBar.bottomAnchor, constant: 0),
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
@@ -156,9 +170,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func setupBindings() {
-        IOStoWatchConnectivityManager.shared.$isWatchAppConnected
-            .sink { [weak self] isConnected in
-                self?.handleWatchAppConnectionChange(isConnected)
+        IOStoWatchConnectivityManager.shared.$watchAppStatus
+            .sink { [weak self] watchStatus in
+                self?.handleWatchAppConnectionChange(watchStatus)
             }
             .store(in: &cancellables)
         
@@ -215,11 +229,15 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         progressBar.setProgress(CGFloat(progress), animated: false)
     }
     
-    private func handleWatchAppConnectionChange(_ isConnected: Bool) {
-        if isConnected {
-            self.practicNavBar.setWatchImage(isConnected: true)
-        } else {
-            self.practicNavBar.setWatchImage(isConnected: false)
+    private func handleWatchAppConnectionChange(_ watchStatus: AppleWatchStatus) {
+        DispatchQueue.main.async {
+            if watchStatus == .connected {
+                self.practicNavBar.setWatchImage(isConnected: true)
+                self.toolTipView.setStatus(.connected)
+            } else {
+                self.practicNavBar.setWatchImage(isConnected: false)
+                self.toolTipView.setStatus(watchStatus)
+            }
         }
     }
     
@@ -250,26 +268,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private func updatePlayPauseButton(_ isEnabled: Bool) {
         DispatchQueue.main.async {
             self.controlButtonView.playPauseButton.isEnabled = isEnabled
-        }
-    }
-    
-    // 워치 앱 상태 업데이트 메서드
-    @objc func updateWatchAppStatus() {
-        Task {
-            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-            
-            if isLaunched {
-                let isWatchAppReachable = IOStoWatchConnectivityManager.shared.isWatchAppConnected
-                if isWatchAppReachable {
-                    self.practicNavBar.setWatchImage(isConnected: true)
-                } else {
-                    self.practicNavBar.setWatchImage(isConnected: false)
-                }
-            } else {
-                // 워치 런칭 실패 시 처리
-                ErrorHandler.handleError(error: "Failed to launch the Watch app.")
-                self.practicNavBar.setWatchImage(isConnected: false)
-            }
         }
     }
     
@@ -478,7 +476,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         // 현재 시간으로부터 4초 후 재생 시작
         let futureTime = Date().addingTimeInterval(4)
-        Logger.shared.logTimeInterval(futureTime.timeIntervalSince1970, message: "Logger: 아이폰 예약 시간")
         sendPlayStatusToWatch(startTimeInterVal: futureTime.timeIntervalSince1970)
         
         // 카운트다운 3초 전에 카운트다운 애니메이션 시작
@@ -512,7 +509,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @objc func actionStart() {
-        self.musicPlayer.playMIDI(delay: 0)
+        self.musicPlayer.playMIDI()
     }
     
     func playSystemAlertSound() {

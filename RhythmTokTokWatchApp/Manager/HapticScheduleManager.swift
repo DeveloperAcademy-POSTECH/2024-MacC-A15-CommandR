@@ -30,7 +30,8 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
 
     func startExtendedSession() {
         // 기존 세션이 활성 상태나 예약 상태인지 확인
-        if let session = extendedSession, session.state == .scheduled || session.state == .running {
+        if let session = extendedSession, session.state == .scheduled || session.state == .running ||
+            isSessionActive {
             // 기존 세션이 있으면 종료
             return
         }
@@ -49,7 +50,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
             extendedSession = nil
         }
         stopHaptic()
-        cancellables.removeAll()  // 모든 구독 해제
+        cancelHapticSubscriptions()
         isSessionActive = false
     }
     
@@ -63,6 +64,7 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
 
     // 세션 활성화 성공
     func extendedRuntimeSessionDidStart(_ session: WKExtendedRuntimeSession) {
+        print("Extended session did activate")
         isSessionActive = true
         setupHapticActivationListener()
     }
@@ -82,12 +84,11 @@ class HapticScheduleManager: NSObject, WKExtendedRuntimeSessionDelegate {
                     guard let self = self else {
                         return
                     }
-                    
                     let scheduledTime = Date(timeIntervalSince1970: startTimeInterval)
-                                        
                     // Timer를 사용하여 예약된 시간에 실행
                     let timer = Timer(fireAt: scheduledTime, interval: 0, target: self, selector: #selector(self.triggerHaptic), userInfo: nil, repeats: false)
                     RunLoop.main.add(timer, forMode: .common)
+                    startTimeInterval = 0
                 }
             }
             .store(in: &cancellables)
