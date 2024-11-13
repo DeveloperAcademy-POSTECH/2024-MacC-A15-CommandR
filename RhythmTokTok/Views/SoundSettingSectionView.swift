@@ -7,7 +7,7 @@
 import UIKit
 
 class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
-    // 선택된 옵션을 전달하기 위한 클로저
+    var currentScore: Score?
     var onOptionSelected: ((String) -> Void)?
 
     // UI Elements
@@ -20,13 +20,14 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
     
     // 라디오 버튼 옵션
     private let pickerOptions = [
-        (title: "멜로디로 듣기", value: "melody"),
-        (title: "박자만 듣기", value: "beat"),
-        (title: "소리 끄기", value: "mute")
+        (title: "멜로디와 메트로놈 듣기", value: "melodyBeat"),
+        (title: "멜로디만 듣기", value: "melody"),
+        (title: "메트로놈만 듣기", value: "beat"),
+        (title: "모든 소리 끄기", value: "mute")
     ]
     
     public lazy var radioButtonPicker: RadioButtonOptionItemPicker = {
-        let picker = RadioButtonOptionItemPicker(options: pickerOptions, selectedValue: UserSettingData.shared.getSoundOption().rawValue)
+        let picker = RadioButtonOptionItemPicker(options: pickerOptions, selectedValue: currentScore?.soundOption.rawValue)
         picker.delegate = self
         picker.translatesAutoresizingMaskIntoConstraints = false
         return picker

@@ -14,8 +14,6 @@ class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "설정"
-        self.navigationController?.navigationBar.tintColor = .lableSecondary
         // SettingView에서 이벤트를 받아서 처리
         settingView.onBPMButtonTapped = { [weak self] in
             self?.presentBPMSettingModal()
@@ -34,17 +32,27 @@ class SettingViewController: UIViewController {
         }
         
         // Core Data에서 저장된 값을 가져와 초기 상태 설정
-//        if let savedOption = fetchSavedSoundOption() {
-//            settingView.soundSettingSection.radioButtonPicker.setSelectedValue(savedOption)
-//        }
-//        
-//        if let isHapticGuideOn = fetchSavedHapticGuideState() {
-//            settingView.hapticSettingSection.setToggleState(isOn: isHapticGuideOn)
-//            // SettingView에서 이벤트를 받아서 처리
-//            settingView.onBPMButtonTapped = { [weak self] in
-//                self?.presentBPMSettingModal()
-//            }
-//        }
+        if let savedOption = fetchSavedSoundOption() {
+            settingView.soundSettingSection.radioButtonPicker.setSelectedValue(savedOption)
+        }
+        
+        if let isHapticGuideOn = fetchSavedHapticGuideState() {
+            settingView.hapticSettingSection.setToggleState(isOn: isHapticGuideOn)
+            // SettingView에서 이벤트를 받아서 처리
+            settingView.onBPMButtonTapped = { [weak self] in
+                self?.presentBPMSettingModal()
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     private func presentBPMSettingModal() {
@@ -56,9 +64,9 @@ class SettingViewController: UIViewController {
             dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             window.addSubview(dimmedBackgroundView!)
         }
-
+        
         let bpmSettingVC = BPMSettingSectionViewController()
-
+        
         bpmSettingVC.modalPresentationStyle = .pageSheet
         bpmSettingVC.delegate = self
         bpmSettingVC.currentBPM = settingView.bpmSettingSection.bpm // 현재 BPM 값 전달
@@ -85,14 +93,10 @@ class SettingViewController: UIViewController {
             }
             scoreEntity.bpm = Int64(bpm) // bpm 값을 저장
             
-            // MARK: 이후에 코어데이터 저장 로직 여기에 넣으면 됨
-            UserSettingData.shared.setBPM(bpm: bpm)
-
-            // 변경 사항 저장
-//            try context.save()
-//            print("BPM 값이 Core Data에 저장되었습니다.")
-//            print("scoreEntity: \(scoreEntity)")
-
+            try context.save()
+            print("BPM 값이 Core Data에 저장되었습니다.")
+            print("scoreEntity: \(scoreEntity)")
+            
         } catch {
             ErrorHandler.handleError(error: "Core Data 저장 중 에러 발생: \(error)")
         }
@@ -113,13 +117,9 @@ class SettingViewController: UIViewController {
             }
             scoreEntity.soundOption = option // soundOption 속성에 저장
             
-            // MARK: 이후에 코어데이터 저장 로직 여기에 넣으면 됨
-            UserSettingData.shared.setSoundOption(soundOption: SoundSetting(rawValue: option) ?? .mute)
-
-            // 변경 사항 저장
-//            try context.save()
-//            print("소리 옵션이 Core Data에 저장되었습니다.")
-//            print("scoreEntity: \(scoreEntity)")
+            try context.save()
+            print("소리 옵션이 Core Data에 저장되었습니다.")
+            print("scoreEntity: \(scoreEntity)")
             
         } catch {
             ErrorHandler.handleError(error: "Core Data 저장 중 에러 발생: \(error)")
@@ -153,13 +153,10 @@ class SettingViewController: UIViewController {
             }
             scoreEntity.isHapticOn = isOn // hapticGuideOn 속성에 저장
             
-            // MARK: 이후에 코어데이터 저장 로직 여기에 넣으면 됨
-            UserSettingData.shared.setIsHapticOn(isHapticOn: isOn)
-
-//            try context.save()
-//            print("진동 가이드 토글 상태가 Core Data에 저장되었습니다.")
-//            print("scoreEntity: \(scoreEntity)")
-
+            try context.save()
+            print("진동 가이드 토글 상태가 Core Data에 저장되었습니다.")
+            print("scoreEntity: \(scoreEntity)")
+            
         } catch {
             ErrorHandler.handleError(error: "Core Data 저장 중 에러 발생: \(error)")
         }
@@ -186,4 +183,3 @@ extension SettingViewController: BPMSettingDelegate {
         dimmedBackgroundView?.removeFromSuperview()
     }
 }
-    

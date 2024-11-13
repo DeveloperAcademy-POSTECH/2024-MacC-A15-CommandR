@@ -9,15 +9,17 @@ import AVFoundation
 import AudioToolbox
 
 class MediaManager {
+    var currentScore: Score?
+    
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
-    private var tempoBPM: Double = Double(UserSettingData.shared.getBPM())
+    private lazy var tempoBPM: Double = Double(currentScore?.bpm ?? 0)
     private var midiOutputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("midifile.mid").path() // MIDI 멜로디 파일 경로
     private var metronomeOutputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("metronome.mid").path() // MIDI 매트로놈 파일 경로
     private var currentPart: Part?
-
+    
     func getScore(xmlData: Data) async throws -> Score {
         let parsedScore = await parseMusicXMLData(xmlData: xmlData)
         
@@ -294,7 +296,7 @@ class MediaManager {
         
         // 기준 division과의 보정 값
         let divisionCorrectionFactor = standardDivision / division
-        tempoBPM = Double(UserSettingData.shared.getBPM())
+        tempoBPM = Double(currentScore?.bpm ?? 60)
         let correctedTempoBPM = tempoBPM * standardDivision
         // 템포 설정 (0 번째 시점에서 보정된 템포 이벤트 추가)
         MusicTrackNewExtendedTempoEvent(tempoTrack!, 0, correctedTempoBPM)
@@ -325,10 +327,10 @@ class MediaManager {
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
-                note: UInt8(UserSettingData.shared.getSoundOption() == .melody ?
+                note: UInt8(currentScore?.soundOption == .melody ?
                             note.pitchNoteNumber() :
                             60), // pitch를 MIDI note number로 변환
-                velocity: UserSettingData.shared.getSoundOption() == .mute ? 1 : 64, // 음의 강도 (나중에 수정 가능)
+                velocity: currentScore?.soundOption == .mute ? 1 : 64, // 음의 강도 (나중에 수정 가능)
                 releaseVelocity: 0,
                 duration: 0
             )
@@ -337,7 +339,7 @@ class MediaManager {
             MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick, &noteOnMessage)
             
             // 노트의 길이를 MIDI 틱으로 변환
-            let noteDurationTicks = MusicTimeStamp(Double(UserSettingData.shared.getSoundOption() == .melody ?
+            let noteDurationTicks = MusicTimeStamp(Double(currentScore?.soundOption == .melody ?
                                                           note.duration :
                                                             0) * divisionCorrectionFactor)
  

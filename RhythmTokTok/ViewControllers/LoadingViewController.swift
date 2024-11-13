@@ -10,6 +10,8 @@ import UIKit
 import AVFAudio
 
 class LoadingViewController: UIViewController {
+    var currentScore: Score?
+    
     private var pickerView: UIPickerView!
     private let musicPlayer = MusicPlayer()
     private var isPlayingMusicXML = false
@@ -17,7 +19,7 @@ class LoadingViewController: UIViewController {
     private var midiFilePathURL: URL?
     private var cancellables = Set<AnyCancellable>()
     private var isPlayingMIDIFile = false
-    private var currentBPM = UserSettingData.shared.getBPM() // bpm 조절 설정
+    private lazy var currentBPM = currentScore?.bpm ?? 60 // bpm 조절 설정
     private var currenrScore: Score? // 현재 악보 score
     private var selectedPart: Part? // 픽커에서 선택된 파트
     

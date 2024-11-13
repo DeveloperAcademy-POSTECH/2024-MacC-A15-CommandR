@@ -8,12 +8,13 @@
 import UIKit
 
 class BPMLabel: UIView {
+    var currentScore: Score?
+    
     private var BPMHStackView = UIStackView()
     private var speedStatusLabel = UILabel()
     private var valueLabel = UILabel()
     private var speedText: String = "보통"
-    // TODO: CoreData 변경 필요
-    private var speedValue: Int = UserSettingData.shared.getBPM()
+    private lazy var speedValue: Int = currentScore?.bpm ?? 60
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,8 +60,7 @@ class BPMLabel: UIView {
 
     // 속도 상태에 따른 텍스트 변경
     func updateSpeedText() {
-        // TODO: 나중에 범위 값 설정 후 조정, CoreData로 변경 필요
-        speedValue = UserSettingData.shared.getBPM()
+        speedValue = currentScore?.bpm ?? 60
         speedText = BPMDescription.description(for: speedValue)
 
         // 속도 상태 라벨과 값 라벨 업데이트

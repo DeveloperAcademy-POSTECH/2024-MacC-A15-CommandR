@@ -59,7 +59,7 @@ class ScoreListViewController: UIViewController {
     }
     // 테이블 뷰 설정
     func setupTableView() {
-        scoreListView.tableView.backgroundColor = UIColor.systemGray6
+        scoreListView.tableView.backgroundColor = UIColor.backgroundTertiary
         scoreListView.tableView.delegate = self
         scoreListView.tableView.dataSource = self
         scoreListView.tableView.register(ListItemCellView.self, forCellReuseIdentifier: ListItemCellView.identifier)
@@ -108,13 +108,7 @@ class ScoreListViewController: UIViewController {
 //        let viewController = ViewController()
 //        navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
-    @objc func didTapSettings() {
-//        let settingViewController = SettingViewController()
-//        navigationController?.pushViewController(settingViewController, animated: true)
-    }
-    
+
     // PDF 파일 선택 버튼 액션
     @objc private func didTapAddButton() {
         let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)
