@@ -1,6 +1,6 @@
 import UIKit
 
-class TitleInputViewController: UIViewController, TitleInputViewDelegate {
+class TitleInputViewController: UIViewController, TitleInputViewDelegate, UITextFieldDelegate {
     var titleInputView: TitleInputView!
     var accessoryButton: UIButton!
     var fileURL: URL?
@@ -12,6 +12,7 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
 
         setupUI()
         setupAccessoryButton()
+        titleInputView.textField.delegate = self
     }
 
     private func setupUI() {
@@ -35,7 +36,7 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
         accessoryButton = UIButton(type: .system)
         accessoryButton.setTitle("입력 완료", for: .normal)
         accessoryButton.setTitleColor(.white, for: .normal)
-        accessoryButton.backgroundColor = UIColor.lightGray
+        accessoryButton.backgroundColor = UIColor(named: "button_inactive")
         accessoryButton.isEnabled = false
         accessoryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         accessoryButton.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +67,7 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
     // MARK: - TitleInputViewDelegate
     func updateAccessoryButtonState(isEnabled: Bool) {
         accessoryButton.isEnabled = isEnabled
-        accessoryButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
+        accessoryButton.backgroundColor = isEnabled ? UIColor(named: "button_primary") : UIColor(named: "button_inactive")
     }
     
     func didTapCompleteButton(with filename: String) {
@@ -77,25 +78,39 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
         navigationController?.pushViewController(pdfConfirmationViewController, animated: true)
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+            // Update the border color when the text field is touched
+            titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+        }
+    
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // Optionally reset the border color when editing ends
+        updateBorderColor()
+        titleInputView.textField.layer.borderColor = UIColor(named: "border_primary")?.cgColor
+    }
+    
     func updateBorderColor() {
         if let text = titleInputView.textField.text, text.isEmpty {
             // TextField가 비어 있을 때 버튼 비활성화
             titleInputView.completeButton.isEnabled = false
-            titleInputView.completeButton.backgroundColor = UIColor.lightGray
+            titleInputView.completeButton.backgroundColor = UIColor(named: "button_inactive")
+            titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+            titleInputView.subtitleLabel.textColor = UIColor(named: "lable_tertiary")
             updateAccessoryButtonState(isEnabled: false) // Update accessory button
         } else if let text = titleInputView.textField.text, text.count > maxCharacterLimit {
             // 글자 수 제한 초과 시 버튼 비활성화 및 텍스트필드 색 변경
-            titleInputView.textField.layer.borderColor = UIColor.red.cgColor
-            titleInputView.subtitleLabel.textColor = UIColor.red
+            titleInputView.textField.layer.borderColor = UIColor(named: "button_danger")?.cgColor
+            titleInputView.subtitleLabel.textColor = UIColor(named: "button_danger")
             titleInputView.completeButton.isEnabled = false
-            titleInputView.completeButton.backgroundColor = UIColor.lightGray
+            titleInputView.completeButton.backgroundColor = UIColor(named: "button_inactive")
             updateAccessoryButtonState(isEnabled: false) // Update accessory button
         } else {
             // 조건이 맞을 시 버튼 활성화
-            titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
-            titleInputView.subtitleLabel.textColor = UIColor.gray
+            titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+            titleInputView.subtitleLabel.textColor = UIColor(named: "lable_tertiary")
             titleInputView.completeButton.isEnabled = true
-            titleInputView.completeButton.backgroundColor = UIColor.systemBlue
+            titleInputView.completeButton.backgroundColor = UIColor(named: "button_primary")
             updateAccessoryButtonState(isEnabled: true) // Update accessory button
         }
     }

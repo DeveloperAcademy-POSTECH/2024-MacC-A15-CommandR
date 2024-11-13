@@ -18,7 +18,7 @@ class PDFConvertRequestConfirmationView: UIView {
     weak var delegate: PDFConvertRequestConfirmationViewDelegate? {
         didSet {
             filenameLabel.text = delegate?.filename
-            pageCount.text = "\(delegate?.pageCount ?? 0)페이지"
+            pageCount.text = "\(delegate?.pageCount ?? 0) 페이지"
         }
     }
     
@@ -58,6 +58,7 @@ class PDFConvertRequestConfirmationView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "이대로 악보를 만들어 드릴까요?"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        titleLabel.textColor = UIColor(named: "lable_secondary")
         addSubview(titleLabel)
         
         // Subtitle label 셋업
@@ -65,7 +66,7 @@ class PDFConvertRequestConfirmationView: UIView {
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "입력한 정보가 맞는지 확인해 주세요"
         subtitleLabel.font = UIFont.systemFont(ofSize: 16)
-        subtitleLabel.textColor = UIColor.gray
+        subtitleLabel.textColor = UIColor(named: "lable_tertiary")
         addSubview(subtitleLabel)
         
         // CardView 셋업
@@ -73,7 +74,7 @@ class PDFConvertRequestConfirmationView: UIView {
         cardView.backgroundColor = UIColor(named: "background_secondary")
         cardView.layer.cornerRadius = 12
         cardView.layer.borderWidth = 1
-        cardView.layer.borderColor = UIColor(named: "border_tertiary")?.cgColor
+        cardView.layer.borderColor = UIColor(named: "background_secondary")?.cgColor
         cardView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(cardView)
         
@@ -82,18 +83,20 @@ class PDFConvertRequestConfirmationView: UIView {
         scoreInfoLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreInfoLabel.text = "악보 정보"
         scoreInfoLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        scoreInfoLabel.textColor = UIColor(named: "lable_primary")
         cardView.addSubview(scoreInfoLabel)
         
         titleLabelInsideCard = UILabel()
         titleLabelInsideCard.translatesAutoresizingMaskIntoConstraints = false
         titleLabelInsideCard.text = "악보 제목"
-        titleLabelInsideCard.textColor = .darkGray
+        titleLabelInsideCard.textColor = UIColor(named: "lable_tertiary")
         titleLabelInsideCard.font = UIFont.systemFont(ofSize: 16)
         
         filenameLabel = UILabel()
         filenameLabel.translatesAutoresizingMaskIntoConstraints = false
         filenameLabel.text = delegate?.filename
         filenameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        filenameLabel.textColor = UIColor(named: "lable_primary")
         filenameLabel.textAlignment = .right
         
         // HStack [titleLabelInsideCardView, spacer, filenameLabel]
@@ -106,13 +109,14 @@ class PDFConvertRequestConfirmationView: UIView {
         pageCountLabel = UILabel()
         pageCountLabel.translatesAutoresizingMaskIntoConstraints = false
         pageCountLabel.text = "페이지 수"
-        pageCountLabel.textColor = .darkGray
+        pageCountLabel.textColor = UIColor(named: "lable_tertiary")
         pageCountLabel.font = UIFont.systemFont(ofSize: 16)
         
         pageCount = UILabel()
         pageCount.translatesAutoresizingMaskIntoConstraints = false
         pageCount.text = "\(0)"
         pageCount.font = UIFont.boldSystemFont(ofSize: 16)
+        pageCount.textColor = UIColor(named: "lable_primary")
         pageCount.textAlignment = .right
         
         pageCountHStack = UIStackView(arrangedSubviews: [pageCountLabel, UIView(), pageCount])
@@ -128,7 +132,7 @@ class PDFConvertRequestConfirmationView: UIView {
         confirmationButton.setTitle("악보 요청 보내기", for: .normal)
         confirmationButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
         confirmationButton.setTitleColor(.white, for: .normal)
-        confirmationButton.backgroundColor = UIColor.systemBlue
+        confirmationButton.backgroundColor = UIColor(named: "button_primary")
         confirmationButton.layer.cornerRadius = 12
         confirmationButton.addTarget(self, action: #selector(confirmationButtonTapped), for: .touchUpInside)
         addSubview(confirmationButton)

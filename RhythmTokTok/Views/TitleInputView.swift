@@ -13,7 +13,7 @@ protocol TitleInputViewDelegate: AnyObject {
     func updateBorderColor()
 }
 
-class TitleInputView: UIView, UITextFieldDelegate {
+class TitleInputView: UIView {
     weak var delegate: TitleInputViewDelegate?
     var textField: UITextField!
     var titleLabel: UILabel!
@@ -36,27 +36,28 @@ class TitleInputView: UIView, UITextFieldDelegate {
         // Title label 셋업
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "제목을 입력해 주세요"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        titleLabel.text = "악보 제목을 입력해 주세요"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.textColor = UIColor(named: "lable_secondary")
         addSubview(titleLabel)
         
         // Subtitle label 셋업
         subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "제목은 최대 20글자까지 쓸 수 있어요"
-        subtitleLabel.font = UIFont.systemFont(ofSize: 14)
-        subtitleLabel.textColor = UIColor.gray
+        subtitleLabel.font = UIFont.systemFont(ofSize: 16)
+        subtitleLabel.textColor = UIColor(named: "lable_tertiary")
         addSubview(subtitleLabel)
 
         // TextField 셋업
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.font = UIFont(name: "Pretendard-Medium", size: 18)
+        textField.textColor = UIColor(named: "lable_primary")
         textField.layer.borderWidth = 2
-        textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
+        textField.layer.borderColor = UIColor(named: "border_primary")?.cgColor
         textField.layer.cornerRadius = 12
-        textField.backgroundColor = UIColor.systemGray6
-        textField.delegate = self
+        textField.backgroundColor = UIColor(named: "background_secondary")
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // Register for text changes
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 24))
         textField.leftViewMode = .always
@@ -65,7 +66,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         // text field의 취소 버튼
         let clearButton = UIButton(type: .custom)
         clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-        clearButton.tintColor = UIColor(named: "label_quaternary") ?? .lightGray
+        clearButton.tintColor = UIColor(named: "lable_quaternary") ?? .lightGray
         clearButton.addTarget(self, action: #selector(clearTextField), for: .touchUpInside)
         clearButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         
@@ -82,7 +83,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         completeButton.setTitle("입력 완료", for: .normal)
         completeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
         completeButton.setTitleColor(.white, for: .normal)
-        completeButton.backgroundColor = UIColor.lightGray
+        completeButton.backgroundColor = UIColor(named: "button_inactive")
         completeButton.layer.cornerRadius = 12
         completeButton.isEnabled = false
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
@@ -114,6 +115,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
 
     @objc private func clearTextField() {
         textField.text = ""
+
         delegate?.updateBorderColor()
     }
     
