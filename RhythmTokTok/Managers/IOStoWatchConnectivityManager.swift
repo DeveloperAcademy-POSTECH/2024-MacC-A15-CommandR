@@ -85,22 +85,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             return false
         }
         
-        // HealthKit 권한 요청
-        let authorizationSuccess = await withCheckedContinuation { continuation in
-            healthStore.requestAuthorization(toShare: allTypes, read: allTypes) { success, error in
-                if success {
-                    continuation.resume(returning: true)
-                } else {
-                    ErrorHandler.handleError(error: error ?? "HealthKit 권한 요청 실패")
-                    continuation.resume(returning: false)
-                }
-            }
-        }
-        
-        guard authorizationSuccess else {
-            self.watchAppStatus = .notInstalled
-            return false
-        }
         let result = await withTaskGroup(of: Bool.self) { group -> Bool in
             // startAppTask 추가
             group.addTask {
