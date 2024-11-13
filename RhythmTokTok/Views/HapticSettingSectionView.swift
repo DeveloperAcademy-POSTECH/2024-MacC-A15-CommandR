@@ -7,10 +7,11 @@
 import UIKit
 
 class HapticSettingSectionView: UIView {
+    var currentScore: Score?
     // 토글 상태를 전달하기 위한 클로저
     var onToggleChanged: ((Bool) -> Void)?
     // 토글 상태를 저장하는 프로퍼티
-    private var isOn: Bool = UserSettingData.shared.getIsHapticOn()
+    private lazy var isOn: Bool = currentScore?.hapticOption ?? false
 
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -36,9 +37,9 @@ class HapticSettingSectionView: UIView {
         return label
     }()
 
-    let toggleImageView: UIImageView = {
+    lazy var toggleImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: UserSettingData.shared.getIsHapticOn() ? "SwitchOn" :"SwitchOff") // 이미지 이름을 실제 에셋 이름으로 변경
+        imageView.image = UIImage(named: currentScore?.hapticOption ?? false ? "SwitchOn" :"SwitchOff")
         imageView.isUserInteractionEnabled = true // 제스처 인식을 위해 필요
         imageView.contentMode = .scaleAspectFit
         return imageView
