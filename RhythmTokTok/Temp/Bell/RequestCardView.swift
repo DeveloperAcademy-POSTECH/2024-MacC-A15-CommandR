@@ -55,7 +55,7 @@ class RequestCardView: UIView {
     
     private func setupView() {
         self.layer.cornerRadius = 12
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor(named: "background_primary")
         
         // UI 요소들 추가
         addSubview(contentStackView)

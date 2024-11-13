@@ -31,17 +31,16 @@ extension UIView {
     }
 }
 
-
 class ToastAlert {
     static func show(message: String, in view: UIView, iconName: String, duration: TimeInterval = 3.0) {
         let toastContainer = UIView()
-        toastContainer.backgroundColor = UIColor(named: "gray800")?.withAlphaComponent(0.8)
+        toastContainer.backgroundColor = UIColor.black.withAlphaComponent(0.1)
         toastContainer.layer.cornerRadius = 12
         toastContainer.clipsToBounds = true
         toastContainer.translatesAutoresizingMaskIntoConstraints = false
         
         // setBlurView 확장 메서드 호출로 블러 추가
-        toastContainer.setBlurView(style: .regular, radius: 12)
+        toastContainer.setBlurView(style: .light, radius: 12)
         
         let iconImageView = UIImageView()
         iconImageView.image = UIImage(named: iconName)
