@@ -108,13 +108,7 @@ class ScoreListViewController: UIViewController {
 //        let viewController = ViewController()
 //        navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
-    @objc func didTapSettings() {
-//        let settingViewController = SettingViewController()
-//        navigationController?.pushViewController(settingViewController, animated: true)
-    }
-    
+
     // PDF 파일 선택 버튼 액션
     @objc private func didTapAddButton() {
         let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)

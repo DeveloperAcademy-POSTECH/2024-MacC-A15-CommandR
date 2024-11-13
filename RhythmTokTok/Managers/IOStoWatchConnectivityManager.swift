@@ -12,7 +12,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     
     static let shared = IOStoWatchConnectivityManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
-    var selectedScoreTitle: String?
+    var scoreTitle: String?
     // 런치 용도
     let healthStore = HKHealthStore()
     let allTypes = Set([HKObjectType.workoutType()])
@@ -140,7 +140,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // MARK: - 워치로 메시지 보내는 부분
     // 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
     func sendScoreSelection(scoreTitle: String, hapticSequence: [Double]) {
-        self.selectedScoreTitle = scoreTitle
+        self.scoreTitle = scoreTitle
         let message: [String: Any] = [
             "scoreTitle": scoreTitle,
             "playStatus": PlayStatus.ready.rawValue,
@@ -157,10 +157,10 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     }
     
     // 마디 점프 요청
-    func sendUpdateStatusWithHapticSequence(scoreTitle: String, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
-        self.selectedScoreTitle = scoreTitle
-        let watchHapticGuide = UserSettingData.shared.getIsHapticOn()
-        
+    func sendUpdateStatusWithHapticSequence(currentScore: Score, hapticSequence: [Double], status: PlayStatus, startTime: TimeInterval) {
+        self.scoreTitle = currentScore.title
+        let watchHapticGuide = currentScore.hapticOption
+
         var message: [String: Any] = [
             "scoreTitle": scoreTitle,
             "playStatus": status.rawValue,
