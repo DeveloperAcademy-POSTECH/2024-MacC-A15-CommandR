@@ -4,15 +4,18 @@
 //
 //  Created by sungkug_apple_developer_ac on 10/12/24.
 //
+import Foundation
 
 // 악보를 관리하는 객체
 class Score {
-    var id: String = ""
-    var title: String = ""
-    var bpm: Int = UserSettingData.shared.getBPM()
+    var id: String = UUID().uuidString
     var parts: [Part] = []
     var divisions: Int = 1  // 사음음표 기준 틱 값
-    
+    var title: String = ""
+    var bpm: Int = 0
+    var soundOption: SoundSetting = .melodyBeat
+    var hapticOption: Bool = false
+
     // 파트 추가
     func addPart(_ part: Part) {
         parts.append(part)

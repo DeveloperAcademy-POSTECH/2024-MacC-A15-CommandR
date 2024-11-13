@@ -9,6 +9,7 @@ import Foundation
 
 enum SoundSetting: String, Codable {
     case voice
+    case melodyBeat
     case melody
     case beat
     case mute
