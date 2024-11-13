@@ -7,29 +7,41 @@
 
 import UIKit
 
-class ToastAlert {
-    static func show(message: String, in view: UIView, iconName: String, duration: TimeInterval = 3.0) {
-        // Blur Effect 추가
-        let blurEffect = UIBlurEffect(style: .dark)  // 블러 스타일을 .dark로 설정
+extension UIView {
+    func setBlurView(style: UIBlurEffect.Style, radius: CGFloat) {
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        blurEffectView.layer.cornerRadius = 12
+        
+        // 블러 뷰를 추가하고 가장 뒤로 보내기
+        self.addSubview(blurEffectView)
+        self.sendSubviewToBack(blurEffectView)
+        
+        // 모서리 radius 설정
+        blurEffectView.layer.cornerRadius = radius
         blurEffectView.clipsToBounds = true
         
+        // 오토레이아웃으로 크기 맞추기
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurEffectView.topAnchor.constraint(equalTo: self.topAnchor),
+            blurEffectView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            blurEffectView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            blurEffectView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        ])
+    }
+}
+
+
+class ToastAlert {
+    static func show(message: String, in view: UIView, iconName: String, duration: TimeInterval = 3.0) {
         let toastContainer = UIView()
         toastContainer.backgroundColor = UIColor(named: "gray800")?.withAlphaComponent(0.8)
         toastContainer.layer.cornerRadius = 12
         toastContainer.clipsToBounds = true
-        toastContainer.alpha = 0.0
         toastContainer.translatesAutoresizingMaskIntoConstraints = false
         
-        toastContainer.addSubview(blurEffectView)
-        NSLayoutConstraint.activate([
-            blurEffectView.topAnchor.constraint(equalTo: toastContainer.topAnchor),
-            blurEffectView.bottomAnchor.constraint(equalTo: toastContainer.bottomAnchor),
-            blurEffectView.leadingAnchor.constraint(equalTo: toastContainer.leadingAnchor),
-            blurEffectView.trailingAnchor.constraint(equalTo: toastContainer.trailingAnchor)
-        ])
+        // setBlurView 확장 메서드 호출로 블러 추가
+        toastContainer.setBlurView(style: .regular, radius: 12)
         
         let iconImageView = UIImageView()
         iconImageView.image = UIImage(named: iconName)
@@ -42,7 +54,7 @@ class ToastAlert {
         toastLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
         toastLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // 컨테이너에 아이콘과 텍스트 레이블 추가
+        // Icon과 Label을 toastContainer에 추가
         toastContainer.addSubview(iconImageView)
         toastContainer.addSubview(toastLabel)
         view.addSubview(toastContainer)
@@ -74,14 +86,12 @@ class ToastAlert {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.8, options: .curveEaseOut, animations: {
             toastContainer.alpha = 1.0
             toastContainer.transform = .identity
-        }
-        ) { _ in
+        }) { _ in
             // 사라지는 애니메이션
             UIView.animate(withDuration: 0.5, delay: duration, options: .curveEaseIn, animations: {
                 toastContainer.alpha = 0.0
                 toastContainer.transform = CGAffineTransform(translationX: 0, y: 100)
-            }
-            ) { _ in
+            }) { _ in
                 toastContainer.removeFromSuperview()
             }
         }
