@@ -82,7 +82,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
         configureUI()
-        print("current score: \(currentScore)")
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
         setupActions()
