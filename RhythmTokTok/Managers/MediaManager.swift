@@ -82,7 +82,6 @@ class MediaManager {
             .flatMap { $0.value }
         
         if let currentIndex = measures.firstIndex(where: { $0.number == currentMeasure }) {
-//            print("찾았다 인덱스: \(currentIndex), ")
             let startTime = convertTicksToTime(convertTick: measures[currentIndex].startTime,
                                                division: division)
 
@@ -215,6 +214,19 @@ class MediaManager {
         haptics.sort()
 //        print("최종 햅틱 배열: \(haptics)")
         return haptics
+    }
+    
+    func getMetronomeHapticSequence() async -> [Double] {
+        var metronomehapticSequence: [Double] = []
+        let beatInterval = 60.0 / tempoBPM
+        
+        // 160박까지 매트로놈 생성
+        for i in 0..<160 {
+            let time = Double(i) * beatInterval
+            metronomehapticSequence.append(time)
+        }
+        
+        return metronomehapticSequence
     }
     
     func getHapticSequence(part: Part, divisions: Int) async throws -> [Double] {

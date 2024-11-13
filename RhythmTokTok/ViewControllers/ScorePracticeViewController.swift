@@ -357,16 +357,17 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 // 햅틱 시퀀스 관리
                 var hapticSequence: [Double]?
                 
-                // MARK: 구간 선택 부분
-                if let startMeasureNumber, let endMeasureNumber {
-                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
-                                                                                         divisions: score.divisions,
-                                                                                         startNumber: startMeasureNumber,
-                                                                                         endNumber: endMeasureNumber)
-                } else {
-                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
-                                                                              divisions: score.divisions)
-                }
+//                // MARK: 구간 선택 부분
+//                if let startMeasureNumber, let endMeasureNumber {
+//                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
+//                                                                                         divisions: score.divisions,
+//                                                                                         startNumber: startMeasureNumber,
+//                                                                                         endNumber: endMeasureNumber)
+//                } else {
+//                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
+//                                                                              divisions: score.divisions)
+//                }
+                hapticSequence = await mediaManager.getMetronomeHapticSequence()
                 
                 if let validHapticSequence = hapticSequence {
                     totalHapticSequence = validHapticSequence
