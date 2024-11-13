@@ -37,51 +37,50 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         setupViews()
         
-//        // MARK: - 더미데이터 테스트
-//        // 더미 데이터 생성
-//        generateDummyRequests()
-//        
-//        // 요청들을 화면에 추가
-//        addRequestsToStackView()
+        // 요청들을 화면에 추가
+        addRequestsToStackView()
         
         // 서버에서 요청 목록을 불러옴
         fetchRequestsFromServer()
     }
     
     // 서버에서 데이터 가져오기
-       private func fetchRequestsFromServer() {
-           ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] status, message, scores in
-               guard status == 1, let scores = scores else {
-                   print("Failed to fetch scores: \(message)")
-                   return
-               }
-               
-               // 서버에서 받은 데이터로 requests 배열 업데이트
-               self?.requests = scores.compactMap { scoreDict in
-                   guard let id = scoreDict["id"] as? String,
-                         let title = scoreDict["title"] as? String,
-                         let statusValue = scoreDict["status"] as? Int else {
-                       return nil
-                   }
-                   
-                   let status: RequestStatus
-                   switch statusValue {
-                   case 0: status = .inProgress
-                   case 1: status = .scoreReady
-                   case 2: status = .downloaded
-                   default: return nil
-                   }
-                   
-                   return Request(id: UUID(uuidString: id) ?? UUID(), title: title, date: Date(), status: status)
-               }
-               
-               // UI 업데이트
-               DispatchQueue.main.async {
-                   self?.addRequestsToStackView()
-               }
-           }
-       }
-       
+    private func fetchRequestsFromServer() {
+        ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] status, message, scores in
+            // 데이터 수신 상태 및 내용 확인
+            print("Fetch status: \(status), message: \(message)")
+            guard status == 1, let scores = scores else {
+                print("Failed to fetch scores: \(message)")
+                return
+            }
+
+            // 서버에서 받은 데이터로 requests 배열 업데이트 전 데이터 확인
+            self?.requests = scores.compactMap { scoreDict in
+                guard let id = scoreDict["id"] as? String,
+                      let title = scoreDict["title"] as? String,
+                      let statusValue = scoreDict["status"] as? Int else {
+                    return nil
+                }
+
+                let status: RequestStatus
+                switch statusValue {
+                case 0: status = .inProgress
+                case 1: status = .scoreReady
+                case 2: status = .downloaded
+                default: return nil
+                }
+                return Request(id: UUID(uuidString: id) ?? UUID(), title: title, date: Date(), status: status)
+            }
+
+            print("Updated requests array: \(self?.requests ?? [])") // 배열 업데이트 후 데이터 확인
+
+            // UI 업데이트
+            DispatchQueue.main.async {
+                print("Adding requests to stack view with data: \(self?.requests ?? [])")
+                self?.addRequestsToStackView()
+            }
+        }
+    }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
@@ -124,26 +123,13 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         stackView.isLayoutMarginsRelativeArrangement = true
     }
     
-//    // 더미데이터
-//    private func generateDummyRequests() {
-//        let dummyRequest1 = Request(id: UUID(), title: "첫 번째 요청", date: Date(), status: .inProgress)
-//        let dummyRequest2 = Request(id: UUID(), title: "두 번째 요청", date: Date(), status: .downloaded)
-//        let dummyRequest3 = Request(id: UUID(), title: "세 번째 요청", date: Date(), status: .scoreReady)
-//        
-//        // 일주일 전 날짜
-//        let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-//        let dummyRequest4 = Request(id: UUID(), title: "네 번째 요청", date: oneWeekAgo, status: .scoreReady)
-//        
-//        requests = [dummyRequest1, dummyRequest2, dummyRequest3, dummyRequest4]
-//    }
-    
     private func addRequestsToStackView() {
         var groupedRequests: [RequestStatus: [Request]] = [:]
         for request in requests {
             groupedRequests[request.status, default: []].append(request)
         }
         
-        let statuses: [RequestStatus] = [.scoreReady, .inProgress, .downloaded]
+        let statuses: [RequestStatus] = [.scoreReady, .inProgress]
         
         for status in statuses {
             guard var requestsForStatus = groupedRequests[status] else { continue }
@@ -203,8 +189,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         case .inProgress:
             showCancelAlert(for: request, index: index)
         case .downloaded:
-            // 악보가 이미 추가된 상태일 때 경고 메시지 표시
-            ToastAlert.show(message: "악보가 이미 추가되어 있어요.", in: self.view, iconName: "caution.color")
+            return
         case .scoreReady, .deleted:
             addScore(at: index)
         }

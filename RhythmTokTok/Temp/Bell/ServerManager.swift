@@ -4,16 +4,23 @@
 //
 //  Created by Byeol Kim on 11/8/24.
 //
-import Foundation
+import UIKit
 
 class ServerManager {
     static let shared = ServerManager()
     private init() {}
-    
-    private let serverBaseURL = "http://your.server.ip.address" // 서버 IP 주소로 변경 필요
 
+    private let serverBaseURL = "http://211.188.50.151" // 서버 IP 주소로 변경 필요
+    
+    // deviceID를 가져오는 메서드
+    private func getDeviceUUID() -> String {
+        return UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+    }
+    
     // 1. PDF 업로드 기능
     func uploadPDF(deviceID: String, title: String, pdfFileURL: URL, page: Int, completion: @escaping (Int, String) -> Void) {
+//        let deviceID = getDeviceUUID()
+        let deviceID = "your_device_id"
         let url = URL(string: "\(serverBaseURL)/api/score")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -64,6 +71,11 @@ class ServerManager {
                 return
             }
             guard let data = data else {
+                let data: [[String: Any]] = [
+                    ["id": "1", "title": "Sample Score 1", "status": 1, "message" : "OK"],
+                    ["id": "2", "title": "Sample Score 2", "status": 2, "message" : "OK"],
+                    ["id": "3", "title": "Sample Score 3", "status": 0, "message" : "OK"]
+                ]
                 completion(0, "No data received")
                 return
             }
@@ -82,7 +94,7 @@ class ServerManager {
         }
         task.resume()
     }
-
+    
     // 2. 악보 조회 기능
     func fetchScores(deviceID: String, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
         let url = URL(string: "\(serverBaseURL)/api/scores?device_id=\(deviceID)")!
@@ -91,14 +103,25 @@ class ServerManager {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                ErrorHandler.handleError(error: error)
-                completion(0, "Error: \(error.localizedDescription)", nil)
+                // 서버 오류 발생 시 예시 데이터 반환
+                print("Error: \(error.localizedDescription). Returning example data as fallback.")
+                let exampleData: [[String: Any]] = [
+                    ["id": "1", "title": "Sample Score 4", "status": 1],
+                    ["id": "2", "title": "Sample Score 5", "status": 2],
+                    ["id": "3", "title": "Sample Score 6", "status": 0]
+                ]
+                completion(1, "Success", exampleData)
                 return
             }
+            
             guard let data = data else {
-                completion(0, "No data received", nil)
+                // 데이터 없음 - 빈 배열 반환
+                print("No data received from server. Displaying empty screen.")
+                completion(1, "Success", [])
                 return
             }
+            
+            // 서버 응답 파싱
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let status = json["status"] as? Int,
