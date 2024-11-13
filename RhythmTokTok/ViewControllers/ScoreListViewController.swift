@@ -101,37 +101,29 @@ class ScoreListViewController: UIViewController {
         var partID = "P1" // 기본값 P1
         scoreEntity.notes?.forEach { note in // 역으로 note를 Part, Measure에 넣어주기
             // 1. Measure에 Note를 넣는다
-            if var noteEntity = note as? NoteEntity {
-                let pitch = noteEntity.pitch ?? ""
-                let duration = noteEntity.duration
-                let octave = noteEntity.octave
-                let type = noteEntity.type ?? ""
-                let voice = noteEntity.voice
-                let staff = noteEntity.staff
-                let startTime = noteEntity.startTime
-                let measureNumber = noteEntity.measureNumber
-                let lineNumber = noteEntity.lineNumber
+            if let noteEntity = note as? NoteEntity {
                 partID = noteEntity.part!
                 
                 // 필요에 따라 여기서 Note 객체를 만들고 처리
                 var modelNote = Note(
-                    pitch: pitch,
-                    duration: Int(duration),
-                    octave: Int(octave),
-                    type: type,
-                    voice: Int(voice),
-                    staff: Int(staff),
-                    startTime: Int(startTime),
+                    pitch: noteEntity.pitch ?? "",
+                    duration: Int(noteEntity.duration),
+                    octave: Int(noteEntity.octave),
+                    type: noteEntity.type ?? "",
+                    voice: Int(noteEntity.voice),
+                    staff: Int(noteEntity.staff),
+                    startTime: Int(noteEntity.startTime),
                     isRest: noteEntity.isRest,
-                    accidental: Accidental(rawValue: Int(noteEntity.accidental ?? 0)) ?? Accidental.natural
+                    accidental: Accidental(rawValue: Int(noteEntity.accidental ?? 0)) ?? Accidental.natural,
+                    tieType: noteEntity.tieType
                 )
                 
                 // measureNumber에 해당하는 Measure 배열 가져오기
-                if var measureArray = measuresDict[Int(lineNumber)] {
+                if var measureArray = measuresDict[Int(noteEntity.lineNumber)] {
                     // 1. Measure가 있는지 확인해서 있으면 note 추가
                     var measureFound = false
                     for idx in 0..<measureArray.count {
-                        if measureArray[idx].number == Int(measureNumber) {
+                        if measureArray[idx].number == Int(noteEntity.measureNumber) {
                             measureArray[idx].notes.append(modelNote)
                             measureFound = true
                             break
@@ -140,20 +132,20 @@ class ScoreListViewController: UIViewController {
                     
                     // 2. 해당 Measure가 없으면 새 Measure 생성 후 추가
                     if !measureFound {
-                        var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
+                        var newMeasure = Measure(number: Int(noteEntity.measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
                         newMeasure.notes.append(modelNote)
                         measureArray.append(newMeasure)
                     }
                     
                     // 수정된 existingLines를 다시 measuresDict에 저장
-                    measuresDict[Int(lineNumber)] = measureArray
+                    measuresDict[Int(noteEntity.lineNumber)] = measureArray
                 } else {
                     // 1. 새로운 line을 생성하고, 새로운 Measure를 생성하여 note 추가
-                    var newMeasure = Measure(number: Int(measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
-                    newMeasure.addNote(modelNote)
+                    var newMeasure = Measure(number: Int(noteEntity.measureNumber), notes: [], currentTimes: [:], startTime: modelNote.startTime)
+                    newMeasure.notes.append(modelNote)
                     
                     // 새로운 line에 Measure를 추가
-                    measuresDict[Int(lineNumber)] = [newMeasure]
+                    measuresDict[Int(noteEntity.lineNumber)] = [newMeasure]
                 }
             }
         }

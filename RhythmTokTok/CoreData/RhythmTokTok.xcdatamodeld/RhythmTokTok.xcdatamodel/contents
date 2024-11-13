@@ -12,6 +12,7 @@
         <attribute name="pitch" optional="YES" attributeType="String"/>
         <attribute name="staff" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="startTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="tieType" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="voice" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="score" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ScoreEntity" inverseName="notes" inverseEntity="ScoreEntity"/>

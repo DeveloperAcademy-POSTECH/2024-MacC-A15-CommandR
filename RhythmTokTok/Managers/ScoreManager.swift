@@ -58,19 +58,23 @@ class ScoreManager {
     func createNoteEntity(from note: Note, partId: String, lineNumber: Int, measureNumber: Int, score: ScoreEntity) -> NoteEntity {
         let noteEntity = NoteEntity(context: context)
         noteEntity.id = UUID().uuidString  // 고유 ID
-        noteEntity.score = score  // Score와 연결
-        noteEntity.part = partId  // 파트 설정
-        noteEntity.measureNumber = Int64(measureNumber)  // Measure 번호 설정
-        noteEntity.lineNumber = Int64(lineNumber)  // Measure 번호 설정
-        noteEntity.startTime = Int64(note.startTime)
-        noteEntity.staff = Int64(note.staff)
-        noteEntity.accidental = Int64(note.accidental.rawValue)  // Enum에서 Int로 변환
-        noteEntity.isRest = note.isRest
-        noteEntity.duration = Int64(note.duration)
+        
         noteEntity.pitch = note.pitch
+        noteEntity.duration = Int64(note.duration)
+        
         noteEntity.octave = Int16(note.octave)
         noteEntity.type = note.type
         noteEntity.voice = Int16(note.voice)
+        noteEntity.staff = Int64(note.staff)
+        noteEntity.startTime = Int64(note.startTime)
+        noteEntity.isRest = note.isRest
+        noteEntity.accidental = Int64(note.accidental.rawValue)  // Enum에서 Int로 변환
+        noteEntity.tieType = note.tieType
+        
+        noteEntity.part = partId  // 파트 설정
+        noteEntity.lineNumber = Int64(lineNumber)  // Measure 번호 설정
+        noteEntity.measureNumber = Int64(measureNumber)  // Measure 번호 설정
+        noteEntity.score = score  // Score와 연결
         return noteEntity
     }
 }

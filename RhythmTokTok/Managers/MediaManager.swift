@@ -316,12 +316,6 @@ class MediaManager {
                 }
             }
             
-            // TODO: - note에 처음부터 startTime 0이 안 들어가도록 수정해야 함
-            // 첫 음표가 아닌데 startTime이 0인 경우는 전음표의 시작시간+ 전음표의 길이가 startTime이 되도록 수정
-            if index != 0 && note.startTime == 0 {
-                note.startTime = notes[index-1].startTime + notes[index-1].duration
-            }
-    
             if note.isRest {
                 continue // 쉼표는 MIDI 이벤트를 생성하지 않으므로 다음 음표로 넘어감
             }
