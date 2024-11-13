@@ -34,7 +34,7 @@ extension UIView {
 class ToastAlert {
     static func show(message: String, in view: UIView, iconName: String, duration: TimeInterval = 3.0) {
         let toastContainer = UIView()
-        toastContainer.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        toastContainer.backgroundColor = UIColor(named: "gray800")?.withAlphaComponent(0.1)
         toastContainer.layer.cornerRadius = 12
         toastContainer.clipsToBounds = true
         toastContainer.translatesAutoresizingMaskIntoConstraints = false
