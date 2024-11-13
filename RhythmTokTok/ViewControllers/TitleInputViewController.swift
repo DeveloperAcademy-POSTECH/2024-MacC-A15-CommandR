@@ -37,7 +37,7 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate {
         accessoryButton.setTitleColor(.white, for: .normal)
         accessoryButton.backgroundColor = UIColor.lightGray
         accessoryButton.isEnabled = false
-        accessoryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        accessoryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         accessoryButton.translatesAutoresizingMaskIntoConstraints = false
         accessoryButton.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 

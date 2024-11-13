@@ -80,7 +80,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         completeButton = UIButton(type: .system)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         completeButton.setTitle("입력 완료", for: .normal)
-        completeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 18)
+        completeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
         completeButton.setTitleColor(.white, for: .normal)
         completeButton.backgroundColor = UIColor.lightGray
         completeButton.layer.cornerRadius = 12

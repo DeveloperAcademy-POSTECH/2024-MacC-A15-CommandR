@@ -126,7 +126,7 @@ class PDFConvertRequestConfirmationView: UIView {
         confirmationButton = UIButton(type: .system)
         confirmationButton.translatesAutoresizingMaskIntoConstraints = false
         confirmationButton.setTitle("악보 요청 보내기", for: .normal)
-        confirmationButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 18)
+        confirmationButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
         confirmationButton.setTitleColor(.white, for: .normal)
         confirmationButton.backgroundColor = UIColor.systemBlue
         confirmationButton.layer.cornerRadius = 12
