@@ -23,7 +23,7 @@ class ScoreManager {
         score.bpm = Int64(scoreData.bpm)
         score.isHapticOn = true
         score.isScoreDeleted = false
-        score.soundOption = "melody"
+        score.soundOption = SoundSetting.default.rawValue
         score.divisions = Int64(scoreData.divisions)
         
         // Note를 담을 Ordered Set 생성
