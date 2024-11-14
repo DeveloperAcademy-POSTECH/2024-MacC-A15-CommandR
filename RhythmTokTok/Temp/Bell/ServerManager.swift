@@ -10,6 +10,7 @@ class ServerManager {
     static let shared = ServerManager()
     private init() {}
 
+    //TODO: 이거 보안문제 변경
     private let serverBaseURL = "http://211.188.50.151" // 서버 IP 주소로 변경 필요
     
     // deviceID를 가져오는 메서드
