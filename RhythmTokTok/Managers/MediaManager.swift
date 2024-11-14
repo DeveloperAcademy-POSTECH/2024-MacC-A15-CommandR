@@ -82,7 +82,6 @@ class MediaManager {
             .flatMap { $0.value }
         
         if let currentIndex = measures.firstIndex(where: { $0.number == currentMeasure }) {
-//            print("찾았다 인덱스: \(currentIndex), ")
             let startTime = convertTicksToTime(convertTick: measures[currentIndex].startTime,
                                                division: division)
 
@@ -217,6 +216,19 @@ class MediaManager {
         return haptics
     }
     
+    func getMetronomeHapticSequence() async -> [Double] {
+        var metronomehapticSequence: [Double] = []
+        let beatInterval = 60.0 / tempoBPM
+        
+        // 160박까지 매트로놈 생성
+        for i in 0..<160 {
+            let time = Double(i) * beatInterval
+            metronomehapticSequence.append(time)
+        }
+        
+        return metronomehapticSequence
+    }
+    
     func getHapticSequence(part: Part, divisions: Int) async throws -> [Double] {
         let notes = part.measures.flatMap { (_, measures) in
             measures.flatMap { $0.notes.filter { $0.staff == 1 } }
@@ -241,6 +253,22 @@ class MediaManager {
     // 일시정지 시 햅틱 시퀀스 재산출
     func getClipPauseHapticSequence(part: Part, divisions: Int, pauseTime: TimeInterval) async throws -> [TimeInterval] {
         let totalHapticSequence = try await getHapticSequence(part: part, divisions: divisions)
+        
+        if let startIndex = totalHapticSequence.firstIndex(where: { $0 > pauseTime }) {
+            var clipHaticSequence = Array(totalHapticSequence[startIndex...])
+            let diff = totalHapticSequence[startIndex] - pauseTime
+            clipHaticSequence = clipHaticSequence.map { $0 - (totalHapticSequence[startIndex] - diff) }
+            
+            return clipHaticSequence
+        }
+        
+        return []
+    }
+    
+    // 일시정지 시 매트로놈 햅틱 시퀀스 재산출
+    func getClipPauseMetronomeHapticSequence(pauseTime: TimeInterval) async -> [TimeInterval] {
+        
+        let totalHapticSequence = await getMetronomeHapticSequence()
         
         if let startIndex = totalHapticSequence.firstIndex(where: { $0 > pauseTime }) {
             var clipHaticSequence = Array(totalHapticSequence[startIndex...])
