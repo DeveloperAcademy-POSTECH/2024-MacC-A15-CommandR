@@ -14,7 +14,7 @@ class ServerManager {
     private let serverBaseURL = "http://211.188.50.151" // 서버 IP 주소로 변경 필요
     
     // deviceID를 가져오는 메서드
-    private func getDeviceUUID() -> String {
+    func getDeviceUUID() -> String {
         return UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
     }
     
@@ -168,7 +168,7 @@ class ServerManager {
             }
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let status = json["status"] as? Int,
+                   let status = json["code"] as? Int,
                    let message = json["message"] as? String {
                     completion(status, message)
                 } else {
