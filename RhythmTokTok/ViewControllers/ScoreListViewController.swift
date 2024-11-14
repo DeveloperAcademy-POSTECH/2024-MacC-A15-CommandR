@@ -16,14 +16,13 @@ class ScoreListViewController: UIViewController {
     }
     var scoreList: [Score] = []
     let mediaManager = MediaManager()
+    let scoreService = ScoreService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 데이터 삽입 완료 알림을 관찰
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadScoreList), name: .didInsertDummyData, object: nil)
-        
-        loadScoreList()
+        // 초기 데이터 확인 후 필요시 삽입
+         checkAndInsertDummyDataIfNeeded()
         // MARK: - ListView상단 바 제거, 나중에 검색 넣어야해서 주석처리함.
         //         네비게이션 바 설정
         setupNavigationBar()
@@ -33,6 +32,20 @@ class ScoreListViewController: UIViewController {
         
         //         하단 버튼 액션 연결
         scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
+    }
+    
+    // 초기 데이터 확인 및 삽입 함수
+    private func checkAndInsertDummyDataIfNeeded() {
+        if UserDefaults.standard.bool(forKey: "hasInsertedDummyData") == false {
+            Task {
+                await scoreService.insertDummyDataIfNeeded()
+                // 데이터 삽입 후 score 리스트 로드
+                loadScoreList()
+            }
+        } else {
+            // 이미 데이터가 삽입되어 있는 경우 바로 리스트 로드
+            loadScoreList()
+        }
     }
     
     // 네비게이션 바 설정
@@ -70,6 +83,7 @@ class ScoreListViewController: UIViewController {
     }
     
     @objc func reloadScoreList() {
+        print("reload")
         loadScoreList() // 데이터 다시 불러오기
     }
     
