@@ -11,7 +11,7 @@ class HapticSettingSectionView: UIView {
     // 토글 상태를 전달하기 위한 클로저
     var onToggleChanged: ((Bool) -> Void)?
     // 토글 상태를 저장하는 프로퍼티
-    private lazy var isOn: Bool = currentScore?.hapticOption ?? false
+    lazy var isToggleOn: Bool = currentScore?.hapticOption ?? false
 
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -104,22 +104,22 @@ class HapticSettingSectionView: UIView {
     // MARK: - Actions
     @objc private func toggleImageTapped() {
         // 토글 상태 변경
-        isOn.toggle()
+        isToggleOn.toggle()
         updateToggleImage()
 
         // 토글 상태를 클로저를 통해 전달
-        onToggleChanged?(isOn)
+        onToggleChanged?(isToggleOn)
     }
 
     private func updateToggleImage() {
         // 토글 상태에 따라 이미지 변경
-        let imageName = isOn ? "SwitchOn" : "SwitchOff"
+        let imageName = isToggleOn ? "SwitchOn" : "SwitchOff"
         toggleImageView.image = UIImage(named: imageName)
     }
 
     // 외부에서 토글 상태를 설정할 수 있는 메서드
     func setToggleState(isOn: Bool) {
-        self.isOn = isOn
+        self.isToggleOn = isOn
         updateToggleImage()
     }
 }

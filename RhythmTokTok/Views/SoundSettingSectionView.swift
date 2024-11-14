@@ -9,7 +9,14 @@ import UIKit
 class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
     var currentScore: Score?
     var onOptionSelected: ((String) -> Void)?
-
+    
+    // 현재 선택된 옵션을 저장하는 프로퍼티
+    var selectedOption: String = "melodyBeat" {
+        didSet {
+            radioButtonPicker.setSelectedValue(selectedOption)
+        }
+    }
+    
     // UI Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -32,7 +39,7 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
         picker.translatesAutoresizingMaskIntoConstraints = false
         return picker
     }()
-
+    
     // MARK: - Initializers
     init() {
         super.init(frame: .zero)
@@ -55,7 +62,7 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
     private func setupConstraints() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         radioButtonPicker.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // 제약 조건 설정
         NSLayoutConstraint.activate([
             // Title Label Constraints
@@ -71,9 +78,13 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
         ])
     }
     
-    // MARK: - RadioButtonPickerDelegate
     func radioButtonPicker(_ picker: RadioButtonOptionItemPicker, didSelectOptionWithValue value: String) {
         print("선택된 소리 옵션: \(value)")
+        selectedOption = value // 선택된 옵션을 업데이트
         onOptionSelected?(value)
+    }
+    
+    func setSelectedOption(_ option: String) {
+        selectedOption = option
     }
 }
