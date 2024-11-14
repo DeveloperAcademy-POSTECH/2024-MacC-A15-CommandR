@@ -44,43 +44,6 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         fetchRequestsFromServer()
     }
     
-    // 서버에서 데이터 가져오기
-    private func fetchRequestsFromServer() {
-        ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] status, message, scores in
-            // 데이터 수신 상태 및 내용 확인
-            print("Fetch status: \(status), message: \(message)")
-            guard status == 1, let scores = scores else {
-                print("Failed to fetch scores: \(message)")
-                return
-            }
-
-            // 서버에서 받은 데이터로 requests 배열 업데이트 전 데이터 확인
-            self?.requests = scores.compactMap { scoreDict in
-                guard let id = scoreDict["id"] as? String,
-                      let title = scoreDict["title"] as? String,
-                      let statusValue = scoreDict["status"] as? Int else {
-                    return nil
-                }
-
-                let status: RequestStatus
-                switch statusValue {
-                case 0: status = .inProgress
-                case 1: status = .scoreReady
-                case 2: status = .downloaded
-                default: return nil
-                }
-                return Request(id: UUID(uuidString: id) ?? UUID(), title: title, date: Date(), status: status)
-            }
-
-            print("Updated requests array: \(self?.requests ?? [])") // 배열 업데이트 후 데이터 확인
-
-            // UI 업데이트
-            DispatchQueue.main.async {
-                print("Adding requests to stack view with data: \(self?.requests ?? [])")
-                self?.addRequestsToStackView()
-            }
-        }
-    }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
@@ -134,7 +97,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         for status in statuses {
             guard var requestsForStatus = groupedRequests[status] else { continue }
             
-            requestsForStatus.sort { $0.date > $1.date }
+            requestsForStatus.sort { $0.requestDate > $1.requestDate }
             
             let headerStackView = UIStackView()
             headerStackView.axis = .horizontal
@@ -203,25 +166,56 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     private func addScore(at index: Int) {
         let request = requests[index]
         
-        fetchSheetFromServer(for: request) { [weak self] result in
-            switch result {
-            case .success(let sheetData):
-                // 여기에 코어데이터 저장 구현
-                self?.saveSheetToCoreData(sheetData)
-                DispatchQueue.main.async {
-                    ToastAlert.show(message: "악보가 추가되었어요.", in: self?.view ?? UIView(), iconName: "check.circle.color")
+        // fetchRequestsFromServer 호출 시 인자 없이 호출
+//        fetchRequestsFromServer() // 여기에 인자 전달 불필요
+        
+        // TODO: 코어데이터 저장
+        // 성공 시 결과 처리
+        // 코어데이터 저장 및 UI 업데이트
+
+    }
+    
+    //MARK: - 서버에서 데이터 가져오기
+    private func fetchRequestsFromServer() {
+        ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] status, message, scores in
+            print("Fetch status: \(status), message: \(message)")
+            guard status == 1, let scores = scores else {
+                print("Failed to fetch scores: \(message)")
+                return
+            }
+
+            let dateFormatter = ISO8601DateFormatter() // 날짜 포맷 설정
+            dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // 서버와의 통신을 위한 미세초 변환
+
+            self?.requests = scores.compactMap { scoreDict in
+                guard let id = scoreDict["id"] as? Int,
+                      let title = scoreDict["title"] as? String,
+                      let statusValue = scoreDict["status"] as? Int,
+                      let requestDateString = scoreDict["request_date"] as? String,
+                      let requestDate = dateFormatter.date(from: requestDateString), // 날짜 변환
+                      let xmlURL = scoreDict["xml_url"] as? String else {
+                    print("파싱 실패 - scoreDict:", scoreDict)
+                    return nil
                 }
-            case .failure(let error):
-                print("악보 추가 실패: \(error.localizedDescription)")
+                print("score 생성 - id: \(id), title: \(title), status: \(statusValue), date: \(requestDate), url: \(xmlURL)")
+                let status: RequestStatus
+                switch statusValue {
+                case 0: status = .inProgress
+                case 1: status = .scoreReady
+                case 2: status = .downloaded
+                default: return nil
+                }
+                return Request(id: id, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
+            }
+
+            DispatchQueue.main.async {
+                self?.addRequestsToStackView()
             }
         }
     }
+
     
-    //MARK: - 서버, 코어데이터 구현해야할 곳
-    private func fetchSheetFromServer(for request: Request, completion: @escaping (Result<Data, Error>) -> Void) {
-        // 여기에 서버에서 데이터를 가져오는 함수 구현
-        completion(.success(Data()))
-    }
+    //MARK: - 코어데이터 구현해야할 곳
     
     private func saveSheetToCoreData(_ sheetData: Data) {
         // 여기에 코어데이터 저장 구현
@@ -239,7 +233,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     }
 }
 
-// 악보 요청 취소
+// 악보 요청 취소 팝업
 extension RequestProcessingViewController {
     private func showCancelAlert(for request: Request, index: Int) {
         let alertVC = CustomAlertViewController(

@@ -103,18 +103,14 @@ class ServerManager {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                // 서버 오류 발생 시 예시 데이터 반환
+                // 서버 오류 발생 시 빈배열 반환
                 print("Error: \(error.localizedDescription). Returning example data as fallback.")
-                let exampleData: [[String: Any]] = [
-                    ["id": "1", "title": "Sample Score 4", "status": 1],
-                    ["id": "2", "title": "Sample Score 5", "status": 2],
-                    ["id": "3", "title": "Sample Score 6", "status": 0]
-                ]
-                completion(1, "Success", exampleData)
+                completion(1, "Success", [])
                 return
             }
             
             guard let data = data else {
+                //TODO: 여기에 빈 값일 때 화면전환해주기
                 // 데이터 없음 - 빈 배열 반환
                 print("No data received from server. Displaying empty screen.")
                 completion(1, "Success", [])
