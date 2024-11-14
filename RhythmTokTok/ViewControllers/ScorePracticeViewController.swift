@@ -439,9 +439,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // 워치로 일시정지 예약 메시지 전송
     func sendPauseStatusToWatch() {
         Task {
-            let hapticSequence = try await mediaManager.getClipPauseHapticSequence(part: currentScore.parts.last!,
-                                                                                   divisions: currentScore.divisions,
-                                                                                   pauseTime: musicPlayer.currentTime)
+            // 멜로디 일시정지 햅틱 시퀀스 재산출 코드
+//            let hapticSequence = try await mediaManager.getClipPauseHapticSequence(part: currentScore.parts.last!,
+//                                                                                   divisions: currentScore.divisions,
+//                                                                                   pauseTime: musicPlayer.currentTime)
+            let hapticSequence = await mediaManager.getClipPauseMetronomeHapticSequence(pauseTime: musicPlayer.currentTime)
             IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
                                                                                     hapticSequence: hapticSequence,
                                                                                     status: .pause, startTime: 0)

@@ -265,6 +265,22 @@ class MediaManager {
         return []
     }
     
+    // 일시정지 시 매트로놈 햅틱 시퀀스 재산출
+    func getClipPauseMetronomeHapticSequence(pauseTime: TimeInterval) async -> [TimeInterval] {
+        
+        let totalHapticSequence = await getMetronomeHapticSequence()
+        
+        if let startIndex = totalHapticSequence.firstIndex(where: { $0 > pauseTime }) {
+            var clipHaticSequence = Array(totalHapticSequence[startIndex...])
+            let diff = totalHapticSequence[startIndex] - pauseTime
+            clipHaticSequence = clipHaticSequence.map { $0 - (totalHapticSequence[startIndex] - diff) }
+            
+            return clipHaticSequence
+        }
+        
+        return []
+    }
+    
     // MARK: - 구간 노트 파싱 부분
     func getAdjustedNotes(from part: Part, startNumber: Int, endNumber: Int, staff: Int = 1) -> [Note]? {
         // 필터링과 정렬된 노트들을 가져옴
