@@ -13,7 +13,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     private let stackView = UIStackView()
     
     var requests: [Request] = []
-    let deviceID = "your_device_id"
+    let deviceID = ServerManager.shared.getDeviceUUID()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +86,8 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     }
     
     private func addRequestsToStackView() {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
         var groupedRequests: [RequestStatus: [Request]] = [:]
         for request in requests {
             groupedRequests[request.status, default: []].append(request)
@@ -150,15 +152,11 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         switch request.status {
         case .inProgress:
             showCancelAlert(for: request, index: index)
-        case .downloaded, .deleted:
+        case .downloaded, .deleted, .cancelled:
             return
         case .scoreReady:
             addScore(at: index)
         }
-    }
-    
-    private func cancelRequest(at index: Int) {
-        print("\(requests[index].title) - 요청 취소")
     }
     
     //MARK: - 서버에서 데이터 가져오기
@@ -199,7 +197,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             }
         }
     }
-
+    
     private func addScore(at index: Int) {
         let request = requests[index]
         
@@ -258,6 +256,31 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         // 갱신된 요청 리스트로 UI 재구성
         addRequestsToStackView()
+    }
+    
+    // MARK: - 요청 취소 메서드 추가
+    private func cancelRequest(at index: Int) {
+        let request = requests[index]
+        
+        // 요청 상태를 .cancelled로 변경
+        requests[index].status = .cancelled
+
+        // 서버에 상태 업데이트를 요청
+        ServerManager.shared.updateScoreStatus(deviceID: deviceID, scoreID: String(request.id), newStatus: 11) { [weak self] status, message in
+            guard let self = self else { return }
+            print("Cancel status: \(status), message: \(message)")
+
+            if status == 1 {
+                DispatchQueue.main.async {
+                    self.updateRequestsUI()
+                    ToastAlert.show(message: "요청이 취소되었습니다.", in: self.view, iconName: "cancle.color")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    ToastAlert.show(message: "요청 취소에 실패했습니다: \(message)", in: self.view, iconName: "error_icon")
+                }
+            }
+        }
     }
 }
 

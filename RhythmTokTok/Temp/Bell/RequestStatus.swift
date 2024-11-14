@@ -12,18 +12,16 @@ enum RequestStatus {
     case inProgress
     case scoreReady
     case deleted
-//    case cancelled
+    case cancelled
     
     var headerText: String {
         switch self {
-        case .downloaded, .deleted:
+        case .downloaded, .deleted, .cancelled:
             return "이전 요청 기록"
         case .inProgress:
             return "준비 중인 악보"
         case .scoreReady:
             return "완성된 악보"
-//            case .cancelled:
-//            return
         }
     }
 }
