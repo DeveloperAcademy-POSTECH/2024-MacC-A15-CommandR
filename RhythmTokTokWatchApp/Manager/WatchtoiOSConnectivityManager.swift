@@ -122,13 +122,12 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             case .play:
                 if let startTime = applicationContext["startTime"] as? TimeInterval {
                     self.startTime = startTime
-                    // TODO: 테스트 주석 제거
-//                    if self.isHapticGuideOn {
+                    if self.isHapticGuideOn {
                         // 진동 가이드가 활성화된 경우
                         self.hapticManager.startHaptic(beatTime: self.hapticSequence, startTimeInterval: startTime)
-//                    } else {
-//                        ErrorHandler.handleError(error: "진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
-//                    }
+                    } else {
+                        ErrorHandler.handleError(error: "진동 가이드가 비활성화되어 startHaptic을 실행하지 않습니다.")
+                    }
                 } else {
                     ErrorHandler.handleError(error: "시작 시간 누락")
                 }

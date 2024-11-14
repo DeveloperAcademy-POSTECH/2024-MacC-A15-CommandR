@@ -550,10 +550,13 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             Task {
                 let startTime = self.mediaManager.getMeasureStartTime(currentMeasure: Int(self.currentMeasure),
                                                                       division: Double(self.currentScore.divisions))
-                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
-                                                                                              divisions: self.currentScore.divisions,
-                                                                                              startNumber: self.currentMeasure,
-                                                                                              endNumber: self.totalMeasure)
+                // 멜로디 마디 점프 햅틱 시퀀스 재산출
+//                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
+//                                                                                              divisions: self.currentScore.divisions,
+//                                                                                              startNumber: self.currentMeasure,
+//                                                                                              endNumber: self.totalMeasure)
+                let hapticSequence = await self.mediaManager.getMetronomeHapticSequence()
+                
                 self.musicPlayer.jumpMIDI(jumpPosition: startTime)
                 self.sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
                 print("점프 햅틱 갯수 : \(hapticSequence.count),")
