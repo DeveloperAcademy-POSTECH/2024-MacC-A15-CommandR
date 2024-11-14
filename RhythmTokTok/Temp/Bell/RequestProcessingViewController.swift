@@ -44,7 +44,6 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         fetchRequestsFromServer()
     }
     
-    
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -162,31 +161,18 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         print("\(requests[index].title) - 요청 취소")
     }
     
-    // 서버 요청 및 Core Data 저장 기능 추가
-    private func addScore(at index: Int) {
-        let request = requests[index]
-        
-        // fetchRequestsFromServer 호출 시 인자 없이 호출
-//        fetchRequestsFromServer() // 여기에 인자 전달 불필요
-        
-        // TODO: 코어데이터 저장
-        // 성공 시 결과 처리
-        // 코어데이터 저장 및 UI 업데이트
-
-    }
-    
     //MARK: - 서버에서 데이터 가져오기
     private func fetchRequestsFromServer() {
-        ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] status, message, scores in
-            print("Fetch status: \(status), message: \(message)")
-            guard status == 1, let scores = scores else {
+        ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in
+            print("Fetch status: \(code), message: \(message)")
+            guard code == 1, let scores = scores else {
                 print("Failed to fetch scores: \(message)")
                 return
             }
-
+            
             let dateFormatter = ISO8601DateFormatter() // 날짜 포맷 설정
             dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // 서버와의 통신을 위한 미세초 변환
-
+            
             self?.requests = scores.compactMap { scoreDict in
                 guard let id = scoreDict["id"] as? Int,
                       let title = scoreDict["title"] as? String,
@@ -207,28 +193,25 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                 }
                 return Request(id: id, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
             }
-
+            
             DispatchQueue.main.async {
                 self?.addRequestsToStackView()
             }
         }
     }
-
     
-    //MARK: - 코어데이터 구현해야할 곳
-    
-    private func saveSheetToCoreData(_ sheetData: Data) {
-        // 여기에 코어데이터 저장 구현
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        //          let newSheet = SheetEntity(context: context)
-        //          newSheet.data = sheetData
-        //          newSheet.dateAdded = Date()
+    // 서버 요청 및 Core Data 저장 기능 추가
+    private func addScore(at index: Int) {
+        let request = requests[index]
         
-        do {
-            try context.save()
-            print("악보가 성공적으로 Core Data에 저장되었습니다.")
-        } catch {
-            print("Core Data 저장 실패: \(error.localizedDescription)")
+        // fetchRequestsFromServer 호출 시 인자 없이 호출
+        //        fetchRequestsFromServer() // 여기에 인자 전달 불필요
+        
+        // TODO: 코어데이터 저장
+        
+        // 코어데이터 저장 성공 후 토스트 알림 표시
+        DispatchQueue.main.async {
+            ToastAlert.show(message: "악보가 추가되었어요.", in: self.view, iconName: "check.circle.color")
         }
     }
 }
@@ -247,7 +230,6 @@ extension RequestProcessingViewController {
         
         alertVC.onConfirm = { [weak self] in
             self?.cancelRequest(at: index)
-            // TODO: 아이콘 애셋 변경 필요
             ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
         }
         
