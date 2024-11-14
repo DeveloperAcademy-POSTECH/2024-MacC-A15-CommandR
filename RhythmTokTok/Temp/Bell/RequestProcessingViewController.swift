@@ -150,9 +150,9 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         switch request.status {
         case .inProgress:
             showCancelAlert(for: request, index: index)
-        case .downloaded:
+        case .downloaded, .deleted:
             return
-        case .scoreReady, .deleted:
+        case .scoreReady:
             addScore(at: index)
         }
     }
@@ -199,20 +199,64 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             }
         }
     }
-    
-    // 서버 요청 및 Core Data 저장 기능 추가
+
     private func addScore(at index: Int) {
         let request = requests[index]
         
-        // fetchRequestsFromServer 호출 시 인자 없이 호출
-        //        fetchRequestsFromServer() // 여기에 인자 전달 불필요
-        
-        // TODO: 코어데이터 저장
-        
-        // 코어데이터 저장 성공 후 토스트 알림 표시
-        DispatchQueue.main.async {
-            ToastAlert.show(message: "악보가 추가되었어요.", in: self.view, iconName: "check.circle.color")
+        // XML URL을 가져옵니다.
+        guard let xmlURLString = request.xmlURL,
+              let xmlURL = URL(string: xmlURLString) else {
+            print("Invalid XML URL")
+            return
         }
+        
+        // XML 데이터를 다운로드합니다.
+        let task = URLSession.shared.dataTask(with: xmlURL) { data, response, error in
+            if let error = error {
+                print("Failed to download XML: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received from XML URL")
+                return
+            }
+            
+            // XML 데이터를 파싱합니다.
+            let parser = MusicXMLParser()
+            Task {
+                let score = await parser.parseMusicXML(from: data)
+                score.title = request.title // 요청의 제목을 설정합니다.
+                
+                // Core Data에 저장합니다.
+                ScoreManager.shared.addScoreWithNotes(scoreData: score)
+                
+                // 요청 상태를 .downloaded로 업데이트합니다.
+                self.requests[index].status = .downloaded
+                
+                // 서버에 상태 업데이트를 요청합니다.
+                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID, scoreID: String(request.id), newStatus: 2) { status, message in
+                    print("Update status: \(status), message: \(message)")
+                }
+                
+                // UI를 메인 스레드에서 업데이트합니다.
+                DispatchQueue.main.async {
+                    // 토스트 알림을 표시합니다.
+                    ToastAlert.show(message: "악보가 추가되었어요.", in: self.view, iconName: "check.circle.color")
+                    
+                    // 요청 카드 뷰를 업데이트합니다.
+                    if let requestCardView = self.stackView.arrangedSubviews.first(where: {
+                        if let card = $0 as? RequestCardView {
+                            return card.request?.id == request.id
+                        }
+                        return false
+                    }) as? RequestCardView {
+                        requestCardView.request = self.requests[index] // 이로 인해 updateView()가 호출됩니다.
+                    }
+                }
+            }
+        }
+        task.resume()
     }
 }
 
