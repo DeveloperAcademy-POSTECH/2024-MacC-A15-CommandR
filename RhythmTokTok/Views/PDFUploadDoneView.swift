@@ -7,7 +7,13 @@
 import UIKit
 import Lottie
 
+protocol PDFUploadDoneViewDelegate: AnyObject {
+    func didTapDismissButton()
+    func didTapNavigateButton()
+}
+
 class PDFUploadDoneView: UIView {
+    weak var delegate: PDFUploadDoneViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,12 +88,13 @@ class PDFUploadDoneView: UIView {
         // dismissButton 셋업
         dismissButton = UIButton(type: .system)
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
-        dismissButton.setTitle("완료", for: .normal)
+        dismissButton.setTitle("확인", for: .normal)
         dismissButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
         dismissButton.setTitleColor(.white, for: .normal)
         dismissButton.backgroundColor = UIColor(named: "button_primary")
         dismissButton.layer.cornerRadius = 12
         // TODO: dismiss action 연결하기
+        dismissButton.addTarget(self, action: #selector(dismissButtonTapped), for: .touchUpInside)
         addSubview(dismissButton)
         
         // navigateButton 셋업
@@ -141,5 +148,13 @@ class PDFUploadDoneView: UIView {
     
     private func startLottieAnimation() {
         lottieView.play()
+    }
+    
+    @objc private func dismissButtonTapped() {
+        delegate?.didTapDismissButton()
+    }
+    
+    @objc private func navigateButtonTapped() {
+        delegate?.didTapNavigateButton()
     }
 }

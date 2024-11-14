@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PDFUploadDoneViewController: UIViewController {
+class PDFUploadDoneViewController: UIViewController, PDFUploadDoneViewDelegate {
     private var uploadDoneView: PDFUploadDoneView!
     
     override func viewDidLoad() {
@@ -18,7 +18,7 @@ class PDFUploadDoneViewController: UIViewController {
     
     private func setupPDFUplodDonewView() {
         uploadDoneView = PDFUploadDoneView()
-        
+        uploadDoneView.delegate = self
         view.addSubview(uploadDoneView)
         uploadDoneView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -28,7 +28,21 @@ class PDFUploadDoneViewController: UIViewController {
             uploadDoneView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    func didTapDismissButton() {
+        print("dismiss")
+        dismiss(animated: true) {
+               // Access the main app window and set its root view controller to the home view
+               if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = windowScene.windows.first {
+                   let homeViewController = ScoreListViewController()
+                   window.rootViewController = UINavigationController(rootViewController: homeViewController)
+                   window.makeKeyAndVisible()
+               }
+           }
+    }
+    
+    func didTapNavigateButton() {
+        
+    }
 }
-
-
-
