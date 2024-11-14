@@ -9,20 +9,21 @@ import UIKit
 
 // 임시 BPM뷰
 class SetBPMViewController: UIViewController {
+    var currentScore: Score?
     
-    private let bpmLabel: UILabel = {
+    private lazy var bpmLabel: UILabel = {
         let label = UILabel()
-        label.text = "현재 BPM: \(UserSettingData.shared.getBPM())"
+        label.text = "현재 BPM: \(currentScore?.bpm ?? 60)"
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let bpmSlider: UISlider = {
+    private lazy var bpmSlider: UISlider = {
         let slider = UISlider()
         slider.minimumValue = 60
         slider.maximumValue = 180
-        slider.value = Float(UserSettingData.shared.getBPM())
+        slider.value = Float(currentScore?.bpm ?? 60)
         slider.translatesAutoresizingMaskIntoConstraints = false
         return slider
     }()
@@ -38,7 +39,7 @@ class SetBPMViewController: UIViewController {
         return button
     }()
     
-    private var currentBPM: Int = UserSettingData.shared.getBPM()
+    private lazy var currentBPM: Int = Int(currentScore?.bpm ?? 60)
     
     override func viewDidLoad() {
         super.viewDidLoad()

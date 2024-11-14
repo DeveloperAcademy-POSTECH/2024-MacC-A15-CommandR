@@ -14,4 +14,5 @@ extension Notification.Name {
     static let soundSettingDidChange = Notification.Name("soundSettingDidChange")
     static let watchPlayButtonTapped = Notification.Name("watchPlayButtonTapped")
     static let watchPauseButtonTapped = Notification.Name("watchPauseButtonTapped")
+    static let didInsertDummyData = Notification.Name("didInsertDummyData")
 }
