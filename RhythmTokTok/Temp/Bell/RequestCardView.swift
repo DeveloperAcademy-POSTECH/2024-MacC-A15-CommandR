@@ -25,7 +25,7 @@ class RequestCardView: UIView {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd"
-        dateLabel.text = "요청 날짜: \(dateFormatter.string(from: request.date))"
+        dateLabel.text = "요청 날짜: \(dateFormatter.string(from: request.requestDate))"
         
         switch request.status {
         case .inProgress:
