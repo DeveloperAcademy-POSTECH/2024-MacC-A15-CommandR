@@ -168,8 +168,10 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                 return
             }
             
-            let dateFormatter = ISO8601DateFormatter() // 날짜 포맷 설정
-            dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // 서버와의 통신을 위한 미세초 변환
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 서버의 날짜 포맷에 맞춤
+//            let dateFormatter = ISO8601DateFormatter() // 날짜 포맷 설정
+//            dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // 서버와의 통신을 위한 미세초 변환
             
             self?.requests = scores.compactMap { scoreDict in
                 guard let id = scoreDict["id"] as? Int,

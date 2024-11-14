@@ -98,7 +98,7 @@ class ServerManager {
     
     // 2. 악보 조회 기능
     func fetchScores(deviceID: String, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
-        let url = URL(string: "\(serverBaseURL)/api/scores?device_id=\(deviceID)")!
+        let url = URL(string: "\(serverBaseURL)/api/scores?device_id=device_id_dummy")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
