@@ -9,39 +9,31 @@ import CoreData
 class ScoreService {
     let context = CoreDataStack.shared.context
     
-    // 확인하고 더미데이터 넣기
-    func checkAndInsertDummyData() async {
+    // 초기 데이터 삽입 여부를 확인하고, 없을 경우 데이터를 삽입
+    func insertDummyDataIfNeeded() async {
         let fetchRequest: NSFetchRequest<ScoreEntity> = ScoreEntity.fetchRequest()
         
         do {
             let count = try context.count(for: fetchRequest)
-            print("count : \(count)")
             if count == 0 { // swiftlint:disable:this empty_count
                 if let filePaths = Bundle.main.urls(forResourcesWithExtension: "xml", subdirectory: "DummyScores") {
-                    
                     for fileURL in filePaths {
-                        do {
-                            print("task 실행")
-                            let fileName = fileURL.deletingPathExtension().lastPathComponent
-                            let xmlData = try Data(contentsOf: fileURL)
-                            print("Successfully loaded MusicXML data.")
-                            let parser = MusicXMLParser()
-                            let score = await parser.parseMusicXML(from: xmlData)
-                            score.title = fileName
-                            
-                            ScoreManager.shared.addScoreWithNotes(scoreData: score)
-                        } catch {
-                            ErrorHandler.handleError(error: error)
-                        }
+                        let fileName = fileURL.deletingPathExtension().lastPathComponent
+                        let xmlData = try Data(contentsOf: fileURL)
+                        let parser = MusicXMLParser()
+                        let score = await parser.parseMusicXML(from: xmlData)
+                        score.title = fileName
+                        
+                        ScoreManager.shared.addScoreWithNotes(scoreData: score)
                     }
+                    // UserDefaults에 초기 데이터가 삽입되었음을 기록
+                    UserDefaults.standard.set(true, forKey: "hasInsertedDummyData")
                 } else {
-                    print("File not found")
+                    print("DummyScores 폴더 내 파일을 찾을 수 없습니다.")
                 }
-                // 데이터 삽입 완료 후 Notification 전송
-                NotificationCenter.default.post(name: .didInsertDummyData, object: nil)
             }
         } catch {
-            print("Failed to fetch data: \(error)")
+            print("데이터 삽입 중 오류 발생: \(error)")
         }
     }
     
