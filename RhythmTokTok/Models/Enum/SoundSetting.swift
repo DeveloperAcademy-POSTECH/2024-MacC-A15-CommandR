@@ -9,7 +9,12 @@ import Foundation
 
 enum SoundSetting: String, Codable {
     case voice
+    case melodyBeat
     case melody
     case beat
     case mute
+    
+    static var `default`: SoundSetting {
+        return .melody // 기본값으로 .voice 설정
+    }
 }

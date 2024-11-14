@@ -1,6 +1,9 @@
 import UIKit
 
 class SettingView: UIView {
+    // 커스텀 네비게이션 추가
+    let customNavBar = CustomNavigationBar()
+
     // 섹션 추가
     let bpmSettingSection = BPMSettingSectionView()
     let soundSettingSection = SoundSettingSectionView()
@@ -63,14 +66,19 @@ class SettingView: UIView {
         let divider2 = createDivider()
         
         // 각 뷰의 translatesAutoresizingMaskIntoConstraints 설정
-        [divider0, bpmSettingSection, divider1, soundSettingSection, divider2, hapticSettingSection].forEach {
+        [customNavBar, divider0, bpmSettingSection, divider1, soundSettingSection, divider2, hapticSettingSection].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
         
         // 제약 조건 설정
         NSLayoutConstraint.activate([
-            divider0.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            customNavBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            customNavBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            customNavBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            customNavBar.heightAnchor.constraint(equalToConstant: 60),
+
+            divider0.topAnchor.constraint(equalTo: customNavBar.bottomAnchor, constant: 10),
             divider0.leadingAnchor.constraint(equalTo: leadingAnchor),
             divider0.trailingAnchor.constraint(equalTo: trailingAnchor),
             divider0.heightAnchor.constraint(equalToConstant: 1),
@@ -97,6 +105,40 @@ class SettingView: UIView {
             hapticSettingSection.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             hapticSettingSection.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             hapticSettingSection.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
+    }
+}
+
+class CustomNavigationBar: UIView {
+
+    let navTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
+        label.textAlignment = .center
+        label.text = "설정"
+        label.font = UIFont(name: "Pretendard-Medium", size: 18)
+        label.textColor = .black
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+
+    private func setupView() {
+        addSubview(navTitleLabel)
+        NSLayoutConstraint.activate([
+            navTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            navTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            navTitleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            navTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            navTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
         ])
     }
 }

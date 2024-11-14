@@ -53,7 +53,7 @@ class MeasureProgressView: UIView {
         self.clipsToBounds = true
 
         // ProgressView 설정
-        progressView.backgroundColor = .gray
+        progressView.backgroundColor = UIColor(named: "background_tertiary")
         progressView.layer.cornerRadius = 0
         progressView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(progressView)

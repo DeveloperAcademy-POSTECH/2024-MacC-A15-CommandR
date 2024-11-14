@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0232D49A2CD4B04100FDBFAF /* minuetGmajor.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4982CD4B04100FDBFAF /* minuetGmajor.xml */; };
-		0232D49B2CD4B04100FDBFAF /* kankan.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4972CD4B04100FDBFAF /* kankan.xml */; };
-		0232D49C2CD4B04100FDBFAF /* star.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4992CD4B04100FDBFAF /* star.xml */; };
 		0232D4A02CD5F5A600FDBFAF /* shinsadong.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */; };
 		0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49E2CD5F5A600FDBFAF /* cry.xml */; };
 		0232D4AC2CDC721B00FDBFAF /* doraji.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4AB2CDC721B00FDBFAF /* doraji.xml */; };
+		0232D4E72CDDC52A00FDBFAF /* DummyScores in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4E62CDDC52400FDBFAF /* DummyScores */; };
+		023E35242CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */; };
+		023E352D2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */; };
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
 		02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */; };
 		02BFECF02CB10A13003CEC8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEF2CB10A13003CEC8A /* ViewController.swift */; };
@@ -26,6 +26,8 @@
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
 		02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
+		1A0AE6CF2CE1EA5900564859 /* PDFConvertRequestConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */; };
+		1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
@@ -132,11 +134,9 @@
 		EE4203A92CD3D2C40081F2A1 /* RadioButtonOptionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */; };
 		EE4203AB2CD3D50C0081F2A1 /* RadioButtonOptionItemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */; };
 		EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */; };
-		EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */; };
 		EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B952CCFB88200079D75 /* ScoreService.swift */; };
 		EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */; };
 		EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */; };
-		EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */; };
 		EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */; };
 		EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A52CBE5CC200325725 /* ScoreManager.swift */; };
 		EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */; };
@@ -173,12 +173,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0232D4972CD4B04100FDBFAF /* kankan.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = kankan.xml; sourceTree = "<group>"; };
-		0232D4982CD4B04100FDBFAF /* minuetGmajor.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = minuetGmajor.xml; sourceTree = "<group>"; };
-		0232D4992CD4B04100FDBFAF /* star.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = star.xml; sourceTree = "<group>"; };
 		0232D49E2CD5F5A600FDBFAF /* cry.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = cry.xml; sourceTree = "<group>"; };
 		0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = shinsadong.xml; sourceTree = "<group>"; };
 		0232D4AB2CDC721B00FDBFAF /* doraji.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = doraji.xml; sourceTree = "<group>"; };
+		0232D4E62CDDC52400FDBFAF /* DummyScores */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DummyScores; path = RhythmTokTok/Resources/DummyScores; sourceTree = SOURCE_ROOT; };
+		023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTok.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02BFECED2CB10A13003CEC8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -193,6 +193,8 @@
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		02CFE1312CB68479008454B8 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertRequestConfirmationView.swift; sourceTree = "<group>"; };
+		1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertRequestConfirmationViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
@@ -296,11 +298,9 @@
 		EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonOptionItem.swift; sourceTree = "<group>"; };
 		EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonOptionItemPicker.swift; sourceTree = "<group>"; };
 		EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EE7A8B952CCFB88200079D75 /* ScoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScoreService.swift; path = RhythmTokTok/Temp/ScoreService.swift; sourceTree = SOURCE_ROOT; };
 		EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		EE7B28A52CBE5CC200325725 /* ScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
 		EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListView.swift; sourceTree = "<group>"; };
@@ -419,6 +419,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
@@ -437,12 +438,10 @@
 		1E3E093E2CB2AAC500EE1868 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0232D4E62CDDC52400FDBFAF /* DummyScores */,
 				1E54A8EF2CB6D37C00753A3E /* Piano.sf2 */,
 				61B2095F2CD771F000E51C67 /* mutedClap.sf2 */,
 				1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */,
-				0232D4972CD4B04100FDBFAF /* kankan.xml */,
-				0232D4982CD4B04100FDBFAF /* minuetGmajor.xml */,
-				0232D4992CD4B04100FDBFAF /* star.xml */,
 				1E54A8F72CB7D26900753A3E /* MoonRiver.xml */,
 				1ED9FEDF2CC26E6000472C51 /* mannam.xml */,
 				1ED9FEE02CC26E6000472C51 /* mannam-f 2.xml */,
@@ -544,6 +543,7 @@
 		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
 				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
@@ -701,9 +701,9 @@
 			children = (
 				EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */,
 				EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */,
-				EE7B289C2CBE58D500325725 /* NoteEntity+CoreDataProperties.swift */,
+				023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */,
 				EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */,
-				EE7A8B922CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift */,
+				023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */,
 				EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */,
 			);
 			path = CoreData;
@@ -828,13 +828,11 @@
 				1E3E09382CB2AAB400EE1868 /* dohigh.mp3 in Resources */,
 				0232D4A02CD5F5A600FDBFAF /* shinsadong.xml in Resources */,
 				0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */,
-				0232D49A2CD4B04100FDBFAF /* minuetGmajor.xml in Resources */,
-				0232D49B2CD4B04100FDBFAF /* kankan.xml in Resources */,
-				0232D49C2CD4B04100FDBFAF /* star.xml in Resources */,
 				1E3E09392CB2AAB400EE1868 /* si.mp3 in Resources */,
 				1E3E093A2CB2AAB400EE1868 /* silence.mp3 in Resources */,
 				1E3E093B2CB2AAB400EE1868 /* me.mp3 in Resources */,
 				1E3E093C2CB2AAB400EE1868 /* rah.mp3 in Resources */,
+				0232D4E72CDDC52A00FDBFAF /* DummyScores in Resources */,
 				1E3E093D2CB2AAB400EE1868 /* pa.mp3 in Resources */,
 				1E3E09402CB2AB0800EE1868 /* MahlFaGe4Sample.musicxml in Resources */,
 				1E3E09452CB3EDA500EE1868 /* speechRe.mp3 in Resources */,
@@ -888,7 +886,7 @@
 				EEBE60BC2CB66CCD00BC6739 /* PDFConvertManager.swift in Sources */,
 				D32330972CDE5272007D1003 /* RequestProcessingViewController.swift in Sources */,
 				EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */,
-				EE7B28A22CBE58D500325725 /* NoteEntity+CoreDataProperties.swift in Sources */,
+				023E35242CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift in Sources */,
 				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
 				EE4203A92CD3D2C40081F2A1 /* RadioButtonOptionItem.swift in Sources */,
 				EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */,
@@ -898,6 +896,7 @@
 				1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */,
 				D32330952CDE382C007D1003 /* RequestStatus.swift in Sources */,
 				1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */,
+				1A0AE6CF2CE1EA5900564859 /* PDFConvertRequestConfirmationView.swift in Sources */,
 				1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
 				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
@@ -913,6 +912,7 @@
 				D30101D92CE1EADC005742E6 /* CustomAlertViewController.swift in Sources */,
 				EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */,
 				1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */,
+				0232D4B12CDD036A00FDBFAF /* CoreDataHelper.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
@@ -933,6 +933,7 @@
 				616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */,
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */,
+				023E352D2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift in Sources */,
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
 				1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
@@ -945,6 +946,7 @@
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,
 				EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */,
 				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,
+				1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				1ED9FECB2CBE781000472C51 /* MeasureProgressView.swift in Sources */,

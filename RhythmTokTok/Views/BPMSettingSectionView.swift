@@ -7,6 +7,7 @@
 import UIKit
 
 class BPMSettingSectionView: UIView {
+    var currentScore: Score?
     var onBPMButtonTapped: (() -> Void)?
     
     let titleLabel: UILabel = {
@@ -26,7 +27,7 @@ class BPMSettingSectionView: UIView {
     }()
     
     // BPM 버튼 관련 요소들
-    var bpm: Int = UserSettingData.shared.getBPM() {
+    lazy var bpm: Int = currentScore?.bpm ?? 60 {
         didSet {
             bpmLabel.text = "\(bpm) BPM"
             bpmDescriptionLabel.text = "| \(BPMDescription.description(for: bpm))"
