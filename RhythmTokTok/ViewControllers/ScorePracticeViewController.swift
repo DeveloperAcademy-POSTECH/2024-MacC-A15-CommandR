@@ -49,8 +49,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
 // MARK: - init
     init(currentScore: Score) {
-        print("연습뷰Score: \(currentScore)----------")
-        print("연습뷰ScoreEntity: \(scoreService.fetchScoreById(id: currentScore.id)?.description)----------")
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
     }
