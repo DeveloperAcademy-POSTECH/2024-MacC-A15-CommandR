@@ -13,34 +13,28 @@ class ScoreManager {
     
     let context = CoreDataStack.shared.context
     
-    //Entity - Model 매핑
+    // Entity - Model 매핑
+    // TODO: - 기본값 관리 필요
     func addScoreWithNotes(scoreData: Score) {
-        
-        // 새로운 ScoreEntity 생성
         let score = ScoreEntity(context: context)
         score.id = UUID().uuidString
         score.createdAt = Date()
         score.title = scoreData.title
         score.bpm = Int64(scoreData.bpm)
+        score.isHapticOn = true
+        score.isScoreDeleted = false
+        score.soundOption = SoundSetting.default.rawValue
+        score.divisions = Int64(scoreData.divisions)
         
         // Note를 담을 Ordered Set 생성
         let notesSet = NSMutableOrderedSet()
         
-        // ScoreData의 모든 Note를 순회하여 Entity로 변환
-//        scoreData.parts.forEach { part in
-//            part.measures.forEach { measure in
-//                measure.notes.forEach { note in
-//                    let noteEntity = createNoteEntity(from: note, partId: part.id, measureNumber: measure.number, score: score)
-//                    notesSet.add(noteEntity)
-//                }
-//            }
-//        }
         // 줄 번호 키값도 순회하게 만듦
         scoreData.parts.forEach { part in
             part.measures.forEach { (lineNumber, measures) in
                 measures.forEach { measure in
                     measure.notes.forEach { note in
-                        let noteEntity = createNoteEntity(from: note, partId: part.id, measureNumber: measure.number, score: score)
+                        let noteEntity = createNoteEntity(from: note, partId: part.id, lineNumber: lineNumber, measureNumber: measure.number, score: score)
                         notesSet.add(noteEntity)
                     }
                 }
@@ -61,21 +55,26 @@ class ScoreManager {
     }
     
     // NoteEntity 초기화 함수
-    func createNoteEntity(from note: Note, partId: String, measureNumber: Int, score: ScoreEntity) -> NoteEntity {
+    func createNoteEntity(from note: Note, partId: String, lineNumber: Int, measureNumber: Int, score: ScoreEntity) -> NoteEntity {
         let noteEntity = NoteEntity(context: context)
         noteEntity.id = UUID().uuidString  // 고유 ID
-        noteEntity.score = score  // Score와 연결
-        noteEntity.part = partId  // 파트 설정
-        noteEntity.measure = measureNumber  // Measure 번호 설정
-        noteEntity.startTime = note.startTime
-        noteEntity.staff = note.staff
-        noteEntity.accidental = note.accidental.rawValue  // Enum에서 Int로 변환
-        noteEntity.isRest = note.isRest
-        noteEntity.duration = note.duration
+        
         noteEntity.pitch = note.pitch
-        noteEntity.octave = note.octave
+        noteEntity.duration = Int64(note.duration)
+        
+        noteEntity.octave = Int16(note.octave)
         noteEntity.type = note.type
-        noteEntity.voice = note.voice
+        noteEntity.voice = Int16(note.voice)
+        noteEntity.staff = Int64(note.staff)
+        noteEntity.startTime = Int64(note.startTime)
+        noteEntity.isRest = note.isRest
+        noteEntity.accidental = Int64(note.accidental.rawValue)  // Enum에서 Int로 변환
+        noteEntity.tieType = note.tieType
+        
+        noteEntity.part = partId  // 파트 설정
+        noteEntity.lineNumber = Int64(lineNumber)  // Measure 번호 설정
+        noteEntity.measureNumber = Int64(measureNumber)  // Measure 번호 설정
+        noteEntity.score = score  // Score와 연결
         return noteEntity
     }
 }

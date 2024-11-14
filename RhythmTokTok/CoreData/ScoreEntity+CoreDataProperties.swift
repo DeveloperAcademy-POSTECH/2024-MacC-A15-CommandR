@@ -18,8 +18,10 @@ extension ScoreEntity {
     @NSManaged public var bpm: Int64
     @NSManaged public var createdAt: Date?
     @NSManaged public var id: String?
+    @NSManaged public var divisions: Int64
     @NSManaged public var title: String?
     @NSManaged public var isHapticOn: Bool
+    @NSManaged public var isScoreDeleted: Bool
     @NSManaged public var soundOption: String?
     @NSManaged public var notes: NSOrderedSet?
 
