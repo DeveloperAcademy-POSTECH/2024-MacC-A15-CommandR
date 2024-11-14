@@ -70,6 +70,7 @@ class ScoreListViewController: UIViewController {
     }
     
     @objc func reloadScoreList() {
+        print("reload")
         loadScoreList() // 데이터 다시 불러오기
     }
     
