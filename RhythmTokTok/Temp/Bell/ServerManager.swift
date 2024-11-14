@@ -85,7 +85,7 @@ class ServerManager {
                    let message = json["message"] as? String {
                     completion(status, message)
                 } else {
-                    completion(0, "Invalid response format")
+                    completion(0, "Invalid response format")         
                 }
             } catch {
                 ErrorHandler.handleError(error: error)
@@ -120,7 +120,7 @@ class ServerManager {
             // 서버 응답 파싱
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let status = json["status"] as? Int,
+                   let status = json["code"] as? Int,
                    let message = json["message"] as? String,
                    let scores = json["scores"] as? [[String: Any]] {
                     completion(status, message, scores)
