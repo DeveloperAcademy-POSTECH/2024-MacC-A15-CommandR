@@ -13,9 +13,7 @@ protocol BPMSettingDelegate: AnyObject {
 
 class BPMSettingSectionViewController: UIViewController {
     var delegate: BPMSettingDelegate?
-    
-    // TODO: currentBPM 은 추후에 CoreData Entity 에서 현재 설정값 가져와야 함
-    var currentBPM: Int = 60
+    var currentBPM: Int = 0
     var onBPMSelected: ((Int) -> Void)?
 
     private let titleLabel = UILabel()

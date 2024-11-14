@@ -38,14 +38,14 @@ class ScoreService {
     }
     
     // MARK: - Create
-    func createScore(id: String, title: String, bpm: Int64, createdAt: Date, isHapticOn: Bool, soundType: String?, notes: [NoteEntity]?) {
+    func createScore(id: String, title: String, bpm: Int64, createdAt: Date, isHapticOn: Bool, soundOption: String, notes: [NoteEntity]?) {
         let score = ScoreEntity(context: context)
         score.id = id
         score.title = title
         score.bpm = bpm
         score.createdAt = createdAt
         score.isHapticOn = isHapticOn
-        score.soundOption = soundType
+        score.soundOption = soundOption
         if let notesArray = notes {
             score.notes = NSOrderedSet(array: notesArray)
         }
@@ -75,27 +75,22 @@ class ScoreService {
     }
     
     // MARK: - Update
-    
-    func updateScore(score: ScoreEntity, newTitle: String?, newBpm: Int64?, newIsHapticOn: Bool?, newSoundType: String?, newNotes: [NoteEntity]?) {
-        score.title = newTitle ?? score.title
-        score.bpm = newBpm ?? score.bpm
-        score.isHapticOn = newIsHapticOn ?? score.isHapticOn
-        score.soundOption = newSoundType ?? score.soundOption
-        if let notesArray = newNotes {
-            score.notes = NSOrderedSet(array: notesArray)
+    func updateScore(withId id: String, update: (ScoreEntity) -> Void) {
+        if let scoreEntity = fetchScoreById(id: id) {
+            update(scoreEntity)
+            saveContext()
+        } else {
+            print("No ScoreEntity found with id \(id).")
         }
-        saveContext()
     }
     
     // MARK: - Delete
-    
     func deleteScore(score: ScoreEntity) {
         context.delete(score)
         saveContext()
     }
     
     // MARK: - Save Context
-    
     private func saveContext() {
         do {
             try context.save()
