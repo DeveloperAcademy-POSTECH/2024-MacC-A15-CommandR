@@ -73,6 +73,7 @@ class CheckPDFViewController: UIViewController {
         print("사용자가 PDF 파일을 확인하고 선택을 완료했습니다.")
         // 모달로 띄운 경우 dismiss 사용
         let titleInputViewController = TitleInputViewController()
+        titleInputViewController.fileURL = fileURL
         navigationController?.pushViewController(titleInputViewController, animated: true)
         self.dismiss(animated: true, completion: nil)  
     }
