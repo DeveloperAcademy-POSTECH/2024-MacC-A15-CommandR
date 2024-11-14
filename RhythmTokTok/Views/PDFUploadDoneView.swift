@@ -24,7 +24,6 @@ class PDFUploadDoneView: UIView {
     var dismissButton: UIButton!
     var navigateButton: UIButton!
     
-    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -45,12 +44,28 @@ class PDFUploadDoneView: UIView {
         titleLabel.text = "악보 요청이 완료되었어요"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         titleLabel.textAlignment = .center
+        titleLabel.textColor = UIColor(named: "lable_primary")
         addSubview(titleLabel)
         
         // Subtitle label1 셋업
         subtitleLabel1 = UILabel()
         subtitleLabel1.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel1.text = "요청하신 악보는 1~2일 내로 완성될 거에요."
+        
+        // Full text
+        let fullText = "요청하신 악보는 1~2일 내로 완성될 거에요."
+
+        // Create an NSMutableAttributedString for the full text
+        let attributedString = NSMutableAttributedString(string: fullText, attributes: [
+            .foregroundColor: UIColor(named: "lable_tertiary") ?? .gray
+        ])
+
+        // Define the range for "1~2일 내" and apply a different color
+        if let highlightRange = fullText.range(of: "1~2일 내") {
+            let nsRange = NSRange(highlightRange, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: UIColor(named: "blue500") ?? .blue, range: nsRange)
+        }
+
+        subtitleLabel1.attributedText = attributedString
         subtitleLabel1.font = UIFont.systemFont(ofSize: 16)
         subtitleLabel1.textAlignment = .center
         addSubview(subtitleLabel1)
@@ -61,8 +76,8 @@ class PDFUploadDoneView: UIView {
         subtitleLabel2.text = "완료 시 알림을 보내드릴게요."
         subtitleLabel2.font = UIFont.systemFont(ofSize: 16)
         subtitleLabel2.textAlignment = .center
+        subtitleLabel2.textColor = UIColor(named: "lable_tertiary")
         addSubview(subtitleLabel2)
-        
         
         // dismissButton 셋업
         dismissButton = UIButton(type: .system)
@@ -114,7 +129,6 @@ class PDFUploadDoneView: UIView {
             dismissButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             dismissButton.heightAnchor.constraint(equalToConstant: 64),
             dismissButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            
             
             // Navigate button 제약 조건
             navigateButton.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 16),
