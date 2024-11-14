@@ -29,6 +29,7 @@
 		1A0AE6CF2CE1EA5900564859 /* PDFConvertRequestConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */; };
 		1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
+		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
@@ -197,6 +198,7 @@
 		1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertRequestConfirmationViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
+		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicXMLParser.swift; sourceTree = "<group>"; };
@@ -619,6 +621,7 @@
 				1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */,
 				1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */,
 				1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */,
+				1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */,
 				1EF5145C2CD763DA00F68084 /* Logger.swift */,
 				1E7592642CE1E0220050D10D /* ToolTipView.swift */,
 				1E7592662CE1EFC50050D10D /* AppleWatchStatus.swift */,
@@ -888,6 +891,7 @@
 				EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */,
 				023E35242CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift in Sources */,
 				D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */,
+				1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */,
 				EE4203A92CD3D2C40081F2A1 /* RadioButtonOptionItem.swift in Sources */,
 				EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */,
 				1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */,
@@ -912,7 +916,6 @@
 				D30101D92CE1EADC005742E6 /* CustomAlertViewController.swift in Sources */,
 				EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */,
 				1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */,
-				0232D4B12CDD036A00FDBFAF /* CoreDataHelper.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
@@ -945,7 +948,6 @@
 				D323308F2CDE37C9007D1003 /* RequestCardView.swift in Sources */,
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,
 				EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */,
-				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,
 				1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
