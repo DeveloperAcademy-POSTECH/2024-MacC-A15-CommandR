@@ -357,16 +357,17 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 // 햅틱 시퀀스 관리
                 var hapticSequence: [Double]?
                 
-                // MARK: 구간 선택 부분
-                if let startMeasureNumber, let endMeasureNumber {
-                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
-                                                                                         divisions: score.divisions,
-                                                                                         startNumber: startMeasureNumber,
-                                                                                         endNumber: endMeasureNumber)
-                } else {
-                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
-                                                                              divisions: score.divisions)
-                }
+//                // MARK: 구간 선택 부분
+//                if let startMeasureNumber, let endMeasureNumber {
+//                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
+//                                                                                         divisions: score.divisions,
+//                                                                                         startNumber: startMeasureNumber,
+//                                                                                         endNumber: endMeasureNumber)
+//                } else {
+//                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
+//                                                                              divisions: score.divisions)
+//                }
+                hapticSequence = await mediaManager.getMetronomeHapticSequence()
                 
                 if let validHapticSequence = hapticSequence {
                     totalHapticSequence = validHapticSequence
@@ -438,9 +439,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // 워치로 일시정지 예약 메시지 전송
     func sendPauseStatusToWatch() {
         Task {
-            let hapticSequence = try await mediaManager.getClipPauseHapticSequence(part: currentScore.parts.last!,
-                                                                                   divisions: currentScore.divisions,
-                                                                                   pauseTime: musicPlayer.currentTime)
+            // 멜로디 일시정지 햅틱 시퀀스 재산출 코드
+//            let hapticSequence = try await mediaManager.getClipPauseHapticSequence(part: currentScore.parts.last!,
+//                                                                                   divisions: currentScore.divisions,
+//                                                                                   pauseTime: musicPlayer.currentTime)
+            let hapticSequence = await mediaManager.getClipPauseMetronomeHapticSequence(pauseTime: musicPlayer.currentTime)
             IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
                                                                                     hapticSequence: hapticSequence,
                                                                                     status: .pause, startTime: 0)
@@ -547,10 +550,13 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             Task {
                 let startTime = self.mediaManager.getMeasureStartTime(currentMeasure: Int(self.currentMeasure),
                                                                       division: Double(self.currentScore.divisions))
-                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
-                                                                                              divisions: self.currentScore.divisions,
-                                                                                              startNumber: self.currentMeasure,
-                                                                                              endNumber: self.totalMeasure)
+                // 멜로디 마디 점프 햅틱 시퀀스 재산출
+//                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
+//                                                                                              divisions: self.currentScore.divisions,
+//                                                                                              startNumber: self.currentMeasure,
+//                                                                                              endNumber: self.totalMeasure)
+                let hapticSequence = await self.mediaManager.getMetronomeHapticSequence()
+                
                 self.musicPlayer.jumpMIDI(jumpPosition: startTime)
                 self.sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
                 print("점프 햅틱 갯수 : \(hapticSequence.count),")
