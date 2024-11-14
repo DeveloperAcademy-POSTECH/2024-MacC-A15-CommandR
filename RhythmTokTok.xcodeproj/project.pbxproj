@@ -26,6 +26,8 @@
 		02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
 		02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
+		1A0AE6CF2CE1EA5900564859 /* PDFConvertRequestConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */; };
+		1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
@@ -193,6 +195,8 @@
 		02CFE1252CB1156D008454B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02CFE1282CB1156D008454B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		02CFE1312CB68479008454B8 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertRequestConfirmationView.swift; sourceTree = "<group>"; };
+		1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertRequestConfirmationViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
@@ -419,6 +423,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
@@ -544,6 +549,7 @@
 		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
 				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
@@ -898,6 +904,7 @@
 				1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */,
 				D32330952CDE382C007D1003 /* RequestStatus.swift in Sources */,
 				1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */,
+				1A0AE6CF2CE1EA5900564859 /* PDFConvertRequestConfirmationView.swift in Sources */,
 				1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
 				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
@@ -945,6 +952,7 @@
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,
 				EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */,
 				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,
+				1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				1ED9FECB2CBE781000472C51 /* MeasureProgressView.swift in Sources */,
