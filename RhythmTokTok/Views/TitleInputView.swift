@@ -9,15 +9,16 @@ import UIKit
 
 protocol TitleInputViewDelegate: AnyObject {
     func updateAccessoryButtonState(isEnabled: Bool)
+    func didTapCompleteButton(with filename: String)
+    func updateBorderColor()
 }
 
-class TitleInputView: UIView, UITextFieldDelegate {
+class TitleInputView: UIView {
     weak var delegate: TitleInputViewDelegate?
     var textField: UITextField!
     var titleLabel: UILabel!
     var subtitleLabel: UILabel!
     var completeButton: UIButton!
-    private let maxCharacterLimit = 20
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,27 +36,29 @@ class TitleInputView: UIView, UITextFieldDelegate {
         // Title label 셋업
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "제목을 입력해 주세요"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        titleLabel.text = "악보 제목을 입력해 주세요"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.textColor = UIColor(named: "lable_secondary")
         addSubview(titleLabel)
         
         // Subtitle label 셋업
         subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "제목은 최대 20글자까지 쓸 수 있어요"
-        subtitleLabel.font = UIFont.systemFont(ofSize: 14)
-        subtitleLabel.textColor = UIColor.gray
+        subtitleLabel.font = UIFont.systemFont(ofSize: 16)
+        subtitleLabel.textColor = UIColor(named: "lable_tertiary")
         addSubview(subtitleLabel)
 
         // TextField 셋업
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.font = UIFont(name: "Pretendard-Medium", size: 18)
+        textField.textColor = UIColor(named: "lable_primary")
         textField.layer.borderWidth = 2
-        textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
+        textField.layer.borderColor = UIColor(named: "border_primary")?.cgColor
         textField.layer.cornerRadius = 12
-        textField.backgroundColor = UIColor.systemGray6
-        textField.delegate = self
+        textField.backgroundColor = UIColor(named: "background_secondary")
+        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // Register for text changes
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 24))
         textField.leftViewMode = .always
         textField.placeholder = "예) 봄날은 간다 - 아코디언"
@@ -63,7 +66,7 @@ class TitleInputView: UIView, UITextFieldDelegate {
         // text field의 취소 버튼
         let clearButton = UIButton(type: .custom)
         clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-        clearButton.tintColor = UIColor(named: "label_quaternary") ?? .lightGray
+        clearButton.tintColor = UIColor(named: "lable_quaternary") ?? .lightGray
         clearButton.addTarget(self, action: #selector(clearTextField), for: .touchUpInside)
         clearButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         
@@ -78,10 +81,11 @@ class TitleInputView: UIView, UITextFieldDelegate {
         completeButton = UIButton(type: .system)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         completeButton.setTitle("입력 완료", for: .normal)
-        completeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 18)
+        completeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
         completeButton.setTitleColor(.white, for: .normal)
-        completeButton.backgroundColor = UIColor.systemBlue
+        completeButton.backgroundColor = UIColor(named: "button_inactive")
         completeButton.layer.cornerRadius = 12
+        completeButton.isEnabled = false
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
         addSubview(completeButton)
     }
@@ -111,32 +115,16 @@ class TitleInputView: UIView, UITextFieldDelegate {
 
     @objc private func clearTextField() {
         textField.text = ""
-        updateBorderColor()
+
+        delegate?.updateBorderColor()
     }
     
     @objc private func completeButtonTapped() {
-        print("입력 완료 button tapped!")
-        //TODO PDFRequestConfirmationView로 연결
+        delegate?.didTapCompleteButton(with: textField.text!)
     }
     
     // 변화를 감지할 UITextFieldDelegate 메서드
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        updateBorderColor()
+    @objc private func textFieldDidChange() {
+        delegate?.updateBorderColor()
     }
-
-    private func updateBorderColor() {
-         if let text = textField.text, text.count > maxCharacterLimit {
-             textField.layer.borderColor = UIColor.red.cgColor
-             subtitleLabel.textColor = UIColor.red
-             completeButton.isEnabled = false
-             completeButton.backgroundColor = UIColor.lightGray
-             delegate?.updateAccessoryButtonState(isEnabled: false) // Update accessory button
-         } else {
-             textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor ?? UIColor.systemBlue.cgColor
-             subtitleLabel.textColor = UIColor.gray
-             completeButton.isEnabled = true
-             completeButton.backgroundColor = UIColor.systemBlue
-             delegate?.updateAccessoryButtonState(isEnabled: true) // Update accessory button
-         }
-     }
 }
