@@ -9,6 +9,43 @@ import CoreData
 class ScoreService {
     let context = CoreDataStack.shared.context
     
+    // 확인하고 더미데이터 넣기
+    func checkAndInsertDummyData() async {
+        let fetchRequest: NSFetchRequest<ScoreEntity> = ScoreEntity.fetchRequest()
+        
+        do {
+            let count = try context.count(for: fetchRequest)
+            print("count : \(count)")
+            if count == 0 { // swiftlint:disable:this empty_count
+                if let filePaths = Bundle.main.urls(forResourcesWithExtension: "xml", subdirectory: "DummyScores") {
+                    
+                    for fileURL in filePaths {
+                        do {
+                            print("task 실행")
+                            let fileName = fileURL.deletingPathExtension().lastPathComponent
+                            let xmlData = try Data(contentsOf: fileURL)
+                            print("Successfully loaded MusicXML data.")
+                            let parser = MusicXMLParser()
+                            let score = await parser.parseMusicXML(from: xmlData)
+                            score.title = fileName
+                            
+                            ScoreManager.shared.addScoreWithNotes(scoreData: score)
+                        } catch {
+                            ErrorHandler.handleError(error: error)
+                        }
+                    }
+                } else {
+                    print("File not found")
+                }
+            }
+            
+            // 데이터 삽입 완료 후 Notification 전송
+            NotificationCenter.default.post(name: .didInsertDummyData, object: nil)
+        } catch {
+            print("Failed to fetch data: \(error)")
+        }
+    }
+    
     // MARK: - Create
     func createScore(id: String, title: String, bpm: Int64, createdAt: Date, isHapticOn: Bool, soundType: String?, notes: [NoteEntity]?) {
         let score = ScoreEntity(context: context)
@@ -25,7 +62,6 @@ class ScoreService {
     }
     
     // MARK: - Read
-    
     func fetchAllScores() -> [ScoreEntity] {
         let fetchRequest: NSFetchRequest<ScoreEntity> = ScoreEntity.fetchRequest()
         do {

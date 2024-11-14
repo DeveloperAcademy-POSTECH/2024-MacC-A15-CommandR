@@ -100,6 +100,9 @@ class MediaManager {
     }
  
     func getTotalPartMIDIFile(parsedScore: Score) async throws -> URL {
+        print("parsedScore: \(parsedScore.parts)")
+        
+        
         let notes = parsedScore.parts.flatMap { part in
             part.measures
                 .sorted(by: { $0.key < $1.key })
@@ -305,7 +308,7 @@ class MediaManager {
             var note = notes[index]
             
             // 붙임줄 관련 처리 로직
-            if let tieType = note.tieType {
+            if note.tieType != nil {
                 if let modifiedNote = handleNoteTie(note, &tieStartNotes) {
                     // tieType이 end일 때 바꿔넣을 note가 return됨
                     // note 바꿔넣기
@@ -314,15 +317,13 @@ class MediaManager {
                     continue
                 }
             }
-    
+            
             if note.isRest {
-//                print("쉼표: \(note.duration) ticks, 시작시간 \(note.startTime)")
                 continue // 쉼표는 MIDI 이벤트를 생성하지 않으므로 다음 음표로 넘어감
             }
             
             // 음표의 시작 시간을 note.startTime으로 설정
             let noteStartTick = MusicTimeStamp(Double(note.startTime) * divisionCorrectionFactor)
-//            print("음 \(note.pitch)\(note.octave), 시작시간 \(noteStartTick)")
             
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
