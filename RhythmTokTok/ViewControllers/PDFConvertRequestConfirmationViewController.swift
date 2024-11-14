@@ -49,5 +49,7 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
     func didTapConfirmationButton() {
         print("입력 완료 button tapped!")
         //TODO API 요청 보내기
+        let uploadDoneViewController = PDFUploadDoneViewController()
+        navigationController?.pushViewController(uploadDoneViewController, animated: true)
     }
 }

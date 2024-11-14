@@ -28,6 +28,8 @@
 		02CFE1352CB7D91F008454B8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CFE1312CB68479008454B8 /* ErrorHandler.swift */; };
 		1A0AE6CF2CE1EA5900564859 /* PDFConvertRequestConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */; };
 		1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */; };
+		1A0AE6D72CE5DD4F00564859 /* PDFUploadDoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */; };
+		1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
@@ -197,6 +199,8 @@
 		02CFE1312CB68479008454B8 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertRequestConfirmationView.swift; sourceTree = "<group>"; };
 		1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFConvertRequestConfirmationViewController.swift; sourceTree = "<group>"; };
+		1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadDoneView.swift; sourceTree = "<group>"; };
+		1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadDoneViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
@@ -423,6 +427,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
@@ -549,6 +554,7 @@
 		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */,
 				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
 				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
@@ -926,6 +932,7 @@
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
+				1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */,
 				1E7592672CE1EFC70050D10D /* AppleWatchStatus.swift in Sources */,
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */,
@@ -941,6 +948,7 @@
 				1E3E09202CB2A34200EE1868 /* LoadingViewController.swift in Sources */,
 				1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */,
 				EEE9D6B72CBBF7DE00E8E10E /* CheckPDFViewController.swift in Sources */,
+				1A0AE6D72CE5DD4F00564859 /* PDFUploadDoneView.swift in Sources */,
 				1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
 				61318FA52CDF8D3A00D8FC26 /* TitleInputViewController.swift in Sources */,
