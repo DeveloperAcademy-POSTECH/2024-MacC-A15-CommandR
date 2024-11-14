@@ -244,19 +244,20 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                     // 토스트 알림을 표시합니다.
                     ToastAlert.show(message: "악보가 추가되었어요.", in: self.view, iconName: "check.circle.color")
                     
-                    // 요청 카드 뷰를 업데이트합니다.
-                    if let requestCardView = self.stackView.arrangedSubviews.first(where: {
-                        if let card = $0 as? RequestCardView {
-                            return card.request?.id == request.id
-                        }
-                        return false
-                    }) as? RequestCardView {
-                        requestCardView.request = self.requests[index] // 이로 인해 updateView()가 호출됩니다.
-                    }
+                    // 요청 리스트를 재구성합니다.
+                    self.updateRequestsUI()
                 }
             }
         }
         task.resume()
+    }
+    
+    private func updateRequestsUI() {
+        // 스택뷰의 기존 서브뷰 제거
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        // 갱신된 요청 리스트로 UI 재구성
+        addRequestsToStackView()
     }
 }
 
