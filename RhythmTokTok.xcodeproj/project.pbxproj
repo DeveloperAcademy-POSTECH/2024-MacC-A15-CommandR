@@ -912,7 +912,6 @@
 				D30101D92CE1EADC005742E6 /* CustomAlertViewController.swift in Sources */,
 				EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */,
 				1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */,
-				0232D4B12CDD036A00FDBFAF /* CoreDataHelper.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
@@ -945,7 +944,6 @@
 				D323308F2CDE37C9007D1003 /* RequestCardView.swift in Sources */,
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,
 				EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */,
-				EE7A8B942CCFB7E800079D75 /* ScoreEntity+CoreDataProperties.swift in Sources */,
 				1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
@@ -1138,8 +1136,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "리듬톡톡";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1180,8 +1176,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTok/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "리듬톡톡";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1227,8 +1221,6 @@
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1269,8 +1261,6 @@
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "애플워치와 상호작용을 위해 필요합니다";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
 				LD_RUNPATH_SEARCH_PATHS = (
