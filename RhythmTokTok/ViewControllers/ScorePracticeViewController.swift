@@ -64,11 +64,10 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
         countdownTime = 3
-
+        mediaManager.currentScore = currentScore
         Task { await createMIDIFile(score: currentScore) }
         checkUpdatePreviousButtonState()
         checkUpdateNextButtonState()
-
         scoreCardView.bpmLabel.updateSpeedText(currentSpeed: currentScore.bpm)
         self.statusTags.currentScore = currentScore
         statusTags.updateTag()
@@ -466,18 +465,21 @@ extension ScorePracticeViewController {
                 // MIDI 파일 로드
                 musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
                 print("MIDI file successfully loaded and ready to play.")
+                // Metronome MIDI'
+                metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
+                
+                if currentScore.soundOption == .melodyBeat {
+                    if let metronomeMIDIFilePathURL {
+                        print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
+                        musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
+                    }
+                }
+                
+                updatePlayPauseButton(true)
             } else {
                 ErrorHandler.handleError(error: "MIDI file URL is nil.")
             }
-            
-            // Metronome MIDI'
-            metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
-            
-            if let metronomeMIDIFilePathURL {
-                print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
-                musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
-                updatePlayPauseButton(true)
-            }
+        
         
         } catch {
             ErrorHandler.handleError(error: error)
