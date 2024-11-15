@@ -4,7 +4,6 @@
 //
 //  Created by sungkug_apple_developer_ac on 10/8/24.
 
-import HealthKit
 import UIKit
 import WatchConnectivity
 
@@ -14,9 +13,9 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
     var scoreTitle: String?
     // 런치 용도
-    let healthStore = HKHealthStore()
-    let allTypes = Set([HKObjectType.workoutType()])
-    let configuration = HKWorkoutConfiguration()
+//    let healthStore = HKHealthStore()
+//    let allTypes = Set([HKObjectType.workoutType()])
+//    let configuration = HKWorkoutConfiguration()
     
     @Published var watchAppStatus: AppleWatchStatus = .ready
     @Published var playStatus: PlayStatus = .ready
@@ -86,16 +85,16 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
         
         let result = await withTaskGroup(of: Bool.self) { group -> Bool in
-            // startAppTask 추가
-            group.addTask {
-                do {
-                    try await self.healthStore.startWatchApp(toHandle: self.configuration)
-                    print("startAppTask 성공")
-                    return true
-                } catch {
-                    return false
-                }
-            }
+//            // startAppTask 추가
+//            group.addTask {
+//                do {
+//                    try await self.healthStore.startWatchApp(toHandle: self.configuration)
+//                    print("startAppTask 성공")
+//                    return true
+//                } catch {
+//                    return false
+//                }
+//            }
             
             // timeoutTask 추가 (5초 타임아웃)
             group.addTask {
