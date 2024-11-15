@@ -353,10 +353,11 @@ class MediaManager {
             // 음표의 시작 시간을 note.startTime으로 설정
             let noteStartTick = MusicTimeStamp(Double(note.startTime) * divisionCorrectionFactor)
             
+  
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
-                note: UInt8(currentScore?.soundOption == .melody ?
+                note: UInt8(currentScore?.soundOption == .melody || currentScore?.soundOption == .melodyBeat ?
                             note.pitchNoteNumber() :
                             60), // pitch를 MIDI note number로 변환
                 velocity: currentScore?.soundOption == .mute ? 1 : 64, // 음의 강도 (나중에 수정 가능)
@@ -368,7 +369,7 @@ class MediaManager {
             MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick, &noteOnMessage)
             
             // 노트의 길이를 MIDI 틱으로 변환
-            let noteDurationTicks = MusicTimeStamp(Double(currentScore?.soundOption == .melody ?
+            let noteDurationTicks = MusicTimeStamp(Double(currentScore?.soundOption == .melody || currentScore?.soundOption == .melodyBeat ?
                                                           note.duration :
                                                             0) * divisionCorrectionFactor)
  
