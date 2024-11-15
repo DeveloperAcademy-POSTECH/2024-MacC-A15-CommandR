@@ -25,7 +25,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var totalMeasure = 0
     private var totalHapticSequence: [Double] = []
     private var mediaManager = MediaManager()
-    private let musicPlayer = MusicPlayer()
+    private var musicPlayer = MusicPlayer()
     private var midiFilePathURL: URL?
     private var metronomeMIDIFilePathURL: URL?
     private var isPlayingMIDIFile = false
@@ -49,8 +49,13 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
 // MARK: - init
     init(currentScore: Score) {
+        print("ScorePracticeViewController-init1-currentScore:\(currentScore)")
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
+        
+        // musicPlayer에 soundOption을 전달
+        print("ScorePracticeViewController-init2-currentScore:\(currentScore)")
+        musicPlayer.soundOption = currentScore.soundOption
     }
     
     required init?(coder: NSCoder) {
@@ -60,7 +65,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
 // MARK: - 뷰 생명주기
     // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
+        print("viewWillAppear")
+
         super.viewWillAppear(animated)
+
+        // musicPlayer에 soundOption을 전달
+        musicPlayer.soundOption = currentScore.soundOption
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
         countdownTime = 3
@@ -301,6 +311,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
                 
     func handlePlayStatusChange(_ status: PlayStatus) {
+        print("handlePlayStatusChange - status : \(status)")
         switch status {
         case .ready:
             controlButtonView.playPauseButton.isPlaying = false
@@ -318,6 +329,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     func startMIDIPlayback() {
+        print("startMIIDPlayback")
         guard let outputPathURL = midiFilePathURL else {
             ErrorHandler.handleError(error: "MIDI file URL is nil.")
             return
@@ -364,6 +376,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     @objc func actionStart() {
+        print("actionStart")
         self.musicPlayer.playMIDI()
     }
     
@@ -420,6 +433,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
 // MARK: - [Ext] MIDI 파일, 햅틱 시퀀스 관리
 extension ScorePracticeViewController {
     private func createMIDIFile(score: Score, startMeasureNumber: Int? = nil, endMeasureNumber: Int? = nil) async {
+        print("createMIDIFile")
         do {
             // MIDI File URL 초기화
             updatePlayPauseButton(false)
@@ -467,12 +481,15 @@ extension ScorePracticeViewController {
                 print("MIDI file successfully loaded and ready to play.")
                 // Metronome MIDI'
                 metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
-                
-                if currentScore.soundOption == .melodyBeat {
+                print("metronome MIDI file successfully loaded and ready to play.")
+
+//                if currentScore.soundOption == .melodyBeat {
+                // 현재 melodyBeat 일때만 metronomeMIDIPlayer 를 초기화하고 있어서, Score 초기값이 melody 인 경우에는 음악 재생이 안됨.
+                // Score 생성 시 초기값이 어떤게 들어가있을지 모르기때문에 일단 모두 초기화 해두고 필요에 따라 골라쓰는 것은 어떨지
                     if let metronomeMIDIFilePathURL {
                         print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
                         musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
-                    }
+//                    }
                 }
                 
                 updatePlayPauseButton(true)
@@ -490,6 +507,7 @@ extension ScorePracticeViewController {
 // MARK: - [Ext] 컨트롤러 버튼 관련
 extension ScorePracticeViewController {
     @objc private func playButtonTapped() {
+        print("playButtonTapped")
         print("현재 버튼 상태 \(IOStoWatchConnectivityManager.shared.playStatus)")
         if IOStoWatchConnectivityManager.shared.playStatus == .play {
             // 현재 재생 중이면 일시정지로 변경

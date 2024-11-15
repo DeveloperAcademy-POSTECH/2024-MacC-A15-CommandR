@@ -9,10 +9,10 @@ import AVFoundation
 
 // MusicPlayer: AVPlayer를 사용하여 오디오 파일을 재생 및 제어하는 클래스
 class MusicPlayer: ObservableObject {
-    var currentScore: Score?
-    
     @Published var currentTime: TimeInterval = 0
     @Published var isEnd: Bool = false
+
+    var soundOption: SoundSetting? // soundOption 저장용
     
     private var midiPlayer: AVMIDIPlayer? // 멜로디 MIDI 재생 플레이어
     private var metronomeMIDIPlayer: AVMIDIPlayer? // 매트로놈 MIDI 재생 플레이어
@@ -30,6 +30,7 @@ class MusicPlayer: ObservableObject {
     private var metronomeMIDIFileURL: URL?
 
     init() {
+        print("MusicPlayer-init-soundOption: \(String(describing: soundOption))")
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
@@ -44,26 +45,12 @@ class MusicPlayer: ObservableObject {
             queue: .main) { [weak self] _ in
                 self?.updateSoundFont()
         }
-        
-        updateSoundFont()
-    }
-    
-    // soundFont 변수를 현재의 soundSetting값을 반영하여 업데이트하기
-    private func updateSoundFont() {
-        switch currentScore?.soundOption {
-        case .melody:
-            soundFont = "Piano"
-        case .beat:
-            soundFont = "Drum Set JD Rockset 5"
-        case .mute:
-            soundFont = "mutedClap"
-        default:
-            soundFont = "Piano"
-        }
+        updateSoundFont() // 추가
+        print("MusicPlayer-soundOption \(String(describing: soundOption))")
     }
     
     private func getSoundFont() -> String {
-        switch currentScore?.soundOption  {
+        switch soundOption {
         case .melody:
             return "Piano"
         case .beat:
@@ -72,6 +59,20 @@ class MusicPlayer: ObservableObject {
             return "mutedClap"
         default:
             return "Piano"
+        }
+    }
+    
+    // soundFont 변수를 현재의 soundSetting값을 반영하여 업데이트하기
+    private func updateSoundFont() {
+        switch soundOption {
+        case .melody:
+            soundFont = "Piano"
+        case .beat:
+            soundFont = "Drum Set JD Rockset 5"
+        case .mute:
+            soundFont = "mutedClap"
+        default:
+            soundFont = "Piano"
         }
     }
     
@@ -98,13 +99,13 @@ class MusicPlayer: ObservableObject {
             }
         }
         
-        // AVMIDIPlayer 초기화
+        // metronomeAVMIDIPlayer 초기화
         do {
-            
             let bankURL = Bundle.main.url(forResource: "Drum Set JD Rockset 5", withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             metronomeMIDIPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
             
+            // MARK: [꾸기에게] 여긴 metronomeMIDIPlayer 가 아니어도 되는건가요? 어쨌든 duration 은 mini 걸로 쓴다는 뜻..?
             if let midiPlayer {
                 midiPlayer.prepareToPlay()
                 totalDuration = midiPlayer.duration
@@ -137,7 +138,6 @@ class MusicPlayer: ObservableObject {
         
         // AVMIDIPlayer 초기화
         do {
-            
             let bankURL = Bundle.main.url(forResource: getSoundFont(), withExtension: "sf2")! // 사운드 폰트 파일 경로
             
             midiPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
@@ -154,7 +154,9 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 실행
     func playMIDI(startTime: TimeInterval = 0) {
+        print("Play MIDI")
         if let midiPlayer, let metronomeMIDIPlayer {
+            print("midiPlayer: \(midiPlayer), metronomeMIIDPlayer: \(metronomeMIDIPlayer)")
             if startTime == 0, lastPosition != 0 {
                 // 이전에 일시 정지된 위치에서 재개
                 midiPlayer.currentPosition = lastPosition
@@ -168,9 +170,13 @@ class MusicPlayer: ObservableObject {
             isEnd = false
             // 재생 시작
             DispatchQueue.main.async {
-                if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
-                    metronomeMIDIPlayer.play()
+                
+                if self.soundOption == .melodyBeat {
+                    if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
+                        metronomeMIDIPlayer.play()
+                    }
                 }
+                
                 midiPlayer.play {
                     print("MIDI playback completed.")
                     if !self.isTemporarilyStopped {

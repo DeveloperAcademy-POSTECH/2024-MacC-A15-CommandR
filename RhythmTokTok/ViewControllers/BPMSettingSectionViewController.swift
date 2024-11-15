@@ -13,7 +13,7 @@ protocol BPMSettingDelegate: AnyObject {
 
 class BPMSettingSectionViewController: UIViewController {
     var delegate: BPMSettingDelegate?
-    var currentBPM: Int = 0
+    var currentBPM: Int = 60
     var onBPMSelected: ((Int) -> Void)?
 
     private let titleLabel = UILabel()

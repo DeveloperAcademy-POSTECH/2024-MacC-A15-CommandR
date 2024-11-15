@@ -13,7 +13,7 @@ class MediaManager {
     
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
-    private lazy var tempoBPM: Double = Double(currentScore?.bpm ?? 0)
+    private lazy var tempoBPM: Double = Double(currentScore?.bpm ?? 60)
     private var midiOutputPath = FileManager.default
         .temporaryDirectory.appendingPathComponent("midifile.mid").path() // MIDI 멜로디 파일 경로
     private var metronomeOutputPath = FileManager.default

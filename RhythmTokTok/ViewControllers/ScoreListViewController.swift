@@ -125,7 +125,6 @@ extension ScoreListViewController {
                                         partID: inout String) {
         scoreEntity.notes?.compactMap { $0 as? NoteEntity }.forEach { noteEntity in
             partID = noteEntity.part ?? partID
-            print("noteEntity : \(noteEntity)")
             let modelNote = Note(
                 pitch: noteEntity.pitch ?? "",
                 duration: Int(noteEntity.duration),

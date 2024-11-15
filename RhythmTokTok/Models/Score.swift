@@ -12,12 +12,12 @@ class Score: ObservableObject {
     var parts: [Part] = []
     var divisions: Int = 1  // 사음음표 기준 틱 값
     var title: String = ""
-    var bpm: Int = 0
+    var bpm: Int = 60
     var soundOption: SoundSetting = .melodyBeat
     var hapticOption: Bool = false
 
     //MARK: - Score 객체 관리 관련
-    init(id: String = UUID().uuidString, title: String = "", bpm: Int = 0, soundOption: SoundSetting = .melodyBeat, hapticOption: Bool = false) {
+    init(id: String = UUID().uuidString, title: String = "", bpm: Int = 60, soundOption: SoundSetting = .melodyBeat, hapticOption: Bool = false) {
         self.id = id
         self.title = title
         self.bpm = bpm

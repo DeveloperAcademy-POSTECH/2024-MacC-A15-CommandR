@@ -19,13 +19,13 @@ class BPMLabel: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
-        updateSpeedText(currentSpeed: currentScore?.bpm ?? 0)
+        updateSpeedText(currentSpeed: currentScore?.bpm ?? 60)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
-        updateSpeedText(currentSpeed: currentScore?.bpm ?? 0)
+        updateSpeedText(currentSpeed: currentScore?.bpm ?? 60)
     }
 
     // View 설정
