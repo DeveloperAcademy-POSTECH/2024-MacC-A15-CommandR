@@ -92,6 +92,7 @@
 		1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */; };
 		61318FA52CDF8D3A00D8FC26 /* TitleInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */; };
 		61318FA72CDF8D4C00D8FC26 /* TitleInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */; };
+		61318FAB2CE772D800D8FC26 /* ButtonStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61318FAA2CE772D700D8FC26 /* ButtonStatus.swift */; };
 		616BD0982CC3F76300F2C72D /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0972CC3F76300F2C72D /* ScoreView.swift */; };
 		616BD0D82CC5269300F2C72D /* MeasureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616BD0D72CC5269100F2C72D /* MeasureButton.swift */; };
 		61B209602CD771F000E51C67 /* mutedClap.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 61B2095F2CD771F000E51C67 /* mutedClap.sf2 */; };
@@ -264,6 +265,7 @@
 		1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accidental.swift; sourceTree = "<group>"; };
 		61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInputViewController.swift; sourceTree = "<group>"; };
 		61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInputView.swift; sourceTree = "<group>"; };
+		61318FAA2CE772D700D8FC26 /* ButtonStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStatus.swift; sourceTree = "<group>"; };
 		616BD0972CC3F76300F2C72D /* ScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
 		616BD0D72CC5269100F2C72D /* MeasureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureButton.swift; sourceTree = "<group>"; };
 		61B2095F2CD771F000E51C67 /* mutedClap.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mutedClap.sf2; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 		1EF8A0A62CB53E6B00ADB783 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				61318FAA2CE772D700D8FC26 /* ButtonStatus.swift */,
 				EE1B9BB52CD647A000073215 /* BPMDescription.swift */,
 				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
@@ -934,6 +937,7 @@
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */,
 				1E7592672CE1EFC70050D10D /* AppleWatchStatus.swift in Sources */,
+				61318FAB2CE772D800D8FC26 /* ButtonStatus.swift in Sources */,
 				1E3E091C2CB29E5500EE1868 /* Pitch.swift in Sources */,
 				EE7A8B962CCFB88200079D75 /* ScoreService.swift in Sources */,
 				02BFECEE2CB10A13003CEC8A /* SceneDelegate.swift in Sources */,
