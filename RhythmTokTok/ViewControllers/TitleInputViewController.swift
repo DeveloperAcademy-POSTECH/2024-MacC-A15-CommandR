@@ -96,6 +96,13 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
         titleInputView.textField.layer.borderColor = UIColor(named: "border_primary")?.cgColor
     }
     
+    func didClearTextField() {
+        titleInputView.textField.text = ""
+        updateBorderColor()
+        titleInputView.textField.becomeFirstResponder()
+        textFieldDidBeginEditing(titleInputView.textField)
+    }
+    
     func updateBorderColor() {
         if let text = titleInputView.textField.text, text.isEmpty {
             // TextField가 비어 있을 때 버튼 비활성화

@@ -11,6 +11,7 @@ protocol TitleInputViewDelegate: AnyObject {
     func updateAccessoryButtonState(isEnabled: Bool)
     func didTapCompleteButton(with filename: String)
     func updateBorderColor()
+    func didClearTextField()
 }
 
 class TitleInputView: UIView {
@@ -85,7 +86,6 @@ class TitleInputView: UIView {
         completeButton.setTitleColor(.white, for: .normal)
         completeButton.backgroundColor = UIColor(named: "button_inactive")
         completeButton.layer.cornerRadius = 12
-        completeButton.isEnabled = false
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
         addSubview(completeButton)
     }
@@ -114,9 +114,7 @@ class TitleInputView: UIView {
     }
 
     @objc private func clearTextField() {
-        textField.text = ""
-
-        delegate?.updateBorderColor()
+        delegate?.didClearTextField()
     }
     
     @objc private func completeButtonTapped() {
