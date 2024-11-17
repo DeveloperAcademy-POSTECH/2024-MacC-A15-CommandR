@@ -13,13 +13,21 @@ class CheckPDFView: UIView {
     let confirmButton = UIButton()
     let containerView = UIView()
     let changePDFButton = UIButton()
+    let addPDFButton = UIButton()
     let collectionContainerView = UIView()
     var collectionView: UICollectionView!
 
+    var isFileSelected: Bool = false {
+        didSet {
+            updateLayoutForFileSelection()
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
+        updateLayoutForFileSelection()
     }
 
     required init?(coder: NSCoder) {
@@ -28,7 +36,6 @@ class CheckPDFView: UIView {
 
     private func setupUI() {
         // Header Label 설정
-        headerLabel.text = "선택한 파일이 맞나요?"
         headerLabel.textAlignment = .left
         headerLabel.font = UIFont(name: "Pretendard-Bold", size: 24)
         headerLabel.textColor = .lableSecondary
@@ -36,7 +43,6 @@ class CheckPDFView: UIView {
         addSubview(headerLabel)
         
         // Subheader Label 설정
-        subHeaderLabel.text = "악보 파일이 제대로 되었는지 확인해 주세요."
         subHeaderLabel.textAlignment = .left
         subHeaderLabel.font = UIFont(name: "Pretendard-Regular", size: 16)
         subHeaderLabel.textColor = .lableTertiary
@@ -82,12 +88,22 @@ class CheckPDFView: UIView {
         changePDFButton.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(changePDFButton)
 
+        // Add PDF Button 설정
+        addPDFButton.setTitle("PDF 파일 선택", for: .normal)
+        addPDFButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        addPDFButton.setTitleColor(.lableSecondary, for: .normal)
+        addPDFButton.backgroundColor = .buttonTertiary
+        addPDFButton.layer.borderColor = UIColor.borderPrimary.cgColor
+        addPDFButton.layer.borderWidth = 1
+        addPDFButton.layer.cornerRadius = 12
+        addPDFButton.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(addPDFButton)
+
         // Confirm Button 설정
         confirmButton.setTitle("선택 완료", for: .normal)
         confirmButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.layer.cornerRadius = 12
-        confirmButton.backgroundColor = .buttonPrimary
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         addSubview(confirmButton)
     }
@@ -124,11 +140,36 @@ class CheckPDFView: UIView {
             changePDFButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             changePDFButton.heightAnchor.constraint(equalToConstant: 48),
             
+            addPDFButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            addPDFButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            addPDFButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            addPDFButton.heightAnchor.constraint(equalToConstant: 56),
+            
             confirmButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             confirmButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -27),
             confirmButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             confirmButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             confirmButton.heightAnchor.constraint(equalToConstant: 64)
         ])
+    }
+    
+    private func updateLayoutForFileSelection() {
+        if isFileSelected {
+            headerLabel.text = "선택한 파일이 맞나요?"
+            subHeaderLabel.text = "잘못된 파일은 변환이 안될 수도 있어요."
+            collectionContainerView.isHidden = false
+            confirmButton.isEnabled = true
+            confirmButton.backgroundColor = .buttonPrimary
+            changePDFButton.isHidden = false
+            addPDFButton.isHidden = true
+        } else {
+            headerLabel.text = "악보 PDF 파일을 선택해주세요"
+            subHeaderLabel.text = "연습할 음악의 악보가 맞는지 확인해 주세요."
+            collectionContainerView.isHidden = true
+            confirmButton.isEnabled = false
+            confirmButton.backgroundColor = .buttonInactive
+            changePDFButton.isHidden = true
+            addPDFButton.isHidden = false
+        }
     }
 }

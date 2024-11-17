@@ -8,7 +8,14 @@
 import UIKit
 
 class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIDocumentPickerDelegate {
-    var fileURL: URL?
+    private var fileURL: URL? {
+          didSet {
+              checkPDFView.isFileSelected = fileURL != nil
+              if let fileURL = fileURL {
+                  loadPDFDocument()
+              }
+          }
+      }
     var pdfPages: [UIImage] = []
     let checkPDFView = CheckPDFView()
 
@@ -40,6 +47,7 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
     private func setupActions() {
         checkPDFView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         checkPDFView.changePDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
+        checkPDFView.addPDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
     }
     
     private func loadPDFDocument() {
