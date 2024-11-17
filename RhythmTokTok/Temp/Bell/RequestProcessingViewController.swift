@@ -55,32 +55,6 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         // 서버에서 요청 목록을 불러옴
         fetchRequestsFromServer()
-        
-        //TODO: emptyview 테스트 버튼 추가 -> 추후 삭제
-        // EmptyStateView 확인 버튼 추가
-        setupTestEmptyStateButton()
-    }
-    
-    // TODO: 요청 없을 때 뷰 테스트용 -> 추후 삭제
-    private func setupTestEmptyStateButton() {
-        let emptyButton = UIButton(type: .system)
-        emptyButton.setTitle("빈화면", for: .normal)
-        emptyButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        emptyButton.backgroundColor = UIColor.systemRed
-        emptyButton.setTitleColor(.white, for: .normal)
-        emptyButton.layer.cornerRadius = 8
-        emptyButton.addTarget(self, action: #selector(showTestEmptyState), for: .touchUpInside)
-        
-        view.addSubview(emptyButton)
-        emptyButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        // 버튼의 위치 설정
-        NSLayoutConstraint.activate([
-            emptyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
-            emptyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyButton.widthAnchor.constraint(equalToConstant: 200),
-            emptyButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
     }
     
     @objc private func showTestEmptyState() {
