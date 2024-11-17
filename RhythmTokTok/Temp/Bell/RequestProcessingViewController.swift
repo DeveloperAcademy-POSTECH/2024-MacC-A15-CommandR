@@ -303,7 +303,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                 // UI를 메인 스레드에서 업데이트합니다.
                 DispatchQueue.main.async {
                     // 토스트 알림을 표시합니다.
-                    ToastAlert.show(message: "악보가 추가되었어요.", in: self.view, iconName: "check.circle.color")
+                    ToastAlert.show(message: "음악이 추가되었어요.", in: self.view, iconName: "check.circle.color")
                     
                     // 요청 리스트를 재구성합니다.
                     self.updateRequestsUI()
@@ -346,11 +346,11 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     }
 }
 
-// 악보 요청 취소 팝업
+// 음악 추가 요청 취소 팝업
 extension RequestProcessingViewController {
     private func showCancelAlert(for request: Request, index: Int) {
         let alertVC = CustomAlertViewController(
-            title: "악보 요청을 취소하시겠어요?",
+            title: "음악 추가 요청을 취소하시겠어요?",
             message: "취소 후에는 되돌릴 수 없어요.",
             confirmButtonText: "취소하기",
             cancelButtonText: "닫기",

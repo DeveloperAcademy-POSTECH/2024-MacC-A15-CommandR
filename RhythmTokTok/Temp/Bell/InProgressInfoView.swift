@@ -11,7 +11,7 @@ class InProgressInfoView: UIView {
     
     private let infoLabel: UILabel = {
         let label = UILabel()
-        label.text = "🚨 악보 완성까지 약 1~2일이 소요될 수 있어요"
+        label.text = "🚨 음악 완성까지 약 1~2일이 소요될 수 있어요"
         label.font = UIFont(name: "Pretendard-Regular", size: 14)
         label.textColor = UIColor(named: "lable_tertiary")
         label.numberOfLines = 0
