@@ -51,6 +51,12 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             parser.delegate = self
             parser.parse()
         }
+        // Title 값이 비어 있는 경우 대비
+        if score.title.isEmpty {
+            score.title = "제목없음"
+        }
+        
+        return score
     }
     
     // XML 파싱이 완료되었을 때 continuation 호출
@@ -66,8 +72,6 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             }
         }
         
-        print("Parsing finished. Total parts: \(score.parts.count), Total Notes: \(totalNotes)")
-        print("악보 크기 : 가로 \(scoreWidth), 세로\(scoreHeight)")
         continuation?.resume(returning: score)
         continuation = nil
     }
