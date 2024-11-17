@@ -10,8 +10,8 @@ class ServerManager {
     static let shared = ServerManager()
     private init() {}
 
-    // TODO: 이거 보안문제 변경
-    private let serverBaseURL = "http://211.188.50.151" // 서버 IP 주소로 변경 필요
+    // 서버 IP 가져오는 것
+    private let serverBaseURL = Config.serverBaseURL
     
     // deviceID를 가져오는 메서드
     func getDeviceUUID() -> String {
