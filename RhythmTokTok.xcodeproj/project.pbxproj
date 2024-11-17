@@ -112,6 +112,7 @@
 		D36E430D2CB642630038994B /* WatchtoiOSConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36E430C2CB642630038994B /* WatchtoiOSConnectivityManager.swift */; };
 		D37DFEDF2CE9B72E0073ABAB /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D37DFEDE2CE9B72E0073ABAB /* CryptoSwift */; };
 		D37DFEE12CE9C3F30073ABAB /* ServerSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */; };
+		D37DFEE32CE9D5020073ABAB /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */; };
 		D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */; };
 		D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6A2CB6A325005CD01F /* SettingView.swift */; };
 		D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */; };
@@ -282,6 +283,7 @@
 		D3693D6E2CD3C7EE00E37D2C /* WatchCountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchCountdownView.swift; sourceTree = "<group>"; };
 		D36E430C2CB642630038994B /* WatchtoiOSConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchtoiOSConnectivityManager.swift; sourceTree = "<group>"; };
 		D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSetting.swift; sourceTree = "<group>"; };
+		D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSetting.swift; sourceTree = "<group>"; };
 		D3ABDF6A2CB6A325005CD01F /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -650,6 +652,7 @@
 				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
+				D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */,
 			);
 			path = Bell;
 			sourceTree = "<group>";
@@ -934,6 +937,7 @@
 				D30101D92CE1EADC005742E6 /* CustomAlertViewController.swift in Sources */,
 				EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */,
 				1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */,
+				D37DFEE32CE9D5020073ABAB /* EmptyStateView.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
 				D37DFEE12CE9C3F30073ABAB /* ServerSetting.swift in Sources */,
