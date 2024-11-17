@@ -21,6 +21,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     // 악보 관리용
     private var currentScore: Score // 현재 악보 score
+    private var previousScoreState: Score? // 변경 확인용
     private var currentMeasure: Int = 0// 현재 진행중인 마디
     private var totalMeasure = 0
     private var totalHapticSequence: [Double] = []
@@ -47,7 +48,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private let scoreCardView = ScorePracticeScoreCardView()
     private let controlButtonView = ControlButtonView()
     
-// MARK: - init
+    // MARK: - init
     init(currentScore: Score) {
         print("ScorePracticeViewController-init1-currentScore:\(currentScore)")
         self.currentScore = currentScore
@@ -61,17 +62,25 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-// MARK: - 뷰 생명주기
+    
+    // MARK: - 뷰 생명주기
     // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
         print("viewWillAppear")
-
         super.viewWillAppear(animated)
-
+        
+        // 현재 상태를 비교하여 변경되었는지 확인
+        if let previousState = previousScoreState, previousState != currentScore {
+            print("Score has changed: \(previousState) -> \(currentScore)")
+            ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
+        }
+        
+        // 현재 상태의 복사본 저장 (참조가 아닌 값으로 저장)
+        previousScoreState = currentScore.clone()
+        
         // musicPlayer에 soundOption을 전달
         musicPlayer.soundOption = currentScore.soundOption
-
+        
         navigationController?.setNavigationBarHidden(true, animated: animated)
         countdownTime = 3
         mediaManager.currentScore = currentScore
@@ -104,7 +113,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         setupBindings()
     }
     
-// MARK: - View
+    // MARK: - View
     private func configureUI() {
         // 루트 뷰 설정
         let containerView = UIView()
@@ -119,7 +128,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         toolTipView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(toolTipView) // ToolTipView 추가
-
+        
         // 추가 UI 초기화 설정
         scoreCardView.titleLabel.text = currentScore.title
         progressBar.setProgress(0.0, animated: false)
@@ -143,7 +152,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             toolTipView.centerXAnchor.constraint(equalTo: practiceNavBar.watchConnectImageView.centerXAnchor, constant: -90),
             toolTipView.widthAnchor.constraint(equalToConstant: 253), // 툴팁의 최대 너비 설정
             toolTipView.heightAnchor.constraint(equalToConstant: 88),
-
+            
             // divider
             divider.topAnchor.constraint(equalTo: practiceNavBar.bottomAnchor, constant: 0),
             divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
@@ -207,7 +216,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 self?.checkUpdateNextButtonState()
             }
             .store(in: &cancellables)
-    
+        
         // TODO: playerStatus ViewModel로 만들면 좋을 듯
         // WatchManager의 playStatus를 구독하여 UI 업데이트
         IOStoWatchConnectivityManager.shared.$playStatus
@@ -309,7 +318,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         navigationController?.popViewController(animated: true)
     }
-                
+    
     func handlePlayStatusChange(_ status: PlayStatus) {
         print("handlePlayStatusChange - status : \(status)")
         switch status {
@@ -407,10 +416,10 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 let startTime = self.mediaManager.getMeasureStartTime(currentMeasure: Int(self.currentMeasure),
                                                                       division: Double(self.currentScore.divisions))
                 // 멜로디 마디 점프 햅틱 시퀀스 재산출
-//                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
-//                                                                                              divisions: self.currentScore.divisions,
-//                                                                                              startNumber: self.currentMeasure,
-//                                                                                              endNumber: self.totalMeasure)
+                //                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
+                //                                                                                              divisions: self.currentScore.divisions,
+                //                                                                                              startNumber: self.currentMeasure,
+                //                                                                                              endNumber: self.totalMeasure)
                 let hapticSequence = await self.mediaManager.getMetronomeHapticSequence()
                 
                 self.musicPlayer.jumpMIDI(jumpPosition: startTime)
@@ -482,22 +491,22 @@ extension ScorePracticeViewController {
                 // Metronome MIDI'
                 metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
                 print("metronome MIDI file successfully loaded and ready to play.")
-
-//                if currentScore.soundOption == .melodyBeat {
+                
+                //                if currentScore.soundOption == .melodyBeat {
                 // 현재 melodyBeat 일때만 metronomeMIDIPlayer 를 초기화하고 있어서, Score 초기값이 melody 인 경우에는 음악 재생이 안됨.
                 // Score 생성 시 초기값이 어떤게 들어가있을지 모르기때문에 일단 모두 초기화 해두고 필요에 따라 골라쓰는 것은 어떨지
-                    if let metronomeMIDIFilePathURL {
-                        print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
-                        musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
-//                    }
+                if let metronomeMIDIFilePathURL {
+                    print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
+                    musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
+                    //                    }
                 }
                 
                 updatePlayPauseButton(true)
             } else {
                 ErrorHandler.handleError(error: "MIDI file URL is nil.")
             }
-        
-        
+            
+            
         } catch {
             ErrorHandler.handleError(error: error)
         }
@@ -587,7 +596,7 @@ extension ScorePracticeViewController {
                                                                                     status: .pause, startTime: 0)
         }
     }
-
+    
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
         IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
