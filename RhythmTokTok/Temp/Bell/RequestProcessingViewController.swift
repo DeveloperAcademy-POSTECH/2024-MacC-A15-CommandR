@@ -447,18 +447,43 @@ extension RequestProcessingViewController {
         }
         
         alertVC.onCancel = { [weak self] in
-            // "요청 삭제" 버튼 클릭 시 동작
-            self?.cancelRequest(at: index)
+            // 요청 삭제 동작 수행
+            guard let self = self else { return }
+            self.deleteRequest(for: request.id) // 수정: request 객체의 id 사용
         }
-        
+
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
         present(alertVC, animated: true, completion: nil)
     }
     
-    private func handleFileChange(for request: Request) {
-         // 파일 변경 로직 구현
-         print("파일 변경을 처리합니다: \(request.title)")
-         // 파일 업로드를 위한 새로운 화면 표시 또는 요청 상태 업데이트
-     }
+    
+private func handleFileChange(for request: Request) {
+     // 파일 변경 로직 구현
+     print("파일 변경을 처리합니다: \(request.title)")
+     // 파일 업로드를 위한 새로운 화면 표시 또는 요청 상태 업데이트
+ }
+
+private func deleteRequest(for requestID: Int) {
+// 로컬 데이터에서 요청 삭제
+if let index = requests.firstIndex(where: { $0.id == requestID }) {
+    requests.remove(at: index)
 }
+
+    // UI 업데이트
+    updateRequestsUI()
+
+    // TODO: 삭제 기능 추가하기
+    // 서버에서 요청 삭제 API 호출 (선택 사항)
+//    ServerManager.shared.deleteRequest(deviceID: deviceID, requestID: requestID) { [weak self] success, message in
+//        DispatchQueue.main.async {
+//            if success {
+//                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
+//            } else {
+//                ToastAlert.show(message: "요청 삭제 실패: \(message)", in: self?.view ?? UIView(), iconName: "error_icon")
+//            }
+//        }
+//    }
+}
+}
+
