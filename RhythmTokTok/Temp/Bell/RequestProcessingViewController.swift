@@ -68,7 +68,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     // PDF 업로드 테스트 버튼 추가
     private func setupTestUploadButton() {
         let uploadButton = UIButton(type: .system)
-        uploadButton.setTitle("Upload Test PDF", for: .normal)
+        uploadButton.setTitle("PDF 올리기", for: .normal)
         uploadButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         uploadButton.backgroundColor = UIColor.systemBlue
         uploadButton.setTitleColor(.white, for: .normal)
@@ -112,7 +112,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     // TODO: 요청 없을 때 뷰 테스트용 -> 추후 삭제
     private func setupTestEmptyStateButton() {
         let emptyButton = UIButton(type: .system)
-        emptyButton.setTitle("Show Empty State", for: .normal)
+        emptyButton.setTitle("빈화면", for: .normal)
         emptyButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         emptyButton.backgroundColor = UIColor.systemRed
         emptyButton.setTitleColor(.white, for: .normal)
@@ -326,18 +326,33 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             let parser = MusicXMLParser()
             Task {
                 let score = await parser.parseMusicXML(from: data)
-                score.title = request.title // 요청의 제목을 설정합니다.
+                // 파싱된 데이터 검증 (여기에 추가)
+                       print("Parsed Score Title: \(score.title)")
+                       print("Divisions: \(score.divisions)")
+                       score.parts.forEach { part in
+                           print("Part ID: \(part.id)")
+                           part.measures.forEach { (lineNumber, measures) in
+                               print("  Line Number: \(lineNumber)")
+                               measures.forEach { measure in
+                                   print("    Measure Number: \(measure.number), StartTime: \(measure.startTime)")
+                                   measure.notes.forEach { note in
+                                       print("      Note: Pitch: \(note.pitch), Octave: \(note.octave), Duration: \(note.duration), StartTime: \(note.startTime)")
+                                   }
+                               }
+                           }
+                       }
                 
                 // Core Data에 저장합니다.
                 ScoreManager.shared.addScoreWithNotes(scoreData: score)
                 
-                // 요청 상태를 .downloaded로 업데이트합니다.
-                self.requests[index].status = .downloaded
+                // TODO: 아래 주석 풀어야 상태가 완료로 바뀌
+//                // 요청 상태를 .downloaded로 업데이트합니다.
+//                self.requests[index].status = .downloaded
                 
-                // 서버에 상태 업데이트를 요청합니다.
-                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID, scoreID: String(request.id), newStatus: 2) { status, message in
-                    print("Update status: \(status), message: \(message)")
-                }
+//                // 서버에 상태 업데이트를 요청합니다.
+//                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID, scoreID: String(request.id), newStatus: 2) { status, message in
+//                    print("Update status: \(status), message: \(message)")
+//                }
                 
                 // UI를 메인 스레드에서 업데이트합니다.
                 DispatchQueue.main.async {
