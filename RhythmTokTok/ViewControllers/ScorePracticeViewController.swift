@@ -54,6 +54,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        // 메모리 해제될 때 옵저버 제거
+        NotificationCenter.default.removeObserver(self)
+        cancellables.removeAll()
+    }
+    
     // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -210,7 +216,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             }
             .store(in: &cancellables)
         
-        // TODO: 이거 뷰 나올때 해제
         // 워치 컨트롤 요청 처리
         NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification),
                                                name: .watchPlayButtonTapped, object: nil)
