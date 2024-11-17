@@ -10,7 +10,7 @@ class ServerManager {
     static let shared = ServerManager()
     private init() {}
 
-    //TODO: 이거 보안문제 변경
+    // TODO: 이거 보안문제 변경
     private let serverBaseURL = "http://211.188.50.151" // 서버 IP 주소로 변경 필요
     
     // deviceID를 가져오는 메서드
@@ -20,76 +20,69 @@ class ServerManager {
     
     // 1. PDF 업로드 기능
     func uploadPDF(deviceID: String, title: String, pdfFileURL: URL, page: Int, completion: @escaping (Int, String) -> Void) {
-//        let deviceID = getDeviceUUID()
-        let deviceID = "your_device_id"
         let url = URL(string: "\(serverBaseURL)/api/score")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        
-        let boundary = UUID().uuidString
+
+        let boundary = "Boundary-\(UUID().uuidString)"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
+
         var body = Data()
-        
-        // 기기정보
+
+        // device_id 추가
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"device_id\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(deviceID)\r\n".data(using: .utf8)!)
-        
-        // 곡 제목
+
+        // title 추가
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"title\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(title)\r\n".data(using: .utf8)!)
-        
-        //  PDF 페이지 수
+
+        // page 추가
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"page\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(page)\r\n".data(using: .utf8)!)
-        
-        // PDF 파일
-        let filename = pdfFileURL.lastPathComponent
-        let mimeType = "application/pdf"
+
+        // pdf_file 추가
         do {
             let pdfData = try Data(contentsOf: pdfFileURL)
             body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"pdf_file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"pdf_file\"; filename=\"\(pdfFileURL.lastPathComponent)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: application/pdf\r\n\r\n".data(using: .utf8)!)
             body.append(pdfData)
             body.append("\r\n".data(using: .utf8)!)
         } catch {
-            ErrorHandler.handleError(error: error)
+            print("PDF 파일 읽기 실패: \(error.localizedDescription)")
             completion(0, "Failed to load PDF file")
             return
         }
-        
+
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
         request.httpBody = body
-        
+
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                ErrorHandler.handleError(error: error)
-                completion(0, "Error: \(error.localizedDescription)")
+                print("서버 요청 오류: \(error.localizedDescription)")
+                completion(0, "Request error: \(error.localizedDescription)")
                 return
             }
             guard let data = data else {
-                let data: [[String: Any]] = [
-                    ["id": "1", "title": "Sample Score 1", "status": 1, "message" : "OK"],
-                    ["id": "2", "title": "Sample Score 2", "status": 2, "message" : "OK"],
-                    ["id": "3", "title": "Sample Score 3", "status": 0, "message" : "OK"]
-                ]
-                completion(0, "No data received")
+                print("서버 응답 데이터 없음")
+                completion(0, "No response data")
                 return
             }
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let status = json["status"] as? Int,
+                   let code = json["code"] as? Int,
                    let message = json["message"] as? String {
-                    completion(status, message)
+                    completion(code, message)
                 } else {
-                    completion(0, "Invalid response format")         
+                    print("잘못된 응답 형식: \(String(data: data, encoding: .utf8) ?? "Unknown")")
+                    completion(0, "Invalid response format")
                 }
             } catch {
-                ErrorHandler.handleError(error: error)
+                print("JSON 파싱 오류: \(error.localizedDescription)")
                 completion(0, "JSON parsing error: \(error.localizedDescription)")
             }
         }
@@ -98,7 +91,8 @@ class ServerManager {
     
     // 2. 악보 조회 기능
     func fetchScores(deviceID: String, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
-        let url = URL(string: "\(serverBaseURL)/api/scores?device_id=device_id_dummy")!
+        let url = URL(string: "\(serverBaseURL)/api/scores?device_id=\(deviceID)")!
+        print("deviceID: \(deviceID)")
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -111,12 +105,14 @@ class ServerManager {
             }
             
             guard let data = data else {
-                //TODO: 여기에 빈 값일 때 화면전환해주기
+                // TODO: 여기에 빈 값일 때 화면전환해주기
                 // 데이터 없음 - 빈 배열 반환
                 print("No data received from server. Displaying empty screen.")
                 completion(1, "Success", [])
+                
                 return
             }
+            print("\(data)")
             
             // 서버 응답 파싱
             do {
@@ -126,6 +122,7 @@ class ServerManager {
                    let scores = json["scores"] as? [[String: Any]] {
                     completion(status, message, scores)
                 } else {
+                    
                     completion(0, "Invalid response format", nil)
                 }
             } catch {

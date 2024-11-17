@@ -13,7 +13,19 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     private let stackView = UIStackView()
     
     var requests: [Request] = []
-    let deviceID = ServerManager.shared.getDeviceUUID()
+    var deviceID: String {
+        return encrypt(ServerManager.shared.getDeviceUUID())
+    }
+        
+    // 암호화 함수
+    func encrypt(_ input: String) -> String {
+        do {
+            return try AES256Cryption.encrypt(string: input)
+        } catch {
+            ErrorHandler.handleError(error: error)
+            return ""
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +54,54 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         // 서버에서 요청 목록을 불러옴
         fetchRequestsFromServer()
+        
+        //TODO: PDF 업로드 테스트 버튼 추가 -> 추후 삭제
+        setupTestUploadButton()
+    }
+    
+    // TODO: - PDF 테스트 -> 추후 삭제
+    // PDF 업로드 테스트 버튼 추가
+    private func setupTestUploadButton() {
+        let uploadButton = UIButton(type: .system)
+        uploadButton.setTitle("Upload Test PDF", for: .normal)
+        uploadButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        uploadButton.backgroundColor = UIColor.systemBlue
+        uploadButton.setTitleColor(.white, for: .normal)
+        uploadButton.layer.cornerRadius = 8
+        uploadButton.addTarget(self, action: #selector(uploadTestPDF), for: .touchUpInside)
+
+        view.addSubview(uploadButton)
+        uploadButton.translatesAutoresizingMaskIntoConstraints = false
+
+        // 버튼의 위치 설정
+        NSLayoutConstraint.activate([
+            uploadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            uploadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            uploadButton.widthAnchor.constraint(equalToConstant: 200),
+            uploadButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+
+    // PDF 업로드 테스트 버튼 액션
+    @objc private func uploadTestPDF() {
+        guard let pdfURL = Bundle.main.url(forResource: "cry", withExtension: "pdf") else {
+            print("cry.pdf 파일을 찾을 수 없습니다.")
+            return
+        }
+
+        let title = "Test Cry PDF"
+        let page = 1 // 페이지 수 예시 값
+        ServerManager.shared.uploadPDF(deviceID: deviceID, title: title, pdfFileURL: pdfURL, page: page) { status, message in
+            print("Upload status: \(status), message: \(message)")
+            DispatchQueue.main.async {
+                if status == 1 {
+                    ToastAlert.show(message: "PDF 업로드 성공: \(title)", in: self.view, iconName: "check.circle.color")
+                    self.fetchRequestsFromServer()
+                } else {
+                    ToastAlert.show(message: "PDF 업로드 실패: \(message)", in: self.view, iconName: "error_icon")
+                }
+            }
+        }
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -183,7 +243,8 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                     print("파싱 실패 - scoreDict:", scoreDict)
                     return nil
                 }
-                print("score 생성 - id: \(id), title: \(title), status: \(statusValue), date: \(requestDate), url: \(xmlURL)")
+                //TODO: 요청 서버에서 받으면 프린트 띄우기
+//                print("score 생성 - id: \(id), title: \(title), status: \(statusValue), date: \(requestDate), url: \(xmlURL)")
                 let status: RequestStatus
                 switch statusValue {
                 case 0: status = .inProgress
@@ -195,7 +256,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             }
             
             DispatchQueue.main.async {
-                self?.addRequestsToStackView()
+                self?.updateRequestsUI()
             }
         }
     }
@@ -263,9 +324,6 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     // MARK: - 요청 취소 메서드 추가
     private func cancelRequest(at index: Int) {
         let request = requests[index]
-        
-        // 요청 상태를 .cancelled로 변경
-        requests[index].status = .cancelled
 
         // 서버에 상태 업데이트를 요청
         ServerManager.shared.updateScoreStatus(deviceID: deviceID, scoreID: String(request.id), newStatus: 11) { [weak self] status, message in
@@ -274,7 +332,9 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
 
             if status == 1 {
                 DispatchQueue.main.async {
-                    self.updateRequestsUI()
+                    // 요청 상태를 .cancelled로 변경
+                     self.requests[index].status = .cancelled
+                     self.updateRequestsUI()
                     ToastAlert.show(message: "요청이 취소되었습니다.", in: self.view, iconName: "cancle.color")
                 }
             } else {
@@ -300,7 +360,7 @@ extension RequestProcessingViewController {
         
         alertVC.onConfirm = { [weak self] in
             self?.cancelRequest(at: index)
-            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
+//            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
         }
         
         alertVC.modalPresentationStyle = .overFullScreen
