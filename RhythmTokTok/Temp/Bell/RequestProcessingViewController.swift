@@ -55,6 +55,32 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         // 서버에서 요청 목록을 불러옴
         fetchRequestsFromServer()
+        
+//        // TODO: emptyview 테스트 버튼 추가 -> 추후 삭제
+//        // EmptyStateView 확인 버튼 추가
+//        setupTestEmptyStateButton()
+    }
+    
+    // TODO: 요청 없을 때 뷰 테스트용 -> 추후 삭제
+    private func setupTestEmptyStateButton() {
+        let emptyButton = UIButton(type: .system)
+        emptyButton.setTitle("빈화면", for: .normal)
+        emptyButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        emptyButton.backgroundColor = UIColor.systemRed
+        emptyButton.setTitleColor(.white, for: .normal)
+        emptyButton.layer.cornerRadius = 8
+        emptyButton.addTarget(self, action: #selector(showTestEmptyState), for: .touchUpInside)
+        
+        view.addSubview(emptyButton)
+        emptyButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 버튼의 위치 설정
+        NSLayoutConstraint.activate([
+            emptyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            emptyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyButton.widthAnchor.constraint(equalToConstant: 200),
+            emptyButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
     
     @objc private func showTestEmptyState() {
@@ -170,6 +196,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         case .inProgress:
             showCancelAlert(for: request, index: index)
             
+            
             // MARK: - 서버에러 발생시 팝업알림뷰 다시 그려야함
         case .errorOccurred:
             showCancelAlert(for: request, index: index)
@@ -183,13 +210,14 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     // MARK: - 서버에서 데이터 가져오기
     private func fetchRequestsFromServer() {
         ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in
+       
             DispatchQueue.main.async {
                 guard code == 1, let scores = scores else {
                     print("Failed to fetch scores: \(message)")
                     self?.showEmptyState()
                     return
                 }
-                
+                            
                 if scores.isEmpty {
                     // 데이터가 없을 경우 EmptyStateView 표시
                     self?.showEmptyState()
@@ -247,7 +275,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                 print("No data received from XML URL")
                 return
             }
-
+            
             // XML 데이터를 파싱합니다.
             let parser = MusicXMLParser()
             Task {
@@ -297,23 +325,24 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         // 서버에 상태 업데이트를 요청
         ServerManager.shared.updateScoreStatus(deviceID: deviceID, scoreID: String(request.id), newStatus: 11) { [weak self] status, message in
-            guard let self = self else { return }
-            print("Cancel status: \(status), message: \(message)")
-            
-            if status == 1 {
-                DispatchQueue.main.async {
-                    // 요청 상태를 .cancelled로 변경
-                    self.requests[index].status = .cancelled
-                    self.updateRequestsUI()
-                    ToastAlert.show(message: "요청이 취소되었습니다.", in: self.view, iconName: "cancle.color")
-                }
-            } else {
-                DispatchQueue.main.async {
-                    ToastAlert.show(message: "요청 취소에 실패했습니다: \(message)", in: self.view, iconName: "error_icon")
-                }
-            }
-        }
-    }
+             guard let self = self else { return }
+             print("Request ID: \(request.id), Device ID: \(self.deviceID), New Status: 11")
+             print("Server Response - Status: \(status), Message: \(message)")
+             
+             if status == 1 {
+                 DispatchQueue.main.async {
+                     // 요청 상태를 .cancelled로 변경
+                     self.requests[index].status = .cancelled
+                     self.updateRequestsUI()
+                     ToastAlert.show(message: "요청이 취소되었습니다.", in: self.view, iconName: "cancle.color")
+                 }
+             } else {
+                 DispatchQueue.main.async {
+                     ToastAlert.show(message: "요청 취소에 실패했습니다: \(message)", in: self.view, iconName: "error_icon")
+                 }
+             }
+         }
+     }
     
     func showEmptyState() {
         view.subviews
@@ -351,7 +380,6 @@ extension RequestProcessingViewController {
         
         alertVC.onConfirm = { [weak self] in
             self?.cancelRequest(at: index)
-            //            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
         }
         
         alertVC.modalPresentationStyle = .overFullScreen

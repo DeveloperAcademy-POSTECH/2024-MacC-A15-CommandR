@@ -107,7 +107,7 @@ class ServerManager {
         let request = createServerRequest(endpoint: endpoint, method: "GET")
         
         // MARK: - 디바이스 ID 확인
-        print("deviceID : \(deviceID)")
+        print("deviceID --------: \(deviceID)")
         
         // 서버 통신
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
