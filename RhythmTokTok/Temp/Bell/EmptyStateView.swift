@@ -47,7 +47,7 @@ class EmptyStateView: UIView {
         // 레이아웃 설정
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -40),
+            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -90),
             imageView.widthAnchor.constraint(equalToConstant: 150),
             imageView.heightAnchor.constraint(equalToConstant: 150),
 

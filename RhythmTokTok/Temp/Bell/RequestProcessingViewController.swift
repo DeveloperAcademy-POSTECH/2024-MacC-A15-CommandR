@@ -56,57 +56,9 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         // 서버에서 요청 목록을 불러옴
         fetchRequestsFromServer()
         
-        //TODO: PDF 업로드 테스트 버튼 추가 -> 추후 삭제
-        setupTestUploadButton()
-        
         //TODO: emptyview 테스트 버튼 추가 -> 추후 삭제
         // EmptyStateView 확인 버튼 추가
         setupTestEmptyStateButton()
-    }
-    
-    // TODO: - PDF 테스트 -> 추후 삭제
-    // PDF 업로드 테스트 버튼 추가
-    private func setupTestUploadButton() {
-        let uploadButton = UIButton(type: .system)
-        uploadButton.setTitle("PDF 올리기", for: .normal)
-        uploadButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        uploadButton.backgroundColor = UIColor.systemBlue
-        uploadButton.setTitleColor(.white, for: .normal)
-        uploadButton.layer.cornerRadius = 8
-        uploadButton.addTarget(self, action: #selector(uploadTestPDF), for: .touchUpInside)
-        
-        view.addSubview(uploadButton)
-        uploadButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        // 버튼의 위치 설정
-        NSLayoutConstraint.activate([
-            uploadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            uploadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            uploadButton.widthAnchor.constraint(equalToConstant: 200),
-            uploadButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-    }
-    
-    // PDF 업로드 테스트 버튼 액션
-    @objc private func uploadTestPDF() {
-        guard let pdfURL = Bundle.main.url(forResource: "cry", withExtension: "pdf") else {
-            print("cry.pdf 파일을 찾을 수 없습니다.")
-            return
-        }
-        
-        let title = "Test Cry PDF"
-        let page = 1 // 페이지 수 예시 값
-        ServerManager.shared.uploadPDF(deviceID: deviceID, title: title, pdfFileURL: pdfURL, page: page) { status, message in
-            print("Upload status: \(status), message: \(message)")
-            DispatchQueue.main.async {
-                if status == 1 {
-                    ToastAlert.show(message: "PDF 업로드 성공했어요.", in: self.view, iconName: "check.circle.color")
-                    self.fetchRequestsFromServer()
-                } else {
-                    ToastAlert.show(message: "PDF 업로드 실패: \(message)", in: self.view, iconName: "error_icon")
-                }
-            }
-        }
     }
     
     // TODO: 요청 없을 때 뷰 테스트용 -> 추후 삭제
@@ -321,38 +273,28 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                 print("No data received from XML URL")
                 return
             }
-            
+
             // XML 데이터를 파싱합니다.
             let parser = MusicXMLParser()
             Task {
                 let score = await parser.parseMusicXML(from: data)
-                // 파싱된 데이터 검증 (여기에 추가)
-                       print("Parsed Score Title: \(score.title)")
-                       print("Divisions: \(score.divisions)")
-                       score.parts.forEach { part in
-                           print("Part ID: \(part.id)")
-                           part.measures.forEach { (lineNumber, measures) in
-                               print("  Line Number: \(lineNumber)")
-                               measures.forEach { measure in
-                                   print("    Measure Number: \(measure.number), StartTime: \(measure.startTime)")
-                                   measure.notes.forEach { note in
-                                       print("      Note: Pitch: \(note.pitch), Octave: \(note.octave), Duration: \(note.duration), StartTime: \(note.startTime)")
-                                   }
-                               }
-                           }
-                       }
+                
+                // request.title을 score.title로 설정
+                if score.title.isEmpty {
+                    score.title = request.title
+                }
                 
                 // Core Data에 저장합니다.
                 ScoreManager.shared.addScoreWithNotes(scoreData: score)
                 
                 // TODO: 아래 주석 풀어야 상태가 완료로 바뀌
-//                // 요청 상태를 .downloaded로 업데이트합니다.
-//                self.requests[index].status = .downloaded
+                //                // 요청 상태를 .downloaded로 업데이트합니다.
+                //                self.requests[index].status = .downloaded
                 
-//                // 서버에 상태 업데이트를 요청합니다.
-//                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID, scoreID: String(request.id), newStatus: 2) { status, message in
-//                    print("Update status: \(status), message: \(message)")
-//                }
+                //                // 서버에 상태 업데이트를 요청합니다.
+                //                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID, scoreID: String(request.id), newStatus: 2) { status, message in
+                //                    print("Update status: \(status), message: \(message)")
+                //                }
                 
                 // UI를 메인 스레드에서 업데이트합니다.
                 DispatchQueue.main.async {
@@ -444,7 +386,7 @@ extension RequestProcessingViewController {
     }
 }
 
-// 서버에서 변환 에러 발생시 팝업
+// MARK: - 서버에서 변환 에러 발생시 팝업
 extension RequestProcessingViewController {
     private func showErrorOccurredAlert(for request: Request, index: Int) {
         let alertVC = CustomAlertViewController(
@@ -466,39 +408,39 @@ extension RequestProcessingViewController {
             guard let self = self else { return }
             self.deleteRequest(for: request.id) // 수정: request 객체의 id 사용
         }
-
+        
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
         present(alertVC, animated: true, completion: nil)
     }
     
     
-private func handleFileChange(for request: Request) {
-     // 파일 변경 로직 구현
-     print("파일 변경을 처리합니다: \(request.title)")
-     // 파일 업로드를 위한 새로운 화면 표시 또는 요청 상태 업데이트
- }
-
-private func deleteRequest(for requestID: Int) {
-// 로컬 데이터에서 요청 삭제
-if let index = requests.firstIndex(where: { $0.id == requestID }) {
-    requests.remove(at: index)
-}
-
-    // UI 업데이트
-    updateRequestsUI()
-
-    // TODO: 삭제 기능 추가하기
-    // 서버에서 요청 삭제 API 호출 (선택 사항)
-//    ServerManager.shared.deleteRequest(deviceID: deviceID, requestID: requestID) { [weak self] success, message in
-//        DispatchQueue.main.async {
-//            if success {
-//                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
-//            } else {
-//                ToastAlert.show(message: "요청 삭제 실패: \(message)", in: self?.view ?? UIView(), iconName: "error_icon")
-//            }
-//        }
-//    }
-}
+    private func handleFileChange(for request: Request) {
+        // 파일 변경 로직 구현
+        print("파일 변경을 처리합니다: \(request.title)")
+        // 파일 업로드를 위한 새로운 화면 표시 또는 요청 상태 업데이트
+    }
+    
+    private func deleteRequest(for requestID: Int) {
+        // 로컬 데이터에서 요청 삭제
+        if let index = requests.firstIndex(where: { $0.id == requestID }) {
+            requests.remove(at: index)
+        }
+        
+        // UI 업데이트
+        updateRequestsUI()
+        
+        // TODO: 요청 오류났을 때 삭제 기능 추가하기
+        // 서버에서 요청 삭제 API 호출 (선택 사항)
+        //    ServerManager.shared.deleteRequest(deviceID: deviceID, requestID: requestID) { [weak self] success, message in
+        //        DispatchQueue.main.async {
+        //            if success {
+        //                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
+        //            } else {
+        //                ToastAlert.show(message: "요청 삭제 실패: \(message)", in: self?.view ?? UIView(), iconName: "error_icon")
+        //            }
+        //        }
+        //    }
+    }
 }
 

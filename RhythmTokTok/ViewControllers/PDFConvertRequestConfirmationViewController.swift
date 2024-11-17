@@ -89,7 +89,6 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
         }
     }
     
-    
     private func encrypt(_ input: String) -> String {
         do {
             return try AES256Cryption.encrypt(string: input)
