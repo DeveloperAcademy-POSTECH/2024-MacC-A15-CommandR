@@ -32,14 +32,16 @@ class RequestCardView: UIView {
             requestActionButton.setTitle("요청 취소", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "red050")
             requestActionButton.setTitleColor(UIColor(named: "red500"), for: .normal)
-        case .downloaded:
-            requestActionButton.setTitle("음악 추가", for: .normal)
-            requestActionButton.backgroundColor = UIColor(named: "button_inactive")
+        case .errorOccurred:
+            requestActionButton.setTitle("자세히", for: .normal)
+            requestActionButton.backgroundColor = UIColor(named: "button_primary")
             requestActionButton.setTitleColor(.white, for: .normal)
-        case .scoreReady, .deleted, .cancelled:
+        case .scoreReady:
             requestActionButton.setTitle("음악 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_primary")
             requestActionButton.setTitleColor(.white, for: .normal)
+        default:
+            requestActionButton.isHidden = true
         }
     }
     

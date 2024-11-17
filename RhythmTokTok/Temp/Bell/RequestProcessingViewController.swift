@@ -58,7 +58,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         //TODO: PDF 업로드 테스트 버튼 추가 -> 추후 삭제
         setupTestUploadButton()
-    
+        
         //TODO: emptyview 테스트 버튼 추가 -> 추후 삭제
         // EmptyStateView 확인 버튼 추가
         setupTestEmptyStateButton()
@@ -118,10 +118,10 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         emptyButton.setTitleColor(.white, for: .normal)
         emptyButton.layer.cornerRadius = 8
         emptyButton.addTarget(self, action: #selector(showTestEmptyState), for: .touchUpInside)
-
+        
         view.addSubview(emptyButton)
         emptyButton.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // 버튼의 위치 설정
         NSLayoutConstraint.activate([
             emptyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
@@ -130,7 +130,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             emptyButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-
+    
     @objc private func showTestEmptyState() {
         showEmptyState()
     }
@@ -243,10 +243,14 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         switch request.status {
         case .inProgress:
             showCancelAlert(for: request, index: index)
-        case .downloaded, .deleted, .cancelled:
-            return
+            
+            // MARK: - 서버에러 발생시 팝업알림뷰 다시 그려야함
+        case .errorOccurred:
+            showCancelAlert(for: request, index: index)
         case .scoreReady:
             addScore(at: index)
+        case .downloaded, .deleted, .cancelled:
+            return
         }
     }
     
@@ -259,17 +263,17 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                     self?.showEmptyState()
                     return
                 }
-
+                
                 if scores.isEmpty {
                     // 데이터가 없을 경우 EmptyStateView 표시
                     self?.showEmptyState()
                     return
                 }
-
+                
                 // 데이터가 있을 경우 파싱 및 UI 업데이트
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
+                
                 self?.requests = scores.compactMap { scoreDict in
                     guard let id = scoreDict["id"] as? Int,
                           let title = scoreDict["title"] as? String,
@@ -280,7 +284,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                         print("Failed to parse scoreDict:", scoreDict)
                         return nil
                     }
-
+                    
                     let status: RequestStatus
                     switch statusValue {
                     case 0: status = .inProgress
@@ -290,7 +294,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                     }
                     return Request(id: id, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
                 }
-
+                
                 self?.updateRequestsUI()
             }
         }
@@ -379,12 +383,12 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             }
         }
     }
-        
+    
     func showEmptyState() {
         view.subviews
             .filter { $0 is EmptyStateView }
             .forEach { $0.removeFromSuperview() }
-
+        
         // 새로운 EmptyStateView 추가
         let emptyStateView = EmptyStateView(
             message: "만들고 있는 음악이 없어요",
@@ -392,7 +396,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         )
         emptyStateView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emptyStateView)
-
+        
         NSLayoutConstraint.activate([
             emptyStateView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -423,4 +427,38 @@ extension RequestProcessingViewController {
         alertVC.modalTransitionStyle = .crossDissolve
         present(alertVC, animated: true, completion: nil)
     }
+}
+
+// 서버에서 변환 에러 발생시 팝업
+extension RequestProcessingViewController {
+    private func showErrorOccurredAlert(for request: Request, index: Int) {
+        let alertVC = CustomAlertViewController(
+            title: "서버 에러메시지",
+            message: "PDF 파일을 다시 선택하시겠어요?",
+            confirmButtonText: "파일 변경",
+            cancelButtonText: "요청 삭제",
+            confirmButtonColor: UIColor(named: "button_primary") ?? .red,
+            cancelButtonColor: UIColor(named: "button_cancel") ?? .gray
+        )
+        
+        alertVC.onConfirm = { [weak self] in
+            // "파일 변경" 버튼 클릭 시 동작
+            self?.handleFileChange(for: request)
+        }
+        
+        alertVC.onCancel = { [weak self] in
+            // "요청 삭제" 버튼 클릭 시 동작
+            self?.cancelRequest(at: index)
+        }
+        
+        alertVC.modalPresentationStyle = .overFullScreen
+        alertVC.modalTransitionStyle = .crossDissolve
+        present(alertVC, animated: true, completion: nil)
+    }
+    
+    private func handleFileChange(for request: Request) {
+         // 파일 변경 로직 구현
+         print("파일 변경을 처리합니다: \(request.title)")
+         // 파일 업로드를 위한 새로운 화면 표시 또는 요청 상태 업데이트
+     }
 }
