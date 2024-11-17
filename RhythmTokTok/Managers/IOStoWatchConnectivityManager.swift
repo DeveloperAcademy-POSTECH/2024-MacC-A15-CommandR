@@ -134,7 +134,9 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             try WCSession.default.updateApplicationContext(message)
             //            print("워치로 곡 선택 메시지 전송 완료: \(message)")
         } catch {
-            self.watchAppStatus = .disconnected
+            if self.watchAppStatus == .connected {
+                self.watchAppStatus = .disconnected
+            }
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
         }
     }
@@ -159,8 +161,10 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         do {
             try WCSession.default.updateApplicationContext(message)
         } catch {
+            if self.watchAppStatus == .connected {
+                self.watchAppStatus = .disconnected
+            }
             ErrorHandler.handleError(error: "메시지 전송 오류: \(error.localizedDescription)")
-            self.watchAppStatus = .disconnected
         }
     }
     

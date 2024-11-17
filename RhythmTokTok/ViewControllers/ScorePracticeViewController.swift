@@ -210,6 +210,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             }
             .store(in: &cancellables)
         
+        // TODO: 이거 뷰 나올때 해제
         // 워치 컨트롤 요청 처리
         NotificationCenter.default.addObserver(self, selector: #selector(handleWatchPlayNotification),
                                                name: .watchPlayButtonTapped, object: nil)
