@@ -20,3 +20,7 @@ excluded:
     - RhythmTokTok/SceneDelegate.swift
     - RhythmTokTok/ViewControllers/ScorePracticeViewController.swift
     - RhythmTokTok/Managers/MediaManager.swift
+    - CryptoSwift/*
+identifier_name:
+    excluded:
+      - SECRET_KEY
