@@ -16,12 +16,13 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     var deviceID: String {
         return encrypt(ServerManager.shared.getDeviceUUID())
     }
-        
+    
     // 암호화 함수
     func encrypt(_ input: String) -> String {
         do {
             return try AES256Cryption.encrypt(string: input)
         } catch {
+            print("Device UUID before encryption: \(input)")
             ErrorHandler.handleError(error: error)
             return ""
         }
@@ -57,6 +58,10 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         //TODO: PDF 업로드 테스트 버튼 추가 -> 추후 삭제
         setupTestUploadButton()
+    
+        //TODO: emptyview 테스트 버튼 추가 -> 추후 삭제
+        // EmptyStateView 확인 버튼 추가
+        setupTestEmptyStateButton()
     }
     
     // TODO: - PDF 테스트 -> 추후 삭제
@@ -69,10 +74,10 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         uploadButton.setTitleColor(.white, for: .normal)
         uploadButton.layer.cornerRadius = 8
         uploadButton.addTarget(self, action: #selector(uploadTestPDF), for: .touchUpInside)
-
+        
         view.addSubview(uploadButton)
         uploadButton.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // 버튼의 위치 설정
         NSLayoutConstraint.activate([
             uploadButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -81,27 +86,53 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             uploadButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-
+    
     // PDF 업로드 테스트 버튼 액션
     @objc private func uploadTestPDF() {
         guard let pdfURL = Bundle.main.url(forResource: "cry", withExtension: "pdf") else {
             print("cry.pdf 파일을 찾을 수 없습니다.")
             return
         }
-
+        
         let title = "Test Cry PDF"
         let page = 1 // 페이지 수 예시 값
         ServerManager.shared.uploadPDF(deviceID: deviceID, title: title, pdfFileURL: pdfURL, page: page) { status, message in
             print("Upload status: \(status), message: \(message)")
             DispatchQueue.main.async {
                 if status == 1 {
-                    ToastAlert.show(message: "PDF 업로드 성공: \(title)", in: self.view, iconName: "check.circle.color")
+                    ToastAlert.show(message: "PDF 업로드 성공했어요.", in: self.view, iconName: "check.circle.color")
                     self.fetchRequestsFromServer()
                 } else {
                     ToastAlert.show(message: "PDF 업로드 실패: \(message)", in: self.view, iconName: "error_icon")
                 }
             }
         }
+    }
+    
+    // TODO: 요청 없을 때 뷰 테스트용 -> 추후 삭제
+    private func setupTestEmptyStateButton() {
+        let emptyButton = UIButton(type: .system)
+        emptyButton.setTitle("Show Empty State", for: .normal)
+        emptyButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        emptyButton.backgroundColor = UIColor.systemRed
+        emptyButton.setTitleColor(.white, for: .normal)
+        emptyButton.layer.cornerRadius = 8
+        emptyButton.addTarget(self, action: #selector(showTestEmptyState), for: .touchUpInside)
+
+        view.addSubview(emptyButton)
+        emptyButton.translatesAutoresizingMaskIntoConstraints = false
+
+        // 버튼의 위치 설정
+        NSLayoutConstraint.activate([
+            emptyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            emptyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyButton.widthAnchor.constraint(equalToConstant: 200),
+            emptyButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+
+    @objc private func showTestEmptyState() {
+        showEmptyState()
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -219,49 +250,53 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         }
     }
     
-    //MARK: - 서버에서 데이터 가져오기
+    // MARK: - 서버에서 데이터 가져오기
     private func fetchRequestsFromServer() {
         ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in
-            print("Fetch status: \(code), message: \(message)")
-            guard code == 1, let scores = scores else {
-                print("Failed to fetch scores: \(message)")
-                return
-            }
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // 서버의 날짜 포맷에 맞춤
-//            let dateFormatter = ISO8601DateFormatter() // 날짜 포맷 설정
-//            dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // 서버와의 통신을 위한 미세초 변환
-            
-            self?.requests = scores.compactMap { scoreDict in
-                guard let id = scoreDict["id"] as? Int,
-                      let title = scoreDict["title"] as? String,
-                      let statusValue = scoreDict["status"] as? Int,
-                      let requestDateString = scoreDict["request_date"] as? String,
-                      let requestDate = dateFormatter.date(from: requestDateString), // 날짜 변환
-                      let xmlURL = scoreDict["xml_url"] as? String else {
-                    print("파싱 실패 - scoreDict:", scoreDict)
-                    return nil
-                }
-                //TODO: 요청 서버에서 받으면 프린트 띄우기
-//                print("score 생성 - id: \(id), title: \(title), status: \(statusValue), date: \(requestDate), url: \(xmlURL)")
-                let status: RequestStatus
-                switch statusValue {
-                case 0: status = .inProgress
-                case 1: status = .scoreReady
-                case 2: status = .downloaded
-                default: return nil
-                }
-                return Request(id: id, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
-            }
-            
             DispatchQueue.main.async {
+                guard code == 1, let scores = scores else {
+                    print("Failed to fetch scores: \(message)")
+                    self?.showEmptyState()
+                    return
+                }
+
+                if scores.isEmpty {
+                    // 데이터가 없을 경우 EmptyStateView 표시
+                    self?.showEmptyState()
+                    return
+                }
+
+                // 데이터가 있을 경우 파싱 및 UI 업데이트
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+                self?.requests = scores.compactMap { scoreDict in
+                    guard let id = scoreDict["id"] as? Int,
+                          let title = scoreDict["title"] as? String,
+                          let statusValue = scoreDict["status"] as? Int,
+                          let requestDateString = scoreDict["request_date"] as? String,
+                          let requestDate = dateFormatter.date(from: requestDateString),
+                          let xmlURL = scoreDict["xml_url"] as? String else {
+                        print("Failed to parse scoreDict:", scoreDict)
+                        return nil
+                    }
+
+                    let status: RequestStatus
+                    switch statusValue {
+                    case 0: status = .inProgress
+                    case 1: status = .scoreReady
+                    case 2: status = .downloaded
+                    default: return nil
+                    }
+                    return Request(id: id, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
+                }
+
                 self?.updateRequestsUI()
             }
         }
     }
     
-    private func addScore(at index: Int) {
+    func addScore(at index: Int) {
         let request = requests[index]
         
         // XML URL을 가져옵니다.
@@ -324,17 +359,17 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     // MARK: - 요청 취소 메서드 추가
     private func cancelRequest(at index: Int) {
         let request = requests[index]
-
+        
         // 서버에 상태 업데이트를 요청
         ServerManager.shared.updateScoreStatus(deviceID: deviceID, scoreID: String(request.id), newStatus: 11) { [weak self] status, message in
             guard let self = self else { return }
             print("Cancel status: \(status), message: \(message)")
-
+            
             if status == 1 {
                 DispatchQueue.main.async {
                     // 요청 상태를 .cancelled로 변경
-                     self.requests[index].status = .cancelled
-                     self.updateRequestsUI()
+                    self.requests[index].status = .cancelled
+                    self.updateRequestsUI()
                     ToastAlert.show(message: "요청이 취소되었습니다.", in: self.view, iconName: "cancle.color")
                 }
             } else {
@@ -343,6 +378,27 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
                 }
             }
         }
+    }
+        
+    func showEmptyState() {
+        view.subviews
+            .filter { $0 is EmptyStateView }
+            .forEach { $0.removeFromSuperview() }
+
+        // 새로운 EmptyStateView 추가
+        let emptyStateView = EmptyStateView(
+            message: "만들고 있는 음악이 없어요",
+            subMessage: "원하는 음악을 요청하여 만들어보세요!"
+        )
+        emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptyStateView)
+
+        NSLayoutConstraint.activate([
+            emptyStateView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyStateView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 }
 
@@ -360,7 +416,7 @@ extension RequestProcessingViewController {
         
         alertVC.onConfirm = { [weak self] in
             self?.cancelRequest(at: index)
-//            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
+            //            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
         }
         
         alertVC.modalPresentationStyle = .overFullScreen
