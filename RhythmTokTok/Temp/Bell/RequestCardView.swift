@@ -33,11 +33,11 @@ class RequestCardView: UIView {
             requestActionButton.backgroundColor = UIColor(named: "red050")
             requestActionButton.setTitleColor(UIColor(named: "red500"), for: .normal)
         case .downloaded:
-            requestActionButton.setTitle("악보 추가", for: .normal)
+            requestActionButton.setTitle("음악 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_inactive")
             requestActionButton.setTitleColor(.white, for: .normal)
         case .scoreReady, .deleted, .cancelled:
-            requestActionButton.setTitle("악보 추가", for: .normal)
+            requestActionButton.setTitle("음악 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_primary")
             requestActionButton.setTitleColor(.white, for: .normal)
         }

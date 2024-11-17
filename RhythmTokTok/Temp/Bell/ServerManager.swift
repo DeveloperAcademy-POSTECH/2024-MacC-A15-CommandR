@@ -89,7 +89,7 @@ class ServerManager {
         task.resume()
     }
     
-    // 2. 악보 조회 기능
+    // 2. 음악 요청 조회 기능
     func fetchScores(deviceID: String, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
         let url = URL(string: "\(serverBaseURL)/api/scores?device_id=\(deviceID)")!
         print("deviceID: \(deviceID)")
@@ -133,7 +133,7 @@ class ServerManager {
         task.resume()
     }
     
-    // 3. 악보 상태 변경 기능
+    // 3. 음악 요청 상태 변경 기능
     func updateScoreStatus(deviceID: String, scoreID: String, newStatus: Int, completion: @escaping (Int, String) -> Void) {
         let url = URL(string: "\(serverBaseURL)/api/score/\(scoreID)/status")!
         var request = URLRequest(url: url)
