@@ -19,13 +19,13 @@ class BPMLabel: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
-        updateSpeedText()
+        updateSpeedText(currentSpeed: currentScore?.bpm ?? 60)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
-        updateSpeedText()
+        updateSpeedText(currentSpeed: currentScore?.bpm ?? 60)
     }
 
     // View 설정
@@ -59,13 +59,13 @@ class BPMLabel: UIView {
     }
 
     // 속도 상태에 따른 텍스트 변경
-    func updateSpeedText() {
-        speedValue = currentScore?.bpm ?? 60
-        speedText = BPMDescription.description(for: speedValue)
+    func updateSpeedText(currentSpeed: Int) {
+        speedValue = currentSpeed
+        speedText = BPMDescription.description(for: currentSpeed)
 
         // 속도 상태 라벨과 값 라벨 업데이트
-        speedStatusLabel.text = speedText
         valueLabel.text = " (\(speedValue)BPM)"
+        speedStatusLabel.text = speedText
     }
     
 }
