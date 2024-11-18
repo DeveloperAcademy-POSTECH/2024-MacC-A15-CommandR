@@ -63,6 +63,7 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
         // 키보드에 붙은 버튼이 터치되었을 때의 액션
         if buttonStatus == .active {
             titleInputView.textField.resignFirstResponder() // 키보드 dismiss
+            didTapCompleteButton(with: titleInputView.textField.text!)
         }
     }
 
