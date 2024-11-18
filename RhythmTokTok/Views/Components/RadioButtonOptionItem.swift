@@ -34,11 +34,6 @@ class RadioButtonOptionItem: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = title
         titleLabel.font = UIFont.systemFont(ofSize: 16)
-        titleLabel.isUserInteractionEnabled = true // 라벨에 제스처 추가 가능하도록 설정
-
-        // 라벨에 터치 제스처 추가
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
-        titleLabel.addGestureRecognizer(tapGesture)
         
         // 뷰에 추가
         addSubview(radioButton)
@@ -56,10 +51,5 @@ class RadioButtonOptionItem: UIView {
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 24)
         ])
-    }
-    
-    @objc private func labelTapped() {
-        // 라벨 눌렀을 때 라디오 버튼 동작 실행
-        radioButton.sendActions(for: .touchUpInside)
     }
 }
