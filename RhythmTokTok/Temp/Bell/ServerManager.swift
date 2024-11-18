@@ -60,7 +60,7 @@ class ServerManager {
             body.append(pdfData)
             body.append("\r\n".data(using: .utf8)!)
         } catch {
-            print("PDF 파일 읽기 실패: \(error.localizedDescription)")
+            ErrorHandler.handleError(error: "PDF 파일 읽기 실패: \(error.localizedDescription)")
             completion(0, "Failed to load PDF file")
             return
         }
@@ -74,7 +74,7 @@ class ServerManager {
         // 서버 통신
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("서버 요청 오류: \(error.localizedDescription)")
+                ErrorHandler.handleError(error: "서버 요청 오류: \(error.localizedDescription)")
                 completion(0, "Request error: \(error.localizedDescription)")
                 return
             }
@@ -89,11 +89,11 @@ class ServerManager {
                    let message = json["message"] as? String {
                     completion(code, message)
                 } else {
-                    print("잘못된 응답 형식: \(String(data: data, encoding: .utf8) ?? "Unknown")")
+                    ErrorHandler.handleError(error: "잘못된 응답 형식: \(String(data: data, encoding: .utf8) ?? "Unknown")")
                     completion(0, "Invalid response format")
                 }
             } catch {
-                print("JSON 파싱 오류: \(error.localizedDescription)")
+                ErrorHandler.handleError(error: "JSON 파싱 오류: \(error.localizedDescription)")
                 completion(0, "JSON parsing error: \(error.localizedDescription)")
             }
         }
@@ -113,22 +113,15 @@ class ServerManager {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 // 서버 오류 발생 시 빈배열 반환
-                print("Error: \(error.localizedDescription). Returning example data as fallback.")
+                ErrorHandler.handleError(error: "Error: \(error.localizedDescription). Returning example data as fallback.")
                 completion(1, "Success", [])
                 return
             }
             
             guard let data = data else {
-                // 데이터 없음 - 빈 배열 반환
-                print("No data received from server. Displaying empty screen.")
-                // TODO: 여기 바꾸기
-//                self?.showEmptyState()
                 return
             }
-            
-            // 응답 데이터 확인
-//              print("Raw server response: \(String(data: data, encoding: .utf8) ?? "No readable data")")
-            // 서버 응답 파싱
+
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let status = json["code"] as? Int,
