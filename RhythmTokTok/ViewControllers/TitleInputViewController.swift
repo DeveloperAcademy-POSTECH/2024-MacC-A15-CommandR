@@ -4,12 +4,13 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
     var titleInputView: TitleInputView!
     var accessoryButton: UIButton!
     var fileURL: URL?
+    var buttonStatus: ButtonStatus!
     private let maxCharacterLimit = 20
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
+        buttonStatus = .inactive
         setupUI()
         setupAccessoryButton()
         titleInputView.textField.delegate = self
@@ -37,7 +38,6 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
         accessoryButton.setTitle("입력 완료", for: .normal)
         accessoryButton.setTitleColor(.white, for: .normal)
         accessoryButton.backgroundColor = UIColor(named: "button_inactive")
-        accessoryButton.isEnabled = false
         accessoryButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         accessoryButton.translatesAutoresizingMaskIntoConstraints = false
         accessoryButton.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
@@ -61,21 +61,27 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
 
     @objc private func accessoryButtonTapped() {
         // 키보드에 붙은 버튼이 터치되었을 때의 액션
-        titleInputView.textField.resignFirstResponder() // 키보드 dismiss
+        if buttonStatus == .active {
+            titleInputView.textField.resignFirstResponder() // 키보드 dismiss
+        }
     }
 
     // MARK: - TitleInputViewDelegate
     func updateAccessoryButtonState(isEnabled: Bool) {
-        accessoryButton.isEnabled = isEnabled
+//        accessoryButton.isEnabled = isEnabled
         accessoryButton.backgroundColor = isEnabled ? UIColor(named: "button_primary") : UIColor(named: "button_inactive")
     }
     
     func didTapCompleteButton(with filename: String) {
-        let pdfConfirmationViewController = PDFConvertRequestConfirmationViewController()
-        pdfConfirmationViewController.fileURL = fileURL
-        pdfConfirmationViewController.filename = filename
-        
-        navigationController?.pushViewController(pdfConfirmationViewController, animated: true)
+        if buttonStatus == .active {
+            let pdfConfirmationViewController = PDFConvertRequestConfirmationViewController()
+            pdfConfirmationViewController.fileURL = fileURL
+            pdfConfirmationViewController.filename = filename
+            
+            navigationController?.pushViewController(pdfConfirmationViewController, animated: true)
+        } else {
+            ToastAlert.show(message: "제목을 입력해 주세요.", in: self.view, iconName: "caution.color")
+        }
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -90,10 +96,17 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
         titleInputView.textField.layer.borderColor = UIColor(named: "border_primary")?.cgColor
     }
     
+    func didClearTextField() {
+        titleInputView.textField.text = ""
+        updateBorderColor()
+        titleInputView.textField.becomeFirstResponder()
+        textFieldDidBeginEditing(titleInputView.textField)
+    }
+    
     func updateBorderColor() {
         if let text = titleInputView.textField.text, text.isEmpty {
             // TextField가 비어 있을 때 버튼 비활성화
-            titleInputView.completeButton.isEnabled = false
+            buttonStatus = .inactive
             titleInputView.completeButton.backgroundColor = UIColor(named: "button_inactive")
             titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
             titleInputView.subtitleLabel.textColor = UIColor(named: "lable_tertiary")
@@ -102,11 +115,13 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
             // 글자 수 제한 초과 시 버튼 비활성화 및 텍스트필드 색 변경
             titleInputView.textField.layer.borderColor = UIColor(named: "button_danger")?.cgColor
             titleInputView.subtitleLabel.textColor = UIColor(named: "button_danger")
+            buttonStatus = .inactive
             titleInputView.completeButton.isEnabled = false
             titleInputView.completeButton.backgroundColor = UIColor(named: "button_inactive")
             updateAccessoryButtonState(isEnabled: false) // Update accessory button
         } else {
             // 조건이 맞을 시 버튼 활성화
+            buttonStatus = .active
             titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
             titleInputView.subtitleLabel.textColor = UIColor(named: "lable_tertiary")
             titleInputView.completeButton.isEnabled = true

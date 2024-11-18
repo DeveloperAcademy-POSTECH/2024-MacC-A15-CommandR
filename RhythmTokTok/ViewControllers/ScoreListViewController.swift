@@ -158,6 +158,34 @@ extension ScoreListViewController {
             
             measuresDict[lineNumber] = measureArray
         }
+
+    // TODO: 검색 기능 추가 예정
+    @objc func didTapSearch() {
+        // MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
+        //        let viewController = ViewController()
+        //        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
+    @objc func didTapSettings() {
+        //        let settingViewController = SettingViewController()
+        //        navigationController?.pushViewController(settingViewController, animated: true)
+    }
+    
+    // PDF 파일 선택 버튼 액션
+    @objc private func didTapAddButton() {
+//        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)
+//        documentPicker.delegate = self
+//        documentPicker.allowsMultipleSelection = false
+//        self.present(documentPicker, animated: true, completion: nil)
+        let checkPDFViewController = CheckPDFViewController()
+        
+        navigationController?.pushViewController(checkPDFViewController, animated: true)
+    }
+    
+    // UIView 대신 ScoreListView를 사용
+    override func loadView() {
+        view = ScoreListView()
     }
 }
 

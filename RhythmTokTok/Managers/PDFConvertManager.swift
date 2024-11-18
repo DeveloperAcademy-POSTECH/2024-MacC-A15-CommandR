@@ -162,4 +162,28 @@ struct PDFConvertManager {
         
         return (horizontalDPI, verticalDPI)
     }
+    
+    // pdf Img 배열로 반환
+    static func loadPDFPages(from fileURL: URL) -> [UIImage] {
+        var pdfPages: [UIImage] = []
+        guard let pdfDocument = PDFDocument(url: fileURL) else { return pdfPages }
+
+        for pageIndex in 0..<pdfDocument.pageCount {
+            if let page = pdfDocument.page(at: pageIndex) {
+                let pageRect = page.bounds(for: .mediaBox)
+                let renderer = UIGraphicsImageRenderer(size: pageRect.size)
+                let img = renderer.image { ctx in
+                    ctx.cgContext.translateBy(x: 0, y: pageRect.size.height)
+                    ctx.cgContext.scaleBy(x: 1.0, y: -1.0)
+                    
+                    UIColor.white.set()
+                    ctx.fill(pageRect)
+                    page.draw(with: .mediaBox, to: ctx.cgContext)
+                }
+                pdfPages.append(img)
+            }
+        }
+        
+        return pdfPages
+    }
 }
