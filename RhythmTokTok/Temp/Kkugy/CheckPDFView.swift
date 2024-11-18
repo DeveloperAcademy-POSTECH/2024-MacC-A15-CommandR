@@ -110,7 +110,7 @@ class CheckPDFView: UIView {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 158),
+            headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
             headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             headerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             headerLabel.heightAnchor.constraint(equalToConstant: 34),

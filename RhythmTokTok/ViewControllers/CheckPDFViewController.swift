@@ -16,23 +16,49 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
               }
           }
       }
-    var pdfPages: [UIImage] = []
-    let checkPDFView = CheckPDFView()
+    
+    private var pdfPages: [UIImage] = []
+    private let navigationBar = CommonNavigationBar()
+    private let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backgroundTertiary
+        return view
+    }()
+    private let checkPDFView = CheckPDFView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationBar.configure(title: "악보 PDF 선택", includeCloseButton: true)
         setupView()
         setupActions()
         loadPDFDocument()
     }
     
     private func setupView() {
+        // 네비게이션바 추가
+        view.addSubview(navigationBar)
+        // divider
+        view.addSubview(divider)
         // checkPDFView 추가 및 제약 설정
         view.addSubview(checkPDFView)
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        divider.translatesAutoresizingMaskIntoConstraints = false
         checkPDFView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            checkPDFView.topAnchor.constraint(equalTo: view.topAnchor),
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 64),
+            
+            // divider
+            divider.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 0),
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
+            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
+          
+            checkPDFView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
             checkPDFView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             checkPDFView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             checkPDFView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -45,6 +71,12 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     private func setupActions() {
+        navigationBar.onBackButtonTapped = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        navigationBar.onCloseButtonTapped = { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+        }
         checkPDFView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         checkPDFView.changePDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
         checkPDFView.addPDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)

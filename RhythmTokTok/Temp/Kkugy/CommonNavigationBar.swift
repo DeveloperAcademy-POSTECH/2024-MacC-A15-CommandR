@@ -29,8 +29,16 @@ class CommonNavigationBar: UIView {
         return button
     }()
 
+    private let closeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "close"), for: .normal)
+        button.tintColor = .lableSecondary
+        return button
+    }()
+    
     var onBackButtonTapped: (() -> Void)?
     var onSettingButtonTapped: (() -> Void)?
+    var onCloseButtonTapped: (() -> Void)?
 
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -75,7 +83,7 @@ class CommonNavigationBar: UIView {
 
         NSLayoutConstraint.activate([
             // Back Button
-            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             backButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             backButton.widthAnchor.constraint(equalToConstant: 48),
             backButton.heightAnchor.constraint(equalToConstant: 48),
@@ -98,9 +106,13 @@ class CommonNavigationBar: UIView {
     @objc private func settingButtonTapped() {
         onSettingButtonTapped?()
     }
+    
+    @objc private func closeButtonTapped() {
+        onCloseButtonTapped?()
+    }
 
     // MARK: - Public Methods
-    func configure(title: String, includeWatchSettingButton: Bool = false) {
+    func configure(title: String, includeWatchSettingButton: Bool = false, includeCloseButton: Bool = false) {
         titleLabel.text = title
 
         // 기존 버튼 제거
@@ -118,6 +130,15 @@ class CommonNavigationBar: UIView {
             // 설정 버튼 추가
             rightButtonStackView.addArrangedSubview(settingButton)
             settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
+        }
+        
+        if includeCloseButton {
+            rightButtonStackView.addArrangedSubview(closeButton)
+            NSLayoutConstraint.activate([
+                closeButton.widthAnchor.constraint(equalToConstant: 24),
+                closeButton.heightAnchor.constraint(equalToConstant: 24)
+            ])
+            closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         }
     }
 
