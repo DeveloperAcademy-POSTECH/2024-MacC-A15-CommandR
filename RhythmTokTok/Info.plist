@@ -9,7 +9,7 @@
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>New item</key>
-			<string>211.188.50.151</string>
+			<string>$(SERVER_BASE_URL)</string>
 		</dict>
 	</dict>
 	<key>UIAppFonts</key>

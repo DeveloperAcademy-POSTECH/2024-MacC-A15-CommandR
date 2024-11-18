@@ -129,6 +129,7 @@
 		D3DDA07A2CC5516F00125C86 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */; };
 		D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
 		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
+		D3F8C5312CEB6B6F00D2B012 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */; };
 		EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1B9BB52CD647A000073215 /* BPMDescription.swift */; };
 		EE4203962CD226800081F2A1 /* BPMSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */; };
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
@@ -297,6 +298,7 @@
 		D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		EE1B9BB52CD647A000073215 /* BPMDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMDescription.swift; sourceTree = "<group>"; };
 		EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 		02BFECDF2CB10A13003CEC8A = {
 			isa = PBXGroup;
 			children = (
+				D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */,
 				02BFED032CB10B52003CEC8A /* .swiftlint.yml */,
 				1E526F8D2CCA31EB004E1C6E /* Shared */,
 				D3DDA07D2CC5517300125C86 /* Font */,
@@ -853,6 +856,7 @@
 				0232D4A02CD5F5A600FDBFAF /* shinsadong.xml in Resources */,
 				0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */,
 				1E3E09392CB2AAB400EE1868 /* si.mp3 in Resources */,
+				D3F8C5312CEB6B6F00D2B012 /* Config.xcconfig in Resources */,
 				1E3E093A2CB2AAB400EE1868 /* silence.mp3 in Resources */,
 				1E3E093B2CB2AAB400EE1868 /* me.mp3 in Resources */,
 				1E3E093C2CB2AAB400EE1868 /* rah.mp3 in Resources */,
