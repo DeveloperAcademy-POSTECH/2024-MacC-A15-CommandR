@@ -8,20 +8,35 @@ import UIKit
 import PDFKit
 
 class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertRequestConfirmationViewDelegate {
+    private let navigationBar = CommonNavigationBar()
+    private let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backgroundTertiary
+        return view
+    }()
     var fileURL: URL?
     var filename: String?
     var pageCount: Int?
     
     private var confirmationView: PDFConvertRequestConfirmationView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationBar.configure(title: "", includeCloseButton: true)
         setupConfirmationView()
+        setupButtonAction()
         loadPDFPageCount()
     }
     
     private func setupConfirmationView() {
+        // 네비게이션바 추가
+        view.addSubview(navigationBar)
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        // divider
+        view.addSubview(divider)
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        
         // Initialize and configure the confirmation view
         confirmationView = PDFConvertRequestConfirmationView()
         confirmationView.delegate = self
@@ -30,11 +45,31 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
         
         // Set up constraints
         NSLayoutConstraint.activate([
-            confirmationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 64),
+            
+            // divider
+            divider.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 0),
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
+            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
+            
+            confirmationView.topAnchor.constraint(equalTo: divider.bottomAnchor),
             confirmationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             confirmationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             confirmationView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    private func setupButtonAction() {
+        navigationBar.onBackButtonTapped = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        navigationBar.onCloseButtonTapped = { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+        }
     }
     
     private func loadPDFPageCount() {

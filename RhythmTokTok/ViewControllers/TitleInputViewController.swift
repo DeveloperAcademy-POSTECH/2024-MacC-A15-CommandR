@@ -1,6 +1,12 @@
 import UIKit
 
 class TitleInputViewController: UIViewController, TitleInputViewDelegate, UITextFieldDelegate {
+    private let navigationBar = CommonNavigationBar()
+    private let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backgroundTertiary
+        return view
+    }()
     var titleInputView: TitleInputView!
     var accessoryButton: UIButton!
     var fileURL: URL?
@@ -10,22 +16,41 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationBar.configure(title: "제목 입력", includeCloseButton: true)
         buttonStatus = .inactive
         setupUI()
         setupAccessoryButton()
-        titleInputView.textField.delegate = self
     }
 
     private func setupUI() {
+        // 네비게이션바 추가
+        view.addSubview(navigationBar)
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        // divider
+        view.addSubview(divider)
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        
         // TitleInputView 생성하고 subview로 넣기
         titleInputView = TitleInputView()
         titleInputView.delegate = self // Set delegate
         titleInputView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleInputView)
+        titleInputView.textField.delegate = self
 
         // 제약 조건 설정
         NSLayoutConstraint.activate([
-            titleInputView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 64),
+            
+            // divider
+            divider.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 0),
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
+            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
+            
+            titleInputView.topAnchor.constraint(equalTo: divider.bottomAnchor),
             titleInputView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             titleInputView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             titleInputView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -33,6 +58,12 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
     }
 
     private func setupAccessoryButton() {
+        navigationBar.onBackButtonTapped = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        navigationBar.onCloseButtonTapped = { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+        }
         // 키보드에 붙은 accessoryButton 생성
         accessoryButton = UIButton(type: .system)
         accessoryButton.setTitle("입력 완료", for: .normal)
@@ -47,6 +78,9 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
         accessoryView.backgroundColor = .clear
         accessoryView.addSubview(accessoryButton)
 
+        // 텍스트 필드에 액세서리 뷰를 설정
+        titleInputView.textField.inputAccessoryView = accessoryView
+        
         // accessoryButton이 가로 세로 너비 설정, 높이 설정
         NSLayoutConstraint.activate([
             accessoryButton.leadingAnchor.constraint(equalTo: accessoryView.leadingAnchor),
@@ -54,9 +88,6 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
             accessoryButton.centerYAnchor.constraint(equalTo: accessoryView.centerYAnchor),
             accessoryButton.heightAnchor.constraint(equalToConstant: 64)
         ])
-
-        // 텍스트 필드에 액세서리 뷰를 설정
-        titleInputView.textField.inputAccessoryView = accessoryView
     }
 
     @objc private func accessoryButtonTapped() {

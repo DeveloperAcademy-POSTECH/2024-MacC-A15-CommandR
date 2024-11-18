@@ -30,7 +30,7 @@ class PDFConvertRequestConfirmationView: UIView {
     // cardView 내부 라벨
     var scoreInfoLabel: UILabel!
     
-    //fileName HStack
+    // fileName HStack
     var filenameHStack: UIStackView!
     var titleLabelInsideCard: UILabel!
     var filenameLabel: UILabel!

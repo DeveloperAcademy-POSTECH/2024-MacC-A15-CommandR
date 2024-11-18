@@ -11,7 +11,7 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
     private var fileURL: URL? {
           didSet {
               checkPDFView.isFileSelected = fileURL != nil
-              if let fileURL = fileURL {
+              if fileURL != nil {
                   loadPDFDocument()
               }
           }
