@@ -198,35 +198,13 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-// MARK: - [Ext] PDF 파일 선택 관련
-extension ScoreListViewController: UIDocumentPickerDelegate {
+// MARK: - [Ext] 악보 요청 화면 관련
+extension ScoreListViewController {
     @objc private func didTapAddButton() {
         let checkPDFViewController = CheckPDFViewController()
         navigationController?.pushViewController(checkPDFViewController, animated: true)
     }
-    // 파일 선택에 호출
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let selectedFileURL = urls.first else {
-            return
-        }
-        // 선택된 파일 URL을 저장하고 확인 화면으로 이동
-        self.selectedFileURL = selectedFileURL
-        self.navigateToCheckPDFViewController(with: selectedFileURL)
-    }
-    // 선택한 파일 확인 뷰로 이동
-    private func navigateToCheckPDFViewController(with fileURL: URL) {
-        let checkPDFViewController = CheckPDFViewController()
-        
-        navigationController?.pushViewController(checkPDFViewController, animated: true)
-    }
-    // 취소 버튼을 누르면 호출되는 메소드
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        print("사용자가 파일 선택을 취소했습니다.")
-    }
-}
 
-// MARK: - [Ext] 악보 요청 화면 관련
-extension ScoreListViewController {
     @objc func didTapRequestButton() {
         let requestViewController = RequestProcessingViewController()
         navigationController?.pushViewController(requestViewController, animated: true)
