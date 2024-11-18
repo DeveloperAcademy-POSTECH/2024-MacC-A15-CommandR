@@ -93,7 +93,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
         // 스와이프 제스처 초기화
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
@@ -186,11 +185,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     private func setupActions() {
         // 클릭 시 이벤트 설정
-        practiceNavBar.onBackButtonTapped = {
-            self.backButtonTapped()
+        practiceNavBar.onBackButtonTapped = { [weak self] in
+            self?.backButtonTapped()
         }
-        practiceNavBar.onSettingButtonTapped = {
-            self.settingButtonTapped()
+        practiceNavBar.onSettingButtonTapped = { [weak self] in
+            self?.settingButtonTapped()
         }
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         controlButtonView.resetButton.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
@@ -319,7 +318,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                                                 hapticSequence: [],
                                                 status: .ready, startTime: 0)
         
-        navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     func handlePlayStatusChange(_ status: PlayStatus) {
