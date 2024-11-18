@@ -22,7 +22,7 @@ class HapticSettingSectionView: UIView {
 
     let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "· Watch에서 진동 가이드 받기를 켜면, 악보가 재생될 때 손목에서 메트로놈 진동을 느낄 수 있어요."
+        label.text = "· Watch에서 진동 받기를 켜면, 악보가 재생될 때 손목에서 리듬에 맞춘 진동을 느낄 수 있어요."
         label.font = UIFont(name: "Pretendard-Regular", size: 14)
         label.textColor = .gray
         label.numberOfLines = 0

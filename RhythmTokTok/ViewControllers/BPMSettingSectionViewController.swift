@@ -107,10 +107,8 @@ extension BPMSettingSectionViewController {
         bpmTextField.translatesAutoresizingMaskIntoConstraints = false
         
         let clearButton = UIButton(type: .custom)
-        if let clearButtonImage = UIImage(named: "cancle.fill")?.withRenderingMode(.alwaysTemplate) {
-            clearButton.setImage(clearButtonImage, for: .normal)
-            clearButton.tintColor = UIColor(named: "lable_quaternary") // Color Set 이름 사용
-        }
+        clearButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        clearButton.tintColor = UIColor(named: "lable_quaternary")
         clearButton.addTarget(self, action: #selector(clearTextField), for: .touchUpInside)
         clearButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         
