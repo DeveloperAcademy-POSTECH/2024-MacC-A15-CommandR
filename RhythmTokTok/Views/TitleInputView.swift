@@ -38,7 +38,8 @@ class TitleInputView: UIView {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "음악 제목을 입력해 주세요"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.font = UIFont.customFont(forTextStyle: .title2)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = UIColor(named: "lable_secondary")
         addSubview(titleLabel)
         
