@@ -21,7 +21,7 @@ class ScoreListViewController: UIViewController {
     override func loadView() {
         view = ScoreListView()
     }
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()

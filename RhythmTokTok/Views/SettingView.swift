@@ -26,7 +26,7 @@ class SettingView: UIView {
     
     private let settingDoneButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("설정 완료", for: .normal)
+        button.setTitle("완료", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
         button.backgroundColor = .buttonPrimary
@@ -94,7 +94,10 @@ class SettingView: UIView {
         let divider2 = createDivider()
         
         // 각 뷰의 translatesAutoresizingMaskIntoConstraints 설정
-        [customNavBar, divider0, bpmSettingSection, divider1, soundSettingSection, divider2, hapticSettingSection, settingDoneOverlayView].forEach {
+        [customNavBar, divider0,
+         bpmSettingSection, divider1,
+         soundSettingSection, divider2,
+         hapticSettingSection, settingDoneOverlayView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             addSubview($0)
         }
@@ -140,10 +143,10 @@ class SettingView: UIView {
             settingDoneOverlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
             settingDoneOverlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
             settingDoneOverlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            settingDoneOverlayView.heightAnchor.constraint(equalToConstant: 150),
+            settingDoneOverlayView.heightAnchor.constraint(equalToConstant: 130),
             
+            settingDoneButton.topAnchor.constraint(equalTo: settingDoneOverlayView.topAnchor, constant: 15),
             settingDoneButton.centerXAnchor.constraint(equalTo: settingDoneOverlayView.centerXAnchor),
-            settingDoneButton.centerYAnchor.constraint(equalTo: settingDoneOverlayView.centerYAnchor, constant: -5),
             settingDoneButton.widthAnchor.constraint(equalToConstant: 335),
             settingDoneButton.heightAnchor.constraint(equalToConstant: 64)
         ])

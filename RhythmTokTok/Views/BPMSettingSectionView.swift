@@ -99,6 +99,7 @@ class BPMSettingSectionView: UIView {
         
         // 버튼 액션 추가
         bpmButton.addTarget(self, action: #selector(bpmButtonTapped), for: .touchUpInside)
+        setupLabelTapGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -107,11 +108,20 @@ class BPMSettingSectionView: UIView {
         setupConstraints()
         bpmLabel.text = "\(bpm) BPM"
         bpmDescriptionLabel.text = bpmDescription
+        
+        // 버튼 액션 추가
         bpmButton.addTarget(self, action: #selector(bpmButtonTapped), for: .touchUpInside)
+        setupLabelTapGesture()
     }
     
     @objc private func bpmButtonTapped() {
         onBPMButtonTapped?()
+    }
+    
+    private func setupLabelTapGesture() {
+        titleLabel.isUserInteractionEnabled = true // 기본적으로 false이므로 활성화
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bpmButtonTapped))
+        titleLabel.addGestureRecognizer(tapGesture)
     }
     
     private func setupViews() {
