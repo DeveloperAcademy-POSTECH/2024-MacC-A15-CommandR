@@ -17,7 +17,7 @@ class ScoreListView: UIView {
     // 테이블 라벨 선언
     let tableHeaderLabel: UILabel = {
         let label = UILabel()
-        label.text = "악보 목록"
+        label.text = "음악 목록"
         let customFont = UIFont(name: "Pretendard-Bold", size: 24)
         label.font = customFont
         label.textAlignment = .left  // 좌측 정렬
@@ -36,7 +36,7 @@ class ScoreListView: UIView {
     // 하단 버튼 선언
     let addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(" 악보 추가하기", for: .normal)
+        button.setTitle(" 음악 추가하기", for: .normal)
         button.setImage(UIImage(systemName: "document"), for: .normal)
         button.tintColor = .white
         button.backgroundColor = UIColor.systemBlue

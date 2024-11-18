@@ -39,8 +39,8 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         // 전체 배경색 변경
-        view.backgroundColor = UIColor(named: "background_tertiary")
-        
+        view.backgroundColor = .backgroundPrimary
+
         // 네비게이션 바 타이틀 설정
         navigationController?.setNavigationBarHidden(true, animated: false)
         navigationBar.configure(title: "요청 목록")
@@ -105,6 +105,7 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         // 스크롤뷰와 스택뷰 설정
         view.addSubview(scrollView)
+        scrollView.backgroundColor = .backgroundTertiary
         scrollView.addSubview(stackView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
