@@ -6,75 +6,93 @@
 //
 
 import UIKit
-import PDFKit
 
-class CheckPDFViewController: UIViewController {
-    
-    var fileURL: URL?
-    var pdfView: PDFView!
-    var confirmButton: UIButton!
+class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIDocumentPickerDelegate {
+    private var fileURL: URL? {
+          didSet {
+              checkPDFView.isFileSelected = fileURL != nil
+              if let fileURL = fileURL {
+                  loadPDFDocument()
+              }
+          }
+      }
+    var pdfPages: [UIImage] = []
+    let checkPDFView = CheckPDFView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
-        setupUI()
-        setupConstraints()
+        setupView()
         setupActions()
-        
         loadPDFDocument()
     }
     
-    // UI 구성
-    private func setupUI() {
-        // PDFView 설정
-        pdfView = PDFView()
-        pdfView.translatesAutoresizingMaskIntoConstraints = false
-        pdfView.autoScales = true
-        view.addSubview(pdfView)
-        
-        // 확인 버튼 설정
-        confirmButton = UIButton(type: .system)
-        confirmButton.setTitle("이 파일이 맞습니다", for: .normal)
-        confirmButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(confirmButton)
-    }
-    
-    // 제약조건 설정
-    private func setupConstraints() {
+    private func setupView() {
+        // checkPDFView 추가 및 제약 설정
+        view.addSubview(checkPDFView)
+        checkPDFView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            pdfView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            pdfView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pdfView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            pdfView.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -20),
-
-            confirmButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            confirmButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            confirmButton.widthAnchor.constraint(equalToConstant: 200),
-            confirmButton.heightAnchor.constraint(equalToConstant: 50)
+            checkPDFView.topAnchor.constraint(equalTo: view.topAnchor),
+            checkPDFView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            checkPDFView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            checkPDFView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        // CollectionView의 데이터 소스와 델리게이트를 설정
+        checkPDFView.collectionView.dataSource = self
+        checkPDFView.collectionView.delegate = self
+        checkPDFView.collectionView.register(PDFPageCell.self, forCellWithReuseIdentifier: "PDFPageCell")
     }
     
-    // 버튼 액션 설정
     private func setupActions() {
-        confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
+        checkPDFView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
+        checkPDFView.changePDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
+        checkPDFView.addPDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
     }
-
-    // PDF 파일 로드
+    
     private func loadPDFDocument() {
-        if let fileURL = fileURL {
-            let pdfDocument = PDFDocument(url: fileURL)
-            pdfView.document = pdfDocument
-        }
+        guard let fileURL = fileURL else { return }
+        
+        // PDF 페이지를 모델을 통해 로드하고 CollectionView를 리로드
+        pdfPages = PDFConvertManager.loadPDFPages(from: fileURL)
+        checkPDFView.collectionView.reloadData()
     }
 
-    // 확인 버튼 액션
+    @objc private func changePDFButtonTapped() {
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.pdf], asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.allowsMultipleSelection = false
+        self.present(documentPicker, animated: true, completion: nil)
+    }
+
     @objc private func confirmButtonTapped() {
-        print("사용자가 PDF 파일을 확인하고 선택을 완료했습니다.")
-        // 모달로 띄운 경우 dismiss 사용
-        let titleInputViewController = TitleInputViewController()
-        titleInputViewController.fileURL = fileURL
-        navigationController?.pushViewController(titleInputViewController, animated: true)
-        self.dismiss(animated: true, completion: nil)  
+        let titleInputVC = TitleInputViewController()
+        titleInputVC.fileURL = fileURL
+        navigationController?.pushViewController(titleInputVC, animated: true)
+    }
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        fileURL = urls.first
+        loadPDFDocument()  // 새로운 파일을 로드하고 리로드
+    }
+    
+    // MARK: - UICollectionViewDataSource
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return pdfPages.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PDFPageCell",
+                                                      for: indexPath) as! PDFPageCell
+        cell.imageView.image = pdfPages[indexPath.item]
+        return cell
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.bounds.size
     }
 }
