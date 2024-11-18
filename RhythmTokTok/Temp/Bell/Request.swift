@@ -8,8 +8,9 @@
 import Foundation
 
 struct Request {
-    let id: UUID
-    let title: String
-    let date: Date
+    let id: Int
+    var title: String
+    let requestDate: Date
     var status: RequestStatus
+    var xmlURL: String?
 }

@@ -1,6 +1,15 @@
 {
-  "originHash" : "0271592b24e5dc1185a09e3f2d980d55521827815d397c9bce8e63d502a51e84",
+  "originHash" : "d43b8c2ca6088ac3386f169991e04c449187e35e70ab89657ed75a43849feade",
   "pins" : [
+    {
+      "identity" : "cryptoswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
+      "state" : {
+        "revision" : "678d442c6f7828def400a70ae15968aef67ef52d",
+        "version" : "1.8.3"
+      }
+    },
     {
       "identity" : "lottie-ios",
       "kind" : "remoteSourceControl",

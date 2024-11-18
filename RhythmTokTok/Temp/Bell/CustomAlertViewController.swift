@@ -16,6 +16,7 @@ class CustomAlertViewController: UIViewController {
     private let cancelButtonColor: UIColor
     
     var onConfirm: (() -> Void)?
+    var onCancel: (() -> Void)?
     
     init(title: String, message: String, confirmButtonText: String, cancelButtonText: String, confirmButtonColor: UIColor, cancelButtonColor: UIColor) {
         self.titleText = title
@@ -79,7 +80,7 @@ class CustomAlertViewController: UIViewController {
         closeButton.backgroundColor = cancelButtonColor
         closeButton.setTitleColor(UIColor(named: "lable_secondary") ?? .black, for: .normal)
         closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         alertContainer.addSubview(closeButton)
         
         let confirmButton = UIButton(type: .system)
@@ -117,14 +118,16 @@ class CustomAlertViewController: UIViewController {
             confirmButton.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
-    
-    @objc private func dismissAlert() {
-        dismiss(animated: true, completion: nil)
-    }
-    
+        
     @objc private func confirmAction() {
         dismiss(animated: true) {
             self.onConfirm?()
+        }
+    }
+    
+    @objc private func cancelButtonTapped() {
+        dismiss(animated: true) {
+            self.onCancel?()
         }
     }
 }

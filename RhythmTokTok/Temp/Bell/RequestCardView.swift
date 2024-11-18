@@ -25,21 +25,23 @@ class RequestCardView: UIView {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd"
-        dateLabel.text = "요청 날짜: \(dateFormatter.string(from: request.date))"
+        dateLabel.text = "요청 날짜: \(dateFormatter.string(from: request.requestDate))"
         
         switch request.status {
         case .inProgress:
             requestActionButton.setTitle("요청 취소", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "red050")
             requestActionButton.setTitleColor(UIColor(named: "red500"), for: .normal)
-        case .downloaded:
-            requestActionButton.setTitle("악보 추가", for: .normal)
-            requestActionButton.backgroundColor = UIColor(named: "button_inactive")
-            requestActionButton.setTitleColor(.white, for: .normal)
-        case .scoreReady, .deleted:
-            requestActionButton.setTitle("악보 추가", for: .normal)
+        case .errorOccurred:
+            requestActionButton.setTitle("자세히", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_primary")
             requestActionButton.setTitleColor(.white, for: .normal)
+        case .scoreReady:
+            requestActionButton.setTitle("음악 추가", for: .normal)
+            requestActionButton.backgroundColor = UIColor(named: "button_primary")
+            requestActionButton.setTitleColor(.white, for: .normal)
+        default:
+            requestActionButton.isHidden = true
         }
     }
     

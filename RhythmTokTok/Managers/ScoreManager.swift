@@ -58,10 +58,8 @@ class ScoreManager {
     func createNoteEntity(from note: Note, partId: String, lineNumber: Int, measureNumber: Int, score: ScoreEntity) -> NoteEntity {
         let noteEntity = NoteEntity(context: context)
         noteEntity.id = UUID().uuidString  // 고유 ID
-        
         noteEntity.pitch = note.pitch
         noteEntity.duration = Int64(note.duration)
-        
         noteEntity.octave = Int16(note.octave)
         noteEntity.type = note.type
         noteEntity.voice = Int16(note.voice)

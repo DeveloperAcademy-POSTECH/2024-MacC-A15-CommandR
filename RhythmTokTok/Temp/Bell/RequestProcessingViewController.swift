@@ -13,6 +13,20 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     private let stackView = UIStackView()
     
     var requests: [Request] = []
+    var deviceID: String {
+        return encrypt(ServerManager.shared.getDeviceUUID())
+    }
+    
+    // 암호화 함수
+    func encrypt(_ input: String) -> String {
+        do {
+            return try AES256Cryption.encrypt(string: input)
+        } catch {
+            print("Device UUID before encryption: \(input)")
+            ErrorHandler.handleError(error: error)
+            return ""
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,12 +50,41 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         
         setupViews()
         
-        // MARK: - 더미데이터 테스트
-        // 더미 데이터 생성
-        generateDummyRequests()
-        
         // 요청들을 화면에 추가
         addRequestsToStackView()
+        
+        // 서버에서 요청 목록을 불러옴
+        fetchRequestsFromServer()
+        
+//        // TODO: emptyview 테스트 버튼 추가 -> 추후 삭제
+//        // EmptyStateView 확인 버튼 추가
+//        setupTestEmptyStateButton()
+    }
+    
+    // TODO: 요청 없을 때 뷰 테스트용 -> 추후 삭제
+    private func setupTestEmptyStateButton() {
+        let emptyButton = UIButton(type: .system)
+        emptyButton.setTitle("빈화면", for: .normal)
+        emptyButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        emptyButton.backgroundColor = UIColor.systemRed
+        emptyButton.setTitleColor(.white, for: .normal)
+        emptyButton.layer.cornerRadius = 8
+        emptyButton.addTarget(self, action: #selector(showTestEmptyState), for: .touchUpInside)
+        
+        view.addSubview(emptyButton)
+        emptyButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 버튼의 위치 설정
+        NSLayoutConstraint.activate([
+            emptyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80),
+            emptyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyButton.widthAnchor.constraint(equalToConstant: 200),
+            emptyButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    @objc private func showTestEmptyState() {
+        showEmptyState()
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -85,31 +128,20 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         stackView.isLayoutMarginsRelativeArrangement = true
     }
     
-    // 더미데이터
-    private func generateDummyRequests() {
-        let dummyRequest1 = Request(id: UUID(), title: "첫 번째 요청", date: Date(), status: .inProgress)
-        let dummyRequest2 = Request(id: UUID(), title: "두 번째 요청", date: Date(), status: .downloaded)
-        let dummyRequest3 = Request(id: UUID(), title: "세 번째 요청", date: Date(), status: .scoreReady)
-        
-        // 일주일 전 날짜
-        let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-        let dummyRequest4 = Request(id: UUID(), title: "네 번째 요청", date: oneWeekAgo, status: .scoreReady)
-        
-        requests = [dummyRequest1, dummyRequest2, dummyRequest3, dummyRequest4]
-    }
-    
     private func addRequestsToStackView() {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
         var groupedRequests: [RequestStatus: [Request]] = [:]
         for request in requests {
             groupedRequests[request.status, default: []].append(request)
         }
         
-        let statuses: [RequestStatus] = [.scoreReady, .inProgress, .downloaded]
+        let statuses: [RequestStatus] = [.scoreReady, .inProgress]
         
         for status in statuses {
             guard var requestsForStatus = groupedRequests[status] else { continue }
             
-            requestsForStatus.sort { $0.date > $1.date }
+            requestsForStatus.sort { $0.requestDate > $1.requestDate }
             
             let headerStackView = UIStackView()
             headerStackView.axis = .horizontal
@@ -163,63 +195,182 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         switch request.status {
         case .inProgress:
             showCancelAlert(for: request, index: index)
-        case .downloaded:
-            // 악보가 이미 추가된 상태일 때 경고 메시지 표시
-            ToastAlert.show(message: "악보가 이미 추가되어 있어요.", in: self.view, iconName: "caution.color")
-        case .scoreReady, .deleted:
+            
+            
+            // MARK: - 서버에러 발생시 팝업알림뷰 다시 그려야함
+        case .errorOccurred:
+            showCancelAlert(for: request, index: index)
+        case .scoreReady:
             addScore(at: index)
+        case .downloaded, .deleted, .cancelled:
+            return
         }
     }
     
-    private func cancelRequest(at index: Int) {
-        print("\(requests[index].title) - 요청 취소")
-    }
-    
-    // 서버 요청 및 Core Data 저장 기능 추가
-    private func addScore(at index: Int) {
-        let request = requests[index]
-        
-        fetchSheetFromServer(for: request) { [weak self] result in
-            switch result {
-            case .success(let sheetData):
-                // 여기에 코어데이터 저장 구현
-                self?.saveSheetToCoreData(sheetData)
-                DispatchQueue.main.async {
-                    ToastAlert.show(message: "악보가 추가되었어요.", in: self?.view ?? UIView(), iconName: "check.circle.color")
+    // MARK: - 서버에서 데이터 가져오기
+    private func fetchRequestsFromServer() {
+        ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in
+       
+            DispatchQueue.main.async {
+                guard code == 1, let scores = scores else {
+                    print("Failed to fetch scores: \(message)")
+                    self?.showEmptyState()
+                    return
                 }
-            case .failure(let error):
-                print("악보 추가 실패: \(error.localizedDescription)")
+                            
+                if scores.isEmpty {
+                    // 데이터가 없을 경우 EmptyStateView 표시
+                    self?.showEmptyState()
+                    return
+                }
+                
+                // 데이터가 있을 경우 파싱 및 UI 업데이트
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                
+                self?.requests = scores.compactMap { scoreDict in
+                    guard let id = scoreDict["id"] as? Int,
+                          let title = scoreDict["title"] as? String,
+                          let statusValue = scoreDict["status"] as? Int,
+                          let requestDateString = scoreDict["request_date"] as? String,
+                          let requestDate = dateFormatter.date(from: requestDateString),
+                          let xmlURL = scoreDict["xml_url"] as? String else {
+                        print("Failed to parse scoreDict:", scoreDict)
+                        return nil
+                    }
+                    
+                    let status: RequestStatus
+                    switch statusValue {
+                    case 0: status = .inProgress
+                    case 1: status = .scoreReady
+                    case 2: status = .downloaded
+                    default: return nil
+                    }
+                    return Request(id: id, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
+                }
+                
+                self?.updateRequestsUI()
             }
         }
     }
     
-    //MARK: - 서버, 코어데이터 구현해야할 곳
-    private func fetchSheetFromServer(for request: Request, completion: @escaping (Result<Data, Error>) -> Void) {
-        // 여기에 서버에서 데이터를 가져오는 함수 구현
-        completion(.success(Data()))
+    func addScore(at index: Int) {
+        let request = requests[index]
+        
+        // XML URL을 가져옵니다.
+        guard let xmlURLString = request.xmlURL,
+              let xmlURL = URL(string: xmlURLString) else {
+            print("Invalid XML URL")
+            return
+        }
+        
+        // XML 데이터를 다운로드합니다.
+        let task = URLSession.shared.dataTask(with: xmlURL) { data, response, error in
+            if let error = error {
+                print("Failed to download XML: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received from XML URL")
+                return
+            }
+            
+            // XML 데이터를 파싱합니다.
+            let parser = MusicXMLParser()
+            Task {
+                let score = await parser.parseMusicXML(from: data)
+                
+                // request.title을 score.title로 설정
+                if score.title.isEmpty {
+                    score.title = request.title
+                }
+                
+                // Core Data에 저장합니다.
+                ScoreManager.shared.addScoreWithNotes(scoreData: score)
+                
+                // TODO: 아래 주석 풀어야 상태가 완료로 바뀌
+                //                // 요청 상태를 .downloaded로 업데이트합니다.
+                //                self.requests[index].status = .downloaded
+                
+                //                // 서버에 상태 업데이트를 요청합니다.
+                //                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID, scoreID: String(request.id), newStatus: 2) { status, message in
+                //                    print("Update status: \(status), message: \(message)")
+                //                }
+                
+                // UI를 메인 스레드에서 업데이트합니다.
+                DispatchQueue.main.async {
+                    // 토스트 알림을 표시합니다.
+                    ToastAlert.show(message: "음악이 추가되었어요.", in: self.view, iconName: "check.circle.color")
+                    
+                    // 요청 리스트를 재구성합니다.
+                    self.updateRequestsUI()
+                }
+            }
+        }
+        task.resume()
     }
     
-    private func saveSheetToCoreData(_ sheetData: Data) {
-        // 여기에 코어데이터 저장 구현
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        //          let newSheet = SheetEntity(context: context)
-        //          newSheet.data = sheetData
-        //          newSheet.dateAdded = Date()
+    private func updateRequestsUI() {
+        // 스택뷰의 기존 서브뷰 제거
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        do {
-            try context.save()
-            print("악보가 성공적으로 Core Data에 저장되었습니다.")
-        } catch {
-            print("Core Data 저장 실패: \(error.localizedDescription)")
-        }
+        // 갱신된 요청 리스트로 UI 재구성
+        addRequestsToStackView()
+    }
+    
+    // MARK: - 요청 취소 메서드 추가
+    private func cancelRequest(at index: Int) {
+        let request = requests[index]
+        
+        // 서버에 상태 업데이트를 요청
+        ServerManager.shared.updateScoreStatus(deviceID: deviceID, scoreID: String(request.id), newStatus: 11) { [weak self] status, message in
+             guard let self = self else { return }
+             print("Request ID: \(request.id), Device ID: \(self.deviceID), New Status: 11")
+             print("Server Response - Status: \(status), Message: \(message)")
+             
+             if status == 1 {
+                 DispatchQueue.main.async {
+                     // 요청 상태를 .cancelled로 변경
+                     self.requests[index].status = .cancelled
+                     self.updateRequestsUI()
+                     ToastAlert.show(message: "요청이 취소되었습니다.", in: self.view, iconName: "cancle.color")
+                 }
+             } else {
+                 DispatchQueue.main.async {
+                     ToastAlert.show(message: "요청 취소에 실패했습니다: \(message)", in: self.view, iconName: "error_icon")
+                 }
+             }
+         }
+     }
+    
+    func showEmptyState() {
+        view.subviews
+            .filter { $0 is EmptyStateView }
+            .forEach { $0.removeFromSuperview() }
+        
+        // 새로운 EmptyStateView 추가
+        let emptyStateView = EmptyStateView(
+            message: "만들고 있는 음악이 없어요",
+            subMessage: "원하는 음악을 요청하여 만들어보세요!"
+        )
+        emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptyStateView)
+        
+        NSLayoutConstraint.activate([
+            emptyStateView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyStateView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 }
 
-// 악보 요청 취소
+// 음악 추가 요청 취소 팝업
 extension RequestProcessingViewController {
     private func showCancelAlert(for request: Request, index: Int) {
         let alertVC = CustomAlertViewController(
-            title: "악보 요청을 취소하시겠어요?",
+            title: "음악 추가 요청을 취소하시겠어요?",
             message: "취소 후에는 되돌릴 수 없어요.",
             confirmButtonText: "취소하기",
             cancelButtonText: "닫기",
@@ -229,8 +380,6 @@ extension RequestProcessingViewController {
         
         alertVC.onConfirm = { [weak self] in
             self?.cancelRequest(at: index)
-            // TODO: 아이콘 애셋 변경 필요
-            ToastAlert.show(message: "요청이 취소되었습니다.", in: self?.view ?? UIView(), iconName: "cancle.color")
         }
         
         alertVC.modalPresentationStyle = .overFullScreen
@@ -238,3 +387,62 @@ extension RequestProcessingViewController {
         present(alertVC, animated: true, completion: nil)
     }
 }
+
+// MARK: - 서버에서 변환 에러 발생시 팝업
+extension RequestProcessingViewController {
+    private func showErrorOccurredAlert(for request: Request, index: Int) {
+        let alertVC = CustomAlertViewController(
+            title: "서버 에러메시지",
+            message: "PDF 파일을 다시 선택하시겠어요?",
+            confirmButtonText: "파일 변경",
+            cancelButtonText: "요청 삭제",
+            confirmButtonColor: UIColor(named: "button_primary") ?? .red,
+            cancelButtonColor: UIColor(named: "button_cancel") ?? .gray
+        )
+        
+        alertVC.onConfirm = { [weak self] in
+            // "파일 변경" 버튼 클릭 시 동작
+            self?.handleFileChange(for: request)
+        }
+        
+        alertVC.onCancel = { [weak self] in
+            // 요청 삭제 동작 수행
+            guard let self = self else { return }
+            self.deleteRequest(for: request.id) // 수정: request 객체의 id 사용
+        }
+        
+        alertVC.modalPresentationStyle = .overFullScreen
+        alertVC.modalTransitionStyle = .crossDissolve
+        present(alertVC, animated: true, completion: nil)
+    }
+    
+    
+    private func handleFileChange(for request: Request) {
+        // 파일 변경 로직 구현
+        print("파일 변경을 처리합니다: \(request.title)")
+        // 파일 업로드를 위한 새로운 화면 표시 또는 요청 상태 업데이트
+    }
+    
+    private func deleteRequest(for requestID: Int) {
+        // 로컬 데이터에서 요청 삭제
+        if let index = requests.firstIndex(where: { $0.id == requestID }) {
+            requests.remove(at: index)
+        }
+        
+        // UI 업데이트
+        updateRequestsUI()
+        
+        // TODO: 요청 오류났을 때 삭제 기능 추가하기
+        // 서버에서 요청 삭제 API 호출 (선택 사항)
+        //    ServerManager.shared.deleteRequest(deviceID: deviceID, requestID: requestID) { [weak self] success, message in
+        //        DispatchQueue.main.async {
+        //            if success {
+        //                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
+        //            } else {
+        //                ToastAlert.show(message: "요청 삭제 실패: \(message)", in: self?.view ?? UIView(), iconName: "error_icon")
+        //            }
+        //        }
+        //    }
+    }
+}
+
