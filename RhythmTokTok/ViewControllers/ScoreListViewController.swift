@@ -21,7 +21,7 @@ class ScoreListViewController: UIViewController {
     override func loadView() {
         view = ScoreListView()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,7 +35,7 @@ class ScoreListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        navigationController?.setNavigationBarHidden(false, animated: false)
         // 초기 데이터 확인 후 필요시 삽입
         checkAndInsertDummyDataIfNeeded()
     }
