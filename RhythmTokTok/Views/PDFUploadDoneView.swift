@@ -47,7 +47,7 @@ class PDFUploadDoneView: UIView {
         // Title label 셋업
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "악보 요청이 완료되었어요"
+        titleLabel.text = "음악 요청이 완료되었어요"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor(named: "lable_primary")
@@ -58,7 +58,7 @@ class PDFUploadDoneView: UIView {
         subtitleLabel1.translatesAutoresizingMaskIntoConstraints = false
         
         // Full text
-        let fullText = "요청하신 악보는 1~2일 내로 완성될 거에요."
+        let fullText = "요청하신 음악은 1~2일 내로 완성될 거에요."
 
         // Create an NSMutableAttributedString for the full text
         let attributedString = NSMutableAttributedString(string: fullText, attributes: [
@@ -100,7 +100,7 @@ class PDFUploadDoneView: UIView {
         // navigateButton 셋업
         navigateButton = UIButton(type: .system)
         navigateButton.translatesAutoresizingMaskIntoConstraints = false
-        navigateButton.setTitle("내 악보로 이동", for: .normal)
+        navigateButton.setTitle("내 음악으로 이동", for: .normal)
         navigateButton.titleLabel?.textColor = UIColor(named: "lable_secondary")
         navigateButton.backgroundColor = UIColor(.white)
         navigateButton.layer.cornerRadius = 12
