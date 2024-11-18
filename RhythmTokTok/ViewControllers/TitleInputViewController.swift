@@ -16,7 +16,7 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationBar.configure(title: "제목 입력", includeCloseButton: true)
+        navigationBar.configure(title: "제목 입력", buttonType: .close)
         buttonStatus = .inactive
         setupUI()
         setupAccessoryButton()

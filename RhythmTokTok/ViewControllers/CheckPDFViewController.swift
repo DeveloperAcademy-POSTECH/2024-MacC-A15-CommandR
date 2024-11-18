@@ -32,7 +32,7 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationController?.setNavigationBarHidden(true, animated: false)
-        navigationBar.configure(title: "악보 PDF 선택", includeCloseButton: true)
+        navigationBar.configure(title: "악보 PDF 선택", buttonType: .close)
         setupView()
         setupActions()
         Task {

@@ -9,7 +9,6 @@ import UIKit
 import UniformTypeIdentifiers
 
 class ScoreListViewController: UIViewController {
-    
     var selectedFileURL: URL?
     var scoreListView: ScoreListView! {
         return view as? ScoreListView
@@ -24,18 +23,19 @@ class ScoreListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // 초기 데이터 확인 후 필요시 삽입
         checkAndInsertDummyDataIfNeeded()
-
-        setupNavigationBar()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        scoreListView.navigationBar.onListButtonTapped = {  [weak self] in
+            self?.didTapRequestButton()
+        }
         setupTableView()
         scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
         // 초기 데이터 확인 후 필요시 삽입
         checkAndInsertDummyDataIfNeeded()
     }
@@ -79,26 +79,6 @@ class ScoreListViewController: UIViewController {
         DispatchQueue.main.async {
             self.scoreListView.tableView.reloadData() // 테이블뷰 업데이트
         }
-    }
-    
-    // MARK: - View
-    func setupNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()  // 불투명 배경 설정
-        appearance.backgroundColor = .white  // 네비게이션 바 배경색 흰색 설정
-        appearance.shadowColor = .clear  // 하단의 그림자 제거 (선 제거)
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.black] // 텍스트 색상 설정
-        
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.tintColor = .black
-        
-        let requestButtonImage = UIImage(named: "list")
-        let requestButton = UIBarButtonItem(image: requestButtonImage,
-                                            style: .plain, target: self, action: #selector(didTapRequestButton))
-        
-        navigationItem.rightBarButtonItem = requestButton
-        // let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
     }
 }
 

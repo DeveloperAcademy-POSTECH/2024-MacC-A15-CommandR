@@ -104,7 +104,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         // 스와이프 제스처 인식기 설정
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
-        practiceNavBar.configure(title: "", includeWatchSettingButton: true)
+        practiceNavBar.configure(title: "", buttonType: .watch)
         configureUI()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)

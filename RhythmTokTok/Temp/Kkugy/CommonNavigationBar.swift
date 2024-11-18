@@ -7,12 +7,32 @@
 
 import UIKit
 
+enum NavigationBarButtonType {
+    case none
+    case watch
+    case close
+    case main
+}
+
 class CommonNavigationBar: UIView {
     // MARK: - Properties
     private let titleLabel = UILabel()
     private let backButton = UIButton(type: .system)
     private let rightButtonStackView = UIStackView()
-
+    private let appTitleImageView: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(named: "apptitle")
+        imageView.image = image
+        imageView.tintColor = .error
+        return imageView
+    }()
+    private let requestButtonImage: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "list"), for: .normal)
+        button.tintColor = .lableSecondary
+        return button
+    }()
+    
     let watchConnectImageView: UIImageView = {
         let imageView = UIImageView()
         let image = UIImage(named: "watchOff")?.withRenderingMode(.alwaysTemplate)
@@ -39,6 +59,7 @@ class CommonNavigationBar: UIView {
     var onBackButtonTapped: (() -> Void)?
     var onSettingButtonTapped: (() -> Void)?
     var onCloseButtonTapped: (() -> Void)?
+    var onListButtonTapped: (() -> Void)?
 
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -46,7 +67,7 @@ class CommonNavigationBar: UIView {
         setupView()
         setupConstraints()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
@@ -55,7 +76,7 @@ class CommonNavigationBar: UIView {
 
     // MARK: - Setup
     private func setupView() {
-        backgroundColor = .clear
+        backgroundColor = .backgroundPrimary
 
         // Back Button
         backButton.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
@@ -110,16 +131,25 @@ class CommonNavigationBar: UIView {
     @objc private func closeButtonTapped() {
         onCloseButtonTapped?()
     }
-
+    
+    @objc private func closeListTapped() {
+        onListButtonTapped?()
+    }
+    
     // MARK: - Public Methods
-    func configure(title: String, includeWatchSettingButton: Bool = false, includeCloseButton: Bool = false) {
+    func configure(title: String, buttonType: NavigationBarButtonType = .none) {
         titleLabel.text = title
-
+        backButton.isHidden = false
+        
         // 기존 버튼 제거
         rightButtonStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        // 워치, 설정 버튼 추가
-        if includeWatchSettingButton {
+        // 버튼 타입에 따른 구성
+        switch buttonType {
+        case .none:
+            // 버튼 없음
+            break
+        case .watch:
             // 워치 상태 이미지 버튼 추가
             rightButtonStackView.addArrangedSubview(watchConnectImageView)
             NSLayoutConstraint.activate([
@@ -130,15 +160,33 @@ class CommonNavigationBar: UIView {
             // 설정 버튼 추가
             rightButtonStackView.addArrangedSubview(settingButton)
             settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
-        }
-        
-        if includeCloseButton {
+        case .close:
+            // 닫기 버튼 추가
             rightButtonStackView.addArrangedSubview(closeButton)
             NSLayoutConstraint.activate([
                 closeButton.widthAnchor.constraint(equalToConstant: 24),
                 closeButton.heightAnchor.constraint(equalToConstant: 24)
             ])
             closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        case .main:
+            
+            backButton.isHidden = true
+
+            addSubview(appTitleImageView)
+            appTitleImageView.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                appTitleImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+                appTitleImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+                appTitleImageView.heightAnchor.constraint(equalToConstant: 20)
+            ])
+
+            rightButtonStackView.addArrangedSubview(requestButtonImage)
+            NSLayoutConstraint.activate([
+                requestButtonImage.widthAnchor.constraint(equalToConstant: 24),
+                requestButtonImage.heightAnchor.constraint(equalToConstant: 24)
+            ])
+            requestButtonImage.addTarget(self, action: #selector(closeListTapped), for: .touchUpInside)
         }
     }
 

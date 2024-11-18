@@ -8,7 +8,12 @@
 import UIKit
 
 class ScoreListView: UIView {
-    
+    let navigationBar = CommonNavigationBar()
+    let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backgroundTertiary
+        return view
+    }()
     // 테이블 라벨 선언
     let tableHeaderLabel: UILabel = {
         let label = UILabel()
@@ -43,6 +48,7 @@ class ScoreListView: UIView {
     // 초기화
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupNavigationBar()
         setupView()
     }
     
@@ -50,32 +56,64 @@ class ScoreListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setupNavigationBar() {
+        navigationBar.configure(title: "", buttonType: .main)
+        addSubview(navigationBar)
+        addSubview(divider)
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            navigationBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 64),
+            
+            divider.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1)
+        ])
+    }
+    
     // 뷰 구성
     private func setupView() {
-        backgroundColor = UIColor.systemGray6
+        backgroundColor = .backgroundPrimary
+        let containerView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .backgroundTertiary // 배경색 설정
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
         
-        addSubview(tableHeaderLabel)
-        addSubview(tableView)
-        addSubview(addButton)
+        addSubview(containerView)
+        containerView.addSubview(tableHeaderLabel)
+        containerView.addSubview(tableView)
+        containerView.addSubview(addButton)
         
         // Auto Layout 설정
         NSLayoutConstraint.activate([
+            // 컨테이너 뷰 레이아웃
+            containerView.topAnchor.constraint(equalTo: divider.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
             // 헤더 레이블 레이아웃
-            tableHeaderLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            tableHeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            tableHeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            tableHeaderLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
+            tableHeaderLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            tableHeaderLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             
             // 테이블뷰 레이아웃
-            tableView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor, constant: 0),
-            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
-//             하단 버튼 레이아웃
+            // 하단 버튼 레이아웃
             addButton.widthAnchor.constraint(equalToConstant: 139),
             addButton.heightAnchor.constraint(equalToConstant: 56),
-            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            addButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            addButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            addButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
 }
