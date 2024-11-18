@@ -54,6 +54,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        // 메모리 해제될 때 옵저버 제거
+        NotificationCenter.default.removeObserver(self)
+        cancellables.removeAll()
+    }
+    
     // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -401,12 +407,16 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // MARK: 워치 통신 부분
     // 워치로 곡 선택 메시지 전송, 비동기 처리
     func sendHapticSequenceToWatch(hapticSequence: [Double]) {
+        //            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
+        //            if isLaunched {
         Task {
-            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-            if isLaunched {
-                let scoreTitle = currentScore.title
-                IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
-                                                                        hapticSequence: hapticSequence)
+            let scoreTitle = self.currentScore.title
+            IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
+                                                                    hapticSequence: hapticSequence)
+            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
+            if IOStoWatchConnectivityManager.shared.watchAppStatus != .connected {
+                IOStoWatchConnectivityManager.shared.watchAppStatus = .lowBattery
+                ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
             }
         }
     }

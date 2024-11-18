@@ -187,10 +187,13 @@ class ScoreListViewController: UIViewController {
     
     // PDF 파일 선택 버튼 액션
     @objc private func didTapAddButton() {
-        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)
-        documentPicker.delegate = self
-        documentPicker.allowsMultipleSelection = false
-        self.present(documentPicker, animated: true, completion: nil)
+//        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)
+//        documentPicker.delegate = self
+//        documentPicker.allowsMultipleSelection = false
+//        self.present(documentPicker, animated: true, completion: nil)
+        let checkPDFViewController = CheckPDFViewController()
+        
+        navigationController?.pushViewController(checkPDFViewController, animated: true)
     }
     
     // UIView 대신 ScoreListView를 사용
@@ -238,27 +241,27 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // PDF 파일 선택에 사용되는 extension
-extension ScoreListViewController: UIDocumentPickerDelegate {
-    // 파일 선택에 호출
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let selectedFileURL = urls.first else {
-            return
-        }
-        // 선택된 파일 URL을 저장하고 확인 화면으로 이동
-        self.selectedFileURL = selectedFileURL
-        self.navigateToCheckPDFViewController(with: selectedFileURL)
-    }
-    
-    // 선택한 파일 확인 뷰로 이동
-    private func navigateToCheckPDFViewController(with fileURL: URL) {
-        let checkPDFViewController = CheckPDFViewController()
-        checkPDFViewController.fileURL = fileURL
-        
-        navigationController?.pushViewController(checkPDFViewController, animated: true)
-    }
-    
-    // 취소 버튼을 누르면 호출되는 메소드
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        print("사용자가 파일 선택을 취소했습니다.")
-    }
-}
+//extension ScoreListViewController: UIDocumentPickerDelegate {
+//    // 파일 선택에 호출
+//    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+//        guard let selectedFileURL = urls.first else {
+//            return
+//        }
+//        // 선택된 파일 URL을 저장하고 확인 화면으로 이동
+//        self.selectedFileURL = selectedFileURL
+//        self.navigateToCheckPDFViewController(with: selectedFileURL)
+//    }
+//    
+//    // 선택한 파일 확인 뷰로 이동
+//    private func navigateToCheckPDFViewController(with fileURL: URL) {
+//        let checkPDFViewController = CheckPDFViewController()
+//        checkPDFViewController.fileURL = fileURL
+//        
+//        navigationController?.pushViewController(checkPDFViewController, animated: true)
+//    }
+//    
+//    // 취소 버튼을 누르면 호출되는 메소드
+//    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+//        print("사용자가 파일 선택을 취소했습니다.")
+//    }
+//}
