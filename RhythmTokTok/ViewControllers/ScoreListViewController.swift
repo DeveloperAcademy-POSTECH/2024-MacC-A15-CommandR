@@ -21,9 +21,13 @@ class ScoreListViewController: UIViewController {
     override func loadView() {
         view = ScoreListView()
     }
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 초기 데이터 확인 후 필요시 삽입
+        checkAndInsertDummyDataIfNeeded()
+
         setupNavigationBar()
         setupTableView()
         scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
@@ -204,7 +208,6 @@ extension ScoreListViewController {
         let checkPDFViewController = CheckPDFViewController()
         navigationController?.pushViewController(checkPDFViewController, animated: true)
     }
-
     @objc func didTapRequestButton() {
         let requestViewController = RequestProcessingViewController()
         navigationController?.pushViewController(requestViewController, animated: true)
