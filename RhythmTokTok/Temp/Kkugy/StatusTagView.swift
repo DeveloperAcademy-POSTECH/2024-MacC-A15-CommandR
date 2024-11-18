@@ -83,8 +83,6 @@ class StatusTagView: UIView {
         guard let soundSetting = currentScore?.soundOption else { return }
         guard let hapticSetting = currentScore?.hapticOption else { return }
         
-        print("스테이터스Score : \(currentScore)")
-
         switch soundSetting {
         case .melodyBeat:
             soundSetLabel.text = "🎼 멜로디 + 메트로놈"

@@ -119,7 +119,7 @@ func createDummyScoreEntities() {
         score.id = scoreData["id"] as? String
         score.title = scoreData["title"] as? String
         score.bpm = scoreData["bpm"] as? Int64 ?? 60
-        score.soundOption = scoreData["soundOption"] as! String
+        score.soundOption = scoreData["soundOption"] as? String
         score.isHapticOn = scoreData["isHapticOn"] as? Bool ?? false
         score.createdAt = Date()
         
