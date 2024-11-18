@@ -56,7 +56,7 @@ class PDFConvertRequestConfirmationView: UIView {
         // Title label 셋업
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "이대로 악보를 만들어 드릴까요?"
+        titleLabel.text = "이대로 음악을 만들어 드릴까요?"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
         titleLabel.textColor = UIColor(named: "lable_secondary")
         addSubview(titleLabel)
@@ -81,14 +81,14 @@ class PDFConvertRequestConfirmationView: UIView {
         // Labels inside the cardView
         scoreInfoLabel = UILabel()
         scoreInfoLabel.translatesAutoresizingMaskIntoConstraints = false
-        scoreInfoLabel.text = "악보 정보"
+        scoreInfoLabel.text = "음악 정보"
         scoreInfoLabel.font = UIFont.boldSystemFont(ofSize: 18)
         scoreInfoLabel.textColor = UIColor(named: "lable_primary")
         cardView.addSubview(scoreInfoLabel)
         
         titleLabelInsideCard = UILabel()
         titleLabelInsideCard.translatesAutoresizingMaskIntoConstraints = false
-        titleLabelInsideCard.text = "악보 제목"
+        titleLabelInsideCard.text = "음악 제목"
         titleLabelInsideCard.textColor = UIColor(named: "lable_tertiary")
         titleLabelInsideCard.font = UIFont.systemFont(ofSize: 16)
         
@@ -129,7 +129,7 @@ class PDFConvertRequestConfirmationView: UIView {
         // Confirmation button 셋업
         confirmationButton = UIButton(type: .system)
         confirmationButton.translatesAutoresizingMaskIntoConstraints = false
-        confirmationButton.setTitle("악보 요청 보내기", for: .normal)
+        confirmationButton.setTitle("음악 요청 보내기", for: .normal)
         confirmationButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
         confirmationButton.setTitleColor(.white, for: .normal)
         confirmationButton.backgroundColor = UIColor(named: "button_primary")
