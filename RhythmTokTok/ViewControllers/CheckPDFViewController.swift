@@ -12,7 +12,9 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
           didSet {
               checkPDFView.isFileSelected = fileURL != nil
               if fileURL != nil {
-                  loadPDFDocument()
+                  Task {
+                      await loadPDFDocument()
+                  }
               }
           }
       }
@@ -33,7 +35,9 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
         navigationBar.configure(title: "악보 PDF 선택", includeCloseButton: true)
         setupView()
         setupActions()
-        loadPDFDocument()
+        Task {
+            await loadPDFDocument()
+        }
     }
     
     private func setupView() {
@@ -82,12 +86,16 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
         checkPDFView.addPDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
     }
     
-    private func loadPDFDocument() {
+    private func loadPDFDocument() async {
         guard let fileURL = fileURL else { return }
         
-        // PDF 페이지를 모델을 통해 로드하고 CollectionView를 리로드
-        pdfPages = PDFConvertManager.loadPDFPages(from: fileURL)
-        checkPDFView.collectionView.reloadData()
+        let pages = await PDFConvertManager.loadPDFPages(from: fileURL)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.pdfPages = pages
+            self.checkPDFView.collectionView.reloadData()
+        }
     }
 
     @objc private func changePDFButtonTapped() {
@@ -105,7 +113,9 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         fileURL = urls.first
-        loadPDFDocument()  // 새로운 파일을 로드하고 리로드
+        Task {
+           await loadPDFDocument()  // 새로운 파일을 로드하고 리로드
+        }
     }
     
     // MARK: - UICollectionViewDataSource
