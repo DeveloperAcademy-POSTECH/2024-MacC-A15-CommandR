@@ -72,16 +72,6 @@ extension SettingViewController {
     // 초기 세팅
     private func loadInitialSettingsFromCoreData() {
         if let scoreEntity = scoreService.fetchScoreById(id: currentScore.id) {
-            print("loadInitialSettingsFromCoreData-1 \(scoreEntity)")
-            print("loadInitialSettingsFromCoreData-1 \(currentScore)")
-            // currentScore 의 id 로 값을 가지고 와서 반영
-            currentScore.bpm = Int(scoreEntity.bpm)
-            currentScore.soundOption = SoundSetting(rawValue: scoreEntity.soundOption) ?? .melodyBeat
-            currentScore.hapticOption = scoreEntity.isHapticOn
-
-            print("이 사이에 자꾸 차이가 발생함. 차이가 나면 안되는 부분인데. 결국 scoreEntity 에 안들어 있어서 그런거 같음")
-
-            print("loadInitialSettingsFromCoreData-2 \(currentScore)")
             // 초기값을 SettingView에 반영
             settingView.bpmSettingSection.bpm = currentScore.bpm
             settingView.soundSettingSection.setSelectedOption(currentScore.soundOption.rawValue)

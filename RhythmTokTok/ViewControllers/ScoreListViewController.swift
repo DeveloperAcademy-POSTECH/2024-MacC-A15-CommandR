@@ -21,18 +21,21 @@ class ScoreListViewController: UIViewController {
     override func loadView() {
         view = ScoreListView()
     }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // 초기 데이터 확인 후 필요시 삽입
-        checkAndInsertDummyDataIfNeeded()
-
         setupNavigationBar()
         setupTableView()
         scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 초기 데이터 확인 후 필요시 삽입
+        checkAndInsertDummyDataIfNeeded()
+    }
+
     // 초기 데이터 확인 및 삽입 함수
     private func checkAndInsertDummyDataIfNeeded() {
         if UserDefaults.standard.bool(forKey: "hasInsertedDummyData") == false {
@@ -58,6 +61,8 @@ class ScoreListViewController: UIViewController {
     
 // MARK: - Data
     private func loadScoreList() {
+        scoreList = [] // 리스트 한번 비워주기
+        
         let scoreService = ScoreService()
         let storedScores = scoreService.fetchAllScores()
         
