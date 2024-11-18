@@ -102,15 +102,7 @@ class MusicPlayer: ObservableObject {
         // metronomeAVMIDIPlayer 초기화
         do {
             let bankURL = Bundle.main.url(forResource: "Drum Set JD Rockset 5", withExtension: "sf2")! // 사운드 폰트 파일 경로
-            
             metronomeMIDIPlayer = try AVMIDIPlayer(contentsOf: midiURL, soundBankURL: bankURL)
-            
-            // MARK: [꾸기에게] 여긴 metronomeMIDIPlayer 가 아니어도 되는건가요? 어쨌든 duration 은 mini 걸로 쓴다는 뜻..?
-            if let midiPlayer {
-                midiPlayer.prepareToPlay()
-                totalDuration = midiPlayer.duration
-            }
-  
         } catch {
             ErrorHandler.handleError(error: error)
         }

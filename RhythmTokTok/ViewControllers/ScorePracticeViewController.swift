@@ -48,7 +48,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private let scoreCardView = ScorePracticeScoreCardView()
     private let controlButtonView = ControlButtonView()
     
-    // MARK: - init
+// MARK: - init
     init(currentScore: Score) {
         print("ScorePracticeViewController-init1-currentScore:\(currentScore)")
         self.currentScore = currentScore
@@ -61,6 +61,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+  
+    deinit {
+        // 메모리 해제될 때 옵저버 제거
+        NotificationCenter.default.removeObserver(self)
+        cancellables.removeAll()
     }
     
     // MARK: - 뷰 생명주기
@@ -80,7 +86,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         // musicPlayer에 soundOption을 전달
         musicPlayer.soundOption = currentScore.soundOption
-        
+      
         navigationController?.setNavigationBarHidden(true, animated: animated)
         countdownTime = 3
         mediaManager.currentScore = currentScore
@@ -113,7 +119,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         setupBindings()
     }
     
-    // MARK: - View
+// MARK: - View
     private func configureUI() {
         // 루트 뷰 설정
         let containerView = UIView()
@@ -318,6 +324,110 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         
         navigationController?.popViewController(animated: true)
     }
+                
+//                // MARK: 구간 선택 부분
+//                if let startMeasureNumber, let endMeasureNumber {
+//                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
+//                                                                                         divisions: score.divisions,
+//                                                                                         startNumber: startMeasureNumber,
+//                                                                                         endNumber: endMeasureNumber)
+//                } else {
+//                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
+//                                                                              divisions: score.divisions)
+//                }
+                hapticSequence = await mediaManager.getMetronomeHapticSequence()
+                
+                if let validHapticSequence = hapticSequence {
+                    totalHapticSequence = validHapticSequence
+                    // 워치로 곡 선택 메시지 전송
+                    sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
+                    
+                } else {
+                    print("No valid haptic sequence found.")
+                }
+                // MIDI 파일 로드
+                musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+                print("MIDI file successfully loaded and ready to play.")
+            } else {
+                ErrorHandler.handleError(error: "MIDI file URL is nil.")
+            }
+            
+            // Metronome MIDI'
+            metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
+            
+            if let metronomeMIDIFilePathURL {
+                print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
+                musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
+                updatePlayPauseButton(true)
+            }
+        
+        } catch {
+            ErrorHandler.handleError(error: error)
+        }
+    }
+    
+    // MARK: 워치 통신 부분
+    // 워치로 곡 선택 메시지 전송, 비동기 처리
+    func sendHapticSequenceToWatch(hapticSequence: [Double]) {
+        //            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
+        //            if isLaunched {
+        Task {
+            let scoreTitle = self.currentScore.title
+            IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
+                                                                    hapticSequence: hapticSequence)
+            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
+            if IOStoWatchConnectivityManager.shared.watchAppStatus != .connected {
+                IOStoWatchConnectivityManager.shared.watchAppStatus = .lowBattery
+                ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
+            }
+        }
+    }
+    
+    // 워치로 실행 예약 메시지 전송
+    func sendPlayStatusToWatch(startTimeInterVal: TimeInterval) {
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                hapticSequence: [],
+                                                                                status: .play,
+                                                                                startTime: startTimeInterVal)
+    }
+    
+    func sendDoneStatusToWatch() {
+        controlButtonView.playPauseButton.isPlaying = false
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                hapticSequence: totalHapticSequence,
+                                                                                status: .done,
+                                                                                startTime: 0)
+    }
+    
+    // 마디 점프 메시지 전송
+    func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
+        let scoreTitle = currentScore.title
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                hapticSequence: hapticSequence,
+                                                                                status: .jump,
+                                                                                startTime: startTimeInterVal)
+    }
+    
+    // 워치로 일시정지 예약 메시지 전송
+    func sendPauseStatusToWatch() {
+        Task {
+            // 멜로디 일시정지 햅틱 시퀀스 재산출 코드
+//            let hapticSequence = try await mediaManager.getClipPauseHapticSequence(part: currentScore.parts.last!,
+//                                                                                   divisions: currentScore.divisions,
+//                                                                                   pauseTime: musicPlayer.currentTime)
+            let hapticSequence = await mediaManager.getClipPauseMetronomeHapticSequence(pauseTime: musicPlayer.currentTime)
+            IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                    hapticSequence: hapticSequence,
+                                                                                    status: .pause, startTime: 0)
+        }
+    }
+    
+    // 워치로 멈추고 처음으로 대기 메시지 전송
+    func sendStopStatusToWatch() {
+        IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
+                                                                                hapticSequence: totalHapticSequence,
+                                                                                status: .stop, startTime: 0)
+    }
     
     func handlePlayStatusChange(_ status: PlayStatus) {
         print("handlePlayStatusChange - status : \(status)")
@@ -491,7 +601,6 @@ extension ScorePracticeViewController {
                 // Metronome MIDI'
                 metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
                 print("metronome MIDI file successfully loaded and ready to play.")
-                
                 //                if currentScore.soundOption == .melodyBeat {
                 // 현재 melodyBeat 일때만 metronomeMIDIPlayer 를 초기화하고 있어서, Score 초기값이 melody 인 경우에는 음악 재생이 안됨.
                 // Score 생성 시 초기값이 어떤게 들어가있을지 모르기때문에 일단 모두 초기화 해두고 필요에 따라 골라쓰는 것은 어떨지
@@ -499,14 +608,11 @@ extension ScorePracticeViewController {
                     print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
                     musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
                     //                    }
-                }
-                
+                }                
                 updatePlayPauseButton(true)
             } else {
                 ErrorHandler.handleError(error: "MIDI file URL is nil.")
             }
-            
-            
         } catch {
             ErrorHandler.handleError(error: error)
         }
@@ -596,7 +702,7 @@ extension ScorePracticeViewController {
                                                                                     status: .pause, startTime: 0)
         }
     }
-    
+  
     // 워치로 멈추고 처음으로 대기 메시지 전송
     func sendStopStatusToWatch() {
         IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,

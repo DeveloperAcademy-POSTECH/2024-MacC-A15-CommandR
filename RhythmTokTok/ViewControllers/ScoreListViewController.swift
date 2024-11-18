@@ -21,18 +21,21 @@ class ScoreListViewController: UIViewController {
     override func loadView() {
         view = ScoreListView()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // 초기 데이터 확인 후 필요시 삽입
-        checkAndInsertDummyDataIfNeeded()
-
         setupNavigationBar()
         setupTableView()
         scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 초기 데이터 확인 후 필요시 삽입
+        checkAndInsertDummyDataIfNeeded()
+    }
+
     // 초기 데이터 확인 및 삽입 함수
     private func checkAndInsertDummyDataIfNeeded() {
         if UserDefaults.standard.bool(forKey: "hasInsertedDummyData") == false {
@@ -58,6 +61,8 @@ class ScoreListViewController: UIViewController {
     
 // MARK: - Data
     private func loadScoreList() {
+        scoreList = [] // 리스트 한번 비워주기
+        
         let scoreService = ScoreService()
         let storedScores = scoreService.fetchAllScores()
         
@@ -153,6 +158,34 @@ extension ScoreListViewController {
             
             measuresDict[lineNumber] = measureArray
         }
+
+    // TODO: 검색 기능 추가 예정
+    @objc func didTapSearch() {
+        // MARK: 임시로 검색버튼에 기존 테스트뷰 넣어놨어요
+        //        let viewController = ViewController()
+        //        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    // TODO: 리스트에서는 설정으로 이동 없어짐 (곡별 설정)
+    @objc func didTapSettings() {
+        //        let settingViewController = SettingViewController()
+        //        navigationController?.pushViewController(settingViewController, animated: true)
+    }
+    
+    // PDF 파일 선택 버튼 액션
+    @objc private func didTapAddButton() {
+//        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.pdf], asCopy: true)
+//        documentPicker.delegate = self
+//        documentPicker.allowsMultipleSelection = false
+//        self.present(documentPicker, animated: true, completion: nil)
+        let checkPDFViewController = CheckPDFViewController()
+        
+        navigationController?.pushViewController(checkPDFViewController, animated: true)
+    }
+    
+    // UIView 대신 ScoreListView를 사용
+    override func loadView() {
+        view = ScoreListView()
     }
 }
 
