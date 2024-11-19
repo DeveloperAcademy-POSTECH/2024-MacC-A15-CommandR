@@ -92,7 +92,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         navigationController?.setNavigationBarHidden(true, animated: animated)
         countdownTime = 3
         mediaManager.currentScore = currentScore
-        Task { await createMIDIFile(score: currentScore) }
+        Task { await createMIDIWithHaptic(score: currentScore) }
         checkUpdatePreviousButtonState()
         checkUpdateNextButtonState()
         scoreCardView.bpmLabel.updateSpeedText(currentSpeed: currentScore.bpm)
@@ -450,68 +450,42 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
 
 // MARK: - [Ext] MIDI 파일, 햅틱 시퀀스 관리
 extension ScorePracticeViewController {
-    private func createMIDIFile(score: Score, startMeasureNumber: Int? = nil, endMeasureNumber: Int? = nil) async {
+    private func createMIDIWithHaptic(score: Score) async {
         do {
             // MIDI File URL 초기화
             updatePlayPauseButton(false)
             midiFilePathURL = nil
             // TODO: 사용할 파트 어떻게 정할지 구상 필요
             mediaManager.setCurrentPart(part: score.parts.last!, division: Double(score.divisions))
-            if let startMeasureNumber, let endMeasureNumber {
-                // 구단 MIDI 파일 생성
-                midiFilePathURL = try await mediaManager.getClipMIDIFile(part: score.parts.last!,
-                                                                         divisions: score.divisions,
-                                                                         startNumber: startMeasureNumber,
-                                                                         endNumber: endMeasureNumber)
-            } else {
-                midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
-                                                                         divisions: score.divisions,
-                                                                         isChordEnabled: false)
-            }
-            // MIDI 파일 URL 확인 및 파일 로드
-            if let midiFilePathURL = midiFilePathURL {
-                print("MIDI file created successfully: \(midiFilePathURL)")
-                // 햅틱 시퀀스 관리
-                var hapticSequence: [Double]?
-                //                // MARK: 구간 선택 부분
-                //                if let startMeasureNumber, let endMeasureNumber {
-                //                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
-                //                                                                                         divisions: score.divisions,
-                //                                                                                         startNumber: startMeasureNumber,
-                //                                                                                         endNumber: endMeasureNumber)
-                //                } else {
-                //                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
-                //                                                                              divisions: score.divisions)
-                //                }
-                hapticSequence = await mediaManager.getMetronomeHapticSequence()
-                
-                if let validHapticSequence = hapticSequence {
-                    totalHapticSequence = validHapticSequence
-                    // 워치로 곡 선택 메시지 전송
-                    sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
-                    
-                } else {
-                    print("No valid haptic sequence found.")
-                }
-                // MIDI 파일 로드
-                musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
-                print("MIDI file successfully loaded and ready to play.")
-            } else {
-                ErrorHandler.handleError(error: "MIDI file URL is nil.")
-            }
-            
-            // Metronome MIDI'
-            metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
-            
-            if let metronomeMIDIFilePathURL {
-                print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
-                musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
-                updatePlayPauseButton(true)
-            }
+            midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
+                                                                     divisions: score.divisions,
+                                                                     isChordEnabled: false)
+            try await createHaptics(midiFilePathURL: midiFilePathURL, score: score)
             
         } catch {
             ErrorHandler.handleError(error: error)
         }
+    }
+    
+    private func createHaptics(midiFilePathURL: URL?, score: Score) async throws {
+        guard let midiFilePathURL = midiFilePathURL else {
+            throw NSError(domain: "MIDIError", code: 404, userInfo: [NSLocalizedDescriptionKey: "MIDI file URL is nil."])
+        }
+
+        // 햅틱 시퀀스 생성
+        let hapticSequence = await mediaManager.getMetronomeHapticSequence()
+        totalHapticSequence = hapticSequence
+        sendHapticSequenceToWatch(hapticSequence: hapticSequence)
+        
+
+        // MIDI 파일 로드
+        musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+
+        // Metronome MIDI 파일 로드
+        let metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
+        musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
+        updatePlayPauseButton(true)
+        
     }
 }
 
@@ -551,8 +525,6 @@ extension ScorePracticeViewController {
 extension ScorePracticeViewController {
     // 워치로 곡 선택 메시지 전송, 비동기 처리
     func sendHapticSequenceToWatch(hapticSequence: [Double]) {
-        //            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-        //            if isLaunched {
         Task {
             let scoreTitle = self.currentScore.title
             IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
