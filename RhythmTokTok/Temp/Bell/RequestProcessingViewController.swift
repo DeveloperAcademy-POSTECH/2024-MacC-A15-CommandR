@@ -8,7 +8,8 @@
 import UIKit
 import CoreData
 
-class RequestProcessingViewController: UIViewController, UIGestureRecognizerDelegate {
+class RequestProcessingViewController: UIViewController,
+                                       UIGestureRecognizerDelegate {
     private let navigationBar = CommonNavigationBar()
     private let divider: UIView = {
         let view = UIView()
@@ -23,13 +24,25 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         return encrypt(ServerManager.shared.getDeviceUUID())
     }
     
-    // 암호화 함수
+    // device 암호화 함수
     func encrypt(_ input: String) -> String {
         do {
             return try AES256Cryption.encrypt(string: input)
         } catch {
             print("Device UUID before encryption: \(input)")
             ErrorHandler.handleError(error: error)
+            return ""
+        }
+    }
+    
+    // deviceToken 암호화
+    private func encryptDeviceToken(_ deviceToken: Data) -> String {
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        do {
+            let encryptedToken = try AES256Cryption.encrypt(string: tokenString)
+            return encryptedToken
+        } catch {
+            ErrorHandler.handleError(error: "Device Token 암호화 실패: \(error.localizedDescription)")
             return ""
         }
     }
@@ -193,7 +206,9 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
             for request in requestsForStatus {
                 let requestView = RequestCardView()
                 requestView.request = request
-                requestView.requestActionButton.addTarget(self, action: #selector(handleButtonAction(_:)), for: .touchUpInside)
+                requestView.requestActionButton.addTarget(self,
+                                                          action: #selector(handleButtonAction(_:)),
+                                                          for: .touchUpInside)
                 requestView.requestActionButton.tag = requests.firstIndex(where: { $0.id == request.id }) ?? 0
                 requestView.translatesAutoresizingMaskIntoConstraints = false
                 requestView.heightAnchor.constraint(equalToConstant: 96).isActive = true
@@ -213,7 +228,6 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         switch request.status {
         case .inProgress:
             showCancelAlert(for: request, index: index)
-            
             
             // MARK: - 서버에러 발생시 팝업알림뷰 다시 그려야함
         case .errorOccurred:
@@ -433,7 +447,6 @@ extension RequestProcessingViewController {
         alertVC.modalTransitionStyle = .crossDissolve
         present(alertVC, animated: true, completion: nil)
     }
-    
     
     private func handleFileChange(for request: Request) {
         // 파일 변경 로직 구현

@@ -1,9 +1,9 @@
-//
-//  ScoreSearchViewController.swift
-//  RhythmTokTok
-//
-//  Created by Byeol Kim on 11/19/24.
-//
+////
+////  ScoreSearchViewController.swift
+////  RhythmTokTok
+////
+////  Created by Byeol Kim on 11/19/24.
+////
 
 import UIKit
 
@@ -84,11 +84,10 @@ class ScoreSearchViewController: UIViewController, UITableViewDataSource, UITabl
         
         searchTextField.addTarget(self, action: #selector(searchTextChanged), for: .editingChanged)
         
+        // 테이블 뷰 설정
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(ListItemCellView.self, forCellReuseIdentifier: ListItemCellView.identifier)
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = UIColor(named: "background_tertiary")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
     }
@@ -118,14 +117,15 @@ class ScoreSearchViewController: UIViewController, UITableViewDataSource, UITabl
             searchTextField.leadingAnchor.constraint(equalTo: searchIcon.trailingAnchor, constant: 8),
             searchTextField.trailingAnchor.constraint(equalTo: customSearchBar.trailingAnchor, constant: -12),
             searchTextField.centerYAnchor.constraint(equalTo: customSearchBar.centerYAnchor),
-            
-            tableView.topAnchor.constraint(equalTo: searchBackgroundView.bottomAnchor, constant: 16),
+         
+            // 테이블 뷰
+            tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-    
+
     // MARK: - Actions
     @objc private func searchTextChanged() {
         guard let searchText = searchTextField.text, !searchText.isEmpty else {
@@ -143,11 +143,9 @@ class ScoreSearchViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListItemCellView.identifier,
-                                                       for: indexPath) as? ListItemCellView else {
-            return UITableViewCell()
-        }
-        cell.configure(with: filteredScores[indexPath.row].title)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = filteredScores[indexPath.row].title
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 16)
         return cell
     }
 
@@ -155,7 +153,6 @@ class ScoreSearchViewController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedScore = filteredScores[indexPath.row]
-        let practiceViewController = ScorePracticeViewController(currentScore: selectedScore)
-        navigationController?.pushViewController(practiceViewController, animated: true)
+        print("Selected Score: \(selectedScore.title)")
     }
 }
