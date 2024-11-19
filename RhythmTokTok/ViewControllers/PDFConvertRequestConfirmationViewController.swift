@@ -93,26 +93,34 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
             ToastAlert.show(message: "제목을 입력해주세요.", in: self.view, iconName: "error_icon")
             return
         }
-        
+
         // 사용자가 추가한 PDF 파일 가져오기
         guard let pdfURL = fileURL else {
             print("PDF 파일 URL이 없습니다.")
             ToastAlert.show(message: "PDF 파일을 선택해주세요.", in: self.view, iconName: "error_icon")
             return
         }
-        
+
         // 페이지 수 가져오기
         guard let page = pageCount else {
             print("PDF 페이지 수를 가져올 수 없습니다.")
             ToastAlert.show(message: "페이지 수를 확인할 수 없습니다.", in: self.view, iconName: "error_icon")
             return
         }
-        
+
+        // deviceToken 가져오기
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+              let deviceToken = appDelegate.deviceToken else {
+            print("Device Token을 가져올 수 없습니다.")
+            ToastAlert.show(message: "Device Token이 없습니다.", in: self.view, iconName: "error_icon")
+            return
+        }
+
         // 서버로 업로드
         let title = filename // 사용자 입력 제목
         let deviceID = encrypt(ServerManager.shared.getDeviceUUID())
-        
-        ServerManager.shared.uploadPDF(deviceID: deviceID, title: title, pdfFileURL: pdfURL, page: page) { status, message in
+
+        ServerManager.shared.uploadPDF(deviceID: deviceID, deviceToken: deviceToken, title: title, pdfFileURL: pdfURL, page: page) { status, message in
             print("Upload status: \(status), message: \(message)")
             DispatchQueue.main.async {
                 if status == 1 {

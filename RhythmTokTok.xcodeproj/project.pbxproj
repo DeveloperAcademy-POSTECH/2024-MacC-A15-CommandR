@@ -136,6 +136,7 @@
 		D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */; };
 		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
 		D3F8C5312CEB6B6F00D2B012 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */; };
+		D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */; };
 		EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1B9BB52CD647A000073215 /* BPMDescription.swift */; };
 		EE4203962CD226800081F2A1 /* BPMSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */; };
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
@@ -311,6 +312,7 @@
 		D3DDA0752CC5516F00125C86 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreSearchViewController.swift; sourceTree = "<group>"; };
 		EE1B9BB52CD647A000073215 /* BPMDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMDescription.swift; sourceTree = "<group>"; };
 		EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
 				D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */,
+				D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */,
 			);
 			path = Bell;
 			sourceTree = "<group>";
@@ -941,6 +944,7 @@
 				D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */,
 				1ED9FED12CBF654400472C51 /* BPMLabel.swift in Sources */,
 				1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */,
+				D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */,
 				D32330952CDE382C007D1003 /* RequestStatus.swift in Sources */,
 				1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */,
 				D3CE18C62CE9B520008D120C /* AES256Cryption.swift in Sources */,

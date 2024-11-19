@@ -18,6 +18,18 @@ class ServerManager {
         return UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
     }
     
+    // deviceToken 암호화 메서드
+    private func encryptDeviceToken(_ deviceToken: Data) -> String {
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        do {
+            let encryptedToken = try AES256Cryption.encrypt(string: tokenString)
+            return encryptedToken
+        } catch {
+            ErrorHandler.handleError(error: "Device Token 암호화 실패: \(error.localizedDescription)")
+            return ""
+        }
+    }
+    
     // URLRequest 생성 메서드 추가
     private func createServerRequest(
         endpoint: String,
@@ -35,9 +47,14 @@ class ServerManager {
     }
     
     // 1. PDF 업로드 기능
-    func uploadPDF(deviceID: String, title: String, pdfFileURL: URL, page: Int, completion: @escaping (Int, String) -> Void) {
+    func uploadPDF(deviceID: String, deviceToken: Data,
+                   title: String, pdfFileURL: URL, page: Int,
+                   completion: @escaping (Int, String) -> Void) {
         let boundary = "Boundary-\(UUID().uuidString)"
         var body = Data()
+        
+        // 암호화된 deviceToken
+        let encryptedToken = encryptDeviceToken(deviceToken)
         
         // Multipart form-data 구성
         func addFormField(_ name: String, value: String) {
@@ -48,6 +65,7 @@ class ServerManager {
         
         // 필드 추가
         addFormField("device_id", value: deviceID)
+        addFormField("device_token", value: encryptedToken) // 암호화된 deviceToken 전달
         addFormField("title", value: title)
         addFormField("page", value: "\(page)")
         
@@ -102,7 +120,7 @@ class ServerManager {
     
     // 2. 음악 요청 조회 기능
     func fetchScores(deviceID: String, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
-
+        
         let endpoint = "/api/scores?device_id=\(deviceID)"
         let request = createServerRequest(endpoint: endpoint, method: "GET")
         
@@ -121,7 +139,7 @@ class ServerManager {
             guard let data = data else {
                 return
             }
-
+            
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let status = json["code"] as? Int,

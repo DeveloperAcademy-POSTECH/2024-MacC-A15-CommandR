@@ -23,13 +23,25 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         return encrypt(ServerManager.shared.getDeviceUUID())
     }
     
-    // 암호화 함수
+    // device 암호화 함수
     func encrypt(_ input: String) -> String {
         do {
             return try AES256Cryption.encrypt(string: input)
         } catch {
             print("Device UUID before encryption: \(input)")
             ErrorHandler.handleError(error: error)
+            return ""
+        }
+    }
+    
+    // deviceToken 암호화
+    private func encryptDeviceToken(_ deviceToken: Data) -> String {
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        do {
+            let encryptedToken = try AES256Cryption.encrypt(string: tokenString)
+            return encryptedToken
+        } catch {
+            ErrorHandler.handleError(error: "Device Token 암호화 실패: \(error.localizedDescription)")
             return ""
         }
     }
