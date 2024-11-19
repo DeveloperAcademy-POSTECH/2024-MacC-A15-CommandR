@@ -93,6 +93,7 @@ class PDFUploadDoneView: UIView {
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         dismissButton.setTitle("확인", for: .normal)
         dismissButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
         dismissButton.setTitleColor(.white, for: .normal)
         dismissButton.backgroundColor = UIColor(named: "button_primary")
         dismissButton.layer.cornerRadius = 12
