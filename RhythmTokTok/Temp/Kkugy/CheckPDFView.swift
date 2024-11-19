@@ -37,14 +37,16 @@ class CheckPDFView: UIView {
     private func setupUI() {
         // Header Label 설정
         headerLabel.textAlignment = .left
-        headerLabel.font = UIFont(name: "Pretendard-Bold", size: 24)
+        headerLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        headerLabel.adjustsFontForContentSizeCategory = true
         headerLabel.textColor = .lableSecondary
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(headerLabel)
         
         // Subheader Label 설정
         subHeaderLabel.textAlignment = .left
-        subHeaderLabel.font = UIFont(name: "Pretendard-Regular", size: 16)
+        subHeaderLabel.font = UIFont.customFont(forTextStyle: .body1Regular)
+        subHeaderLabel.adjustsFontForContentSizeCategory = true
         subHeaderLabel.textColor = .lableTertiary
         subHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(subHeaderLabel)
@@ -79,7 +81,8 @@ class CheckPDFView: UIView {
 
         // Change PDF Button 설정
         changePDFButton.setTitle("다른 파일로 변경하기", for: .normal)
-        changePDFButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        changePDFButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        changePDFButton.titleLabel?.adjustsFontForContentSizeCategory = true
         changePDFButton.setTitleColor(.lableSecondary, for: .normal)
         changePDFButton.backgroundColor = .buttonTertiary
         changePDFButton.layer.borderColor = UIColor.borderPrimary.cgColor
@@ -90,7 +93,8 @@ class CheckPDFView: UIView {
 
         // Add PDF Button 설정
         addPDFButton.setTitle("PDF 파일 선택", for: .normal)
-        addPDFButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        addPDFButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        addPDFButton.titleLabel?.adjustsFontForContentSizeCategory = true
         addPDFButton.setTitleColor(.lableSecondary, for: .normal)
         addPDFButton.backgroundColor = .buttonTertiary
         addPDFButton.layer.borderColor = UIColor.borderPrimary.cgColor
@@ -101,7 +105,8 @@ class CheckPDFView: UIView {
 
         // Confirm Button 설정
         confirmButton.setTitle("선택 완료", for: .normal)
-        confirmButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        confirmButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        confirmButton.titleLabel?.adjustsFontForContentSizeCategory = true
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.layer.cornerRadius = 12
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
