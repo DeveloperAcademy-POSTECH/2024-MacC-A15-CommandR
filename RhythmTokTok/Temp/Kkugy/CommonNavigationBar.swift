@@ -79,7 +79,7 @@ class CommonNavigationBar: UIView {
         backgroundColor = .backgroundPrimary
 
         // Back Button
-        backButton.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        backButton.setImage(UIImage(named: "back"), for: .normal)
         backButton.tintColor = .lableSecondary
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         addSubview(backButton)

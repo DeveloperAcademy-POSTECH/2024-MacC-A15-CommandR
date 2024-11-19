@@ -37,7 +37,7 @@ class ScoreListView: UIView {
     let addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(" 음악 추가하기", for: .normal)
-        button.setImage(UIImage(systemName: "document"), for: .normal)
+        button.setImage(UIImage(named: "add"), for: .normal)
         button.tintColor = .white
         button.backgroundColor = UIColor.systemBlue
         button.layer.cornerRadius = 12
