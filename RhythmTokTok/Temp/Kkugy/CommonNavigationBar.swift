@@ -33,6 +33,13 @@ class CommonNavigationBar: UIView {
         return button
     }()
     
+    private let searchButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "search"), for: .normal)
+        button.tintColor = .lableSecondary
+        return button
+    }()
+    
     let watchConnectImageView: UIImageView = {
         let imageView = UIImageView()
         let image = UIImage(named: "watchOff")?.withRenderingMode(.alwaysTemplate)
@@ -60,6 +67,7 @@ class CommonNavigationBar: UIView {
     var onSettingButtonTapped: (() -> Void)?
     var onCloseButtonTapped: (() -> Void)?
     var onListButtonTapped: (() -> Void)?
+    var onSearchButtonTapped: (() -> Void)?
 
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -136,6 +144,10 @@ class CommonNavigationBar: UIView {
         onListButtonTapped?()
     }
     
+    @objc private func searchButtonTapped() {
+        onSearchButtonTapped?()
+    }
+    
     // MARK: - Public Methods
     func configure(title: String, buttonType: NavigationBarButtonType = .none) {
         titleLabel.text = title
@@ -180,7 +192,17 @@ class CommonNavigationBar: UIView {
                 appTitleImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
                 appTitleImageView.heightAnchor.constraint(equalToConstant: 20)
             ])
+            
+            
+            // 검색버튼
+            rightButtonStackView.addArrangedSubview(searchButton)
+            NSLayoutConstraint.activate([
+                searchButton.widthAnchor.constraint(equalToConstant: 24),
+                searchButton.heightAnchor.constraint(equalToConstant: 24)
+            ])
+            searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
 
+            // 요청 리스트 버튼
             rightButtonStackView.addArrangedSubview(requestButtonImage)
             NSLayoutConstraint.activate([
                 requestButtonImage.widthAnchor.constraint(equalToConstant: 24),

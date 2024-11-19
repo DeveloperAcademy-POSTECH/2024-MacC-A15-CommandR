@@ -5,15 +5,61 @@
 //  Created by 백록담 on 10/5/24.
 import UIKit
 import CoreData
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let scoreService = ScoreService()
+    var deviceToken: Data? 
     
     // MARK: - 앱 실행시 더미 데이터 삽입
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Push Notification 권한 요청
+        registerForPushNotifications()
         return true
     }
+    
+    // MARK: - Push Notification 권한 동의
+    private func registerForPushNotifications() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if granted {
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            } else {
+                ErrorHandler.handleError(error: "Push Notification 권한 거부: \(error?.localizedDescription ?? "Unknown error")")
+                
+            }
+        }
+    }
+    
+    // MARK: - Remote Notification 등록 성공
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        self.deviceToken = deviceToken // deviceToken 저장
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        print("Device Token: \(tokenString)")
+        
+        // Token 암호화 및 서버 전송
+        do {
+            let encryptedToken = try AES256Cryption.encrypt(string: tokenString)
+            sendDeviceTokenToServer(encryptedToken)
+        } catch {
+            print("Device Token 암호화 실패: \(error.localizedDescription)")
+        }
+    }
+    
+    // MARK: - Remote Notification 등록 실패
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        ErrorHandler.handleError(error: "Remote Notification 등록 실패: \(error.localizedDescription)")
+    }
+    
+    // MARK: - 서버로 Device Token 전송
+    private func sendDeviceTokenToServer(_ encryptedToken: String) {
+        // 서버로 전송하는 로직 추가
+        print("암호화된 Device Token 서버로 전송: \(encryptedToken)")
+        // TODO: ServerManager를 통해 서버에 전송 로직 구현
+    }
+    
     
     // Core Data 저장 함수
     func saveContext () {

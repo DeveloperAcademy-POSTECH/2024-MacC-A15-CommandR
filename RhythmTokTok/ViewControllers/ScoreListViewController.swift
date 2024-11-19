@@ -27,16 +27,19 @@ class ScoreListViewController: UIViewController {
         scoreListView.navigationBar.onListButtonTapped = {  [weak self] in
             self?.didTapRequestButton()
         }
+        scoreListView.navigationBar.onSearchButtonTapped = { [weak self] in
+            self?.didTapSearch()
+        }
         setupTableView()
         scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // 초기 데이터 확인 후 필요시 삽입
         checkAndInsertDummyDataIfNeeded()
     }
-
+    
     // 초기 데이터 확인 및 삽입 함수
     private func checkAndInsertDummyDataIfNeeded() {
         if UserDefaults.standard.bool(forKey: "hasInsertedDummyData") == false {
@@ -193,6 +196,8 @@ extension ScoreListViewController {
 // MARK: - [Ext] 검색 기능 관련 (추가 예정)
 extension ScoreListViewController {
     @objc func didTapSearch() {
-        // 검색버튼 생기면 여기에 액션 구현
+        let searchViewController = ScoreSearchViewController()
+        searchViewController.configure(with: scoreList) // 현재 악보 리스트 전달
+        navigationController?.pushViewController(searchViewController, animated: true)
     }
 }
