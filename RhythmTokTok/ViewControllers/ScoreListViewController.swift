@@ -23,9 +23,6 @@ class ScoreListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // 초기 데이터 확인 후 필요시 삽입
-        checkAndInsertDummyDataIfNeeded()
         navigationController?.setNavigationBarHidden(true, animated: false)
         scoreListView.navigationBar.onListButtonTapped = {  [weak self] in
             self?.didTapRequestButton()
@@ -70,7 +67,6 @@ class ScoreListViewController: UIViewController {
     private func loadScoreList() {
         scoreList = [] // 리스트 한번 비워주기
         
-        let scoreService = ScoreService()
         let storedScores = scoreService.fetchAllScores()
         
         print("loading score")
