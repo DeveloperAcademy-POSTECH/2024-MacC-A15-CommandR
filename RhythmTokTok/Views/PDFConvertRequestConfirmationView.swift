@@ -30,7 +30,7 @@ class PDFConvertRequestConfirmationView: UIView {
     // cardView 내부 라벨
     var scoreInfoLabel: UILabel!
     
-    //fileName HStack
+    // fileName HStack
     var filenameHStack: UIStackView!
     var titleLabelInsideCard: UILabel!
     var filenameLabel: UILabel!
@@ -57,7 +57,8 @@ class PDFConvertRequestConfirmationView: UIView {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "이대로 음악을 만들어 드릴까요?"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
+        titleLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = UIColor(named: "lable_secondary")
         addSubview(titleLabel)
         
@@ -65,7 +66,8 @@ class PDFConvertRequestConfirmationView: UIView {
         subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "입력한 정보가 맞는지 확인해 주세요"
-        subtitleLabel.font = UIFont.systemFont(ofSize: 16)
+        subtitleLabel.font = UIFont.customFont(forTextStyle: .body1Regular)
+        subtitleLabel.adjustsFontForContentSizeCategory = true
         subtitleLabel.textColor = UIColor(named: "lable_tertiary")
         addSubview(subtitleLabel)
         
@@ -82,7 +84,8 @@ class PDFConvertRequestConfirmationView: UIView {
         scoreInfoLabel = UILabel()
         scoreInfoLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreInfoLabel.text = "음악 정보"
-        scoreInfoLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        scoreInfoLabel.font = UIFont.customFont(forTextStyle: .body1Medium)
+        scoreInfoLabel.adjustsFontForContentSizeCategory = true
         scoreInfoLabel.textColor = UIColor(named: "lable_primary")
         cardView.addSubview(scoreInfoLabel)
         
@@ -90,12 +93,13 @@ class PDFConvertRequestConfirmationView: UIView {
         titleLabelInsideCard.translatesAutoresizingMaskIntoConstraints = false
         titleLabelInsideCard.text = "음악 제목"
         titleLabelInsideCard.textColor = UIColor(named: "lable_tertiary")
-        titleLabelInsideCard.font = UIFont.systemFont(ofSize: 16)
+        titleLabelInsideCard.font = UIFont.customFont(forTextStyle: .body1Medium)
         
         filenameLabel = UILabel()
         filenameLabel.translatesAutoresizingMaskIntoConstraints = false
         filenameLabel.text = delegate?.filename
-        filenameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        filenameLabel.font = UIFont.customFont(forTextStyle: .body1Bold)
+        filenameLabel.adjustsFontForContentSizeCategory = true
         filenameLabel.textColor = UIColor(named: "lable_primary")
         filenameLabel.textAlignment = .right
         
@@ -110,12 +114,14 @@ class PDFConvertRequestConfirmationView: UIView {
         pageCountLabel.translatesAutoresizingMaskIntoConstraints = false
         pageCountLabel.text = "페이지 수"
         pageCountLabel.textColor = UIColor(named: "lable_tertiary")
-        pageCountLabel.font = UIFont.systemFont(ofSize: 16)
+        pageCountLabel.font = UIFont.customFont(forTextStyle: .body1Medium)
+        pageCountLabel.adjustsFontForContentSizeCategory = true
         
         pageCount = UILabel()
         pageCount.translatesAutoresizingMaskIntoConstraints = false
         pageCount.text = "\(0)"
-        pageCount.font = UIFont.boldSystemFont(ofSize: 16)
+        pageCount.font = UIFont.customFont(forTextStyle: .body1Bold)
+        pageCount.adjustsFontForContentSizeCategory = true
         pageCount.textColor = UIColor(named: "lable_primary")
         pageCount.textAlignment = .right
         
@@ -130,7 +136,8 @@ class PDFConvertRequestConfirmationView: UIView {
         confirmationButton = UIButton(type: .system)
         confirmationButton.translatesAutoresizingMaskIntoConstraints = false
         confirmationButton.setTitle("음악 요청 보내기", for: .normal)
-        confirmationButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
+        confirmationButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        confirmationButton.titleLabel?.adjustsFontForContentSizeCategory = true
         confirmationButton.setTitleColor(.white, for: .normal)
         confirmationButton.backgroundColor = UIColor(named: "button_primary")
         confirmationButton.layer.cornerRadius = 12
