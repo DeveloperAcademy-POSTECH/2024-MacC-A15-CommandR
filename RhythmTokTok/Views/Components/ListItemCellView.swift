@@ -24,11 +24,13 @@ class ListItemCellView: UITableViewCell {
     // 레이블
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .black
+        label.font = UIFont(name: "Pretendard-Bold", size: 18)
+        label.textColor = UIColor(named: "lable_secondary")
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private var minimumHeightConstraint: NSLayoutConstraint!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -50,15 +52,19 @@ class ListItemCellView: UITableViewCell {
         NSLayoutConstraint.activate([
             // roundedBackgroundView의 레이아웃 설정
             roundedBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            roundedBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            roundedBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            roundedBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            roundedBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             roundedBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             
             // titleLabel의 레이아웃 설정
-            titleLabel.centerYAnchor.constraint(equalTo: roundedBackgroundView.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: roundedBackgroundView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: roundedBackgroundView.trailingAnchor, constant: -16),
+            titleLabel.topAnchor.constraint(equalTo: roundedBackgroundView.topAnchor, constant: 26.5),
+            titleLabel.leadingAnchor.constraint(equalTo: roundedBackgroundView.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: roundedBackgroundView.trailingAnchor, constant: -20),
+            titleLabel.bottomAnchor.constraint(equalTo: roundedBackgroundView.bottomAnchor, constant: -26.5),
         ])
+        // 최소 높이 제약 조건 추가
+          minimumHeightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 80)
+          minimumHeightConstraint.isActive = true
     }
     
     required init?(coder: NSCoder) {

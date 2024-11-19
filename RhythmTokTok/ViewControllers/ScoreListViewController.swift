@@ -172,9 +172,9 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 80
+//    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return UIView()
@@ -197,7 +197,7 @@ extension ScoreListViewController {
     }
 }
 
-// MARK: - [Ext] 검색 기능 관련 (추가 예정)
+// MARK: - [Ext] 검색 기능 관련
 extension ScoreListViewController {
     @objc func didTapSearch() {
         let searchViewController = ScoreSearchViewController()

@@ -65,7 +65,7 @@ class ScoreSearchViewController: UIViewController, UITableViewDataSource, UITabl
     
     func configure(with scores: [Score]) {
         self.scoreList = scores
-        self.filteredScores = scores
+        self.filteredScores = []
     }
     
     // MARK: - Setup Methods
@@ -87,7 +87,9 @@ class ScoreSearchViewController: UIViewController, UITableViewDataSource, UITabl
         // 테이블 뷰 설정
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(ListItemCellView.self, forCellReuseIdentifier: ListItemCellView.identifier)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(named: "background_tertiary")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
     }
@@ -117,35 +119,38 @@ class ScoreSearchViewController: UIViewController, UITableViewDataSource, UITabl
             searchTextField.leadingAnchor.constraint(equalTo: searchIcon.trailingAnchor, constant: 8),
             searchTextField.trailingAnchor.constraint(equalTo: customSearchBar.trailingAnchor, constant: -12),
             searchTextField.centerYAnchor.constraint(equalTo: customSearchBar.centerYAnchor),
-         
+            
             // 테이블 뷰
-            tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 16),
+            tableView.topAnchor.constraint(equalTo: searchBackgroundView.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-
+    
     // MARK: - Actions
     @objc private func searchTextChanged() {
         guard let searchText = searchTextField.text, !searchText.isEmpty else {
-            filteredScores = scoreList
+            filteredScores = []
             tableView.reloadData()
             return
         }
         filteredScores = scoreList.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        print("Search Text: \(searchText)")
+        print("Filtered Scores: \(filteredScores.map { $0.title })")
         tableView.reloadData()
     }
-
+    
     // MARK: - Table View Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredScores.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = filteredScores[indexPath.row].title
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 16)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListItemCellView.identifier, for: indexPath) as? ListItemCellView else {
+            return UITableViewCell()
+        }
+        cell.configure(with: filteredScores[indexPath.row].title)
         return cell
     }
 
