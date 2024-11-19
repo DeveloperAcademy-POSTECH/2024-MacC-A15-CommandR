@@ -140,10 +140,10 @@ class SettingView: UIView {
             settingDoneOverlayView.leadingAnchor.constraint(equalTo: leadingAnchor),
             settingDoneOverlayView.trailingAnchor.constraint(equalTo: trailingAnchor),
             settingDoneOverlayView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            settingDoneOverlayView.heightAnchor.constraint(equalToConstant: 150),
+            settingDoneOverlayView.heightAnchor.constraint(equalToConstant: 111),
             
+            settingDoneButton.topAnchor.constraint(equalTo: settingDoneOverlayView.topAnchor, constant: 11),
             settingDoneButton.centerXAnchor.constraint(equalTo: settingDoneOverlayView.centerXAnchor),
-            settingDoneButton.centerYAnchor.constraint(equalTo: settingDoneOverlayView.centerYAnchor, constant: -5),
             settingDoneButton.widthAnchor.constraint(equalToConstant: 335),
             settingDoneButton.heightAnchor.constraint(equalToConstant: 64)
         ])
