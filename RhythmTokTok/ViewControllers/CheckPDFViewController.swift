@@ -11,28 +11,58 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
     private var fileURL: URL? {
           didSet {
               checkPDFView.isFileSelected = fileURL != nil
-              if let fileURL = fileURL {
-                  loadPDFDocument()
+              if fileURL != nil {
+                  Task {
+                      await loadPDFDocument()
+                  }
               }
           }
       }
-    var pdfPages: [UIImage] = []
-    let checkPDFView = CheckPDFView()
+    
+    private var pdfPages: [UIImage] = []
+    private let navigationBar = CommonNavigationBar()
+    private let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backgroundTertiary
+        return view
+    }()
+    private let checkPDFView = CheckPDFView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationBar.configure(title: "악보 PDF 선택", buttonType: .close)
         setupView()
         setupActions()
-        loadPDFDocument()
+        Task {
+            await loadPDFDocument()
+        }
     }
     
     private func setupView() {
+        // 네비게이션바 추가
+        view.addSubview(navigationBar)
+        // divider
+        view.addSubview(divider)
         // checkPDFView 추가 및 제약 설정
         view.addSubview(checkPDFView)
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        divider.translatesAutoresizingMaskIntoConstraints = false
         checkPDFView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            checkPDFView.topAnchor.constraint(equalTo: view.topAnchor),
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 64),
+            
+            // divider
+            divider.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 0),
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
+            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
+          
+            checkPDFView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
             checkPDFView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             checkPDFView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             checkPDFView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -45,17 +75,27 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     private func setupActions() {
+        navigationBar.onBackButtonTapped = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        navigationBar.onCloseButtonTapped = { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+        }
         checkPDFView.confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
         checkPDFView.changePDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
         checkPDFView.addPDFButton.addTarget(self, action: #selector(changePDFButtonTapped), for: .touchUpInside)
     }
     
-    private func loadPDFDocument() {
+    private func loadPDFDocument() async {
         guard let fileURL = fileURL else { return }
         
-        // PDF 페이지를 모델을 통해 로드하고 CollectionView를 리로드
-        pdfPages = PDFConvertManager.loadPDFPages(from: fileURL)
-        checkPDFView.collectionView.reloadData()
+        let pages = await PDFConvertManager.loadPDFPages(from: fileURL)
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.pdfPages = pages
+            self.checkPDFView.collectionView.reloadData()
+        }
     }
 
     @objc private func changePDFButtonTapped() {
@@ -73,7 +113,9 @@ class CheckPDFViewController: UIViewController, UICollectionViewDataSource, UICo
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         fileURL = urls.first
-        loadPDFDocument()  // 새로운 파일을 로드하고 리로드
+        Task {
+           await loadPDFDocument()  // 새로운 파일을 로드하고 리로드
+        }
     }
     
     // MARK: - UICollectionViewDataSource

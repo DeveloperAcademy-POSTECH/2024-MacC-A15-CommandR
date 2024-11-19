@@ -30,8 +30,10 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var metronomeMIDIFilePathURL: URL?
     private var isPlayingMIDIFile = false
     
-    // View
-    private let practiceNavBar = PracticeNavigationBar()
+    // 네비게이션바
+    private let practiceNavBar = CommonNavigationBar()
+    
+    // 툴팁
     private let toolTipView: ToolTipView = {
         let toolTip = ToolTipView(status: .ready) // 초기 상태 설정
         return toolTip
@@ -91,7 +93,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
-        self.navigationController?.setNavigationBarHidden(false, animated: animated)
         // 스와이프 제스처 초기화
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
@@ -102,6 +103,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         // 스와이프 제스처 인식기 설정
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
+        practiceNavBar.configure(title: "", buttonType: .watch)
         configureUI()
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
@@ -139,9 +141,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         NSLayoutConstraint.activate([
             // 커스텀 네비게이션 바 레이아웃 설정
             practiceNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            practiceNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            practiceNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            practiceNavBar.heightAnchor.constraint(equalToConstant: 60),
+            practiceNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            practiceNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            practiceNavBar.heightAnchor.constraint(equalToConstant: 64),
             
             // 툴팁 뷰 레이아웃
             toolTipView.topAnchor.constraint(equalTo: practiceNavBar.bottomAnchor, constant: 4),
@@ -183,8 +185,12 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     private func setupActions() {
         // 클릭 시 이벤트 설정
-        practiceNavBar.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        practiceNavBar.settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
+        practiceNavBar.onBackButtonTapped = { [weak self] in
+            self?.backButtonTapped()
+        }
+        practiceNavBar.onSettingButtonTapped = { [weak self] in
+            self?.settingButtonTapped()
+        }
         controlButtonView.playPauseButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         controlButtonView.resetButton.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
         controlButtonView.previousButton.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
@@ -312,7 +318,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                                                 hapticSequence: [],
                                                 status: .ready, startTime: 0)
         
-        navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     func handlePlayStatusChange(_ status: PlayStatus) {

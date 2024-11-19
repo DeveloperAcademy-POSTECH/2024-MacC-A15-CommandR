@@ -86,12 +86,12 @@ class AddGridViewController: UIViewController, UIImagePickerControllerDelegate, 
     @objc func convertToPDF() {
         guard let image = imageView.image else { return }
         
-        // PDF 변환 및 저장을 PDFConvertManager에서 처리
-        if let pdfData = PDFConvertManager.convertImageToPDF(image: image),
-           let savedURL = PDFConvertManager.savePDF(data: pdfData) {
-            pdfURL = savedURL
-            viewPDFButton.isHidden = false
-        }
+//        // PDF 변환 및 저장을 PDFConvertManager에서 처리
+//        if let pdfData = PDFConvertManager.convertImageToPDF(image: image),
+//           let savedURL = PDFConvertManager.savePDF(data: pdfData) {
+//            pdfURL = savedURL
+//            viewPDFButton.isHidden = false
+//        }
     }
     
     // PDF 보기

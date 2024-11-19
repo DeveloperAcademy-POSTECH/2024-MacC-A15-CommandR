@@ -9,6 +9,12 @@ import UIKit
 import CoreData
 
 class RequestProcessingViewController: UIViewController, UIGestureRecognizerDelegate {
+    private let navigationBar = CommonNavigationBar()
+    private let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backgroundTertiary
+        return view
+    }()
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     
@@ -33,21 +39,14 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         // 전체 배경색 변경
-        view.backgroundColor = UIColor(named: "background_tertiary")
-        
+        view.backgroundColor = .backgroundPrimary
+
         // 네비게이션 바 타이틀 설정
-        self.title = "요청 목록"
-        
-        // 네비게이션 바 타이틀의 색상, 폰트, 크기 설정
-        navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor(named: "lable_primary") ?? .black,
-            .font: UIFont(name: "Pretendard-Medium", size: 18) ?? UIFont.systemFont(ofSize: 18)
-        ]
-        
-        // Back 버튼 이미지 변경
-        let backImage = UIImage(named: "back")
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(backButtonPressed))
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationBar.configure(title: "요청 목록")
+        navigationBar.onBackButtonTapped = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
         setupViews()
         
         // 요청들을 화면에 추가
@@ -97,15 +96,34 @@ class RequestProcessingViewController: UIViewController, UIGestureRecognizerDele
     }
     
     private func setupViews() {
+        // 네비게이션바 추가
+        view.addSubview(navigationBar)
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        // divider
+        view.addSubview(divider)
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        
         // 스크롤뷰와 스택뷰 설정
         view.addSubview(scrollView)
+        scrollView.backgroundColor = .backgroundTertiary
         scrollView.addSubview(stackView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         // 스크롤뷰 제약 조건
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 64),
+            
+            // divider
+            divider.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 0),
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
+            divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
+            
+            scrollView.topAnchor.constraint(equalTo: divider.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)

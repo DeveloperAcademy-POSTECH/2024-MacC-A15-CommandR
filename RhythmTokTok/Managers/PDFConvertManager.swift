@@ -11,46 +11,50 @@ import PDFKit
 struct PDFConvertManager {
     
     // 이미지 -> PDF로 변환하는 함수
-    static func convertImageToPDF(image: UIImage) -> Data? {
-        let fixedImage = fixImageOrientation(image: image)
-        let pdfData = NSMutableData()
-        let pdfConsumer = CGDataConsumer(data: pdfData as CFMutableData)!
-        
-        // PDF 페이지 크기 설정 (A4 크기)
-        let pdfPageBounds = CGRect(x: 0, y: 0, width: 595, height: 842)
-        var mediaBox = pdfPageBounds
-        
-        guard let pdfContext = CGContext(consumer: pdfConsumer, mediaBox: &mediaBox, nil) else { return nil }
-        
-        pdfContext.beginPDFPage(nil)
-        
-        // PDF 변환 중 DPI 계산 호출
-        let dpi = calculateImageDPI(image: fixedImage, pdfBounds: pdfPageBounds)
-        print("이미지 DPI: \(dpi.horizontalDPI) DPI (가로), \(dpi.verticalDPI) DPI (세로)")
-        
-        // 이미지 크기 비율 유지하면서 PDF에 맞게 조정
-        let imageSize = fixedImage.size
-        let imageAspectRatio = imageSize.width / imageSize.height
-        let pdfAspectRatio = pdfPageBounds.width / pdfPageBounds.height
-        var drawingRect = CGRect.zero
-        
-        if imageAspectRatio > pdfAspectRatio {
-            let scaledWidth = pdfPageBounds.width
-            let scaledHeight = scaledWidth / imageAspectRatio
-            let yOffset = (pdfPageBounds.height - scaledHeight) / 2
-            drawingRect = CGRect(x: 0, y: yOffset, width: scaledWidth, height: scaledHeight)
-        } else {
-            let scaledHeight = pdfPageBounds.height
-            let scaledWidth = scaledHeight * imageAspectRatio
-            let xOffset = (pdfPageBounds.width - scaledWidth) / 2
-            drawingRect = CGRect(x: xOffset, y: 0, width: scaledWidth, height: scaledHeight)
+    static func convertImageToPDF(image: UIImage) async -> Data? {
+        await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                let fixedImage = fixImageOrientation(image: image)
+                let pdfData = NSMutableData()
+                let pdfConsumer = CGDataConsumer(data: pdfData as CFMutableData)!
+                
+                let pdfPageBounds = CGRect(x: 0, y: 0, width: 595, height: 842)
+                var mediaBox = pdfPageBounds
+                
+                guard let pdfContext = CGContext(consumer: pdfConsumer, mediaBox: &mediaBox, nil) else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                
+                pdfContext.beginPDFPage(nil)
+                
+                let dpi = calculateImageDPI(image: fixedImage, pdfBounds: pdfPageBounds)
+                print("이미지 DPI: \(dpi.horizontalDPI) DPI (가로), \(dpi.verticalDPI) DPI (세로)")
+                
+                let imageSize = fixedImage.size
+                let imageAspectRatio = imageSize.width / imageSize.height
+                let pdfAspectRatio = pdfPageBounds.width / pdfPageBounds.height
+                var drawingRect = CGRect.zero
+                
+                if imageAspectRatio > pdfAspectRatio {
+                    let scaledWidth = pdfPageBounds.width
+                    let scaledHeight = scaledWidth / imageAspectRatio
+                    let yOffset = (pdfPageBounds.height - scaledHeight) / 2
+                    drawingRect = CGRect(x: 0, y: yOffset, width: scaledWidth, height: scaledHeight)
+                } else {
+                    let scaledHeight = pdfPageBounds.height
+                    let scaledWidth = scaledHeight * imageAspectRatio
+                    let xOffset = (pdfPageBounds.width - scaledWidth) / 2
+                    drawingRect = CGRect(x: xOffset, y: 0, width: scaledWidth, height: scaledHeight)
+                }
+                
+                pdfContext.draw(fixedImage.cgImage!, in: drawingRect)
+                pdfContext.endPDFPage()
+                pdfContext.closePDF()
+                
+                continuation.resume(returning: pdfData as Data)
+            }
         }
-        
-        pdfContext.draw(fixedImage.cgImage!, in: drawingRect)
-        pdfContext.endPDFPage()
-        pdfContext.closePDF()
-        
-        return pdfData as Data
     }
     
     // PDF 파일을 임시 디렉토리에 저장하는 함수
