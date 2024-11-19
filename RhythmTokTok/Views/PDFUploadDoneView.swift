@@ -48,7 +48,8 @@ class PDFUploadDoneView: UIView {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "음악 요청이 완료되었어요"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        titleLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textAlignment = .center
         titleLabel.textColor = UIColor(named: "lable_primary")
         addSubview(titleLabel)
@@ -72,7 +73,8 @@ class PDFUploadDoneView: UIView {
         }
 
         subtitleLabel1.attributedText = attributedString
-        subtitleLabel1.font = UIFont.systemFont(ofSize: 16)
+        subtitleLabel1.font = UIFont.customFont(forTextStyle: .body1Medium)
+        subtitleLabel1.adjustsFontForContentSizeCategory = true
         subtitleLabel1.textAlignment = .center
         addSubview(subtitleLabel1)
         
@@ -80,7 +82,8 @@ class PDFUploadDoneView: UIView {
         subtitleLabel2 = UILabel()
         subtitleLabel2.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel2.text = "완료 시 알림을 보내드릴게요."
-        subtitleLabel2.font = UIFont.systemFont(ofSize: 16)
+        subtitleLabel2.font = UIFont.customFont(forTextStyle: .body1Medium)
+        subtitleLabel2.adjustsFontForContentSizeCategory = true
         subtitleLabel2.textAlignment = .center
         subtitleLabel2.textColor = UIColor(named: "lable_tertiary")
         addSubview(subtitleLabel2)
@@ -89,7 +92,7 @@ class PDFUploadDoneView: UIView {
         dismissButton = UIButton(type: .system)
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         dismissButton.setTitle("확인", for: .normal)
-        dismissButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 20)
+        dismissButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
         dismissButton.setTitleColor(.white, for: .normal)
         dismissButton.backgroundColor = UIColor(named: "button_primary")
         dismissButton.layer.cornerRadius = 12
@@ -100,7 +103,9 @@ class PDFUploadDoneView: UIView {
         // navigateButton 셋업
         navigateButton = UIButton(type: .system)
         navigateButton.translatesAutoresizingMaskIntoConstraints = false
-        navigateButton.setTitle("내 음악으로 이동", for: .normal)
+        navigateButton.setTitle("요청한 음악 목록 보기", for: .normal)
+        navigateButton.titleLabel?.font = UIFont.customFont(forTextStyle: .body1Medium)
+        navigateButton.titleLabel?.adjustsFontForContentSizeCategory = true
         navigateButton.titleLabel?.textColor = UIColor(named: "lable_secondary")
         navigateButton.backgroundColor = UIColor(.white)
         navigateButton.layer.cornerRadius = 12
