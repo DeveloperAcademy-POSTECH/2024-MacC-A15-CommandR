@@ -94,8 +94,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         checkWatchStatusTask?.cancel()
+        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         // 스와이프 제스처 초기화
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
@@ -551,6 +551,9 @@ extension ScorePracticeViewController {
             IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
                                                                     hapticSequence: hapticSequence)
             try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
+            if Task.isCancelled {
+                return // Task가 취소되면 즉시 종료
+            }
             if IOStoWatchConnectivityManager.shared.watchAppStatus != .connected {
                 IOStoWatchConnectivityManager.shared.watchAppStatus = .lowBattery
                 ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
