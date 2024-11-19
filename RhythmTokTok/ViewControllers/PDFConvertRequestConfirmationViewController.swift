@@ -7,7 +7,8 @@
 import UIKit
 import PDFKit
 
-class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertRequestConfirmationViewDelegate {
+class PDFConvertRequestConfirmationViewController: UIViewController,
+                                                   PDFConvertRequestConfirmationViewDelegate {
     private let navigationBar = CommonNavigationBar()
     private let divider: UIView = {
         let view = UIView()
@@ -107,6 +108,13 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
             ToastAlert.show(message: "페이지 수를 확인할 수 없습니다.", in: self.view, iconName: "error_icon")
             return
         }
+        
+        // AppDelegate 타입 확인
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            print("AppDelegate 타입 변환 실패")
+            ToastAlert.show(message: "AppDelegate를 가져올 수 없습니다.", in: self.view, iconName: "error_icon")
+            return
+        }
 
         // deviceToken 가져오기
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
@@ -119,7 +127,6 @@ class PDFConvertRequestConfirmationViewController: UIViewController, PDFConvertR
         // 서버로 업로드
         let title = filename // 사용자 입력 제목
         let deviceID = encrypt(ServerManager.shared.getDeviceUUID())
-
         ServerManager.shared.uploadPDF(deviceID: deviceID, deviceToken: deviceToken, title: title, pdfFileURL: pdfURL, page: page) { status, message in
             print("Upload status: \(status), message: \(message)")
             DispatchQueue.main.async {
