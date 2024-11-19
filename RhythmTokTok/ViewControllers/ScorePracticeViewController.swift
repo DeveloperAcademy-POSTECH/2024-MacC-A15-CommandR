@@ -31,9 +31,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var metronomeMIDIFilePathURL: URL?
     private var isPlayingMIDIFile = false
     
+    // UI
     // 네비게이션바
     private let practiceNavBar = CommonNavigationBar()
-    
     // 툴팁
     private let toolTipView: ToolTipView = {
         let toolTip = ToolTipView(status: .ready) // 초기 상태 설정
@@ -50,7 +50,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private let scoreCardView = ScorePracticeScoreCardView()
     private let controlButtonView = ControlButtonView()
     
-// MARK: - init
+    // MARK: - init
     init(currentScore: Score) {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
@@ -70,42 +70,20 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         cancellables.removeAll()
     }
     
-// MARK: - 뷰 생명주기
-    // TODO: 값 초기화 함수 필요
+    // MARK: - 뷰 생명주기
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
-        
         super.viewWillAppear(animated)
-        
-        // 현재 상태를 비교하여 변경되었는지 확인
-        if let previousState = previousScoreState, previousState != currentScore {
-            print("Score has changed: \(previousState) -> \(currentScore)")
-            ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
-        }
-        
-        // 현재 상태의 복사본 저장 (참조가 아닌 값으로 저장)
-        previousScoreState = currentScore.clone()
-        
-        // musicPlayer에 soundOption을 전달
-        musicPlayer.soundOption = currentScore.soundOption
-
+        handleScoreChange()
+        configureMusicPlayer()
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        countdownTime = 3
-        mediaManager.currentScore = currentScore
         Task { await createMIDIWithHaptic(score: currentScore) }
-        checkUpdatePreviousButtonState()
-        checkUpdateNextButtonState()
-        scoreCardView.bpmLabel.updateSpeedText(currentSpeed: currentScore.bpm)
-        self.statusTags.currentScore = currentScore
-        statusTags.updateTag()
+        setupScoreState()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
-        // 스와이프 제스처 초기화
-        navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
+        resetSwipeGesture()
     }
     
     override func viewDidLoad() {
@@ -121,7 +99,48 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         setupBindings()
     }
     
-// MARK: - View
+    private func handleScoreChange() {
+        if let previousState = previousScoreState, previousState != currentScore {
+            print("Score has changed: \(previousState) -> \(currentScore)")
+            ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
+        }
+        previousScoreState = currentScore.clone()
+    }
+
+    private func configureMusicPlayer() {
+        musicPlayer.soundOption = currentScore.soundOption
+    }
+
+    private func setupScoreState() {
+        countdownTime = 3
+        mediaManager.currentScore = currentScore
+        checkUpdatePreviousButtonState()
+        checkUpdateNextButtonState()
+        scoreCardView.bpmLabel.updateSpeedText(currentSpeed: currentScore.bpm)
+        statusTags.currentScore = currentScore
+        statusTags.updateTag()
+    }
+    
+    private func resetSwipeGesture() {
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
+    }
+    
+    private func setupSwipeGesture() {
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
+    }
+
+    private func setupPracticeView() {
+        practiceNavBar.configure(title: "", buttonType: .watch)
+        configureUI()
+        totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
+        scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
+        setupActions()
+        setupBindings()
+    }
+    
+    // MARK: - View
     private func configureUI() {
         // 루트 뷰 설정
         let containerView = UIView()
@@ -193,8 +212,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         ])
     }
     
+    // MARK: 버튼 액션 관리
     private func setupActions() {
-        // 클릭 시 이벤트 설정
         practiceNavBar.onBackButtonTapped = { [weak self] in
             self?.backButtonTapped()
         }
@@ -207,6 +226,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         controlButtonView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
+    // MARK: 프로퍼티 구독
     private func setupBindings() {
         IOStoWatchConnectivityManager.shared.$watchAppStatus
             .sink { [weak self] watchStatus in
@@ -433,7 +453,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 
                 self.musicPlayer.jumpMIDI(jumpPosition: startTime)
                 self.sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
-                print("점프 햅틱 갯수 : \(hapticSequence.count),")
                 self.controlButtonView.playPauseButton.isPlaying = false
             }
         }
