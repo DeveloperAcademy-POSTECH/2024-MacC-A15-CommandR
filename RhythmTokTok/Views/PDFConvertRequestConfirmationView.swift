@@ -92,9 +92,11 @@ class PDFConvertRequestConfirmationView: UIView {
         titleLabelInsideCard = UILabel()
         titleLabelInsideCard.translatesAutoresizingMaskIntoConstraints = false
         titleLabelInsideCard.text = "음악 제목"
-        titleLabelInsideCard.textColor = UIColor(named: "lable_tertiary")
         titleLabelInsideCard.font = UIFont.customFont(forTextStyle: .body1Medium)
-        
+        titleLabelInsideCard.adjustsFontForContentSizeCategory = true
+        titleLabelInsideCard.textColor = UIColor(named: "lable_tertiary")
+
+
         filenameLabel = UILabel()
         filenameLabel.translatesAutoresizingMaskIntoConstraints = false
         filenameLabel.text = delegate?.filename
