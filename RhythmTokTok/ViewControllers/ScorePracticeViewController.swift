@@ -18,6 +18,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var jumpMeasureWorkItem: DispatchWorkItem?
     var countdownTimer: Timer?
     var countdownTime: Int = 3 // 원하는 카운트다운 시간 (초 단위)
+    // Task 관리용
+    private var checkWatchStatusTask: Task<Void, Never>? // Task를 저장할 프로퍼티
     
     // 악보 관리용
     private var currentScore: Score // 현재 악보 score
@@ -93,6 +95,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
+        checkWatchStatusTask?.cancel()
         // 스와이프 제스처 초기화
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
@@ -541,9 +544,9 @@ extension ScorePracticeViewController {
 extension ScorePracticeViewController {
     // 워치로 곡 선택 메시지 전송, 비동기 처리
     func sendHapticSequenceToWatch(hapticSequence: [Double]) {
-        //            let isLaunched = await IOStoWatchConnectivityManager.shared.launchWatch()
-        //            if isLaunched {
-        Task {
+        checkWatchStatusTask?.cancel()
+        
+        checkWatchStatusTask = Task {
             let scoreTitle = self.currentScore.title
             IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
                                                                     hapticSequence: hapticSequence)
