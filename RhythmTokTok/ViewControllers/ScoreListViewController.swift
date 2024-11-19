@@ -41,10 +41,8 @@ class ScoreListViewController: UIViewController {
     private func checkAndInsertDummyDataIfNeeded() {
         if UserDefaults.standard.bool(forKey: "hasInsertedDummyData") == false {
             Task {
-                print("나 추가함")
                 await scoreService.insertDummyDataIfNeeded()
                 // 데이터 삽입 후 score 리스트 로드
-                print("나 추가된거 바꿈")
                 loadScoreList()
             }
         } else {
