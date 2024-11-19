@@ -27,7 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     UIApplication.shared.registerForRemoteNotifications()
                 }
             } else {
-                print("Push Notification 권한 거부: \(error?.localizedDescription ?? "Unknown error")")
+                ErrorHandler.handleError(error: "Push Notification 권한 거부: \(error?.localizedDescription ?? "Unknown error")")
+                
             }
         }
     }
@@ -49,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Remote Notification 등록 실패
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Remote Notification 등록 실패: \(error.localizedDescription)")
+        ErrorHandler.handleError(error: "Remote Notification 등록 실패: \(error.localizedDescription)")
     }
     
     // MARK: - 서버로 Device Token 전송
