@@ -67,3 +67,26 @@ extension Score: CustomStringConvertible {
         return "Score(id: \(id), title: \(title), bpm: \(bpm), soundOption: \(soundOption), hapticOption: \(hapticOption))"
     }
 }
+
+extension Score: Equatable {
+    static func == (lhs: Score, rhs: Score) -> Bool {
+        return
+        lhs.bpm == rhs.bpm &&
+        lhs.soundOption == rhs.soundOption &&
+        lhs.hapticOption == rhs.hapticOption
+    }
+}
+
+extension Score {
+    func clone() -> Score {
+        let copy = Score()
+        copy.id = self.id
+        copy.parts = self.parts // 깊은 복사 필요 시, 요소들 복사 논리 추가
+        copy.divisions = self.divisions
+        copy.title = self.title
+        copy.bpm = self.bpm
+        copy.soundOption = self.soundOption
+        copy.hapticOption = self.hapticOption
+        return copy
+    }
+}

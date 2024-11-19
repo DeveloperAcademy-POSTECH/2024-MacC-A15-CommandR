@@ -21,6 +21,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     // 악보 관리용
     private var currentScore: Score // 현재 악보 score
+    private var previousScoreState: Score? // 변경 확인용
     private var currentMeasure: Int = 0// 현재 진행중인 마디
     private var totalMeasure = 0
     private var totalHapticSequence: [Double] = []
@@ -68,14 +69,23 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         NotificationCenter.default.removeObserver(self)
         cancellables.removeAll()
     }
-
+    
 // MARK: - 뷰 생명주기
     // TODO: 값 초기화 함수 필요
     override func viewWillAppear(_ animated: Bool) {
         print("viewWillAppear")
-
+        
         super.viewWillAppear(animated)
-
+        
+        // 현재 상태를 비교하여 변경되었는지 확인
+        if let previousState = previousScoreState, previousState != currentScore {
+            print("Score has changed: \(previousState) -> \(currentScore)")
+            ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
+        }
+        
+        // 현재 상태의 복사본 저장 (참조가 아닌 값으로 저장)
+        previousScoreState = currentScore.clone()
+        
         // musicPlayer에 soundOption을 전달
         musicPlayer.soundOption = currentScore.soundOption
 

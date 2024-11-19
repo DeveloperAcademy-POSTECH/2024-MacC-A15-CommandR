@@ -26,7 +26,7 @@ class SettingView: UIView {
     
     private let settingDoneButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setTitle("설정 완료", for: .normal)
+        button.setTitle("완료", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
         button.backgroundColor = .buttonPrimary
