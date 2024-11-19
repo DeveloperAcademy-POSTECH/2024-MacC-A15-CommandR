@@ -106,7 +106,7 @@ class ToolTipView: UIView {
             self.isHidden = false
             
         case .lowBattery:
-            textLabel.text = "앱이 꺼져 있어요.\n워치에서 앱을 열어주세요."
+            textLabel.text = "메트로놈 진동을 느끼려면,\n워치에서 앱을 켜주세요."
             textLabel.textColor = .white
             self.isHidden = false
             
