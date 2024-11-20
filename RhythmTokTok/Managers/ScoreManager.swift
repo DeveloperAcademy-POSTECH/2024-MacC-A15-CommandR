@@ -45,12 +45,14 @@ class ScoreManager {
         score.notes = notesSet
         
         // 저장
-        do {
-            try context.save()
-            print("Score with notes saved!")
-        } catch {
-            ErrorHandler.handleError(error: error)
-            print("Failed to save score with notes: \(error)")
+        context.perform {
+            do {
+                try self.context.save()
+                print("Score with notes saved!")
+            } catch {
+                ErrorHandler.handleError(error: error)
+                print("Failed to save score with notes: \(error)")
+            }
         }
     }
     
