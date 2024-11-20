@@ -124,6 +124,8 @@
 		D3ABDF6D2CB6A343005CD01F /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */; };
 		D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */; };
 		D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF702CB6B68C005CD01F /* Notification.swift */; };
+		D3C17AE52CED088C0016837A /* BeforeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C17AE42CED088C0016837A /* BeforeSearchView.swift */; };
+		D3C17AE72CED089A0016837A /* EmptyResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C17AE62CED089A0016837A /* EmptyResultView.swift */; };
 		D3CE18C42CE72A34008D120C /* cry.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D3CE18C32CE72A34008D120C /* cry.pdf */; };
 		D3CE18C62CE9B520008D120C /* AES256Cryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CE18C52CE9B520008D120C /* AES256Cryption.swift */; };
 		D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */; };
@@ -303,6 +305,8 @@
 		D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		D3ABDF702CB6B68C005CD01F /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		D3C17AE42CED088C0016837A /* BeforeSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeforeSearchView.swift; sourceTree = "<group>"; };
+		D3C17AE62CED089A0016837A /* EmptyResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResultView.swift; sourceTree = "<group>"; };
 		D3CE18C32CE72A34008D120C /* cry.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = cry.pdf; sourceTree = "<group>"; };
 		D3CE18C52CE9B520008D120C /* AES256Cryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES256Cryption.swift; sourceTree = "<group>"; };
 		D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayView.swift; sourceTree = "<group>"; };
@@ -673,6 +677,7 @@
 				D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */,
 				D30101D62CE1E56C005742E6 /* ToastAlert.swift */,
 				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
+				D3C17AE32CED087D0016837A /* View */,
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
 				D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */,
@@ -720,6 +725,15 @@
 				D3693D6E2CD3C7EE00E37D2C /* WatchCountdownView.swift */,
 				D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */,
 				D3D6D1B82CBE8B6300D22886 /* WatchScoreTitleView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D3C17AE32CED087D0016837A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D3C17AE42CED088C0016837A /* BeforeSearchView.swift */,
+				D3C17AE62CED089A0016837A /* EmptyResultView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -947,6 +961,7 @@
 				D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */,
 				D32330952CDE382C007D1003 /* RequestStatus.swift in Sources */,
 				1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */,
+				D3C17AE52CED088C0016837A /* BeforeSearchView.swift in Sources */,
 				D3CE18C62CE9B520008D120C /* AES256Cryption.swift in Sources */,
 				1A0AE6CF2CE1EA5900564859 /* PDFConvertRequestConfirmationView.swift in Sources */,
 				1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */,
@@ -971,6 +986,7 @@
 				D37DFEE12CE9C3F30073ABAB /* ServerSetting.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
+				D3C17AE72CED089A0016837A /* EmptyResultView.swift in Sources */,
 				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */,
