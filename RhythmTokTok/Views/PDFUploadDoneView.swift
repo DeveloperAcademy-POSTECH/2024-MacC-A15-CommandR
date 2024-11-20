@@ -73,7 +73,7 @@ class PDFUploadDoneView: UIView {
         }
 
         subtitleLabel1.attributedText = attributedString
-        subtitleLabel1.font = UIFont.customFont(forTextStyle: .body1Medium)
+        subtitleLabel1.font = UIFont.customFont(forTextStyle: .body2Medium)
         subtitleLabel1.adjustsFontForContentSizeCategory = true
         subtitleLabel1.textAlignment = .center
         addSubview(subtitleLabel1)
@@ -82,7 +82,7 @@ class PDFUploadDoneView: UIView {
         subtitleLabel2 = UILabel()
         subtitleLabel2.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel2.text = "완료 시 알림을 보내드릴게요."
-        subtitleLabel2.font = UIFont.customFont(forTextStyle: .body1Medium)
+        subtitleLabel2.font = UIFont.customFont(forTextStyle: .body2Medium)
         subtitleLabel2.adjustsFontForContentSizeCategory = true
         subtitleLabel2.textAlignment = .center
         subtitleLabel2.textColor = UIColor(named: "lable_tertiary")
@@ -92,7 +92,7 @@ class PDFUploadDoneView: UIView {
         dismissButton = UIButton(type: .system)
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
         dismissButton.setTitle("확인", for: .normal)
-        dismissButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        dismissButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         dismissButton.titleLabel?.adjustsFontForContentSizeCategory = true
         dismissButton.setTitleColor(.white, for: .normal)
         dismissButton.backgroundColor = UIColor(named: "button_primary")
@@ -105,7 +105,7 @@ class PDFUploadDoneView: UIView {
         navigateButton = UIButton(type: .system)
         navigateButton.translatesAutoresizingMaskIntoConstraints = false
         navigateButton.setTitle("요청한 음악 목록 보기", for: .normal)
-        navigateButton.titleLabel?.font = UIFont.customFont(forTextStyle: .body1Medium)
+        navigateButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button2Medium)
         navigateButton.titleLabel?.adjustsFontForContentSizeCategory = true
         navigateButton.titleLabel?.textColor = UIColor(named: "lable_secondary")
         navigateButton.backgroundColor = UIColor(.white)

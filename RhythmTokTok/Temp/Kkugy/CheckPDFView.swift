@@ -45,7 +45,7 @@ class CheckPDFView: UIView {
         
         // Subheader Label 설정
         subHeaderLabel.textAlignment = .left
-        subHeaderLabel.font = UIFont.customFont(forTextStyle: .body1Regular)
+        subHeaderLabel.font = UIFont.customFont(forTextStyle: .body2Regular)
         subHeaderLabel.adjustsFontForContentSizeCategory = true
         subHeaderLabel.textColor = .lableTertiary
         subHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -81,7 +81,7 @@ class CheckPDFView: UIView {
 
         // Change PDF Button 설정
         changePDFButton.setTitle("다른 파일로 변경하기", for: .normal)
-        changePDFButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        changePDFButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         changePDFButton.titleLabel?.adjustsFontForContentSizeCategory = true
         changePDFButton.setTitleColor(.lableSecondary, for: .normal)
         changePDFButton.backgroundColor = .buttonTertiary
@@ -93,7 +93,7 @@ class CheckPDFView: UIView {
 
         // Add PDF Button 설정
         addPDFButton.setTitle("PDF 파일 선택", for: .normal)
-        addPDFButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        addPDFButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         addPDFButton.titleLabel?.adjustsFontForContentSizeCategory = true
         addPDFButton.setTitleColor(.lableSecondary, for: .normal)
         addPDFButton.backgroundColor = .buttonTertiary
@@ -105,7 +105,7 @@ class CheckPDFView: UIView {
 
         // Confirm Button 설정
         confirmButton.setTitle("선택 완료", for: .normal)
-        confirmButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        confirmButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         confirmButton.titleLabel?.adjustsFontForContentSizeCategory = true
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.layer.cornerRadius = 12

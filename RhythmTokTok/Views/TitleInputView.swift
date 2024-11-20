@@ -47,7 +47,7 @@ class TitleInputView: UIView {
         subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.text = "제목은 최대 20글자까지 쓸 수 있어요"
-        subtitleLabel.font = UIFont.customFont(forTextStyle: .body1Regular)
+        subtitleLabel.font = UIFont.customFont(forTextStyle: .body2Regular)
         subtitleLabel.adjustsFontForContentSizeCategory = true
         subtitleLabel.textColor = UIColor(named: "lable_tertiary")
         addSubview(subtitleLabel)
@@ -55,7 +55,7 @@ class TitleInputView: UIView {
         // TextField 셋업
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        textField.font = UIFont.customFont(forTextStyle: .body1Medium)
         textField.adjustsFontForContentSizeCategory = true
         textField.textColor = UIColor(named: "lable_primary")
         textField.layer.borderWidth = 2
@@ -85,7 +85,7 @@ class TitleInputView: UIView {
         completeButton = UIButton(type: .system)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         completeButton.setTitle("입력 완료", for: .normal)
-        completeButton.titleLabel?.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        completeButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         completeButton.titleLabel?.adjustsFontForContentSizeCategory = true
         completeButton.setTitleColor(.white, for: .normal)
         completeButton.backgroundColor = UIColor(named: "button_inactive")
