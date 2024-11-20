@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -73,6 +73,9 @@
 		1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */; };
 		1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */; };
 		1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */; };
+		1ECDC55A2CEDCC07008948E7 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ECDC5412CEDC8B7008948E7 /* WidgetKit.framework */; };
+		1ECDC55B2CEDCC07008948E7 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ECDC5432CEDC8B7008948E7 /* SwiftUI.framework */; };
+		1ECDC5642CEDCC08008948E7 /* ComplicationWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1ECDC5592CEDCC07008948E7 /* ComplicationWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
@@ -169,6 +172,13 @@
 			remoteGlobalIDString = 02CFE11E2CB1156C008454B8;
 			remoteInfo = RhythmTokTokWatchApp;
 		};
+		1ECDC5622CEDCC08008948E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02BFECE02CB10A13003CEC8A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1ECDC5582CEDCC07008948E7;
+			remoteInfo = ComplicationWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -181,6 +191,17 @@
 				02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1ECDC5502CEDC8B9008948E7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1ECDC5642CEDCC08008948E7 /* ComplicationWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -255,6 +276,9 @@
 		1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTagView.swift; sourceTree = "<group>"; };
 		1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureControllerButton.swift; sourceTree = "<group>"; };
 		1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownLottieView.swift; sourceTree = "<group>"; };
+		1ECDC5412CEDC8B7008948E7 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		1ECDC5432CEDC8B7008948E7 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		1ECDC5592CEDCC07008948E7 /* ComplicationWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ComplicationWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
 		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
@@ -337,6 +361,21 @@
 		EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1ECDC5652CEDCC08008948E7 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1ECDC5582CEDCC07008948E7 /* ComplicationWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1ECDC5452CEDC8B7008948E7 /* ComplicationWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ComplicationWidget; sourceTree = "<group>"; };
+		1ECDC55C2CEDCC07008948E7 /* ComplicationWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1ECDC5652CEDCC08008948E7 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ComplicationWidget; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		02BFECE52CB10A13003CEC8A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -354,6 +393,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1ECDC5562CEDCC07008948E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1ECDC55B2CEDCC07008948E7 /* SwiftUI.framework in Frameworks */,
+				1ECDC55A2CEDCC07008948E7 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -366,6 +414,8 @@
 				D3DDA07D2CC5517300125C86 /* Font */,
 				02BFECEA2CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */,
+				1ECDC5452CEDC8B7008948E7 /* ComplicationWidget */,
+				1ECDC55C2CEDCC07008948E7 /* ComplicationWidget */,
 				1E3E09112CB295D800EE1868 /* Frameworks */,
 				02BFECE92CB10A13003CEC8A /* Products */,
 			);
@@ -376,6 +426,7 @@
 			children = (
 				02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */,
 				02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */,
+				1ECDC5592CEDCC07008948E7 /* ComplicationWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -427,6 +478,8 @@
 		1E3E09112CB295D800EE1868 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1ECDC5412CEDC8B7008948E7 /* WidgetKit.framework */,
+				1ECDC5432CEDC8B7008948E7 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -785,15 +838,39 @@
 				02CFE11B2CB1156C008454B8 /* Sources */,
 				02CFE11C2CB1156C008454B8 /* Frameworks */,
 				02CFE11D2CB1156C008454B8 /* Resources */,
+				1ECDC5502CEDC8B9008948E7 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1ECDC5632CEDCC08008948E7 /* PBXTargetDependency */,
 			);
 			name = RhythmTokTokWatchApp;
 			productName = RhythmTokTokWatchApp;
 			productReference = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		1ECDC5582CEDCC07008948E7 /* ComplicationWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1ECDC5662CEDCC08008948E7 /* Build configuration list for PBXNativeTarget "ComplicationWidgetExtension" */;
+			buildPhases = (
+				1ECDC5552CEDCC07008948E7 /* Sources */,
+				1ECDC5562CEDCC07008948E7 /* Frameworks */,
+				1ECDC5572CEDCC07008948E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1ECDC55C2CEDCC07008948E7 /* ComplicationWidget */,
+			);
+			name = ComplicationWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = ComplicationWidgetExtension;
+			productReference = 1ECDC5592CEDCC07008948E7 /* ComplicationWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -802,7 +879,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					02BFECE72CB10A13003CEC8A = {
@@ -810,6 +887,9 @@
 					};
 					02CFE11E2CB1156C008454B8 = {
 						CreatedOnToolsVersion = 15.4;
+					};
+					1ECDC5582CEDCC07008948E7 = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -832,6 +912,7 @@
 			targets = (
 				02BFECE72CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE11E2CB1156C008454B8 /* RhythmTokTokWatchApp */,
+				1ECDC5582CEDCC07008948E7 /* ComplicationWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -900,6 +981,13 @@
 				D3DDA07A2CC5516F00125C86 /* Pretendard-Regular.otf in Resources */,
 				D3DDA07B2CC5516F00125C86 /* Pretendard-Medium.otf in Resources */,
 				D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1ECDC5572CEDCC07008948E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1039,6 +1127,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1ECDC5552CEDCC07008948E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1046,6 +1141,11 @@
 			isa = PBXTargetDependency;
 			target = 02CFE11E2CB1156C008454B8 /* RhythmTokTokWatchApp */;
 			targetProxy = 02CFE12A2CB1156D008454B8 /* PBXContainerItemProxy */;
+		};
+		1ECDC5632CEDCC08008948E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1ECDC5582CEDCC07008948E7 /* ComplicationWidgetExtension */;
+			targetProxy = 1ECDC5622CEDCC08008948E7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1340,6 +1440,72 @@
 			};
 			name = Release;
 		};
+		1ECDC5672CEDCC08008948E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ComplicationWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ComplicationWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.commandR.RhythmTokTok.watchkitapp.ComplicationWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Debug;
+		};
+		1ECDC5682CEDCC08008948E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AQCS8SYVV6;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ComplicationWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ComplicationWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.commandR.RhythmTokTok.watchkitapp.ComplicationWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1366,6 +1532,15 @@
 			buildConfigurations = (
 				02CFE12E2CB1156D008454B8 /* Debug */,
 				02CFE12F2CB1156D008454B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1ECDC5662CEDCC08008948E7 /* Build configuration list for PBXNativeTarget "ComplicationWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1ECDC5672CEDCC08008948E7 /* Debug */,
+				1ECDC5682CEDCC08008948E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
