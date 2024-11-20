@@ -18,6 +18,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var jumpMeasureWorkItem: DispatchWorkItem?
     var countdownTimer: Timer?
     var countdownTime: Int = 3 // 원하는 카운트다운 시간 (초 단위)
+    // Task 관리용
+    private var checkWatchStatusTask: Task<Void, Never>? // Task를 저장할 프로퍼티
     
     // 악보 관리용
     private var currentScore: Score // 현재 악보 score
@@ -544,11 +546,16 @@ extension ScorePracticeViewController {
 extension ScorePracticeViewController {
     // 워치로 곡 선택 메시지 전송, 비동기 처리
     func sendHapticSequenceToWatch(hapticSequence: [Double]) {
-        Task {
+        checkWatchStatusTask?.cancel()
+        
+        checkWatchStatusTask = Task {
             let scoreTitle = self.currentScore.title
             IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: scoreTitle,
                                                                     hapticSequence: hapticSequence)
             try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
+            if Task.isCancelled {
+                return // Task가 취소되면 즉시 종료
+            }
             if IOStoWatchConnectivityManager.shared.watchAppStatus != .connected {
                 IOStoWatchConnectivityManager.shared.watchAppStatus = .lowBattery
                 ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
