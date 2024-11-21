@@ -127,16 +127,18 @@ class PDFConvertRequestConfirmationViewController: UIViewController,
         // 서버로 업로드
         let title = filename // 사용자 입력 제목
         let deviceID = encrypt(ServerManager.shared.getDeviceUUID())
-        ServerManager.shared.uploadPDF(deviceID: deviceID, deviceToken: deviceToken, title: title, pdfFileURL: pdfURL, page: page) { status, message in
-            print("Upload status: \(status), message: \(message)")
-            DispatchQueue.main.async {
-                if status == 1 {
-                    ToastAlert.show(message: "PDF 업로드 성공했어요.", in: self.view, iconName: "check.circle.color")
-                } else {
-                    ToastAlert.show(message: "PDF 업로드 실패: \(message)", in: self.view, iconName: "error_icon")
-                }
-            }
-        }
+        ServerManager.shared.uploadPDF(deviceID: deviceID, deviceToken: deviceToken, title: title, pdfFileURL: pdfURL, page: page)
+        // TODO: 다음 뷰로 이동
+//        { status, message in
+//            print("Upload status: \(status), message: \(message)")
+//            DispatchQueue.main.async {
+//                if status == 1 {
+//                    ToastAlert.show(message: "PDF 업로드 성공했어요.", in: self.view, iconName: "check.circle.color")
+//                } else {
+//                    ToastAlert.show(message: "PDF 업로드 실패: \(message)", in: self.view, iconName: "error_icon")
+//                }
+//            }
+//        }
     }
     
     private func encrypt(_ input: String) -> String {
