@@ -43,17 +43,15 @@ struct SimpleEntry: TimelineEntry {
     let emoji: String
 }
 
-struct ComplicationWidgetEntryView : View {
+struct ComplicationWidgetEntryView: View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            HStack {
-                Text("Time:")
-                Text(entry.date, style: .time)
-            }
-            Text("Emoji:")
-            Text(entry.emoji)
+        ZStack {
+            Image("Complication")
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
         }
     }
 }
@@ -66,7 +64,9 @@ struct ComplicationWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             if #available(watchOS 10.0, *) {
                 ComplicationWidgetEntryView(entry: entry)
-                    .containerBackground(.fill.tertiary, for: .widget)
+                    .containerBackground( .clear, for: .widget)
+
+//                    .containerBackground(.fill.tertiary, for: .widget)
             } else {
                 ComplicationWidgetEntryView(entry: entry)
                     .padding()
@@ -74,7 +74,6 @@ struct ComplicationWidget: Widget {
             }
         }
         .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
     }
 }
 
