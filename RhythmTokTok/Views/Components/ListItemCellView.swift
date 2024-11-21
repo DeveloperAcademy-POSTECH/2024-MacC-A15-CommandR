@@ -7,6 +7,7 @@
 import UIKit
 
 class ListItemCellView: UITableViewCell {
+    var onActionButtonTapped: (() -> Void)?
     
     // identifier를 static 상수로 정의
     static let identifier = "ListItemCellView"
@@ -30,6 +31,18 @@ class ListItemCellView: UITableViewCell {
         return label
     }()
     
+    // 액션 버튼
+    let actionButton: UIButton = {
+        let button = UIButton(type: .custom)
+        if let image = UIImage(named: "more.vert")?.withRenderingMode(.alwaysTemplate) {
+            button.setImage(image, for: .normal)
+            button.tintColor = UIColor(named: "lable_quaternary")
+        }
+        button.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -45,6 +58,7 @@ class ListItemCellView: UITableViewCell {
         // 둥근 배경 뷰 추가
         contentView.addSubview(roundedBackgroundView)
         roundedBackgroundView.addSubview(titleLabel)
+        roundedBackgroundView.addSubview(actionButton)
         
         // 오토레이아웃 설정
         NSLayoutConstraint.activate([
@@ -57,7 +71,10 @@ class ListItemCellView: UITableViewCell {
             // titleLabel의 레이아웃 설정
             titleLabel.centerYAnchor.constraint(equalTo: roundedBackgroundView.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: roundedBackgroundView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: roundedBackgroundView.trailingAnchor, constant: -16),
+            
+            // actioinButton의 레이아웃 설정
+            actionButton.centerYAnchor.constraint(equalTo: roundedBackgroundView.centerYAnchor),
+            actionButton.trailingAnchor.constraint(equalTo: roundedBackgroundView.trailingAnchor, constant: -8)
         ])
     }
     
@@ -70,25 +87,28 @@ class ListItemCellView: UITableViewCell {
         titleLabel.text = title
     }
     
-   // ---
-    
     // 선택 및 하이라이트 상태에 따른 배경색 변경
-        override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-            super.setHighlighted(highlighted, animated: animated)
-            updateBackgroundColor()
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        updateBackgroundColor()
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        updateBackgroundColor()
+    }
+    
+    // 배경색 업데이트 메서드
+    private func updateBackgroundColor() {
+        if isHighlighted || isSelected {
+            roundedBackgroundView.backgroundColor = UIColor.lightGray  // 선택되었을 때의 색상
+        } else {
+            roundedBackgroundView.backgroundColor = UIColor.white  // 기본 색상
         }
-
-        override func setSelected(_ selected: Bool, animated: Bool) {
-            super.setSelected(selected, animated: animated)
-            updateBackgroundColor()
-        }
-
-        // 배경색 업데이트 메서드
-        private func updateBackgroundColor() {
-            if isHighlighted || isSelected {
-                roundedBackgroundView.backgroundColor = UIColor.lightGray  // 선택되었을 때의 색상
-            } else {
-                roundedBackgroundView.backgroundColor = UIColor.white  // 기본 색상
-            }
-        }
+    }
+    
+    @objc private func actionButtonTapped() {
+        print("actionButtonTapped")
+        onActionButtonTapped?()
+    }
 }

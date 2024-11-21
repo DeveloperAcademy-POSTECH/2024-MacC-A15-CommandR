@@ -16,6 +16,9 @@ class ScoreListViewController: UIViewController {
     var scoreList: [Score] = []
     let mediaManager = MediaManager()
     let scoreService = ScoreService()
+    let scoreTitleChangeVC = ScoreTitleChangeViewController()
+
+    var dimmedBackgroundView: UIView?
     
     override func loadView() {
         view = ScoreListView()
@@ -43,12 +46,14 @@ class ScoreListViewController: UIViewController {
     // 초기 데이터 확인 및 삽입 함수
     private func checkAndInsertDummyDataIfNeeded() {
         if UserDefaults.standard.bool(forKey: "hasInsertedDummyData") == false {
+            print("UserDefaultshasInsertedDummyData is false")
             Task {
                 await scoreService.insertDummyDataIfNeeded()
                 // 데이터 삽입 후 score 리스트 로드
                 loadScoreList()
             }
         } else {
+            print("UserDefaultshasInsertedDummyData is true")
             // 이미 데이터가 삽입되어 있는 경우 바로 리스트 로드
             loadScoreList()
         }
@@ -165,6 +170,12 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.configure(with: scoreList[indexPath.row].title)
+
+        // 액션 버튼 클릭 시 이벤트 설정
+        cell.onActionButtonTapped = { [weak self] in
+            self?.showActionSheet(for: indexPath.row)
+        }
+        
         return cell
     }
     
@@ -200,4 +211,70 @@ extension ScoreListViewController {
         searchViewController.configure(with: scoreList) // 현재 악보 리스트 전달
         navigationController?.pushViewController(searchViewController, animated: true)
     }
+}
+
+// MARK: - [Ext] 악보 삭제, 수정 기능 관련
+extension ScoreListViewController: ScoreTitleChangeDelegate {
+    private func presentTitleChangeModal() {
+        if dimmedBackgroundView == nil {
+            dimmedBackgroundView = UIView(frame: view.bounds)
+            dimmedBackgroundView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.addSubview(dimmedBackgroundView!)
+        }
+        scoreTitleChangeVC.delegate = self
+        scoreTitleChangeVC.modalPresentationStyle = .pageSheet
+        present(scoreTitleChangeVC, animated: true)
+    }
+    
+    func removeOverlay() {
+        dimmedBackgroundView?.removeFromSuperview()
+    }
+    
+    private func showActionSheet(for index: Int) {
+        let selectedScore = scoreList[index]
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "음악 제목 수정하기", style: .default, handler: { [weak self] _ in
+            self?.editScore(at: index)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "음악 삭제하기", style: .destructive, handler: { [weak self] _ in
+            self?.deleteScore(at: index)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    private func editScore(at index: Int) {
+        let scoreToEdit = scoreList[index]
+        print("수정하기 선택: \(scoreToEdit.title)")
+
+        scoreTitleChangeVC.currentTitle = scoreToEdit.title // Pass the current title to the modal
+        scoreTitleChangeVC.onTitleChanged = { [weak self] changedTitle in
+            print("Title changed to: \(changedTitle)")
+            self?.scoreList[index].title = changedTitle // Update the score list with the new title
+            self?.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle) // Update Core Data
+            self?.scoreListView.tableView.reloadData() // Refresh the table view
+        }
+        presentTitleChangeModal()
+    }
+    
+    private func deleteScore(at index: Int) {
+        let scoreToDelete = scoreList[index]
+        print("삭제하기 선택: \(scoreToDelete.title)")
+        if let scoreEntityToDelete = scoreService.fetchScoreById(id: scoreToDelete.id) {
+            // Core Data에서 삭제
+            scoreService.deleteScore(score: scoreEntityToDelete)
+        }
+        
+        // 리스트에서 삭제 후 테이블 뷰 업데이트
+        scoreList.remove(at: index)
+        scoreListView.tableView.reloadData()
+    }
+    
+    
+    
 }

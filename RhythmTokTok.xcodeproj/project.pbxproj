@@ -138,6 +138,7 @@
 		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
 		D3F8C5312CEB6B6F00D2B012 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */; };
 		D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */; };
+		EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */; };
 		EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1B9BB52CD647A000073215 /* BPMDescription.swift */; };
 		EE4203962CD226800081F2A1 /* BPMSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */; };
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
@@ -315,6 +316,7 @@
 		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreSearchViewController.swift; sourceTree = "<group>"; };
+		EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTitleChangeViewController.swift; sourceTree = "<group>"; };
 		EE1B9BB52CD647A000073215 /* BPMDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMDescription.swift; sourceTree = "<group>"; };
 		EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
+				EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
 				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
@@ -973,6 +976,7 @@
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
 				D37DFEE12CE9C3F30073ABAB /* ServerSetting.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
+				EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
