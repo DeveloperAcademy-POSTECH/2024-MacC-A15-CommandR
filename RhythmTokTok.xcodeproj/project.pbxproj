@@ -32,6 +32,8 @@
 		1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
 		1A5E09122CEB83AD00E17FF4 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5E09112CEB83AD00E17FF4 /* Fonts.swift */; };
+		1AD0F9862CEF5E09009538B4 /* PDFUploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */; };
+		1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */; };
 		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */; };
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
@@ -213,6 +215,8 @@
 		1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadDoneViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1A5E09112CEB83AD00E17FF4 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Fonts.swift; path = RhythmTokTok/Temp/Fonts.swift; sourceTree = SOURCE_ROOT; };
+		1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressView.swift; sourceTree = "<group>"; };
+		1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressViewController.swift; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFView.swift; sourceTree = "<group>"; };
@@ -448,6 +452,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */,
 				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
@@ -575,6 +580,7 @@
 			isa = PBXGroup;
 			children = (
 				1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */,
+				1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */,
 				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
 				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
@@ -1019,8 +1025,10 @@
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
 				EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */,
 				1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */,
+				1AD0F9862CEF5E09009538B4 /* PDFUploadProgressView.swift in Sources */,
 				1ED9FECD2CBE797C00472C51 /* ProgressTableViewCell.swift in Sources */,
 				EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */,
+				1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
