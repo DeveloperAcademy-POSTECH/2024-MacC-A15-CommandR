@@ -126,6 +126,7 @@
 		D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ABDF702CB6B68C005CD01F /* Notification.swift */; };
 		D3C17AE52CED088C0016837A /* BeforeSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C17AE42CED088C0016837A /* BeforeSearchView.swift */; };
 		D3C17AE72CED089A0016837A /* EmptyResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C17AE62CED089A0016837A /* EmptyResultView.swift */; };
+		D3C17AE92CEF0CA50016837A /* ScoreSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */; };
 		D3CE18C42CE72A34008D120C /* cry.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D3CE18C32CE72A34008D120C /* cry.pdf */; };
 		D3CE18C62CE9B520008D120C /* AES256Cryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CE18C52CE9B520008D120C /* AES256Cryption.swift */; };
 		D3D6D1B72CBE568C00D22886 /* WatchPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */; };
@@ -307,6 +308,7 @@
 		D3ABDF702CB6B68C005CD01F /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D3C17AE42CED088C0016837A /* BeforeSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeforeSearchView.swift; sourceTree = "<group>"; };
 		D3C17AE62CED089A0016837A /* EmptyResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResultView.swift; sourceTree = "<group>"; };
+		D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreSearchView.swift; sourceTree = "<group>"; };
 		D3CE18C32CE72A34008D120C /* cry.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = cry.pdf; sourceTree = "<group>"; };
 		D3CE18C52CE9B520008D120C /* AES256Cryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES256Cryption.swift; sourceTree = "<group>"; };
 		D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayView.swift; sourceTree = "<group>"; };
@@ -670,6 +672,7 @@
 			isa = PBXGroup;
 			children = (
 				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
+				D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */,
 				D32330922CDE37FB007D1003 /* Request.swift */,
 				D32330942CDE382C007D1003 /* RequestStatus.swift */,
 				D323308E2CDE37C9007D1003 /* RequestCardView.swift */,
@@ -1025,6 +1028,7 @@
 				02CFE1322CB68479008454B8 /* ErrorHandler.swift in Sources */,
 				1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */,
 				D3ABDF712CB6B68C005CD01F /* Notification.swift in Sources */,
+				D3C17AE92CEF0CA50016837A /* ScoreSearchView.swift in Sources */,
 				1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */,
 				61318FA72CDF8D4C00D8FC26 /* TitleInputView.swift in Sources */,
 				1ED9FECF2CBE8ED000472C51 /* PlayPauseButton.swift in Sources */,
