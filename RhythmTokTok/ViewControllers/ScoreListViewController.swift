@@ -240,7 +240,7 @@ extension ScoreListViewController: ScoreTitleChangeDelegate {
         }))
         
         actionSheet.addAction(UIAlertAction(title: "음악 삭제하기", style: .destructive, handler: { [weak self] _ in
-            self?.deleteScore(at: index)
+            self?.showDeleteAlert(for: index)
         }))
         
         actionSheet.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
@@ -259,22 +259,43 @@ extension ScoreListViewController: ScoreTitleChangeDelegate {
             self?.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle) // Update Core Data
             self?.scoreListView.tableView.reloadData() // Refresh the table view
         }
+
         presentTitleChangeModal()
     }
     
     private func deleteScore(at index: Int) {
         let scoreToDelete = scoreList[index]
         print("삭제하기 선택: \(scoreToDelete.title)")
+        
         if let scoreEntityToDelete = scoreService.fetchScoreById(id: scoreToDelete.id) {
-            // Core Data에서 삭제
             scoreService.deleteScore(score: scoreEntityToDelete)
         }
-        
-        // 리스트에서 삭제 후 테이블 뷰 업데이트
+
         scoreList.remove(at: index)
         scoreListView.tableView.reloadData()
     }
     
-    
-    
+    private func showDeleteAlert(for index: Int) {
+        let alertVC = CustomAlertViewController(
+            title: "악보를 정말 삭제하시겠어요?",
+            message: "삭제하면 다시 복구할 수 없어요.",
+            confirmButtonText: "삭제하기",
+            cancelButtonText: "닫기",
+            confirmButtonColor: UIColor(named: "button_danger") ?? .red,
+            cancelButtonColor: UIColor(named: "button_secondary") ?? .gray,
+            highlightedTexts: ["다시 복구할 수 없어요"]
+        )
+        
+        alertVC.onConfirm = { [weak self] in
+            self?.deleteScore(at: index)
+        }
+        
+        alertVC.onCancel = {
+            print("취소 버튼 클릭")
+        }
+        
+        alertVC.modalPresentationStyle = .overFullScreen
+        alertVC.modalTransitionStyle = .crossDissolve
+        present(alertVC, animated: true, completion: nil)
+    }
 }
