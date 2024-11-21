@@ -152,7 +152,6 @@
 		EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EE7B288E2CBE517A00325725 /* RhythmTokTok.xcdatamodeld */; };
 		EE7B289F2CBE58D500325725 /* NoteEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */; };
 		EE7B28A42CBE5B8600325725 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */; };
-		EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28A52CBE5CC200325725 /* ScoreManager.swift */; };
 		EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */; };
 		EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */; };
 		EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */; };
@@ -329,7 +328,6 @@
 		EE7B288F2CBE517A00325725 /* RhythmTokTok.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RhythmTokTok.xcdatamodel; sourceTree = "<group>"; };
 		EE7B289B2CBE58D500325725 /* NoteEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EE7B28A32CBE5B8000325725 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
-		EE7B28A52CBE5CC200325725 /* ScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
 		EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListView.swift; sourceTree = "<group>"; };
 		EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreListViewController.swift; sourceTree = "<group>"; };
 		EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemCellView.swift; sourceTree = "<group>"; };
@@ -564,7 +562,6 @@
 			children = (
 				EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */,
 				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
-				EE7B28A52CBE5CC200325725 /* ScoreManager.swift */,
 				D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */,
 				1EF8A0B72CB55A4600ADB783 /* IOStoWatchConnectivityManager.swift */,
 			);
@@ -955,7 +952,6 @@
 				1ED9FEC92CBE53FF00472C51 /* PracticeNavigationBar.swift in Sources */,
 				EEBE60B82CB6526C00BC6739 /* AddGridViewController.swift in Sources */,
 				1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */,
-				EE7B28A62CBE5CC500325725 /* ScoreManager.swift in Sources */,
 				1EB7B3E32CD2129000FF4244 /* ProgressBarView.swift in Sources */,
 				D3ABDF6B2CB6A325005CD01F /* SettingView.swift in Sources */,
 				EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */,

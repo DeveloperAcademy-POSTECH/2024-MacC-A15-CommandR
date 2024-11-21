@@ -319,7 +319,8 @@ class RequestProcessingViewController: UIViewController,
                 }
                 
                 // Core Data에 저장합니다.
-                ScoreManager.shared.addScoreWithNotes(scoreData: score)
+                let scoreService = ScoreService()
+                scoreService.addScoreWithNotes(scoreData: score)
                 
                 // TODO: 아래 주석 풀어야 상태가 완료로 바뀌
                 //                // 요청 상태를 .downloaded로 업데이트합니다.

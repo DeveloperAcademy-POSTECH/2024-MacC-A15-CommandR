@@ -24,7 +24,7 @@ class ScoreService {
                         let score = await parser.parseMusicXML(from: xmlData)
                         score.title = fileName
                         
-                        ScoreManager.shared.addScoreWithNotes(scoreData: score)
+                        addScoreWithNotes(scoreData: score)
                     }
                     // UserDefaults에 초기 데이터가 삽입되었음을 기록
                     UserDefaults.standard.set(true, forKey: "hasInsertedDummyData")
@@ -37,19 +37,68 @@ class ScoreService {
         }
     }
     
-    // MARK: - Create
-    func createScore(id: String, title: String, bpm: Int64, createdAt: Date, isHapticOn: Bool, soundOption: String, notes: [NoteEntity]?) {
-        let score = ScoreEntity(context: context)
-        score.id = id
-        score.title = title
-        score.bpm = bpm
-        score.createdAt = createdAt
-        score.isHapticOn = isHapticOn
-        score.soundOption = soundOption
-        if let notesArray = notes {
-            score.notes = NSOrderedSet(array: notesArray)
+//    // MARK: - Create
+    // ScoreEntity 및 NoteEntity 추가 함수
+    func addScoreWithNotes(scoreData: Score) {
+        context.performAndWait { // Thread-safe Core Data 작업
+            let score = ScoreEntity(context: self.context)
+            score.id = UUID().uuidString
+            score.createdAt = Date()
+            score.title = scoreData.title
+            score.bpm = Int64(scoreData.bpm)
+            score.isHapticOn = true
+            score.isScoreDeleted = false
+            score.soundOption = SoundSetting.default.rawValue
+            score.divisions = Int64(scoreData.divisions)
+
+            // Note 관계 설정
+            scoreData.parts.forEach { part in
+                part.measures.forEach { (lineNumber, measures) in
+                    measures.forEach { measure in
+                        measure.notes.forEach { note in
+                            self.createNoteEntity(
+                                from: note,
+                                partId: part.id,
+                                lineNumber: lineNumber,
+                                measureNumber: measure.number,
+                                score: score
+                            )
+                        }
+                    }
+                }
+            }
+
+            // 저장
+            do {
+                try self.context.save()
+                print("Score with notes saved!")
+            } catch {
+                print("Failed to save score with notes: \(error)")
+            }
         }
-        saveContext()
+    }
+
+    // NoteEntity 생성 및 관계 설정 함수
+    func createNoteEntity(from note: Note, partId: String, lineNumber: Int, measureNumber: Int, score: ScoreEntity) {
+        let noteEntity = NoteEntity(context: context)
+        noteEntity.id = UUID().uuidString
+        noteEntity.pitch = note.pitch
+        noteEntity.duration = Int64(note.duration)
+        noteEntity.octave = Int16(note.octave)
+        noteEntity.type = note.type
+        noteEntity.voice = Int16(note.voice)
+        noteEntity.staff = Int64(note.staff)
+        noteEntity.startTime = Int64(note.startTime)
+        noteEntity.isRest = note.isRest
+        noteEntity.accidental = Int64(note.accidental.rawValue)
+        noteEntity.tieType = note.tieType
+        
+        noteEntity.part = partId
+        noteEntity.lineNumber = Int64(lineNumber)
+        noteEntity.measureNumber = Int64(measureNumber)
+        
+        // ScoreEntity와 NoteEntity 관계 설정
+        score.addToNotes(noteEntity) // Core Data 메서드 사용
     }
     
     // MARK: - Read
