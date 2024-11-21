@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "emptysearch.png",
+      "filename" : "noresult.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

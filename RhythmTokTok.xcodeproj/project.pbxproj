@@ -672,10 +672,8 @@
 			isa = PBXGroup;
 			children = (
 				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
-				D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */,
 				D32330922CDE37FB007D1003 /* Request.swift */,
 				D32330942CDE382C007D1003 /* RequestStatus.swift */,
-				D323308E2CDE37C9007D1003 /* RequestCardView.swift */,
 				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
 				D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */,
 				D30101D62CE1E56C005742E6 /* ToastAlert.swift */,
@@ -683,7 +681,6 @@
 				D3C17AE32CED087D0016837A /* View */,
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
-				D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */,
 				D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */,
 			);
 			path = Bell;
@@ -735,8 +732,11 @@
 		D3C17AE32CED087D0016837A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D323308E2CDE37C9007D1003 /* RequestCardView.swift */,
+				D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */,
 				D3C17AE42CED088C0016837A /* BeforeSearchView.swift */,
 				D3C17AE62CED089A0016837A /* EmptyResultView.swift */,
+				D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

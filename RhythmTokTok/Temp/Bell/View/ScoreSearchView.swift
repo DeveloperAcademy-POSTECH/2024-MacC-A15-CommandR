@@ -9,11 +9,13 @@ import UIKit
 
 class ScoreSearchView: UIView {
     let navigationBar = CommonNavigationBar()
+    let beforeSearchView = BeforeSearchView()
+    let emptyResultView = EmptyResultView()
     weak var parentViewController: UIViewController?
     
     let searchBackgroundView: UIView = {
         let view = UIView()
-//        view.backgroundColor = .red
+        //        view.backgroundColor = .red
         view.backgroundColor = UIColor(named: "background_primary")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -34,7 +36,6 @@ class ScoreSearchView: UIView {
             .font: UIFont(name: "Pretendard-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
         ]
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        
         textField.setLeftPaddingPoints(36)
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor(named: "border_secondary")?.cgColor
@@ -43,9 +44,19 @@ class ScoreSearchView: UIView {
     }()
     
     let searchIcon: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "search"))
+        let imageView = UIImageView(image: UIImage(named: "search")?.withRenderingMode(.alwaysTemplate))
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = UIColor(named: "lable_tertiary")
+        return imageView
+    }()
+    
+    let cancelIcon: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "cancle.fill")?.withRenderingMode(.alwaysTemplate))
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tintColor = UIColor(named: "lable_quaternary")
+        imageView.isUserInteractionEnabled = true // 사용자 인터랙션 활성화
         return imageView
     }()
     
@@ -71,6 +82,9 @@ class ScoreSearchView: UIView {
         super.init(frame: frame)
         setupNavigationBar()
         setupView()
+        setupStateViews() // 상태 뷰 추가
+        setupCancelIconGesture() // Cancel 버튼 제스처 추가
+        setupKeyboardDismissGesture()
     }
     
     required init?(coder: NSCoder) {
@@ -106,20 +120,10 @@ class ScoreSearchView: UIView {
     private func setupView() {
         backgroundColor = UIColor(named: "background_primary")
         
-        let containerView: UIView = {
-            let view = UIView()
-            view.backgroundColor = UIColor(named: "background_tertiary")
-            view.translatesAutoresizingMaskIntoConstraints = false
-            return view
-        }()
-        
         addSubview(searchBackgroundView)
         searchBackgroundView.addSubview(searchTextField)
         searchBackgroundView.addSubview(searchIcon)
-        
-        addSubview(containerView)
-        containerView.addSubview(tableHeaderLabel)
-        containerView.addSubview(tableView)
+        searchBackgroundView.addSubview(cancelIcon)
         
         NSLayoutConstraint.activate(
             [
@@ -161,33 +165,97 @@ class ScoreSearchView: UIView {
                 searchIcon.widthAnchor.constraint(equalToConstant: 20),
                 searchIcon.heightAnchor.constraint(equalToConstant: 20),
                 
-                // 배경색 고정을 위한 컨테이너 추가
-                containerView.topAnchor
-                    .constraint(equalTo: searchBackgroundView.bottomAnchor),
-                containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                
-                // "검색 결과" 헤더
-                tableHeaderLabel.topAnchor
-                    .constraint(equalTo: containerView.topAnchor, constant: 24),
-                tableHeaderLabel.leadingAnchor
-                    .constraint(equalTo: containerView.leadingAnchor, constant: 20),
-                
-                // 검색 리스트
-                tableView.topAnchor
+                // 취소 고정 아이콘
+                cancelIcon.trailingAnchor
                     .constraint(
-                        equalTo: tableHeaderLabel.bottomAnchor,
-                        constant: 8
-                    ),
-                tableView.leadingAnchor
-                    .constraint(equalTo: containerView.leadingAnchor),
-                tableView.trailingAnchor
-                    .constraint(equalTo: containerView.trailingAnchor),
-                tableView.bottomAnchor
-                    .constraint(equalTo: containerView.bottomAnchor)
-            ]
-        )
+                        equalTo: searchTextField.trailingAnchor,
+                        constant: -12),
+                cancelIcon.centerYAnchor
+                    .constraint(equalTo: searchTextField.centerYAnchor),
+                cancelIcon.widthAnchor.constraint(equalToConstant: 20),
+                cancelIcon.heightAnchor.constraint(equalToConstant: 20)
+            ])
+    }
+    
+    private func setupStateViews() {
+        let containerView: UIView = {
+            let view = UIView()
+            view.backgroundColor = UIColor(named: "background_tertiary")
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+        
+        addSubview(containerView)
+        containerView.addSubview(tableHeaderLabel)
+        containerView.addSubview(tableView)
+        containerView.addSubview(beforeSearchView)
+        containerView.addSubview(emptyResultView)
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        beforeSearchView.translatesAutoresizingMaskIntoConstraints = false
+        emptyResultView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            // 배경색 고정을 위한 컨테이너 추가
+            containerView.topAnchor
+                .constraint(equalTo: searchBackgroundView.bottomAnchor),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            // "검색 결과" 헤더
+            tableHeaderLabel.topAnchor
+                .constraint(equalTo: containerView.topAnchor, constant: 24),
+            tableHeaderLabel.leadingAnchor
+                .constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            
+            // 검색 리스트
+            tableView.topAnchor
+                .constraint(
+                    equalTo: tableHeaderLabel.bottomAnchor,
+                    constant: 8
+                ),
+            tableView.leadingAnchor
+                .constraint(equalTo: containerView.leadingAnchor),
+            tableView.trailingAnchor
+                .constraint(equalTo: containerView.trailingAnchor),
+            tableView.bottomAnchor
+                .constraint(equalTo: containerView.bottomAnchor),
+            
+            // Empty Search View
+            beforeSearchView.topAnchor.constraint(equalTo: searchBackgroundView.bottomAnchor),
+            beforeSearchView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            beforeSearchView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            beforeSearchView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            
+            // No Result View
+            emptyResultView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor),
+            emptyResultView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            emptyResultView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            emptyResultView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+        // 초기 상태
+        beforeSearchView.isHidden = false
+        emptyResultView.isHidden = true
+        tableView.isHidden = true
+    }
+    
+    private func setupCancelIconGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleCancelTap))
+        cancelIcon.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleCancelTap() {
+        searchTextField.text = "" // 텍스트 필드 초기화
+    }
+    
+    private func setupKeyboardDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false // 테이블 셀 선택 등 다른 제스처를 방해하지 않도록 설정
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        self.endEditing(true) // 현재 활성화된 텍스트 필드의 키보드를 숨김
     }
 }
 

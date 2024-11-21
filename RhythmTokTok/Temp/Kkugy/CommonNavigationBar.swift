@@ -193,7 +193,6 @@ class CommonNavigationBar: UIView {
                 appTitleImageView.heightAnchor.constraint(equalToConstant: 20)
             ])
             
-            
             // 검색버튼
             rightButtonStackView.addArrangedSubview(searchButton)
             NSLayoutConstraint.activate([
