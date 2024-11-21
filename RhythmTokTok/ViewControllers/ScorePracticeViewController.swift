@@ -33,9 +33,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private var metronomeMIDIFilePathURL: URL?
     private var isPlayingMIDIFile = false
     
+    // UI
     // 네비게이션바
     private let practiceNavBar = CommonNavigationBar()
-    
     // 툴팁
     private let toolTipView: ToolTipView = {
         let toolTip = ToolTipView(status: .ready) // 초기 상태 설정
@@ -52,7 +52,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private let scoreCardView = ScorePracticeScoreCardView()
     private let controlButtonView = ControlButtonView()
     
-// MARK: - init
+    // MARK: - init
     init(currentScore: Score) {
         self.currentScore = currentScore
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
@@ -72,43 +72,20 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         cancellables.removeAll()
     }
     
-// MARK: - 뷰 생명주기
-    // TODO: 값 초기화 함수 필요
+    // MARK: - 뷰 생명주기
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
-        
         super.viewWillAppear(animated)
-        
-        // 현재 상태를 비교하여 변경되었는지 확인
-        if let previousState = previousScoreState, previousState != currentScore {
-            print("Score has changed: \(previousState) -> \(currentScore)")
-            ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
-        }
-        
-        // 현재 상태의 복사본 저장 (참조가 아닌 값으로 저장)
-        previousScoreState = currentScore.clone()
-        
-        // musicPlayer에 soundOption을 전달
-        musicPlayer.soundOption = currentScore.soundOption
-
+        handleScoreChange()
+        configureMusicPlayer()
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        countdownTime = 3
-        mediaManager.currentScore = currentScore
-        Task { await createMIDIFile(score: currentScore) }
-        checkUpdatePreviousButtonState()
-        checkUpdateNextButtonState()
-        scoreCardView.bpmLabel.updateSpeedText(currentSpeed: currentScore.bpm)
-        self.statusTags.currentScore = currentScore
-        statusTags.updateTag()
+        Task { await createMIDIWithHaptic(score: currentScore) }
+        setupScoreState()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        checkWatchStatusTask?.cancel()
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
-        // 스와이프 제스처 초기화
-        navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
+        resetSwipeGesture()
     }
     
     override func viewDidLoad() {
@@ -124,7 +101,48 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         setupBindings()
     }
     
-// MARK: - View
+    private func handleScoreChange() {
+        if let previousState = previousScoreState, previousState != currentScore {
+            print("Score has changed: \(previousState) -> \(currentScore)")
+            ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
+        }
+        previousScoreState = currentScore.clone()
+    }
+
+    private func configureMusicPlayer() {
+        musicPlayer.soundOption = currentScore.soundOption
+    }
+
+    private func setupScoreState() {
+        countdownTime = 3
+        mediaManager.currentScore = currentScore
+        checkUpdatePreviousButtonState()
+        checkUpdateNextButtonState()
+        scoreCardView.bpmLabel.updateSpeedText(currentSpeed: currentScore.bpm)
+        statusTags.currentScore = currentScore
+        statusTags.updateTag()
+    }
+    
+    private func resetSwipeGesture() {
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        navigationController?.interactivePopGestureRecognizer?.removeTarget(self, action: #selector(backButtonTapped))
+    }
+    
+    private func setupSwipeGesture() {
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
+    }
+
+    private func setupPracticeView() {
+        practiceNavBar.configure(title: "", buttonType: .watch)
+        configureUI()
+        totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
+        scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
+        setupActions()
+        setupBindings()
+    }
+    
+    // MARK: - View
     private func configureUI() {
         // 루트 뷰 설정
         let containerView = UIView()
@@ -196,8 +214,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         ])
     }
     
+    // MARK: 버튼 액션 관리
     private func setupActions() {
-        // 클릭 시 이벤트 설정
         practiceNavBar.onBackButtonTapped = { [weak self] in
             self?.backButtonTapped()
         }
@@ -210,6 +228,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         controlButtonView.nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
+    // MARK: 프로퍼티 구독
     private func setupBindings() {
         IOStoWatchConnectivityManager.shared.$watchAppStatus
             .sink { [weak self] watchStatus in
@@ -436,7 +455,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
                 
                 self.musicPlayer.jumpMIDI(jumpPosition: startTime)
                 self.sendJumpMeasureToWatch(hapticSequence: hapticSequence, startTimeInterVal: 0)
-                print("점프 햅틱 갯수 : \(hapticSequence.count),")
                 self.controlButtonView.playPauseButton.isPlaying = false
             }
         }
@@ -453,68 +471,42 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
 
 // MARK: - [Ext] MIDI 파일, 햅틱 시퀀스 관리
 extension ScorePracticeViewController {
-    private func createMIDIFile(score: Score, startMeasureNumber: Int? = nil, endMeasureNumber: Int? = nil) async {
+    private func createMIDIWithHaptic(score: Score) async {
         do {
             // MIDI File URL 초기화
             updatePlayPauseButton(false)
             midiFilePathURL = nil
             // TODO: 사용할 파트 어떻게 정할지 구상 필요
             mediaManager.setCurrentPart(part: score.parts.last!, division: Double(score.divisions))
-            if let startMeasureNumber, let endMeasureNumber {
-                // 구단 MIDI 파일 생성
-                midiFilePathURL = try await mediaManager.getClipMIDIFile(part: score.parts.last!,
-                                                                         divisions: score.divisions,
-                                                                         startNumber: startMeasureNumber,
-                                                                         endNumber: endMeasureNumber)
-            } else {
-                midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
-                                                                         divisions: score.divisions,
-                                                                         isChordEnabled: false)
-            }
-            // MIDI 파일 URL 확인 및 파일 로드
-            if let midiFilePathURL = midiFilePathURL {
-                print("MIDI file created successfully: \(midiFilePathURL)")
-                // 햅틱 시퀀스 관리
-                var hapticSequence: [Double]?
-                //                // MARK: 구간 선택 부분
-                //                if let startMeasureNumber, let endMeasureNumber {
-                //                    hapticSequence = try await mediaManager.getClipMeasureHapticSequence(part: score.parts.last!,
-                //                                                                                         divisions: score.divisions,
-                //                                                                                         startNumber: startMeasureNumber,
-                //                                                                                         endNumber: endMeasureNumber)
-                //                } else {
-                //                    hapticSequence = try await mediaManager.getHapticSequence(part: score.parts.last!,
-                //                                                                              divisions: score.divisions)
-                //                }
-                hapticSequence = await mediaManager.getMetronomeHapticSequence()
-                
-                if let validHapticSequence = hapticSequence {
-                    totalHapticSequence = validHapticSequence
-                    // 워치로 곡 선택 메시지 전송
-                    sendHapticSequenceToWatch(hapticSequence: validHapticSequence)
-                    
-                } else {
-                    print("No valid haptic sequence found.")
-                }
-                // MIDI 파일 로드
-                musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
-                print("MIDI file successfully loaded and ready to play.")
-            } else {
-                ErrorHandler.handleError(error: "MIDI file URL is nil.")
-            }
-            
-            // Metronome MIDI'
-            metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
-            
-            if let metronomeMIDIFilePathURL {
-                print("Metronome MIDI file created successfully: \(metronomeMIDIFilePathURL)")
-                musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
-                updatePlayPauseButton(true)
-            }
+            midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
+                                                                     divisions: score.divisions,
+                                                                     isChordEnabled: false)
+            try await createHaptics(midiFilePathURL: midiFilePathURL, score: score)
             
         } catch {
             ErrorHandler.handleError(error: error)
         }
+    }
+    
+    private func createHaptics(midiFilePathURL: URL?, score: Score) async throws {
+        guard let midiFilePathURL = midiFilePathURL else {
+            throw NSError(domain: "MIDIError", code: 404, userInfo: [NSLocalizedDescriptionKey: "MIDI file URL is nil."])
+        }
+
+        // 햅틱 시퀀스 생성
+        let hapticSequence = await mediaManager.getMetronomeHapticSequence()
+        totalHapticSequence = hapticSequence
+        sendHapticSequenceToWatch(hapticSequence: hapticSequence)
+        
+
+        // MIDI 파일 로드
+        musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+
+        // Metronome MIDI 파일 로드
+        let metronomeMIDIFilePathURL = try await mediaManager.getMetronomeMIDIFile(parsedScore: score)
+        musicPlayer.loadMetronomeMIDIFile(midiURL: metronomeMIDIFilePathURL)
+        updatePlayPauseButton(true)
+        
     }
 }
 
