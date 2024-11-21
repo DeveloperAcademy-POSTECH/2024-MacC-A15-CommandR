@@ -299,7 +299,9 @@ class RequestProcessingViewController: UIViewController,
                 self.requests[index].status = .downloaded
                 
                 // 서버에 상태 업데이트를 요청합니다.
-                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID, scoreID: String(request.id), newStatus: 2) { status, message in
+                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID,
+                                                       scoreID: String(request.id),
+                                                       newStatus: 2) { status, message in
                     print("Update status: \(status), message: \(message)")
                 }
                 
@@ -331,8 +333,8 @@ class RequestProcessingViewController: UIViewController,
         // 서버에 상태 업데이트를 요청
         ServerManager.shared.updateScoreStatus(deviceID: deviceID,
                                                scoreID: String(request.id),
-                                               newStatus: 11) {
-            [weak self] status, message in
+                                               newStatus: 11)
+        {[weak self] status, message in
             guard let self = self else { return }
             print("Request ID: \(request.id), Device ID: \(self.deviceID), New Status: 11")
             print("Server Response - Status: \(status), Message: \(message)")

@@ -58,8 +58,7 @@ class EmptyResultView: UIView {
             imageView.topAnchor.constraint(equalTo: topAnchor, constant: 140),
             imageView.widthAnchor.constraint(equalToConstant: 100),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
-            
-            
+        
             messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 22),
             

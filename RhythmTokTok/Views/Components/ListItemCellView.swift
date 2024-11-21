@@ -60,7 +60,7 @@ class ListItemCellView: UITableViewCell {
             titleLabel.topAnchor.constraint(equalTo: roundedBackgroundView.topAnchor, constant: 26.5),
             titleLabel.leadingAnchor.constraint(equalTo: roundedBackgroundView.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: roundedBackgroundView.trailingAnchor, constant: -20),
-            titleLabel.bottomAnchor.constraint(equalTo: roundedBackgroundView.bottomAnchor, constant: -26.5),
+            titleLabel.bottomAnchor.constraint(equalTo: roundedBackgroundView.bottomAnchor, constant: -26.5)
         ])
         // 최소 높이 제약 조건 추가
           minimumHeightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 80)
