@@ -29,11 +29,11 @@ class ScoreService {
                     // UserDefaults에 초기 데이터가 삽입되었음을 기록
                     UserDefaults.standard.set(true, forKey: "hasInsertedDummyData")
                 } else {
-                    print("DummyScores 폴더 내 파일을 찾을 수 없습니다.")
+                    ErrorHandler.handleError(error: "DummyScores 폴더 내 파일을 찾을 수 없습니다.")
                 }
             }
         } catch {
-            print("데이터 삽입 중 오류 발생: \(error)")
+            ErrorHandler.handleError(error: "데이터 삽입 중 오류 발생: \(error)")
         }
     }
     
@@ -73,7 +73,7 @@ class ScoreService {
                 try self.context.save()
                 print("Score with notes saved!")
             } catch {
-                print("Failed to save score with notes: \(error)")
+                ErrorHandler.handleError(error: "Failed to save score with notes: \(error)")
             }
         }
     }
@@ -129,7 +129,7 @@ class ScoreService {
             update(scoreEntity)
             saveContext()
         } else {
-            print("No ScoreEntity found with id \(id).")
+            ErrorHandler.handleError(error: "No ScoreEntity found with id \(id).")
         }
     }
     
@@ -148,4 +148,3 @@ class ScoreService {
         }
     }
 }
-
