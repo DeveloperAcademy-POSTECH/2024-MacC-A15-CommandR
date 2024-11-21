@@ -74,7 +74,8 @@ class ScoreManager {
         noteEntity.part = partId  // 파트 설정
         noteEntity.lineNumber = Int64(lineNumber)  // Measure 번호 설정
         noteEntity.measureNumber = Int64(measureNumber)  // Measure 번호 설정
-        noteEntity.score = score  // Score와 연결
+        
+        score.addToNotes(noteEntity) // Core Data 메서드 사용
         return noteEntity
     }
 }
