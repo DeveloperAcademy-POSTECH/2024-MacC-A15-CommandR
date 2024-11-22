@@ -36,7 +36,7 @@ class PDFUploadDoneView: UIView {
     
     private func setupUI() {
         // LottieView 셋업
-        lottieView = LottieAnimationView(name: "Loading")
+        lottieView = LottieAnimationView(name: "Change")
         lottieView.translatesAutoresizingMaskIntoConstraints = false
         lottieView.contentMode = .center
         lottieView.loopMode = .loop

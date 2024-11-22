@@ -104,7 +104,7 @@
 		61B209602CD771F000E51C67 /* mutedClap.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 61B2095F2CD771F000E51C67 /* mutedClap.sf2 */; };
 		61F12AAD2CDA58E20005EFED /* metronome.xml in Resources */ = {isa = PBXBuildFile; fileRef = 61F12AAC2CDA58E20005EFED /* metronome.xml */; };
 		723CA00B2CD3639E00CC91EF /* Countdown.Watch.json in Resources */ = {isa = PBXBuildFile; fileRef = 723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */; };
-		729220562CBE48DB008C8FCF /* change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* change.json */; };
+		729220562CBE48DB008C8FCF /* Change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* Change.json */; };
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
 		D30101D52CE1DC35005742E6 /* InProgressInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */; };
 		D30101D72CE1E56C005742E6 /* ToastAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30101D62CE1E56C005742E6 /* ToastAlert.swift */; };
@@ -288,7 +288,7 @@
 		61B2095F2CD771F000E51C67 /* mutedClap.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mutedClap.sf2; sourceTree = "<group>"; };
 		61F12AAC2CDA58E20005EFED /* metronome.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = metronome.xml; sourceTree = "<group>"; };
 		723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.Watch.json; sourceTree = "<group>"; };
-		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
+		729220552CBE48DB008C8FCF /* Change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
 		D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InProgressInfoView.swift; sourceTree = "<group>"; };
 		D30101D62CE1E56C005742E6 /* ToastAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlert.swift; sourceTree = "<group>"; };
@@ -556,7 +556,7 @@
 		1ED9FEBD2CBD571300472C51 /* Lotties */ = {
 			isa = PBXGroup;
 			children = (
-				729220552CBE48DB008C8FCF /* change.json */,
+				729220552CBE48DB008C8FCF /* Change.json */,
 				1ED9FEBE2CBD573D00472C51 /* Loading.json */,
 				729220572CBE799D008C8FCF /* Countdown.json */,
 				723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */,
@@ -874,7 +874,7 @@
 				1E3E09342CB2AAB400EE1868 /* reh.mp3 in Resources */,
 				1E3E09422CB3ED5000EE1868 /* speechDo.mp3 in Resources */,
 				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
-				729220562CBE48DB008C8FCF /* change.json in Resources */,
+				729220562CBE48DB008C8FCF /* Change.json in Resources */,
 				1E3E09492CB3EE0600EE1868 /* speechPa.mp3 in Resources */,
 				1E3E09352CB2AAB400EE1868 /* pah.mp3 in Resources */,
 				D3CE18C42CE72A34008D120C /* cry.pdf in Resources */,
