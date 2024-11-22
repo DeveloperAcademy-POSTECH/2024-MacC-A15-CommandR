@@ -45,7 +45,13 @@ class CustomAlertViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBackgroundDismissGesture()
         setupAlertView()
+    }
+    
+    private func setupBackgroundDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundTap))
+        view.addGestureRecognizer(tapGesture)
     }
     
     private func setupAlertView() {
@@ -61,19 +67,28 @@ class CustomAlertViewController: UIViewController {
         applyHighlights(to: messageLabel)
         alertContainer.addSubview(messageLabel)
 
-        let closeButton = createButton(title: cancelButtonText, color: cancelButtonColor, action: #selector(cancelButtonTapped))
+        let closeButton = createButton(title: cancelButtonText,
+                                       color: cancelButtonColor,
+                                       action: #selector(cancelButtonTapped))
         alertContainer.addSubview(closeButton)
 
-        let confirmButton = createButton(title: confirmButtonText, color: confirmButtonColor, action: #selector(confirmAction))
+        let confirmButton = createButton(title: confirmButtonText,
+                                         color: confirmButtonColor,
+                                         action: #selector(confirmAction))
         alertContainer.addSubview(confirmButton)
 
-        setupConstraints(for: alertContainer, titleLabel: titleLabel, messageLabel: messageLabel, closeButton: closeButton, confirmButton: confirmButton)
+        setupConstraints(for: alertContainer,
+                         titleLabel: titleLabel,
+                         messageLabel: messageLabel,
+                         closeButton: closeButton,
+                         confirmButton: confirmButton)
     }
 
     private func createAlertContainer() -> UIView {
         let alertContainer = UIView()
         alertContainer.backgroundColor = UIColor(named: "background_primary")
         alertContainer.layer.cornerRadius = 16
+        alertContainer.isUserInteractionEnabled = true
         alertContainer.translatesAutoresizingMaskIntoConstraints = false
         return alertContainer
     }
@@ -106,7 +121,11 @@ class CustomAlertViewController: UIViewController {
         return button
     }
 
-    private func setupConstraints(for alertContainer: UIView, titleLabel: UILabel, messageLabel: UILabel, closeButton: UIButton, confirmButton: UIButton) {
+    private func setupConstraints(for alertContainer: UIView,
+                                  titleLabel: UILabel,
+                                  messageLabel: UILabel,
+                                  closeButton: UIButton,
+                                  confirmButton: UIButton) {
         NSLayoutConstraint.activate([
             alertContainer.widthAnchor.constraint(equalToConstant: 335),
             alertContainer.heightAnchor.constraint(equalToConstant: 166),
@@ -166,4 +185,13 @@ class CustomAlertViewController: UIViewController {
             self.onCancel?()
         }
     }
+    
+    // 알림창 말고 배경 누를때 창 꺼지기
+    @objc private func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
+         let touchPoint = gesture.location(in: view)
+         let alertFrame = view.subviews.first?.frame ?? .zero
+         if !alertFrame.contains(touchPoint) {
+             dismiss(animated: true, completion: nil)
+         }
+     }
 }
