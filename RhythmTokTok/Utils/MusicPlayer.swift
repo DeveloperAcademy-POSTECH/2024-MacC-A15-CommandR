@@ -149,16 +149,16 @@ class MusicPlayer: ObservableObject {
         print("Play MIDI")
         if let midiPlayer, let metronomeMIDIPlayer {
             print("midiPlayer: \(midiPlayer), metronomeMIIDPlayer: \(metronomeMIDIPlayer)")
+            
+            // 이전에 일시 정지된 위치에서 재개
+            midiPlayer.currentPosition = lastPosition
+            metronomeMIDIPlayer.currentPosition = lastPosition
+            
             if lastPosition != 0 {
-                // 이전에 일시 정지된 위치에서 재개
-                midiPlayer.currentPosition = lastPosition
-                metronomeMIDIPlayer.currentPosition = lastPosition
+                // 일시정지 처리 후 초기화
                 lastPosition = 0
-            } else {
-                // 시작 틱 위치
-                midiPlayer.currentPosition = 0
-                metronomeMIDIPlayer.currentPosition = 0
             }
+            
             isEnd = false
             
             // 예약된 매트로놈 MIDI 재생 시작
