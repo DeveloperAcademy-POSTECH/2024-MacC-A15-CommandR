@@ -385,7 +385,8 @@ extension RequestProcessingViewController {
             confirmButtonText: "취소하기",
             cancelButtonText: "닫기",
             confirmButtonColor: UIColor(named: "button_danger") ?? .red,
-            cancelButtonColor: UIColor(named: "button_cancel") ?? .gray
+            cancelButtonColor: UIColor(named: "button_cancel") ?? .gray,
+            highlightedTexts: ["되돌릴 수 없어요."]
         )
         
         alertVC.onConfirm = { [weak self] in
@@ -407,7 +408,8 @@ extension RequestProcessingViewController {
             confirmButtonText: "파일 변경",
             cancelButtonText: "요청 삭제",
             confirmButtonColor: UIColor(named: "button_primary") ?? .red,
-            cancelButtonColor: UIColor(named: "button_cancel") ?? .gray
+            cancelButtonColor: UIColor(named: "button_cancel") ?? .gray,
+            highlightedTexts: [""]
         )
         
         alertVC.onConfirm = { [weak self] in
@@ -454,4 +456,3 @@ extension RequestProcessingViewController {
         //    }
     }
 }
-

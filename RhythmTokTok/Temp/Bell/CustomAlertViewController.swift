@@ -14,20 +14,31 @@ class CustomAlertViewController: UIViewController {
     private let cancelButtonText: String
     private let confirmButtonColor: UIColor
     private let cancelButtonColor: UIColor
-    
+    private let highlightedTexts: [String]
+    private let highlightColor: UIColor
+
     var onConfirm: (() -> Void)?
     var onCancel: (() -> Void)?
     
-    init(title: String, message: String, confirmButtonText: String, cancelButtonText: String, confirmButtonColor: UIColor, cancelButtonColor: UIColor) {
+    init(title: String,
+         message: String,
+         confirmButtonText: String,
+         cancelButtonText: String,
+         confirmButtonColor: UIColor,
+         cancelButtonColor: UIColor,
+         highlightedTexts: [String],
+         highlightColor: UIColor = UIColor(named: "button_danger") ?? .red) {
         self.titleText = title
         self.messageText = message
         self.confirmButtonText = confirmButtonText
         self.cancelButtonText = cancelButtonText
         self.confirmButtonColor = confirmButtonColor
         self.cancelButtonColor = cancelButtonColor
+        self.highlightedTexts = highlightedTexts
+        self.highlightColor = highlightColor
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -39,60 +50,63 @@ class CustomAlertViewController: UIViewController {
     
     private func setupAlertView() {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
+
+        let alertContainer = createAlertContainer()
+        view.addSubview(alertContainer)
+
+        let titleLabel = createLabel(text: titleText, fontName: "Pretendard-Bold", fontSize: 21)
+        alertContainer.addSubview(titleLabel)
+
+        let messageLabel = createLabel(text: messageText, fontName: "Pretendard-Medium", fontSize: 16)
+        applyHighlights(to: messageLabel)
+        alertContainer.addSubview(messageLabel)
+
+        let closeButton = createButton(title: cancelButtonText, color: cancelButtonColor, action: #selector(cancelButtonTapped))
+        alertContainer.addSubview(closeButton)
+
+        let confirmButton = createButton(title: confirmButtonText, color: confirmButtonColor, action: #selector(confirmAction))
+        alertContainer.addSubview(confirmButton)
+
+        setupConstraints(for: alertContainer, titleLabel: titleLabel, messageLabel: messageLabel, closeButton: closeButton, confirmButton: confirmButton)
+    }
+
+    private func createAlertContainer() -> UIView {
         let alertContainer = UIView()
         alertContainer.backgroundColor = UIColor(named: "background_primary")
         alertContainer.layer.cornerRadius = 16
         alertContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(alertContainer)
+        return alertContainer
+    }
+
+    private func createLabel(text: String, fontName: String, fontSize: CGFloat) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = UIFont(name: fontName, size: fontSize)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+
+    private func createButton(title: String, color: UIColor, action: Selector) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        button.layer.cornerRadius = 12
+        button.backgroundColor = color
         
-        let titleLabel = UILabel()
-        titleLabel.text = titleText
-        titleLabel.font = UIFont(name: "Pretendard-Bold", size: 21)
-        titleLabel.textAlignment = .left
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        alertContainer.addSubview(titleLabel)
-        
-        // MARK: - @lyosha 여기에 컬러 다르게 할 텍스트 지정
-        let messageLabel = UILabel()
-        messageLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
-        messageLabel.textAlignment = .left
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        alertContainer.addSubview(messageLabel)
-        let fullMessage = "취소 후에는 되돌릴 수 없어요."
-        let attributedMessage = NSMutableAttributedString(string: fullMessage)
-        
-        // 1. 전체 텍스트의 기본 색상 설정
-        attributedMessage.addAttribute(.foregroundColor, value: UIColor(named: "lable_secondary") ?? .black, range: NSRange(location: 0, length: fullMessage.count))
-        
-        // 2. "취소" 부분에만 강조 색상 적용
-        if let cancelRange = fullMessage.range(of: "되돌릴 수 없어요.") {
-            let nsRange = NSRange(cancelRange, in: fullMessage)
-            attributedMessage.addAttribute(.foregroundColor, value: UIColor(named: "button_danger") ?? .red, range: nsRange)
+        // 텍스트 색상 설정
+        if color == UIColor(named: "button_secondary") {
+            button.setTitleColor(UIColor.black, for: .normal) // button_secondary 배경일 경우 검정색 텍스트
+        } else {
+            button.setTitleColor(.white, for: .normal) // 그 외 배경일 경우 흰색 텍스트
         }
         
-        messageLabel.attributedText = attributedMessage
-        
-        let closeButton = UIButton(type: .system)
-        closeButton.setTitle(cancelButtonText, for: .normal)
-        closeButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
-        closeButton.layer.cornerRadius = 12
-        closeButton.backgroundColor = cancelButtonColor
-        closeButton.setTitleColor(UIColor(named: "lable_secondary") ?? .black, for: .normal)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        alertContainer.addSubview(closeButton)
-        
-        let confirmButton = UIButton(type: .system)
-        confirmButton.setTitle(confirmButtonText, for: .normal)
-        confirmButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
-        confirmButton.layer.cornerRadius = 12
-        confirmButton.backgroundColor = confirmButtonColor
-        confirmButton.setTitleColor(.white, for: .normal)
-        confirmButton.translatesAutoresizingMaskIntoConstraints = false
-        confirmButton.addTarget(self, action: #selector(confirmAction), for: .touchUpInside)
-        alertContainer.addSubview(confirmButton)
-        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: action, for: .touchUpInside)
+        return button
+    }
+
+    private func setupConstraints(for alertContainer: UIView, titleLabel: UILabel, messageLabel: UILabel, closeButton: UIButton, confirmButton: UIButton) {
         NSLayoutConstraint.activate([
             alertContainer.widthAnchor.constraint(equalToConstant: 335),
             alertContainer.heightAnchor.constraint(equalToConstant: 166),
@@ -118,7 +132,29 @@ class CustomAlertViewController: UIViewController {
             confirmButton.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
+
+    private func applyHighlights(to label: UILabel) {
+        guard let text = label.text else { return }
+        let attributedMessage = NSMutableAttributedString(string: text)
         
+        // 기본 색상 적용
+        attributedMessage.addAttribute(
+            .foregroundColor,
+            value: UIColor(named: "lable_secondary") ?? .black,
+            range: NSRange(location: 0, length: text.count)
+        )
+
+        // 강조 텍스트 색상 적용
+        for highlightedText in highlightedTexts {
+            if let range = text.range(of: highlightedText) {
+                let nsRange = NSRange(range, in: text)
+                attributedMessage.addAttribute(.foregroundColor, value: highlightColor, range: nsRange)
+            }
+        }
+
+        label.attributedText = attributedMessage
+    }
+
     @objc private func confirmAction() {
         dismiss(animated: true) {
             self.onConfirm?()

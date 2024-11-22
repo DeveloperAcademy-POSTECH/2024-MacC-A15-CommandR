@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -31,6 +31,7 @@
 		1A0AE6D72CE5DD4F00564859 /* PDFUploadDoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */; };
 		1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
+		1A5E09122CEB83AD00E17FF4 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5E09112CEB83AD00E17FF4 /* Fonts.swift */; };
 		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */; };
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
@@ -73,6 +74,9 @@
 		1EB7B3E52CD21F9F00FF4244 /* StatusTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */; };
 		1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */; };
 		1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */; };
+		1ECDC5712CEDCDEE008948E7 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ECDC5412CEDC8B7008948E7 /* WidgetKit.framework */; };
+		1ECDC5722CEDCDEE008948E7 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ECDC5432CEDC8B7008948E7 /* SwiftUI.framework */; };
+		1ECDC57B2CEDCDEF008948E7 /* ComplicationWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1ECDC5702CEDCDEE008948E7 /* ComplicationWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1ED9FEB32CBCA37100472C51 /* HapticScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */; };
 		1ED9FEBA2CBD568000472C51 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1ED9FEB92CBD568000472C51 /* Lottie */; };
 		1ED9FEBC2CBD56D000472C51 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */; };
@@ -140,6 +144,7 @@
 		D3DDA07C2CC5516F00125C86 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = D3DDA0742CC5516F00125C86 /* Pretendard-Bold.otf */; };
 		D3F8C5312CEB6B6F00D2B012 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */; };
 		D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */; };
+		EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */; };
 		EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1B9BB52CD647A000073215 /* BPMDescription.swift */; };
 		EE4203962CD226800081F2A1 /* BPMSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */; };
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
@@ -172,6 +177,13 @@
 			remoteGlobalIDString = 02CFE11E2CB1156C008454B8;
 			remoteInfo = RhythmTokTokWatchApp;
 		};
+		1ECDC5792CEDCDEF008948E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02BFECE02CB10A13003CEC8A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1ECDC56F2CEDCDEE008948E7;
+			remoteInfo = ComplicationWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -184,6 +196,17 @@
 				02CFE12C2CB1156D008454B8 /* RhythmTokTokWatchApp.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1ECDC5502CEDC8B9008948E7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1ECDC57B2CEDCDEF008948E7 /* ComplicationWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -214,6 +237,7 @@
 		1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadDoneView.swift; sourceTree = "<group>"; };
 		1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadDoneViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
+		1A5E09112CEB83AD00E17FF4 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Fonts.swift; path = RhythmTokTok/Temp/Fonts.swift; sourceTree = SOURCE_ROOT; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFView.swift; sourceTree = "<group>"; };
@@ -258,6 +282,9 @@
 		1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTagView.swift; sourceTree = "<group>"; };
 		1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureControllerButton.swift; sourceTree = "<group>"; };
 		1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownLottieView.swift; sourceTree = "<group>"; };
+		1ECDC5412CEDC8B7008948E7 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		1ECDC5432CEDC8B7008948E7 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		1ECDC5702CEDCDEE008948E7 /* ComplicationWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ComplicationWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ED9FEB22CBCA36600472C51 /* HapticScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduleManager.swift; sourceTree = "<group>"; };
 		1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
 		1ED9FEBE2CBD573D00472C51 /* Loading.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Loading.json; sourceTree = "<group>"; };
@@ -319,6 +346,7 @@
 		D3DDA0762CC5516F00125C86 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		D3F8C5302CEB6B6F00D2B012 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreSearchViewController.swift; sourceTree = "<group>"; };
+		EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTitleChangeViewController.swift; sourceTree = "<group>"; };
 		EE1B9BB52CD647A000073215 /* BPMDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMDescription.swift; sourceTree = "<group>"; };
 		EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
@@ -343,6 +371,20 @@
 		EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1ECDC57C2CEDCDEF008948E7 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1ECDC56F2CEDCDEE008948E7 /* ComplicationWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1ECDC5732CEDCDEE008948E7 /* ComplicationWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1ECDC57C2CEDCDEF008948E7 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ComplicationWidget; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		02BFECE52CB10A13003CEC8A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -360,6 +402,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1ECDC56D2CEDCDEE008948E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1ECDC5722CEDCDEE008948E7 /* SwiftUI.framework in Frameworks */,
+				1ECDC5712CEDCDEE008948E7 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -372,6 +423,7 @@
 				D3DDA07D2CC5517300125C86 /* Font */,
 				02BFECEA2CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE1202CB1156C008454B8 /* RhythmTokTokWatchApp */,
+				1ECDC5732CEDCDEE008948E7 /* ComplicationWidget */,
 				1E3E09112CB295D800EE1868 /* Frameworks */,
 				02BFECE92CB10A13003CEC8A /* Products */,
 			);
@@ -382,6 +434,7 @@
 			children = (
 				02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */,
 				02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */,
+				1ECDC5702CEDCDEE008948E7 /* ComplicationWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -433,6 +486,8 @@
 		1E3E09112CB295D800EE1868 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1ECDC5412CEDC8B7008948E7 /* WidgetKit.framework */,
+				1ECDC5432CEDC8B7008948E7 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -456,6 +511,7 @@
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
+				EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
 				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
@@ -703,6 +759,7 @@
 		1EF8A0AF2CB559E100ADB783 /* Lyosha */ = {
 			isa = PBXGroup;
 			children = (
+				1A5E09112CEB83AD00E17FF4 /* Fonts.swift */,
 			);
 			path = Lyosha;
 			sourceTree = "<group>";
@@ -802,15 +859,39 @@
 				02CFE11B2CB1156C008454B8 /* Sources */,
 				02CFE11C2CB1156C008454B8 /* Frameworks */,
 				02CFE11D2CB1156C008454B8 /* Resources */,
+				1ECDC5502CEDC8B9008948E7 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1ECDC57A2CEDCDEF008948E7 /* PBXTargetDependency */,
 			);
 			name = RhythmTokTokWatchApp;
 			productName = RhythmTokTokWatchApp;
 			productReference = 02CFE11F2CB1156C008454B8 /* RhythmTokTokWatchApp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		1ECDC56F2CEDCDEE008948E7 /* ComplicationWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1ECDC57D2CEDCDEF008948E7 /* Build configuration list for PBXNativeTarget "ComplicationWidgetExtension" */;
+			buildPhases = (
+				1ECDC56C2CEDCDEE008948E7 /* Sources */,
+				1ECDC56D2CEDCDEE008948E7 /* Frameworks */,
+				1ECDC56E2CEDCDEE008948E7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1ECDC5732CEDCDEE008948E7 /* ComplicationWidget */,
+			);
+			name = ComplicationWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = ComplicationWidgetExtension;
+			productReference = 1ECDC5702CEDCDEE008948E7 /* ComplicationWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -819,7 +900,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					02BFECE72CB10A13003CEC8A = {
@@ -827,6 +908,9 @@
 					};
 					02CFE11E2CB1156C008454B8 = {
 						CreatedOnToolsVersion = 15.4;
+					};
+					1ECDC56F2CEDCDEE008948E7 = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -849,6 +933,7 @@
 			targets = (
 				02BFECE72CB10A13003CEC8A /* RhythmTokTok */,
 				02CFE11E2CB1156C008454B8 /* RhythmTokTokWatchApp */,
+				1ECDC56F2CEDCDEE008948E7 /* ComplicationWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -920,6 +1005,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1ECDC56E2CEDCDEE008948E7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -988,6 +1080,7 @@
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
 				D37DFEE12CE9C3F30073ABAB /* ServerSetting.swift in Sources */,
 				1E3E09182CB298AB00EE1868 /* Note.swift in Sources */,
+				EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				D3C17AE72CED089A0016837A /* EmptyResultView.swift in Sources */,
 				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
@@ -1014,6 +1107,7 @@
 				1EB7B3E92CD26B7900FF4244 /* MeasureControllerButton.swift in Sources */,
 				EE7B28B02CBE8F5D00325725 /* ListItemCellView.swift in Sources */,
 				61318FA52CDF8D3A00D8FC26 /* TitleInputViewController.swift in Sources */,
+				1A5E09122CEB83AD00E17FF4 /* Fonts.swift in Sources */,
 				1E54A8FD2CBA8F3900753A3E /* Part.swift in Sources */,
 				EE4203AB2CD3D50C0081F2A1 /* RadioButtonOptionItemPicker.swift in Sources */,
 				1ED9FEC72CBE4B2F00472C51 /* ScorePracticeViewController.swift in Sources */,
@@ -1059,6 +1153,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1ECDC56C2CEDCDEE008948E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1066,6 +1167,11 @@
 			isa = PBXTargetDependency;
 			target = 02CFE11E2CB1156C008454B8 /* RhythmTokTokWatchApp */;
 			targetProxy = 02CFE12A2CB1156D008454B8 /* PBXContainerItemProxy */;
+		};
+		1ECDC57A2CEDCDEF008948E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1ECDC56F2CEDCDEE008948E7 /* ComplicationWidgetExtension */;
+			targetProxy = 1ECDC5792CEDCDEF008948E7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1298,7 +1404,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
+				INFOPLIST_KEY_CFBundleDisplayName = "리듬톡톡";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
@@ -1338,7 +1444,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RhythmTokTokWatchApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = RhythmTokTok;
+				INFOPLIST_KEY_CFBundleDisplayName = "리듬톡톡";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.commandR.RhythmTokTok;
@@ -1357,6 +1463,78 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+		1ECDC57E2CEDCDEF008948E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = AQCS8SYVV6;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ComplicationWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ComplicationWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.commandR.RhythmTokTok.watchkitapp.ComplicationWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = commandRComplication;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
+			};
+			name = Debug;
+		};
+		1ECDC57F2CEDCDEF008948E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=watchos*]" = AQCS8SYVV6;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ComplicationWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ComplicationWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.commandR.RhythmTokTok.watchkitapp.ComplicationWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=watchos*]" = commandRComplication;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.1;
 			};
 			name = Release;
 		};
@@ -1386,6 +1564,15 @@
 			buildConfigurations = (
 				02CFE12E2CB1156D008454B8 /* Debug */,
 				02CFE12F2CB1156D008454B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1ECDC57D2CEDCDEF008948E7 /* Build configuration list for PBXNativeTarget "ComplicationWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1ECDC57E2CEDCDEF008948E7 /* Debug */,
+				1ECDC57F2CEDCDEF008948E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
