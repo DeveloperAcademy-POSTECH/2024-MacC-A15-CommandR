@@ -392,10 +392,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         let countDownTimer = Timer(fireAt: countDownTime, interval: 0, target: self, selector: #selector(startCountDownAnimation), userInfo: nil, repeats: false)
         RunLoop.main.add(countDownTimer, forMode: .common)
         
-//        // 예약된 시간에 MIDI 재생 시작
-//        let playTimer = Timer(fireAt: futureTime, interval: 0, target: self, selector: #selector(actionStart), userInfo: nil, repeats: false)
-//        RunLoop.main.add(playTimer, forMode: .common)
-        actionStart(futureTime: futureTime)
+        // MIDI 파일 재생시간 offset
+        let midiOffset = -0.065
+        actionStart(futureTime: futureTime.addingTimeInterval(midiOffset))
         // 타이머 설정
         countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if self.countdownTime > 0 {

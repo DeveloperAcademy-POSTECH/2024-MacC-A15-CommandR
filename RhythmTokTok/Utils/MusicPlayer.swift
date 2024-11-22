@@ -160,10 +160,21 @@ class MusicPlayer: ObservableObject {
                 metronomeMIDIPlayer.currentPosition = 0
             }
             isEnd = false
+            
+            // 예약된 매트로놈 MIDI 재생 시작
+            if self.soundOption == .melodyBeat {
+                let metronomepPlayTimer = Timer(fireAt: futureTime, interval: 0,
+                                                target: self, selector: #selector(startMetronomeMIDIPlay),
+                                                userInfo: nil, repeats: false)
+                RunLoop.main.add(metronomepPlayTimer, forMode: .common)
+            }
+            
             // 예약된 시간에 MIDI 재생 시작
-            let playTimer = Timer(fireAt: futureTime, interval: 0, target: self, selector: #selector(startMIDIPlay), userInfo: nil, repeats: false)
+            let playTimer = Timer(fireAt: futureTime, interval: 0,
+                                  target: self, selector: #selector(startMIDIPlay),
+                                  userInfo: nil, repeats: false)
             RunLoop.main.add(playTimer, forMode: .common)
-
+            
             isTemporarilyStopped = false
         }
     }
@@ -172,12 +183,6 @@ class MusicPlayer: ObservableObject {
         guard let midiPlayer, let metronomeMIDIPlayer else { return }
         
         DispatchQueue.main.async {
-            if self.soundOption == .melodyBeat {
-                if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
-                    metronomeMIDIPlayer.play()
-                }
-            }
-            
             // MIDI 플레이어 재생
             midiPlayer.play {
                 print("MIDI playback completed.")
@@ -191,6 +196,16 @@ class MusicPlayer: ObservableObject {
             
             // 타이머 동작 추가
             self.startTimer()
+        }
+    }
+    
+    @objc private func startMetronomeMIDIPlay() {
+        guard let metronomeMIDIPlayer else { return }
+        
+        DispatchQueue.main.async {
+            if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
+                metronomeMIDIPlayer.play()
+            }
         }
     }
     
