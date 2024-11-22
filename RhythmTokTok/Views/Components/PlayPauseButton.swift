@@ -40,25 +40,32 @@ class PlayPauseButton: UIButton {
         config.baseForegroundColor = .white // 텍스트 및 이미지 색상
         config.baseBackgroundColor = .blue500 // 버튼 배경색
         config.imagePadding = 18 // 이미지와 텍스트 간격
+        
+        let customFont = UIFont.customFont(forTextStyle: .heading1Medium)
         config.attributedTitle = AttributedString("재생", attributes:
-                .init([.font: UIFont(name: "Pretendard-Medium", size: 24)!])) // 텍스트 크기 설정
+            .init([.font: customFont]))
+
         // 버튼 설정 적용
         self.configuration = config
         self.setImage(config.image, for: .normal)
         self.layer.cornerRadius = 12
         self.layer.masksToBounds = true
+
+        // Dynamic Type 활성화
+        self.titleLabel?.font = customFont
+        self.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 
     // 버튼의 이미지를 재생/일시정지 상태에 맞게 업데이트
     private func updateButtonAppearance() {
         var config = UIButton.Configuration.filled()
-
+        
         if isPlaying {
             let pauseImage = UIImage(systemName: "pause.fill")?
                 .withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
             config.image = pauseImage
             config.attributedTitle = AttributedString("일시정지", attributes:
-                    .init([.font: UIFont(name: "Pretendard-Medium", size: 24)!])) // 텍스트 크기 설정
+                    .init([.font: UIFont.customFont(forTextStyle: .heading1Medium)]))
             config.baseBackgroundColor = .gray800
             
         } else {
@@ -66,14 +73,16 @@ class PlayPauseButton: UIButton {
                 .withConfiguration(UIImage.SymbolConfiguration(pointSize: 24))
             config.image = playImage
             config.attributedTitle = AttributedString("재생", attributes:
-                    .init([.font: UIFont(name: "Pretendard-Medium", size: 24)!])) // 텍스트 크기 설정
+                    .init([.font: UIFont.customFont(forTextStyle: .heading1Medium)]))
             config.baseBackgroundColor = .blue500
         }
+        
         config.baseForegroundColor = .white
         config.imagePadding = 18
         self.configuration = config
-        self.setImage(config.image, for: .normal)
-        self.layer.cornerRadius = 12
-        self.layer.masksToBounds = true
+        
+        // Dynamic Type 활성화
+        self.titleLabel?.font = UIFont.customFont(forTextStyle: .heading2Medium)
+        self.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 }

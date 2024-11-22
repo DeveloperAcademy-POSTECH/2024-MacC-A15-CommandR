@@ -21,11 +21,11 @@ class MeasureControllerButton: UIButton {
         config.background.strokeWidth = 1.5
         config.background.cornerRadius = 12
         
-        if let customFont = UIFont(name: "Pretendard-Medium", size: 18) {
-            var attributedTitle = AttributedString(title)
-            attributedTitle.font = customFont
-            config.attributedTitle = attributedTitle
-        }
+        let customFont = UIFont.customFont(forTextStyle: .button1Medium)
+        var attributedTitle = AttributedString(title)
+        attributedTitle.font = customFont
+        attributedTitle.foregroundColor = foregoundColor
+        config.attributedTitle = attributedTitle
         
         self.configuration = config
         
