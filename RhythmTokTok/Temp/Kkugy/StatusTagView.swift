@@ -40,13 +40,15 @@ class StatusTagView: UIView {
         
         soundSetLabel.text = ""
         soundSetLabel.textAlignment = .center
-        soundSetLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
+        soundSetLabel.font = UIFont.customFont(forTextStyle: .body2Medium)
+        soundSetLabel.adjustsFontForContentSizeCategory = true
         soundSetLabel.textColor = UIColor(named: "lable_tertiary")
         soundSetLabel.translatesAutoresizingMaskIntoConstraints = false
         
         hapticLabel.text = ""
         hapticLabel.textAlignment = .center
-        hapticLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
+        hapticLabel.font = UIFont.customFont(forTextStyle: .body2Medium)
+        hapticLabel.adjustsFontForContentSizeCategory = true
         hapticLabel.textColor = UIColor(named: "lable_tertiary")
         hapticLabel.translatesAutoresizingMaskIntoConstraints = false
         
