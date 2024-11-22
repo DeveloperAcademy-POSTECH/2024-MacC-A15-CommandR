@@ -21,7 +21,7 @@ class InternetErrorViewController: UIViewController {
 
         // 1. 와이파이 경고 아이콘
         let wifiIcon = UIImageView()
-        wifiIcon.image = UIImage(systemName: "wifi.exclamationmark")
+        wifiIcon.image = UIImage(named: "caution.wifi") ?? UIImage(systemName: "wifi.exclamationmark")
         wifiIcon.tintColor = .gray
         wifiIcon.contentMode = .scaleAspectFit
         wifiIcon.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +31,7 @@ class InternetErrorViewController: UIViewController {
         let mainMessageLabel = UILabel()
         mainMessageLabel.text = "인터넷 연결이 끊겼어요"
         mainMessageLabel.textColor = .black
-        mainMessageLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
         mainMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mainMessageLabel)
@@ -40,7 +40,7 @@ class InternetErrorViewController: UIViewController {
         let subMessageLabel = UILabel()
         subMessageLabel.text = "확인 후 다시 시도해 주세요"
         subMessageLabel.textColor = .gray
-        subMessageLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
         subMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(subMessageLabel)
@@ -49,6 +49,7 @@ class InternetErrorViewController: UIViewController {
         let retryButton = UIButton(type: .system)
         retryButton.setTitle("재시도", for: .normal)
         retryButton.setTitleColor(.white, for: .normal)
+        retryButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         retryButton.backgroundColor = .systemBlue
         retryButton.layer.cornerRadius = 10
         retryButton.translatesAutoresizingMaskIntoConstraints = false

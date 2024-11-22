@@ -22,20 +22,21 @@ class ErrorViewController: UIViewController {
         let mainMessageLabel = UILabel()
         mainMessageLabel.text = "음악 요청을 처리하지 못했어요"
         mainMessageLabel.textColor = .black
-        mainMessageLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
         
         // 3. 하위 메시지 레이블
         let subMessageLabel = UILabel()
         subMessageLabel.text = "문제가 발생했으니 다시 시도해 주세요"
         subMessageLabel.textColor = .gray
-        subMessageLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
         
         // 4. 버튼
         let retryButton = UIButton(type: .system)
         retryButton.setTitle("처음으로 가기", for: .normal)
         retryButton.setTitleColor(.white, for: .normal)
+        retryButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         retryButton.backgroundColor = .systemBlue
         retryButton.layer.cornerRadius = 10
         retryButton.translatesAutoresizingMaskIntoConstraints = false
