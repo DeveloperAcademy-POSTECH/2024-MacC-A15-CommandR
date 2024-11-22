@@ -4,6 +4,19 @@ class SettingView: UIView {
     // 커스텀 네비게이션 추가
     let customNavBar = CustomNavigationBar()
     
+    // 스크롤 뷰 추가
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     // 섹션 추가
     let bpmSettingSection = BPMSettingSectionView()
     let soundSettingSection = SoundSettingSectionView()
@@ -47,15 +60,13 @@ class SettingView: UIView {
         super.init(frame: frame)
         setupUI()
         
-        // bpmSettingSection에서 이벤트를 받아서 SettingView로 전달
+        // 각 Section에서 이벤트를 받아서 SettingView로 전달
         bpmSettingSection.onBPMButtonTapped = { [weak self] in
             self?.onBPMButtonTapped?()
         }
-        // soundSettingSection에서 이벤트를 받아서 SettingView로 전달
         soundSettingSection.onOptionSelected = { [weak self] selectedOption in
             self?.onSoundOptionSelected?(selectedOption)
         }
-        // hapticGuideSection에서 이벤트를 받아서 SettingView로 전달
         hapticSettingSection.onToggleChanged = { [weak self] isOn in
             self?.onHapticToggleChanged?(isOn)
         }
@@ -65,15 +76,13 @@ class SettingView: UIView {
         super.init(coder: coder)
         setupUI()
         
-        // bpmSettingSection에서 이벤트를 받아서 SettingView로 전달
+        // 각 Section에서 이벤트를 받아서 SettingView로 전달
         bpmSettingSection.onBPMButtonTapped = { [weak self] in
             self?.onBPMButtonTapped?()
         }
-        // soundSettingSection에서 이벤트를 받아서 SettingView로 전달
         soundSettingSection.onOptionSelected = { [weak self] selectedOption in
             self?.onSoundOptionSelected?(selectedOption)
         }
-        // hapticGuideSection에서 이벤트를 받아서 SettingView로 전달
         hapticSettingSection.onToggleChanged = { [weak self] isOn in
             self?.onHapticToggleChanged?(isOn)
         }
@@ -93,20 +102,37 @@ class SettingView: UIView {
         let divider1 = createDivider()
         let divider2 = createDivider()
         
-        // 각 뷰의 translatesAutoresizingMaskIntoConstraints 설정
-        [customNavBar, divider0, bpmSettingSection, divider1, soundSettingSection, divider2, hapticSettingSection, settingDoneOverlayView].forEach {
+        // scrollView와 contentView 추가
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        // 섹션과 Divider를 contentView에 추가
+        [customNavBar, divider0, bpmSettingSection, divider1, soundSettingSection, divider2, hapticSettingSection].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            addSubview($0)
+            contentView.addSubview($0)
         }
 
+        addSubview(settingDoneOverlayView)
         settingDoneOverlayView.addSubview(settingDoneButton)
         settingDoneButton.addTarget(self, action: #selector(settingDoneButtonTapped), for: .touchUpInside)
-
+        
         // 제약 조건 설정
         NSLayoutConstraint.activate([
-            customNavBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            customNavBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            customNavBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor, constant: 1),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            customNavBar.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            customNavBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            customNavBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             customNavBar.heightAnchor.constraint(equalToConstant: 50),
             
             divider0.topAnchor.constraint(equalTo: customNavBar.bottomAnchor, constant: 10),
