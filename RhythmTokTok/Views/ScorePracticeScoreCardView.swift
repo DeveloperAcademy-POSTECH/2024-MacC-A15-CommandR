@@ -45,7 +45,8 @@ class ScorePracticeScoreCardView: UIView {
         titleLabel.text = "처리중"
         titleLabel.textAlignment = .left
         titleLabel.textColor = UIColor(named: "lable_primary")
-        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
+        titleLabel.font = UIFont.customFont(forTextStyle: .titleBold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreCardView.addSubview(titleLabel)
 
@@ -55,13 +56,15 @@ class ScorePracticeScoreCardView: UIView {
         currentMeasureLabel.text = "1"
         currentMeasureLabel.textAlignment = .left
         currentMeasureLabel.textColor = UIColor.blue500
-        currentMeasureLabel.font = .systemFont(ofSize: 24, weight: .regular)
+        currentMeasureLabel.font = UIFont.customFont(forTextStyle: .heading1Regular)
+        currentMeasureLabel.adjustsFontForContentSizeCategory = true
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
         
         totalMeasureLabel.text = "/ 0"
         totalMeasureLabel.textAlignment = .left
         totalMeasureLabel.textColor = UIColor(named: "lable_tertiary")
-        totalMeasureLabel.font = .systemFont(ofSize: 24, weight: .regular)
+        totalMeasureLabel.font = UIFont.customFont(forTextStyle: .heading1Regular)
+        totalMeasureLabel.adjustsFontForContentSizeCategory = true
         totalMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
 
         currentMeasureHStack.axis = .horizontal
