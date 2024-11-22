@@ -674,14 +674,13 @@
 				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
 				D32330922CDE37FB007D1003 /* Request.swift */,
 				D32330942CDE382C007D1003 /* RequestStatus.swift */,
-				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
-				D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */,
 				D30101D62CE1E56C005742E6 /* ToastAlert.swift */,
+				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
+				D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */,
 				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
 				D3C17AE32CED087D0016837A /* View */,
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
-				D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */,
 			);
 			path = Bell;
 			sourceTree = "<group>";
@@ -732,6 +731,7 @@
 		D3C17AE32CED087D0016837A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */,
 				D323308E2CDE37C9007D1003 /* RequestCardView.swift */,
 				D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */,
 				D3C17AE42CED088C0016837A /* BeforeSearchView.swift */,

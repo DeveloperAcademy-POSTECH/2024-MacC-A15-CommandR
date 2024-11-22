@@ -19,6 +19,7 @@ class RequestProcessingViewController: UIViewController,
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     
+    @MainActor
     var requests: [Request] = []
     var deviceID: String {
         return encrypt(ServerManager.shared.getDeviceUUID())
@@ -235,7 +236,7 @@ class RequestProcessingViewController: UIViewController,
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 
                 self?.requests = scores.compactMap { scoreDict in
-                    guard let id = scoreDict["id"] as? Int,
+                    guard let scoreId = scoreDict["id"] as? Int,
                           let title = scoreDict["title"] as? String,
                           let statusValue = scoreDict["status"] as? Int,
                           let requestDateString = scoreDict["request_date"] as? String,
@@ -252,7 +253,7 @@ class RequestProcessingViewController: UIViewController,
                     case 2: status = .downloaded
                     default: return nil
                     }
-                    return Request(id: id, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
+                    return Request(id: scoreId, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
                 }
                 
                 self?.updateRequestsUI()
@@ -295,18 +296,17 @@ class RequestProcessingViewController: UIViewController,
                 // Core Data에 저장합니다.
                 ScoreManager.shared.addScoreWithNotes(scoreData: score)
                 
-                // 요청 상태를 .downloaded로 업데이트합니다.
-                self.requests[index].status = .downloaded
-                
-                // 서버에 상태 업데이트를 요청합니다.
-                ServerManager.shared.updateScoreStatus(deviceID: self.deviceID,
-                                                       scoreID: String(request.id),
-                                                       newStatus: 2) { status, message in
-                    print("Update status: \(status), message: \(message)")
-                }
-                
                 // UI를 메인 스레드에서 업데이트합니다.
                 DispatchQueue.main.async {
+                    // 요청 상태를 .downloaded로 업데이트합니다.
+                    self.requests[index].status = .downloaded
+                    // 서버에 상태 업데이트를 요청합니다.
+                    ServerManager.shared.updateScoreStatus(deviceID: self.deviceID,
+                                                           scoreID: String(request.id),
+                                                           newStatus: 2) { status, message in
+                        print("Update status: \(status), message: \(message)")
+                    }
+                    
                     // 토스트 알림을 표시합니다.
                     ToastAlert.show(message: "음악이 추가되었어요.", in: self.view, iconName: "check.circle.color")
                     
@@ -340,7 +340,7 @@ class RequestProcessingViewController: UIViewController,
             print("Server Response - Status: \(status), Message: \(message)")
             
             if status == 1 {
-                DispatchQueue.main.async {
+              DispatchQueue.main.async {
                     // 요청 상태를 .cancelled로 변경
                     self.requests[index].status = .cancelled
                     self.updateRequestsUI()
