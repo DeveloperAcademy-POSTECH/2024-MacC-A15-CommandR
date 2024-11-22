@@ -65,9 +65,6 @@ class SettingView: UIView {
         bpmSettingSection.onBPMButtonTapped = { [weak self] in
             self?.onBPMButtonTapped?()
         }
-        soundKeySettingSection.onSoundKeyChanged = { [weak self] changedKey in
-            self?.onSoundKeyChanged?(changedKey)
-        }
         soundSettingSection.onOptionSelected = { [weak self] selectedOption in
             self?.onSoundOptionSelected?(selectedOption)
         }
@@ -83,9 +80,6 @@ class SettingView: UIView {
         // 각 Section에서 이벤트를 받아서 SettingView로 전달
         bpmSettingSection.onBPMButtonTapped = { [weak self] in
             self?.onBPMButtonTapped?()
-        }
-        soundKeySettingSection.onSoundKeyChanged = { [weak self] changedKey in
-            self?.onSoundKeyChanged?(changedKey)
         }
         soundSettingSection.onOptionSelected = { [weak self] selectedOption in
             self?.onSoundOptionSelected?(selectedOption)

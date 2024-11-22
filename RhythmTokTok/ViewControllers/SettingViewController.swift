@@ -45,6 +45,7 @@ class SettingViewController: UIViewController {
             // SettingView의 값들을 currentScore에 반영
             self.currentScore.bpm = self.settingView.bpmSettingSection.bpm
             self.currentScore.soundOption = SoundSetting(rawValue: self.settingView.soundSettingSection.selectedOption) ?? .melodyBeat
+            self.currentScore.soundKeyOption = self.settingView.soundKeySettingSection.currentSoundKey ?? 0
             self.currentScore.hapticOption = self.settingView.hapticSettingSection.isToggleOn
             
             // currentScore에 반영된 값을 Core Data에 저장
@@ -74,11 +75,13 @@ extension SettingViewController {
             // currentScore 의 id 로 값을 가지고 와서 반영
             currentScore.bpm = Int(scoreEntity.bpm)
             currentScore.soundOption = SoundSetting(rawValue: scoreEntity.soundOption) ?? .melodyBeat
+            currentScore.soundKeyOption = scoreEntity.soundKeyOption
             currentScore.hapticOption = scoreEntity.isHapticOn
 
             // 초기값을 SettingView에 반영
             settingView.bpmSettingSection.bpm = currentScore.bpm
             settingView.soundSettingSection.setSelectedOption(currentScore.soundOption.rawValue)
+            settingView.soundKeySettingSection.currentSoundKey = currentScore.soundKeyOption
             settingView.hapticSettingSection.setToggleState(isOn: currentScore.hapticOption)
         } else {
             print("No matching ScoreEntity found in CoreData.")
@@ -90,6 +93,7 @@ extension SettingViewController {
         scoreService.updateScore(withId: currentScore.id) { scoreEntity in
             scoreEntity.bpm = Int64(currentScore.bpm)
             scoreEntity.soundOption = currentScore.soundOption.rawValue
+            scoreEntity.soundKeyOption = currentScore.soundKeyOption
             scoreEntity.isHapticOn = currentScore.hapticOption
         }
     }
