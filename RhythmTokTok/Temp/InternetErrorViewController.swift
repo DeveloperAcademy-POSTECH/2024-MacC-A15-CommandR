@@ -34,6 +34,7 @@ class InternetErrorViewController: UIViewController {
         mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
         mainMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        mainMessageLabel.adjustsFontForContentSizeCategory = true
         view.addSubview(mainMessageLabel)
 
         // 3. 하위 메시지 레이블
@@ -43,6 +44,7 @@ class InternetErrorViewController: UIViewController {
         subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
         subMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        subMessageLabel.adjustsFontForContentSizeCategory = true
         view.addSubview(subMessageLabel)
 
         // 4. 버튼
@@ -53,6 +55,7 @@ class InternetErrorViewController: UIViewController {
         retryButton.backgroundColor = .systemBlue
         retryButton.layer.cornerRadius = 10
         retryButton.translatesAutoresizingMaskIntoConstraints = false
+        retryButton.titleLabel?.adjustsFontForContentSizeCategory = true
         view.addSubview(retryButton)
 
         // 버튼 액션 추가

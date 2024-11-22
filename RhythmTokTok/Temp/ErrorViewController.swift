@@ -24,6 +24,7 @@ class ErrorViewController: UIViewController {
         mainMessageLabel.textColor = .black
         mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
+        mainMessageLabel.adjustsFontForContentSizeCategory = true
         
         // 3. 하위 메시지 레이블
         let subMessageLabel = UILabel()
@@ -31,6 +32,7 @@ class ErrorViewController: UIViewController {
         subMessageLabel.textColor = .gray
         subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
+        subMessageLabel.adjustsFontForContentSizeCategory = true
         
         // 4. 버튼
         let retryButton = UIButton(type: .system)
@@ -42,6 +44,7 @@ class ErrorViewController: UIViewController {
         retryButton.translatesAutoresizingMaskIntoConstraints = false
         retryButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         retryButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        retryButton.titleLabel?.adjustsFontForContentSizeCategory = true
         
         // 버튼 액션 추가
         retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
