@@ -294,7 +294,8 @@ class RequestProcessingViewController: UIViewController,
                 }
                 
                 // Core Data에 저장합니다.
-                ScoreManager.shared.addScoreWithNotes(scoreData: score)
+                let scoreService = ScoreService()
+                scoreService.addScoreWithNotes(scoreData: score)
                 
                 // UI를 메인 스레드에서 업데이트합니다.
                 DispatchQueue.main.async {
