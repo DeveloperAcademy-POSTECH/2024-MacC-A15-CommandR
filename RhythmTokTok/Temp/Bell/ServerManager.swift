@@ -5,11 +5,12 @@
 //  Created by Byeol Kim on 11/8/24.
 //
 import UIKit
+import Combine
 
 class ServerManager {
     static let shared = ServerManager()
     private init() {}
-    private var isUploading = false
+    @Published var isUploading: Bool = false
     private var uploadResponse: (Int, String) = (0, "")
 
     // 서버 IP 파일 분리
@@ -55,6 +56,7 @@ class ServerManager {
             if let error = error {
                 ErrorHandler.handleError(error: "서버 요청 오류: \(error.localizedDescription)")
                 self.setUploadResponse(0, "Request error: \(error.localizedDescription)")
+                self.setIsUploading(isUploading: false)
                 return
             }
             guard let data = data else {

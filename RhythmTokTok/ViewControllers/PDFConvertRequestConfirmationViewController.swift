@@ -85,6 +85,12 @@ class PDFConvertRequestConfirmationViewController: UIViewController,
     func didTapConfirmationButton() {
         print("입력 완료 button tapped!")
         uploadPDFtoServer()
+        navigate()
+    }
+    
+    func navigate() {
+        let progressView = PDFUploadProgressViewController()
+        navigationController?.pushViewController(progressView, animated: true)
     }
     
     private func uploadPDFtoServer() {
