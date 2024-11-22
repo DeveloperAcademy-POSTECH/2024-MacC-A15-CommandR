@@ -21,7 +21,7 @@ class ErrorViewController: UIViewController {
         // 2. 메인 메시지 레이블
         let mainMessageLabel = UILabel()
         mainMessageLabel.text = "음악 요청을 처리하지 못했어요"
-        mainMessageLabel.textColor = .black
+        mainMessageLabel.textColor = .lablePrimary
         mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
         mainMessageLabel.adjustsFontForContentSizeCategory = true
@@ -29,7 +29,7 @@ class ErrorViewController: UIViewController {
         // 3. 하위 메시지 레이블
         let subMessageLabel = UILabel()
         subMessageLabel.text = "문제가 발생했으니 다시 시도해 주세요"
-        subMessageLabel.textColor = .gray
+        subMessageLabel.textColor = .lableTertiary
         subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
         subMessageLabel.adjustsFontForContentSizeCategory = true
@@ -39,7 +39,7 @@ class ErrorViewController: UIViewController {
         retryButton.setTitle("처음으로 가기", for: .normal)
         retryButton.setTitleColor(.white, for: .normal)
         retryButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
-        retryButton.backgroundColor = .systemBlue
+        retryButton.backgroundColor = .buttonPrimary
         retryButton.layer.cornerRadius = 10
         retryButton.translatesAutoresizingMaskIntoConstraints = false
         retryButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
