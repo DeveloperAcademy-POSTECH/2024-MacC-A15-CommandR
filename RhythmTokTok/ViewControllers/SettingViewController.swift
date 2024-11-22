@@ -31,7 +31,7 @@ class SettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadInitialSettingsFromCoreData() // 초기값 로드하여 SettingView에 반영
+        loadInitialSettings() // 초기값 로드하여 SettingView에 반영
         
         // [BPM 버튼] 탭 시 BPM 설정 모달창을 띄우는 액션 설정
         settingView.onBPMButtonTapped = { [weak self] in
@@ -45,13 +45,12 @@ class SettingViewController: UIViewController {
             // SettingView의 값들을 currentScore에 반영
             self.currentScore.bpm = self.settingView.bpmSettingSection.bpm
             self.currentScore.soundOption = SoundSetting(rawValue: self.settingView.soundSettingSection.selectedOption) ?? .melodyBeat
-            self.currentScore.soundKeyOption = self.settingView.soundKeySettingSection.currentSoundKey ?? 0
+            self.currentScore.soundKeyOption = self.settingView.soundKeySettingSection.currentSoundKey
             self.currentScore.hapticOption = self.settingView.hapticSettingSection.isToggleOn
             
             // currentScore에 반영된 값을 Core Data에 저장
             self.saveChangesToCoreData()
             
-            print("설정 완료 후 Score 값:", self.currentScore)  // 최종 Score 값 출력
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -67,25 +66,15 @@ class SettingViewController: UIViewController {
     }
 }
 
-// MARK: - [Ext] CoreData 관련
+// MARK: - [Ext] Data 관련
 extension SettingViewController {
     // 초기 세팅
-    private func loadInitialSettingsFromCoreData() {
-        if let scoreEntity = scoreService.fetchScoreById(id: currentScore.id) {
-            // currentScore 의 id 로 값을 가지고 와서 반영
-            currentScore.bpm = Int(scoreEntity.bpm)
-            currentScore.soundOption = SoundSetting(rawValue: scoreEntity.soundOption) ?? .melodyBeat
-            currentScore.soundKeyOption = scoreEntity.soundKeyOption
-            currentScore.hapticOption = scoreEntity.isHapticOn
-
-            // 초기값을 SettingView에 반영
-            settingView.bpmSettingSection.bpm = currentScore.bpm
-            settingView.soundSettingSection.setSelectedOption(currentScore.soundOption.rawValue)
-            settingView.soundKeySettingSection.currentSoundKey = currentScore.soundKeyOption
-            settingView.hapticSettingSection.setToggleState(isOn: currentScore.hapticOption)
-        } else {
-            print("No matching ScoreEntity found in CoreData.")
-        }
+    private func loadInitialSettings() {
+        // 초기값을 SettingView에 반영
+        settingView.bpmSettingSection.bpm = currentScore.bpm
+        settingView.soundSettingSection.setSelectedOption(currentScore.soundOption.rawValue)
+        settingView.soundKeySettingSection.currentSoundKey = currentScore.soundKeyOption
+        settingView.hapticSettingSection.setToggleState(isOn: currentScore.hapticOption)
     }
     
     // 수정 사항 저장

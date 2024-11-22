@@ -58,7 +58,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
         
         // musicPlayer에 soundOption을 전달
-        print("ScorePracticeViewController-init2-currentScore:\(currentScore)")
         musicPlayer.soundOption = currentScore.soundOption
     }
     
@@ -103,7 +102,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     private func handleScoreChange() {
         if let previousState = previousScoreState, previousState != currentScore {
-            print("Score has changed: \(previousState) -> \(currentScore)")
             ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
         }
         previousScoreState = currentScore.clone()
@@ -513,7 +511,6 @@ extension ScorePracticeViewController {
 // MARK: - [Ext] 컨트롤러 버튼 관련
 extension ScorePracticeViewController {
     @objc private func playButtonTapped() {
-        print("현재 버튼 상태 \(IOStoWatchConnectivityManager.shared.playStatus)")
         if IOStoWatchConnectivityManager.shared.playStatus == .play {
             // 현재 재생 중이면 일시정지로 변경
             IOStoWatchConnectivityManager.shared.playStatus = .pause

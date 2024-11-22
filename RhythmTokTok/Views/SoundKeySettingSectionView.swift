@@ -7,8 +7,12 @@
 import UIKit
 
 class SoundKeySettingSectionView: UIView {
-    var currentSoundKey: Double = 0
-
+    var currentSoundKey: Double = 0 {
+        didSet {
+            updateDisplaySoundKey()
+        }
+    }
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "조 설정"
@@ -203,29 +207,23 @@ class SoundKeySettingSectionView: UIView {
 // MARK: - Setup Actions (조 변경)
 extension SoundKeySettingSectionView {
     private func setupActions() {
-        print("setupActions")
         flatButton.addTarget(self, action: #selector(flatButtonTapped), for: .touchUpInside)
         sharpButton.addTarget(self, action: #selector(sharpButtonTapped), for: .touchUpInside)
     }
     
     @objc private func flatButtonTapped() {
         guard currentSoundKey > -6 else {
-            print("최소값 -6에 도달")
             return
         }
         currentSoundKey -= 0.5
-        updateDisplaySoundKey()
-        print("currentSoundKey: \(currentSoundKey)")
     }
     
     @objc private func sharpButtonTapped() {
         guard currentSoundKey < 6 else {
-            print("최대값 6에 도달했습니다.")
             return
         }
         currentSoundKey += 0.5
         updateDisplaySoundKey()
-        print("currentSoundKey: \(currentSoundKey)")
     }
     
     private func updateDisplaySoundKey() {
