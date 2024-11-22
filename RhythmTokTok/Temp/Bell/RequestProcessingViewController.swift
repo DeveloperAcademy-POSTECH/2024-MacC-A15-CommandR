@@ -142,7 +142,7 @@ class RequestProcessingViewController: UIViewController,
             groupedRequests[request.status, default: []].append(request)
         }
         
-        let statuses: [RequestStatus] = [.scoreReady, .inProgress]
+        let statuses: [RequestStatus] = [.scoreReady, .inProgress, .errorOccurred]
         
         for status in statuses {
             guard var requestsForStatus = groupedRequests[status] else { continue }
@@ -173,7 +173,13 @@ class RequestProcessingViewController: UIViewController,
             stackView.addArrangedSubview(headerStackView)
             
             if status == .inProgress {
-                let infoView = InProgressInfoView()
+                let infoView = ExtraInfoView(text: "🚨 음악 완성까지 약 1~2일이 소요될 수 있어요")
+                stackView.addArrangedSubview(infoView)
+                stackView.setCustomSpacing(16, after: infoView)
+            }
+            
+            else if status == .errorOccurred {
+                let infoView = ExtraInfoView(text: "🚫 변환이 안된 이유는 클릭해서 확인하실 수 있어요.")
                 stackView.addArrangedSubview(infoView)
                 stackView.setCustomSpacing(16, after: infoView)
             }
@@ -202,11 +208,10 @@ class RequestProcessingViewController: UIViewController,
         
         switch request.status {
         case .inProgress:
-            showCancelAlert(for: request, index: index)
-            
-            // MARK: - 서버에러 발생시 팝업알림뷰 다시 그려야함
+            //            showCancelAlert(for: request, index: index)
+            showErrorOccurredAlert(for: request, index: index)
         case .errorOccurred:
-            showCancelAlert(for: request, index: index)
+            showErrorOccurredAlert(for: request, index: index)
         case .scoreReady:
             addScore(at: index)
         case .downloaded, .deleted, .cancelled:
@@ -250,7 +255,7 @@ class RequestProcessingViewController: UIViewController,
                     switch statusValue {
                     case 0: status = .inProgress
                     case 1: status = .scoreReady
-                    case 2: status = .downloaded
+                    case 22: status = .errorOccurred
                     default: return nil
                     }
                     return Request(id: scoreId, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
@@ -328,28 +333,22 @@ class RequestProcessingViewController: UIViewController,
     }
     
     // MARK: - 요청 취소 메서드 추가
-    private func cancelRequest(at index: Int) {
+    private func cancelRequest(at index: Int, completion: @escaping (Bool) -> Void) {
         let request = requests[index]
         
-        // 서버에 상태 업데이트를 요청
         ServerManager.shared.updateScoreStatus(deviceID: deviceID,
                                                scoreID: String(request.id),
-                                               newStatus: 11)
-        {[weak self] status, message in
+                                               newStatus: 11) { [weak self] status, message in
             guard let self = self else { return }
-            print("Request ID: \(request.id), Device ID: \(self.deviceID), New Status: 11")
-            print("Server Response - Status: \(status), Message: \(message)")
             
-            if status == 1 {
-              DispatchQueue.main.async {
-                    // 요청 상태를 .cancelled로 변경
+            DispatchQueue.main.async {
+                if status == 1 {
                     self.requests[index].status = .cancelled
                     self.updateRequestsUI()
-                    ToastAlert.show(message: "요청이 취소되었습니다.", in: self.view, iconName: "cancle.color")
-                }
-            } else {
-                DispatchQueue.main.async {
-                    ToastAlert.show(message: "요청 취소에 실패했습니다: \(message)", in: self.view, iconName: "error_icon")
+                    completion(true)
+                } else {
+                    print("Failed to cancel request: \(message)")
+                    completion(false)
                 }
             }
         }
@@ -390,8 +389,10 @@ extension RequestProcessingViewController {
             highlightedTexts: ["되돌릴 수 없어요."]
         )
         
-        alertVC.onConfirm = { [weak self] in
-            self?.cancelRequest(at: index)
+        alertVC.onCancel = { [weak self] in
+            // 요청 삭제 동작
+            guard let self = self else { return }
+            self.deleteRequest(for: request.id)
         }
         
         alertVC.modalPresentationStyle = .overFullScreen
@@ -404,6 +405,7 @@ extension RequestProcessingViewController {
 extension RequestProcessingViewController {
     private func showErrorOccurredAlert(for request: Request, index: Int) {
         let alertVC = CustomAlertViewController(
+            // TODO: 여기에 서버 메세지 연결 필요
             title: "서버 에러메시지",
             message: "PDF 파일을 다시 선택하시겠어요?",
             confirmButtonText: "파일 변경",
@@ -414,46 +416,73 @@ extension RequestProcessingViewController {
         )
         
         alertVC.onConfirm = { [weak self] in
-            // "파일 변경" 버튼 클릭 시 동작
-            self?.handleFileChange(for: request)
+            // 파일 변경 동작
+            self?.handleFileChange(for: request, requestID: request.id)
         }
         
         alertVC.onCancel = { [weak self] in
-            // 요청 삭제 동작 수행
+            // 요청 삭제 동작
             guard let self = self else { return }
-            self.deleteRequest(for: request.id) // 수정: request 객체의 id 사용
+            self.deleteRequest(for: request.id)
         }
-        
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
         present(alertVC, animated: true, completion: nil)
     }
     
-    private func handleFileChange(for request: Request) {
-        // 파일 변경 로직 구현
-        print("파일 변경을 처리합니다: \(request.title)")
-        // 파일 업로드를 위한 새로운 화면 표시 또는 요청 상태 업데이트
-    }
-    
-    private func deleteRequest(for requestID: Int) {
-        // 로컬 데이터에서 요청 삭제
-        if let index = requests.firstIndex(where: { $0.id == requestID }) {
-            requests.remove(at: index)
+    @MainActor
+    private func handleFileChange(for request: Request, requestID: Int) {
+        guard let index = requests.firstIndex(where: { $0.id == requestID }) else {
+            print("Request ID \(requestID) not found.")
+            return
         }
         
-        // UI 업데이트
-        updateRequestsUI()
+        cancelRequest(at: index) { [weak self] success in
+            guard let self = self else { return }
+            
+            if success {
+                let checkPDFVC = CheckPDFViewController()
+//                checkPDFVC.fileURL = URL(string: request.xmlURL ?? "")
+                self.navigationController?.pushViewController(checkPDFVC, animated: true)
+            } else {
+                ToastAlert.show(message: "요청 취소에 실패했습니다.", in: self.view, iconName: "error_icon")
+            }
+        }
+    }
+    private func deleteRequest(for requestID: Int) {
+        guard let index = requests.firstIndex(where: { $0.id == requestID }) else {
+            print("Request ID \(requestID) not found.")
+            return
+        }
         
-        // TODO: 요청 오류났을 때 삭제 기능 추가하기
-        // 서버에서 요청 삭제 API 호출 (선택 사항)
-        //    ServerManager.shared.deleteRequest(deviceID: deviceID, requestID: requestID) { [weak self] success, message in
-        //        DispatchQueue.main.async {
-        //            if success {
-        //                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
-        //            } else {
-        //                ToastAlert.show(message: "요청 삭제 실패: \(message)", in: self?.view ?? UIView(), iconName: "error_icon")
-        //            }
-        //        }
-        //    }
+        cancelRequest(at: index) { [weak self] success in
+            guard let self = self else { return }
+            
+            if success {
+                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self.view, iconName: "check.circle.color")
+            } else {
+                ToastAlert.show(message: "요청 삭제에 실패했습니다.", in: self.view, iconName: "error_icon")
+            }
+        }
     }
 }
+    //        // 로컬 데이터에서 요청 삭제
+    //        if let index = requests.firstIndex(where: { $0.id == requestID }) {
+    //            requests.remove(at: index)
+    //        }
+    //
+    //        // UI 업데이트
+    //        updateRequestsUI()
+    
+    // TODO: 요청 오류났을 때 삭제 기능 추가하기
+    // 서버에서 요청 삭제 API 호출 (선택 사항)
+    //    ServerManager.shared.deleteRequest(deviceID: deviceID, requestID: requestID) { [weak self] success, message in
+    //        DispatchQueue.main.async {
+    //            if success {
+    //                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
+    //            } else {
+    //                ToastAlert.show(message: "요청 삭제 실패: \(message)", in: self?.view ?? UIView(), iconName: "error_icon")
+    //            }
+    //        }
+    //    }
+

@@ -95,7 +95,7 @@ class CustomAlertViewController: UIViewController {
         button.backgroundColor = color
         
         // 텍스트 색상 설정
-        if color == UIColor(named: "button_secondary") {
+        if color == UIColor(named: "button_cancel") {
             button.setTitleColor(UIColor.black, for: .normal) // button_secondary 배경일 경우 검정색 텍스트
         } else {
             button.setTitleColor(.white, for: .normal) // 그 외 배경일 경우 흰색 텍스트

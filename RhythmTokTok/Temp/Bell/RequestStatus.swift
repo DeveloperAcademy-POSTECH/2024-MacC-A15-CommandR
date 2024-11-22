@@ -22,7 +22,7 @@ enum RequestStatus {
         case .scoreReady:
             return "완성된 음악"
         case .errorOccurred:
-            return "다시 요청이 필요한 음악"
+            return "확인이 필요한 악보"
         case .downloaded, .deleted, .cancelled:
             return ""
         }

@@ -74,7 +74,7 @@ class ListItemCellView: UITableViewCell {
             titleLabel.topAnchor.constraint(equalTo: roundedBackgroundView.topAnchor, constant: 26.5),
             titleLabel.leadingAnchor.constraint(equalTo: roundedBackgroundView.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: roundedBackgroundView.trailingAnchor, constant: -20),
-            titleLabel.bottomAnchor.constraint(equalTo: roundedBackgroundView.bottomAnchor, constant: -26.5)
+            titleLabel.bottomAnchor.constraint(equalTo: roundedBackgroundView.bottomAnchor, constant: -26.5),
             
             // actioinButton의 레이아웃 설정
             actionButton.centerYAnchor.constraint(equalTo: roundedBackgroundView.centerYAnchor),

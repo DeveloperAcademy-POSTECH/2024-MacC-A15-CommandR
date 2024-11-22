@@ -34,8 +34,8 @@ class RequestCardView: UIView {
             requestActionButton.setTitleColor(UIColor(named: "red500"), for: .normal)
         case .errorOccurred:
             requestActionButton.setTitle("자세히", for: .normal)
-            requestActionButton.backgroundColor = UIColor(named: "button_primary")
-            requestActionButton.setTitleColor(.white, for: .normal)
+            requestActionButton.backgroundColor = UIColor(named: "button_secondary")
+            requestActionButton.setTitleColor(.black, for: .normal)
         case .scoreReady:
             requestActionButton.setTitle("음악 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_primary")
