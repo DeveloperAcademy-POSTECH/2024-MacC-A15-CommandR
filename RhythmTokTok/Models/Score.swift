@@ -15,6 +15,7 @@ class Score: ObservableObject {
     var bpm: Int = 60
     var soundOption: SoundSetting = .melodyBeat
     var hapticOption: Bool = false
+    var soundKeyOption: Double = 0.0 // 조변경 관련
 
     //MARK: - Score 객체 관리 관련
     init(id: String = UUID().uuidString, title: String = "", bpm: Int = 60, soundOption: SoundSetting = .melodyBeat, hapticOption: Bool = false) {

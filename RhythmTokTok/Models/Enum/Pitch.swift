@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: 사용되고 있지 않은 enum, 추후 삭제
 // swiftlint:disable identifier_name
 enum Pitch: String {
     case C4, D4, E4, F4, G4, A4, B4, C5
