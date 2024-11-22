@@ -84,6 +84,12 @@ class ScoreService {
         }
     }
     
+    func updateScoreTitle(id: String, newTitle: String) {
+        guard let scoreEntity = fetchScoreById(id: id) else { return }
+        scoreEntity.title = newTitle
+        saveContext()
+    }
+    
     // MARK: - Delete
     func deleteScore(score: ScoreEntity) {
         context.delete(score)

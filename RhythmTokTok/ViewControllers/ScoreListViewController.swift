@@ -16,6 +16,9 @@ class ScoreListViewController: UIViewController {
     var scoreList: [Score] = []
     let mediaManager = MediaManager()
     let scoreService = ScoreService()
+    let scoreTitleChangeVC = ScoreTitleChangeViewController()
+
+    var dimmedBackgroundView: UIView?
     
     override func loadView() {
         view = ScoreListView()
@@ -43,12 +46,14 @@ class ScoreListViewController: UIViewController {
     // 초기 데이터 확인 및 삽입 함수
     private func checkAndInsertDummyDataIfNeeded() {
         if UserDefaults.standard.bool(forKey: "hasInsertedDummyData") == false {
+            print("UserDefaultshasInsertedDummyData is false")
             Task {
                 await scoreService.insertDummyDataIfNeeded()
                 // 데이터 삽입 후 score 리스트 로드
                 loadScoreList()
             }
         } else {
+            print("UserDefaultshasInsertedDummyData is true")
             // 이미 데이터가 삽입되어 있는 경우 바로 리스트 로드
             loadScoreList()
         }
@@ -165,6 +170,12 @@ extension ScoreListViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.configure(with: scoreList[indexPath.row].title)
+
+        // 액션 버튼 클릭 시 이벤트 설정
+        cell.onActionButtonTapped = { [weak self] in
+            self?.showActionSheet(for: indexPath.row)
+        }
+        
         return cell
     }
     
@@ -199,5 +210,92 @@ extension ScoreListViewController {
         let searchViewController = ScoreSearchViewController()
         searchViewController.configure(with: scoreList) // 현재 악보 리스트 전달
         navigationController?.pushViewController(searchViewController, animated: true)
+    }
+}
+
+// MARK: - [Ext] 악보 삭제, 수정 기능 관련
+extension ScoreListViewController: ScoreTitleChangeDelegate {
+    private func presentTitleChangeModal() {
+        if dimmedBackgroundView == nil {
+            dimmedBackgroundView = UIView(frame: view.bounds)
+            dimmedBackgroundView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.addSubview(dimmedBackgroundView!)
+        }
+        scoreTitleChangeVC.delegate = self
+        scoreTitleChangeVC.modalPresentationStyle = .pageSheet
+        present(scoreTitleChangeVC, animated: true)
+    }
+    
+    func removeOverlay() {
+        dimmedBackgroundView?.removeFromSuperview()
+    }
+    
+    private func showActionSheet(for index: Int) {
+        let selectedScore = scoreList[index]
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "음악 제목 수정하기", style: .default, handler: { [weak self] _ in
+            self?.editScore(at: index)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "음악 삭제하기", style: .destructive, handler: { [weak self] _ in
+            self?.showDeleteAlert(for: index)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "취소", style: .default, handler: nil))
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    private func editScore(at index: Int) {
+        let scoreToEdit = scoreList[index]
+        print("수정하기 선택: \(scoreToEdit.title)")
+
+        scoreTitleChangeVC.currentTitle = scoreToEdit.title // Pass the current title to the modal
+        scoreTitleChangeVC.onTitleChanged = { [weak self] changedTitle in
+            print("Title changed to: \(changedTitle)")
+            self?.scoreList[index].title = changedTitle // Update the score list with the new title
+            self?.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle) // Update Core Data
+            self?.scoreListView.tableView.reloadData() // Refresh the table view
+        }
+
+        presentTitleChangeModal()
+    }
+    
+    private func deleteScore(at index: Int) {
+        let scoreToDelete = scoreList[index]
+        print("삭제하기 선택: \(scoreToDelete.title)")
+        
+        if let scoreEntityToDelete = scoreService.fetchScoreById(id: scoreToDelete.id) {
+            scoreService.deleteScore(score: scoreEntityToDelete)
+        }
+
+        scoreList.remove(at: index)
+        scoreListView.tableView.reloadData()
+    }
+    
+    private func showDeleteAlert(for index: Int) {
+        let alertVC = CustomAlertViewController(
+            title: "악보를 정말 삭제하시겠어요?",
+            message: "삭제하면 다시 복구할 수 없어요.",
+            confirmButtonText: "삭제하기",
+            cancelButtonText: "닫기",
+            confirmButtonColor: UIColor(named: "button_danger") ?? .red,
+            cancelButtonColor: UIColor(named: "button_secondary") ?? .gray,
+            highlightedTexts: ["다시 복구할 수 없어요"]
+        )
+        
+        alertVC.onConfirm = { [weak self] in
+            self?.deleteScore(at: index)
+        }
+        
+        alertVC.onCancel = {
+            print("취소 버튼 클릭")
+        }
+        
+        alertVC.modalPresentationStyle = .overFullScreen
+        alertVC.modalTransitionStyle = .crossDissolve
+        present(alertVC, animated: true, completion: nil)
     }
 }
