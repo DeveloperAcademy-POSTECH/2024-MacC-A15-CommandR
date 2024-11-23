@@ -47,8 +47,7 @@ class ExtraInfoView: UIView {
             infoLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             infoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             infoLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            infoLabel.heightAnchor.constraint(equalToConstant: 24)
+            infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }
 }

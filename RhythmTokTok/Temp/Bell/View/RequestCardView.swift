@@ -78,26 +78,34 @@ class RequestCardView: UIView {
         titleLabel.font = UIFont.customFont(forTextStyle: .body1Bold)
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = UIColor(named: "lable_secondary")
+        titleLabel.numberOfLines = 0 // 멀티라인 허용
+        titleLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         dateLabel.font = UIFont.customFont(forTextStyle: .captionRegular)
         dateLabel.adjustsFontForContentSizeCategory = true
         dateLabel.textColor = UIColor(named: "lable_tertiary")
+        dateLabel.numberOfLines = 0 // 멀티라인 허용
+        dateLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         requestActionButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button2Medium)
         requestActionButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        requestActionButton.titleLabel?.numberOfLines = 0 // 멀티라인 허용
+        requestActionButton.titleLabel?.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         requestActionButton.layer.cornerRadius = 8
         
         // 오토레이아웃 제약 조건 설정
         NSLayoutConstraint.activate([
             // 컨텐츠 스택뷰 제약 조건
-            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            contentStackView.trailingAnchor.constraint(lessThanOrEqualTo: requestActionButton.leadingAnchor,
-                                                       constant: -10),
+            contentStackView.trailingAnchor.constraint(
+                lessThanOrEqualTo: requestActionButton.leadingAnchor,
+                constant: -10),
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             
             // 버튼 제약 조건
             requestActionButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             requestActionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            requestActionButton.widthAnchor.constraint(equalToConstant: 80),
-            requestActionButton.heightAnchor.constraint(equalToConstant: 40)
+//            requestActionButton.widthAnchor.constraint(equalToConstant: 80),
+//            requestActionButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 }

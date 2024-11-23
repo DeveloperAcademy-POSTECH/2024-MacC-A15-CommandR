@@ -191,7 +191,6 @@ class RequestProcessingViewController: UIViewController,
                                                           for: .touchUpInside)
                 requestView.requestActionButton.tag = requests.firstIndex(where: { $0.id == request.id }) ?? 0
                 requestView.translatesAutoresizingMaskIntoConstraints = false
-                requestView.heightAnchor.constraint(equalToConstant: 96).isActive = true
                 stackView.addArrangedSubview(requestView)
             }
             

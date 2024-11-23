@@ -19,6 +19,8 @@ class EmptyResultView: UIView {
         let label = UILabel()
         label.text = "검색한 음악을 찾을 수 없어요"
         label.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        label.numberOfLines = 0 // 멀티라인 허용
+        label.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         label.adjustsFontForContentSizeCategory = true
 
         label.textColor = UIColor(named: "lable_secondary")
@@ -31,8 +33,9 @@ class EmptyResultView: UIView {
         let label = UILabel()
         label.text = "다른 키워드로 검색해보는 건 어떨까요?"
         label.font = UIFont.customFont(forTextStyle: .subheadingRegular)
+        label.numberOfLines = 0 // 멀티라인 허용
+        label.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         label.adjustsFontForContentSizeCategory = true
-
         label.textColor = UIColor(named: "lable_tertiary")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
