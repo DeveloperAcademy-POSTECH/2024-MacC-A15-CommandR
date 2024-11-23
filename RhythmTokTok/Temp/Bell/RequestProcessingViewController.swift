@@ -381,7 +381,7 @@ extension RequestProcessingViewController {
             highlightedTexts: ["되돌릴 수 없어요."]
         )
         
-        alertVC.onCancel = { [weak self] in
+        alertVC.onConfirm = { [weak self] in
             // 요청 삭제 동작
             guard let self = self else { return }
             self.deleteRequest(for: request.id)

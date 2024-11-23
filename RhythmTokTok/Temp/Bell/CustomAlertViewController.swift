@@ -28,6 +28,8 @@ class CustomAlertViewController: UIViewController {
          cancelButtonColor: UIColor,
          highlightedTexts: [String],
          highlightColor: UIColor = UIColor(named: "button_danger") ?? .red) {
+        print("Initializing CustomAlertViewController")
+        print("Title: \(title), Message: \(message)")
         self.titleText = title
         self.messageText = message
         self.confirmButtonText = confirmButtonText
@@ -156,7 +158,10 @@ class CustomAlertViewController: UIViewController {
             confirmButton.trailingAnchor.constraint(equalTo: alertContainer.trailingAnchor, constant: -20),
             confirmButton.bottomAnchor.constraint(equalTo: alertContainer.bottomAnchor, constant: -20),
             confirmButton.widthAnchor.constraint(equalToConstant: 143),
-            confirmButton.heightAnchor.constraint(equalToConstant: 48)
+            confirmButton.heightAnchor.constraint(equalToConstant: 48),
+            
+            // alertContainer의 동적 높이 계산
+                    alertContainer.bottomAnchor.constraint(greaterThanOrEqualTo: messageLabel.bottomAnchor, constant: 20)
         ])
     }
 
