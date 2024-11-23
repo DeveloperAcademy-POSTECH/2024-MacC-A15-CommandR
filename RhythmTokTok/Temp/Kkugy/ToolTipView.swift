@@ -83,8 +83,8 @@ class ToolTipView: UIView {
             // 클로즈 버튼 레이아웃 설정
             closeButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
             closeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            closeButton.widthAnchor.constraint(equalToConstant: 16),
-            closeButton.heightAnchor.constraint(equalToConstant: 16),
+            closeButton.widthAnchor.constraint(equalToConstant: 20),
+            closeButton.heightAnchor.constraint(equalToConstant: 20),
             
             // 화살표 뷰 레이아웃 설정 (라운드 박스 상단에 위치)
             arrowView.centerXAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -36), // 화살표 위치 조정
