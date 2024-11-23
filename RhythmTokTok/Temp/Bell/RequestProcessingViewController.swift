@@ -246,21 +246,14 @@ class RequestProcessingViewController: UIViewController,
                           let statusValue = scoreDict["status"] as? Int,
                           let requestDateString = scoreDict["request_date"] as? String,
                           let requestDate = dateFormatter.date(from: requestDateString),
-                          let xmlURL = scoreDict["xml_url"] as? String else {
+                          let xmlURL = scoreDict["xml_url"] as? String,
+                          let status = RequestStatus(rawValue: statusValue) else {
                         print("Failed to parse scoreDict:", scoreDict)
                         return nil
                     }
-                    
-                    let status: RequestStatus
-                    switch statusValue {
-                    case 0: status = .inProgress
-                    case 1: status = .scoreReady
-                    case 22: status = .errorOccurred
-                    default: return nil
-                    }
+
                     return Request(id: scoreId, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
                 }
-                
                 self?.updateRequestsUI()
             }
         }
@@ -404,10 +397,22 @@ extension RequestProcessingViewController {
 // MARK: - 서버에서 변환 에러 발생시 팝업
 extension RequestProcessingViewController {
     private func showErrorOccurredAlert(for request: Request, index: Int) {
+        let titleAndMessages: [Int: (String, String)] = [
+            22: ("PDF 파일 오류", "파일 변환에 실패했습니다. 다시 시도해주세요."),
+            23: ("지원하지 않는 파일", "해당 파일 형식은 지원되지 않습니다."),
+            24: ("파일 손상", "업로드된 파일이 손상되었습니다."),
+            25: ("파일 누락", "필요한 파일이 누락되었습니다.")
+        ]
+        
+        let statusValue = request.status.rawValue
+        guard let (title, message) = titleAndMessages[statusValue] else {
+            print("알 수 없는 상태 코드: \(statusValue)")
+            return
+        }
+        
         let alertVC = CustomAlertViewController(
-            // TODO: 여기에 서버 메세지 연결 필요
-            title: "서버 에러메시지",
-            message: "PDF 파일을 다시 선택하시겠어요?",
+            title: title,
+            message: message,
             confirmButtonText: "파일 변경",
             cancelButtonText: "요청 삭제",
             confirmButtonColor: UIColor(named: "button_primary") ?? .red,

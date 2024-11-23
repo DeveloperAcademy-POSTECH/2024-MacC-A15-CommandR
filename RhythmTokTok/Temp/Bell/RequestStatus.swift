@@ -7,13 +7,32 @@
 
 import Foundation
 
-enum RequestStatus {
-    case downloaded
-    case inProgress
-    case scoreReady
-    case deleted
-    case cancelled
-    case errorOccurred
+enum RequestStatus: Int {
+    case inProgress = 0
+    case scoreReady = 1
+    case downloaded = 2
+    case deleted = 3
+    case cancelled = 11
+    case errorOccurred = 22
+    
+    init?(rawValue: Int) {
+           switch rawValue {
+           case 0:
+               self = .inProgress
+           case 1:
+               self = .scoreReady
+           case 2:
+               self = .downloaded
+           case 3:
+               self = .deleted
+           case 11:
+               self = .cancelled
+           case 22, 23, 24, 25:
+               self = .errorOccurred
+           default:
+               return nil // 알 수 없는 값은 nil 반환
+           }
+       }
     
     var headerText: String {
         switch self {
