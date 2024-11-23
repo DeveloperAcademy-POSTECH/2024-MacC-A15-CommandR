@@ -11,7 +11,7 @@ class ControlButtonView: UIView {
     let resetButton = MeasureControllerButton(icon: UIImage(named: "restart"),
                                               title: "처음부터", backGroundColor: .buttonTertiary,
                                               foregoundColor: .lableSecondary,
-                                              strokeColor: .borderActive, pressedColor: .buttonTertiaryPress)
+                                              strokeColor: .borderTertiary, pressedColor: .buttonTertiaryPress)
     let previousButton = MeasureControllerButton(icon: UIImage(named: "previous"),
                                                  title: "이전마디", backGroundColor: .buttonSecondary,
                                                  foregoundColor: .lableSecondary, pressedColor: .buttonSecondaryPress)
@@ -21,49 +21,11 @@ class ControlButtonView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        resetButton.configurationUpdateHandler = { button in
-            var updatedConfig = button.configuration
-            
-            // 상태에 따라 텍스트 색상 업데이트
-            let customFont = UIFont.customFont(forTextStyle: .button1Medium)
-            var updatedAttributedTitle = AttributedString("처음부터")
-            updatedAttributedTitle.font = customFont
-            updatedAttributedTitle.foregroundColor = button.isEnabled ?
-                .lableSecondary : .placeholder
-            
-            updatedConfig?.attributedTitle = updatedAttributedTitle
-            
-            // 상태에 따라 테두리 색상 업데이트
-            updatedConfig?.background.strokeColor = button.isEnabled ?
-                .borderActive : .buttonInactive
-            button.configuration = updatedConfig
-        }
-        
         setupButtons()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
-        resetButton.configurationUpdateHandler = { button in
-            var updatedConfig = button.configuration
-            
-            // 상태에 따라 텍스트 색상 업데이트
-            let customFont = UIFont.customFont(forTextStyle: .button1Medium)
-            var updatedAttributedTitle = AttributedString("처음부터")
-            updatedAttributedTitle.font = customFont
-            updatedAttributedTitle.foregroundColor = button.isEnabled ?
-                .lableSecondary : .placeholder
-            
-            updatedConfig?.attributedTitle = updatedAttributedTitle
-            
-            // 상태에 따라 테두리 색상 업데이트
-            updatedConfig?.background.strokeColor = button.isEnabled ?
-                .borderActive : .buttonInactive
-            button.configuration = updatedConfig
-        }
-        
         setupButtons()
     }
     
