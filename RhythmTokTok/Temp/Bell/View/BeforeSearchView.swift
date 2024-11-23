@@ -18,7 +18,8 @@ class BeforeSearchView: UIView {
     private let messageLabel: UILabel = {
         let label = UILabel()
         label.text = "무엇을 찾으시나요?"
-        label.font = UIFont(name: "Pretendard-Medium", size: 21)
+        label.font = UIFont.customFont(forTextStyle: .heading2Medium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = UIColor(named: "lable_quaternary")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

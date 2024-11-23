@@ -75,11 +75,14 @@ class RequestCardView: UIView {
         contentStackView.addArrangedSubview(dateLabel)
         
         // 추가적인 스타일 설정
-        titleLabel.font = UIFont(name: "Pretendard-Bold", size: 18)
+        titleLabel.font = UIFont.customFont(forTextStyle: .body1Bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = UIColor(named: "lable_secondary")
-        dateLabel.font = UIFont(name: "Pretendard-Regular", size: 14)
+        dateLabel.font = UIFont.customFont(forTextStyle: .captionRegular)
+        dateLabel.adjustsFontForContentSizeCategory = true
         dateLabel.textColor = UIColor(named: "lable_tertiary")
-        requestActionButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        requestActionButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button2Medium)
+        requestActionButton.titleLabel?.adjustsFontForContentSizeCategory = true
         requestActionButton.layer.cornerRadius = 8
         
         // 오토레이아웃 제약 조건 설정

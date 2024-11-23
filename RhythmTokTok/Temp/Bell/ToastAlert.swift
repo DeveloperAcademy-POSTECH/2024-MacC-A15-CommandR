@@ -50,7 +50,8 @@ class ToastAlert {
         let toastLabel = UILabel()
         toastLabel.text = message
         toastLabel.textColor = UIColor.white
-        toastLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
+        toastLabel.font = UIFont.customFont(forTextStyle: .body2Medium)
+        toastLabel.adjustsFontForContentSizeCategory = true
         toastLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Icon과 Label을 toastContainer에 추가

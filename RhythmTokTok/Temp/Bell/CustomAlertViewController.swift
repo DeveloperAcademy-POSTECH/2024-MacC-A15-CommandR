@@ -60,10 +60,17 @@ class CustomAlertViewController: UIViewController {
         let alertContainer = createAlertContainer()
         view.addSubview(alertContainer)
 
-        let titleLabel = createLabel(text: titleText, fontName: "Pretendard-Bold", fontSize: 21)
+        let titleLabel = UILabel()
+        titleLabel.text = titleText
+        titleLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         alertContainer.addSubview(titleLabel)
-
-        let messageLabel = createLabel(text: messageText, fontName: "Pretendard-Medium", fontSize: 16)
+        
+        let messageLabel = UILabel()
+        messageLabel.text = messageText
+        messageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
+        messageLabel.adjustsFontForContentSizeCategory = true
+        
         applyHighlights(to: messageLabel)
         alertContainer.addSubview(messageLabel)
 
@@ -105,7 +112,8 @@ class CustomAlertViewController: UIViewController {
     private func createButton(title: String, color: UIColor, action: Selector) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        button.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.layer.cornerRadius = 12
         button.backgroundColor = color
         

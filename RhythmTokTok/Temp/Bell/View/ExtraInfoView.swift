@@ -17,7 +17,8 @@ class ExtraInfoView: UIView {
     
     private let infoLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Pretendard-Regular", size: 14)
+        label.font = UIFont.customFont(forTextStyle: .captionMedium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = UIColor(named: "lable_tertiary")
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false

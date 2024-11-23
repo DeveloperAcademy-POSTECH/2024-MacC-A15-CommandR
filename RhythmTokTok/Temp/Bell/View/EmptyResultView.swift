@@ -18,7 +18,9 @@ class EmptyResultView: UIView {
     private let messageLabel: UILabel = {
         let label = UILabel()
         label.text = "검색한 음악을 찾을 수 없어요"
-        label.font = UIFont(name: "Pretendard-Bold", size: 21)
+        label.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        label.adjustsFontForContentSizeCategory = true
+
         label.textColor = UIColor(named: "lable_secondary")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +30,9 @@ class EmptyResultView: UIView {
     private let suggestionLabel: UILabel = {
         let label = UILabel()
         label.text = "다른 키워드로 검색해보는 건 어떨까요?"
-        label.font = UIFont(name: "Pretendard-Regular", size: 18)
+        label.font = UIFont.customFont(forTextStyle: .subheadingRegular)
+        label.adjustsFontForContentSizeCategory = true
+
         label.textColor = UIColor(named: "lable_tertiary")
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false

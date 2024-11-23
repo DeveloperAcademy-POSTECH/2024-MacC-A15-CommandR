@@ -155,7 +155,8 @@ class RequestProcessingViewController: UIViewController,
             headerStackView.spacing = 2
             
             let headerLabel = UILabel()
-            headerLabel.font = UIFont(name: "Pretendard-Bold", size: 22)
+            headerLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+            headerLabel.adjustsFontForContentSizeCategory = true
             headerLabel.textColor = UIColor(named: "lable_primary")
             
             let headerText = status.headerText
