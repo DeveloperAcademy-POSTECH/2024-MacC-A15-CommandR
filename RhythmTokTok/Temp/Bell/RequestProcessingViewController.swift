@@ -176,9 +176,7 @@ class RequestProcessingViewController: UIViewController,
                 let infoView = ExtraInfoView(text: "🚨 음악 완성까지 약 1~2일이 소요될 수 있어요")
                 stackView.addArrangedSubview(infoView)
                 stackView.setCustomSpacing(16, after: infoView)
-            }
-            
-            else if status == .errorOccurred {
+            } else if status == .errorOccurred {
                 let infoView = ExtraInfoView(text: "🚫 변환이 안된 이유는 클릭해서 확인하실 수 있어요.")
                 stackView.addArrangedSubview(infoView)
                 stackView.setCustomSpacing(16, after: infoView)
@@ -208,8 +206,8 @@ class RequestProcessingViewController: UIViewController,
         
         switch request.status {
         case .inProgress:
-            //            showCancelAlert(for: request, index: index)
-            showErrorOccurredAlert(for: request, index: index)
+            showCancelAlert(for: request, index: index)
+            //            showErrorOccurredAlert(for: request, index: index)
         case .errorOccurred:
             showErrorOccurredAlert(for: request, index: index)
         case .scoreReady:
@@ -251,7 +249,7 @@ class RequestProcessingViewController: UIViewController,
                         print("Failed to parse scoreDict:", scoreDict)
                         return nil
                     }
-
+                    
                     return Request(id: scoreId, title: title, requestDate: requestDate, status: status, xmlURL: xmlURL)
                 }
                 self?.updateRequestsUI()
@@ -398,10 +396,10 @@ extension RequestProcessingViewController {
 extension RequestProcessingViewController {
     private func showErrorOccurredAlert(for request: Request, index: Int) {
         let titleAndMessages: [Int: (String, String)] = [
-            22: ("PDF 파일 오류", "파일 변환에 실패했습니다. 다시 시도해주세요."),
-            23: ("지원하지 않는 파일", "해당 파일 형식은 지원되지 않습니다."),
-            24: ("파일 손상", "업로드된 파일이 손상되었습니다."),
-            25: ("파일 누락", "필요한 파일이 누락되었습니다.")
+            22: ("보내주신 PDF는 악보가 아니에요", "악보 PDF로 다시 보내주세요"),
+            23: ("PDF 용량이 너무 커요", "변한 가능한 작은 파일로 보내주세요"),
+            24: ("지원하지 않는 악보 형식이에요", "변한 가능한 PDF로 보내주세요"),
+            25: ("파일 누락", "악보가 누락되었어요")
         ]
         
         let statusValue = request.status.rawValue
@@ -447,7 +445,7 @@ extension RequestProcessingViewController {
             
             if success {
                 let checkPDFVC = CheckPDFViewController()
-//                checkPDFVC.fileURL = URL(string: request.xmlURL ?? "")
+                //                checkPDFVC.fileURL = URL(string: request.xmlURL ?? "")
                 self.navigationController?.pushViewController(checkPDFVC, animated: true)
             } else {
                 ToastAlert.show(message: "요청 취소에 실패했습니다.", in: self.view, iconName: "error_icon")
@@ -471,23 +469,3 @@ extension RequestProcessingViewController {
         }
     }
 }
-    //        // 로컬 데이터에서 요청 삭제
-    //        if let index = requests.firstIndex(where: { $0.id == requestID }) {
-    //            requests.remove(at: index)
-    //        }
-    //
-    //        // UI 업데이트
-    //        updateRequestsUI()
-    
-    // TODO: 요청 오류났을 때 삭제 기능 추가하기
-    // 서버에서 요청 삭제 API 호출 (선택 사항)
-    //    ServerManager.shared.deleteRequest(deviceID: deviceID, requestID: requestID) { [weak self] success, message in
-    //        DispatchQueue.main.async {
-    //            if success {
-    //                ToastAlert.show(message: "요청이 삭제되었습니다.", in: self?.view ?? UIView(), iconName: "check.circle.color")
-    //            } else {
-    //                ToastAlert.show(message: "요청 삭제 실패: \(message)", in: self?.view ?? UIView(), iconName: "error_icon")
-    //            }
-    //        }
-    //    }
-
