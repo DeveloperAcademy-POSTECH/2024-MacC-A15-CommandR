@@ -161,7 +161,8 @@ class CustomAlertViewController: UIViewController {
             confirmButton.heightAnchor.constraint(equalToConstant: 48),
             
             // alertContainer의 동적 높이 계산
-                    alertContainer.bottomAnchor.constraint(greaterThanOrEqualTo: messageLabel.bottomAnchor, constant: 20)
+                    alertContainer.bottomAnchor.constraint(greaterThanOrEqualTo: messageLabel.bottomAnchor,
+                                                           constant: 20)
         ])
     }
 
