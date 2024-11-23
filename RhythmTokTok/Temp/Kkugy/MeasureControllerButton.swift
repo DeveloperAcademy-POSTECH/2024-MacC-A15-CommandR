@@ -31,9 +31,24 @@ class MeasureControllerButton: UIButton {
         
         self.configurationUpdateHandler = { button in
             var updatedConfig = button.configuration
-            updatedConfig?.background.backgroundColor = button.isHighlighted ? pressedColor : backGroundColor
-            button.configuration = updatedConfig
-        }
+             
+             // 텍스트 색상 및 배경색 업데이트
+             var updatedAttributedTitle = AttributedString(title)
+             updatedAttributedTitle.font = customFont
+             
+             if !button.isEnabled {
+                 updatedAttributedTitle.foregroundColor = .placeholder // 비활성화 상태 텍스트 색상
+             } else if button.isHighlighted {
+                 updatedAttributedTitle.foregroundColor = foregoundColor // 강조 상태 텍스트 색상
+                 updatedConfig?.background.backgroundColor = pressedColor // 강조 상태 배경색
+             } else {
+                 updatedAttributedTitle.foregroundColor = foregoundColor // 기본 텍스트 색상
+                 updatedConfig?.background.backgroundColor = backGroundColor // 기본 배경색
+             }
+             
+             updatedConfig?.attributedTitle = updatedAttributedTitle
+             button.configuration = updatedConfig
+         }
     }
     
     required init?(coder: NSCoder) {

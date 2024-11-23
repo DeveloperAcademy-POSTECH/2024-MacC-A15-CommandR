@@ -24,7 +24,19 @@ class ControlButtonView: UIView {
         
         resetButton.configurationUpdateHandler = { button in
             var updatedConfig = button.configuration
-            updatedConfig?.background.strokeColor = button.isEnabled ? .borderActive : UIColor(named: "button_inactive")
+            
+            // 상태에 따라 텍스트 색상 업데이트
+            let customFont = UIFont.customFont(forTextStyle: .button1Medium)
+            var updatedAttributedTitle = AttributedString("처음부터")
+            updatedAttributedTitle.font = customFont
+            updatedAttributedTitle.foregroundColor = button.isEnabled ?
+                .lableSecondary : .placeholder
+            
+            updatedConfig?.attributedTitle = updatedAttributedTitle
+            
+            // 상태에 따라 테두리 색상 업데이트
+            updatedConfig?.background.strokeColor = button.isEnabled ?
+                .borderActive : .buttonInactive
             button.configuration = updatedConfig
         }
         
@@ -36,7 +48,19 @@ class ControlButtonView: UIView {
         
         resetButton.configurationUpdateHandler = { button in
             var updatedConfig = button.configuration
-            updatedConfig?.background.strokeColor = button.isEnabled ? .borderActive : UIColor(named: "button_inactive")
+            
+            // 상태에 따라 텍스트 색상 업데이트
+            let customFont = UIFont.customFont(forTextStyle: .button1Medium)
+            var updatedAttributedTitle = AttributedString("처음부터")
+            updatedAttributedTitle.font = customFont
+            updatedAttributedTitle.foregroundColor = button.isEnabled ?
+                .lableSecondary : .placeholder
+            
+            updatedConfig?.attributedTitle = updatedAttributedTitle
+            
+            // 상태에 따라 테두리 색상 업데이트
+            updatedConfig?.background.strokeColor = button.isEnabled ?
+                .borderActive : .buttonInactive
             button.configuration = updatedConfig
         }
         
@@ -47,7 +71,7 @@ class ControlButtonView: UIView {
         
         let measureStack = UIStackView(arrangedSubviews: [previousButton, resetButton, nextButton])
         measureStack.axis = .horizontal
-        measureStack.distribution = .fillProportionally
+        measureStack.distribution = .equalCentering
         measureStack.spacing = 8
         measureStack.translatesAutoresizingMaskIntoConstraints = false
         
@@ -64,7 +88,9 @@ class ControlButtonView: UIView {
             mainVStack.topAnchor.constraint(equalTo: topAnchor),
             mainVStack.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            resetButton.widthAnchor.constraint(equalToConstant: 120)
+            previousButton.trailingAnchor.constraint(equalTo: resetButton.leadingAnchor, constant: -8),
+            resetButton.widthAnchor.constraint(equalToConstant: 120),
+            nextButton.leadingAnchor.constraint(equalTo: resetButton.trailingAnchor, constant: 8)
         ])
     }
 }
