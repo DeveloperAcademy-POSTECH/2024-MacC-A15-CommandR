@@ -8,14 +8,14 @@
 import UIKit
 class ControlButtonView: UIView {
     let playPauseButton = PlayPauseButton()
-    let resetButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
+    let resetButton = MeasureControllerButton(icon: UIImage(named: "restart"),
                                               title: "처음부터", backGroundColor: .buttonTertiary,
                                               foregoundColor: .lableSecondary,
                                               strokeColor: .borderActive, pressedColor: .buttonTertiaryPress)
-    let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
+    let previousButton = MeasureControllerButton(icon: UIImage(named: "previous"),
                                                  title: "이전마디", backGroundColor: .buttonSecondary,
                                                  foregoundColor: .lableSecondary, pressedColor: .buttonSecondaryPress)
-    let nextButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.right"),
+    let nextButton = MeasureControllerButton(icon: UIImage(named: "next"),
                                              title: "다음마디", backGroundColor: .buttonSecondary,
                                              foregoundColor: .lableSecondary, pressedColor: .buttonSecondaryPress)
     
