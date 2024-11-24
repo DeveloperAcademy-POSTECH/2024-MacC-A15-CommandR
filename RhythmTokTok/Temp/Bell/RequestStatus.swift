@@ -30,7 +30,7 @@ enum RequestStatus: Int {
            case 22, 23, 24, 25:
                self = .errorOccurred
            default:
-               print("Unknown rawValue: \(rawValue)") // 디버그용 로그 추가
+               ErrorHandler.handleError(error: "알수없는 상태: \(rawValue)")
                return nil
            }
        }

@@ -28,8 +28,6 @@ class CustomAlertViewController: UIViewController {
          cancelButtonColor: UIColor,
          highlightedTexts: [String],
          highlightColor: UIColor = UIColor(named: "button_danger") ?? .red) {
-        print("Initializing CustomAlertViewController")
-        print("Title: \(title), Message: \(message)") // 로그 추가
         self.titleText = title
         self.messageText = message
         self.confirmButtonText = confirmButtonText
@@ -181,7 +179,6 @@ class CustomAlertViewController: UIViewController {
             // alertContainer의 동적 높이 설정
             messageLabel.bottomAnchor.constraint(equalTo: closeButton.topAnchor, constant: -20)
         ])
-        print("Alert container constraints set: \(alertContainer.constraints)")
     }
 
     private func applyHighlights(to label: UILabel) {

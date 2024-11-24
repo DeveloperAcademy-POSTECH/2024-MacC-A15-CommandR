@@ -42,7 +42,6 @@ class RequestCardView: UIView {
             requestActionButton.setTitleColor(.white, for: .normal)
         default:
             requestActionButton.isHidden = true
-            print("RequestActionButton hidden for status: \(request.status)")
         }
     }
     

@@ -184,7 +184,6 @@ class RequestProcessingViewController: UIViewController,
             }
             
             for request in requestsForStatus {
-                print("Adding request: \(request)")
                 let requestView = RequestCardView()
                 requestView.request = request
                 requestView.requestActionButton.addTarget(self,
@@ -202,12 +201,10 @@ class RequestProcessingViewController: UIViewController,
     }
     @objc private func handleButtonAction(_ sender: UIButton) {
         guard sender.tag >= 0, sender.tag < requests.count else {
-            print("Invalid button tag: \(sender.tag)")
+            ErrorHandler.handleError(error: "유효하지 않은 요청상태: \(sender.tag)")
             return
         }
         let request = requests[sender.tag]
-        print("Handling action for request: \(request)")
-
         switch request.status {
         case .inProgress:
             showCancelAlert(for: request, index: sender.tag)
@@ -216,33 +213,17 @@ class RequestProcessingViewController: UIViewController,
         case .scoreReady:
             addScore(at: sender.tag)
         default:
-            print("Unhandled status: \(request.status)")
+            ErrorHandler.handleError(error: "정의되지 않은 요청상태: \(request.status)")
         }
     }
-//    @objc private func handleButtonAction(_ sender: UIButton) {
-//        let index = sender.tag
-//        let request = requests[index]
-//        
-//        switch request.status {
-//        case .inProgress:
-//            showCancelAlert(for: request, index: index)
-////                        showErrorOccurredAlert(for: request, index: index) // 테스트하려고 뷰 바꿈
-//        case .errorOccurred:
-//            showErrorOccurredAlert(for: request, index: index)
-//        case .scoreReady:
-//            addScore(at: index)
-//        case .downloaded, .deleted, .cancelled:
-//            return
-//        }
-//    }
-    
+
     // MARK: - 서버에서 데이터 가져오기
     private func fetchRequestsFromServer() {
         ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in
             
             DispatchQueue.main.async {
                 guard code == 1, let scores = scores else {
-                    print("Failed to fetch scores: \(message)")
+                    ErrorHandler.handleError(error: "서버데이터 불러오기 실패: \(message)")
                     self?.showEmptyState()
                     return
                 }
@@ -282,19 +263,19 @@ class RequestProcessingViewController: UIViewController,
         // XML URL을 가져옵니다.
         guard let xmlURLString = request.xmlURL,
               let xmlURL = URL(string: xmlURLString) else {
-            print("Invalid XML URL")
+            ErrorHandler.handleError(error: "서버 XML URL이 유효하지 않음")
             return
         }
         
         // XML 데이터를 다운로드합니다.
         let task = URLSession.shared.dataTask(with: xmlURL) { data, response, error in
             if let error = error {
-                print("Failed to download XML: \(error.localizedDescription)")
+                ErrorHandler.handleError(error: "XML 다운로드 실패 : \(error.localizedDescription)")
                 return
             }
             
             guard let data = data else {
-                print("No data received from XML URL")
+                ErrorHandler.handleError(error: "XML URL에 데이터가 없음")
                 return
             }
             
@@ -344,13 +325,11 @@ class RequestProcessingViewController: UIViewController,
     
     // MARK: - 요청 취소 메서드 추가
     private func cancelRequest(at index: Int, completion: @escaping (Bool) -> Void) {
-        print("cancelRequest called with index: \(index)")
         let request = requests[index]
         
         ServerManager.shared.updateScoreStatus(deviceID: deviceID,
                                                scoreID: String(request.id),
                                                newStatus: 11) { [weak self] status, message in
-            print("Server responded with status: \(status), message: \(message)") // 여기가 호출되는지 확인
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -359,7 +338,7 @@ class RequestProcessingViewController: UIViewController,
                     self.updateRequestsUI()
                     completion(true)
                 } else {
-                    print("Failed to cancel request: \(message)")
+                    ErrorHandler.handleError(error: "요청 취소 실패: \(message)")
                     completion(false)
                 }
             }
@@ -391,7 +370,6 @@ class RequestProcessingViewController: UIViewController,
 // 음악 추가 요청 취소 팝업
 extension RequestProcessingViewController {
     private func showCancelAlert(for request: Request, index: Int) {
-        print("showCancelAlert called for request: \(request), index: \(index)")
         let alertVC = CustomAlertViewController(
             title: "음악 추가 요청을 취소하시겠어요?",
             message: "취소 후에는 되돌릴 수 없어요.",
@@ -413,7 +391,6 @@ extension RequestProcessingViewController {
         
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
-        print("Alert initialized with title: \(alertVC.titleText) and message: \(alertVC.messageText)")
         present(alertVC, animated: true, completion: nil)
     }
 }
@@ -430,7 +407,7 @@ extension RequestProcessingViewController {
         
         let statusValue = request.status.rawValue
         guard let (title, message) = titleAndMessages[statusValue] else {
-            print("알 수 없는 상태 코드: \(statusValue)")
+            ErrorHandler.handleError(error: "알 수 없는 상태 코드: \(statusValue)")
             return
         }
         
@@ -462,7 +439,7 @@ extension RequestProcessingViewController {
     @MainActor
     private func handleFileChange(for request: Request, requestID: Int) {
         guard let index = requests.firstIndex(where: { $0.id == requestID }) else {
-            print("Request ID \(requestID) not found.")
+            ErrorHandler.handleError(error: "Request ID \(requestID) 를 찾을 수 없음")
             return
         }
         
@@ -471,7 +448,6 @@ extension RequestProcessingViewController {
             
             if success {
                 let checkPDFVC = CheckPDFViewController()
-                //                checkPDFVC.fileURL = URL(string: request.xmlURL ?? "")
                 self.navigationController?.pushViewController(checkPDFVC, animated: true)
             } else {
                 ToastAlert.show(message: "요청 취소에 실패했습니다.", in: self.view, iconName: "error_icon")
@@ -480,7 +456,7 @@ extension RequestProcessingViewController {
     }
     private func deleteRequest(for requestID: Int) {
         guard let index = requests.firstIndex(where: { $0.id == requestID }) else {
-            print("Request ID \(requestID) not found.")
+            ErrorHandler.handleError(error: "Request ID \(requestID) 를 찾을 수 없음")
             return
         }
         
