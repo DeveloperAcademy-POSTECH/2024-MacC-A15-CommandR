@@ -124,7 +124,7 @@ class CustomAlertViewController: UIViewController {
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.numberOfLines = 0 // 멀티라인 허용
         button.titleLabel?.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16) // 패딩 설정
+//        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 38, bottom: 10, right: )
         button.layer.cornerRadius = 12
         button.backgroundColor = color
         
@@ -150,6 +150,7 @@ class CustomAlertViewController: UIViewController {
             alertContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             alertContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
 //            alertContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            alertContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: 196),
             
             // titleLabel 제약 조건
             titleLabel.topAnchor.constraint(equalTo: alertContainer.topAnchor, constant: 20),
@@ -165,13 +166,13 @@ class CustomAlertViewController: UIViewController {
             closeButton.leadingAnchor.constraint(equalTo: alertContainer.leadingAnchor, constant: 20),
             closeButton.bottomAnchor.constraint(equalTo: alertContainer.bottomAnchor, constant: -20),
             closeButton.widthAnchor.constraint(equalTo: confirmButton.widthAnchor), // 버튼 크기 동일
-            closeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 20), // 텍스트 + 패딩
+            closeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48), // 텍스트 + 패딩
 
             // confirmButton 제약 조건
             confirmButton.trailingAnchor.constraint(equalTo: alertContainer.trailingAnchor, constant: -20),
             confirmButton.bottomAnchor.constraint(equalTo: alertContainer.bottomAnchor, constant: -20),
-            confirmButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 48), // 최소 가로 크기
-            confirmButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 20), // 텍스트 + 패딩
+            confirmButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 143), // 최소 가로 크기
+            confirmButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48), // 텍스트 + 패딩
             
             // 버튼 간 간격
             closeButton.trailingAnchor.constraint(equalTo: confirmButton.leadingAnchor, constant: -10),

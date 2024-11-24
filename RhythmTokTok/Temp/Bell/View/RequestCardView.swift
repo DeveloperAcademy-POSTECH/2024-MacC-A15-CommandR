@@ -104,9 +104,8 @@ class RequestCardView: UIView {
             
             // 버튼 제약 조건
             requestActionButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            requestActionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
-//            requestActionButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 32), // 최소 높이 설정
-//            requestActionButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 64) // 최소 너비 설정
+            requestActionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            requestActionButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 84) // 최소 너비 설정
         ])
     }
 }
