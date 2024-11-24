@@ -11,6 +11,8 @@
 		0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49E2CD5F5A600FDBFAF /* cry.xml */; };
 		0232D4AC2CDC721B00FDBFAF /* doraji.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4AB2CDC721B00FDBFAF /* doraji.xml */; };
 		0232D4E72CDDC52A00FDBFAF /* DummyScores in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4E62CDDC52400FDBFAF /* DummyScores */; };
+		023AA6222CEF1B05006A8DFA /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */; };
+		023AA6242CEF228D006A8DFA /* InternetErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */; };
 		023E35242CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */; };
 		023E352D2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */; };
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
@@ -222,6 +224,8 @@
 		0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = shinsadong.xml; sourceTree = "<group>"; };
 		0232D4AB2CDC721B00FDBFAF /* doraji.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = doraji.xml; sourceTree = "<group>"; };
 		0232D4E62CDDC52400FDBFAF /* DummyScores */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DummyScores; path = RhythmTokTok/Resources/DummyScores; sourceTree = SOURCE_ROOT; };
+		023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ErrorViewController.swift; path = RhythmTokTok/Temp/ErrorViewController.swift; sourceTree = SOURCE_ROOT; };
+		023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InternetErrorViewController.swift; path = RhythmTokTok/Temp/InternetErrorViewController.swift; sourceTree = SOURCE_ROOT; };
 		023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTok.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -744,6 +748,8 @@
 		1EF8A0AA2CB559C000ADB783 /* Wendy */ = {
 			isa = PBXGroup;
 			children = (
+				023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */,
+				023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */,
 			);
 			path = Wendy;
 			sourceTree = "<group>";
@@ -1065,6 +1071,7 @@
 				D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */,
 				1ED9FED12CBF654400472C51 /* BPMLabel.swift in Sources */,
 				1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */,
+				023AA6242CEF228D006A8DFA /* InternetErrorViewController.swift in Sources */,
 				D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */,
 				D32330952CDE382C007D1003 /* RequestStatus.swift in Sources */,
 				1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */,
@@ -1147,6 +1154,7 @@
 				1ED9FECD2CBE797C00472C51 /* ProgressTableViewCell.swift in Sources */,
 				EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */,
 				1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */,
+				023AA6222CEF1B05006A8DFA /* ErrorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
