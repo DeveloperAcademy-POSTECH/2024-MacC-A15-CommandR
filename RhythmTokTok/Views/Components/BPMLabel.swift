@@ -32,12 +32,14 @@ class BPMLabel: UIView {
     private func setupView() {
         speedStatusLabel.text = speedText
         speedStatusLabel.textColor = UIColor(named: "label_primary")
-        speedStatusLabel.font = UIFont(name: "Pretendard-Medium", size: 21)
+        speedStatusLabel.font = UIFont.customFont(forTextStyle: .heading2Medium)
+        speedStatusLabel.adjustsFontForContentSizeCategory = true
         speedStatusLabel.translatesAutoresizingMaskIntoConstraints = false
-
+        
         valueLabel.text = "(\(speedValue)bpm)"
         valueLabel.textColor = UIColor(named: "lable_quaternary")
-        valueLabel.font = UIFont(name: "Pretendard-Regular", size: 21)
+        valueLabel.font = UIFont.customFont(forTextStyle: .heading2Regular)
+        valueLabel.adjustsFontForContentSizeCategory = true
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
 
         BPMHStackView.axis = .horizontal

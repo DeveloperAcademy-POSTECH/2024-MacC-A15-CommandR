@@ -12,7 +12,7 @@ class MeasureControllerButton: UIButton {
         super.init(frame: .zero)
         
         var config = UIButton.Configuration.plain()
-        config.image = icon?.withRenderingMode(.automatic) // 아이콘 설정
+        config.image = icon?            .withRenderingMode(.alwaysTemplate)
         config.imagePlacement = .top // 이미지와 텍스트 위치
         config.imagePadding = 8 // 이미지와 텍스트 사이 간격
         config.baseForegroundColor = foregoundColor // 텍스트 및 이미지 색상
@@ -21,19 +21,34 @@ class MeasureControllerButton: UIButton {
         config.background.strokeWidth = 1.5
         config.background.cornerRadius = 12
         
-        if let customFont = UIFont(name: "Pretendard-Medium", size: 18) {
-            var attributedTitle = AttributedString(title)
-            attributedTitle.font = customFont
-            config.attributedTitle = attributedTitle
-        }
+        let customFont = UIFont.customFont(forTextStyle: .button1Medium)
+        var attributedTitle = AttributedString(title)
+        attributedTitle.font = customFont
+        attributedTitle.foregroundColor = foregoundColor
+        config.attributedTitle = attributedTitle
         
         self.configuration = config
         
         self.configurationUpdateHandler = { button in
             var updatedConfig = button.configuration
-            updatedConfig?.background.backgroundColor = button.isHighlighted ? pressedColor : backGroundColor
-            button.configuration = updatedConfig
-        }
+             
+             // 텍스트 색상 및 배경색 업데이트
+             var updatedAttributedTitle = AttributedString(title)
+             updatedAttributedTitle.font = customFont
+             
+             if !button.isEnabled {
+                 updatedAttributedTitle.foregroundColor = .placeholder // 비활성화 상태 텍스트 색상
+             } else if button.isHighlighted {
+                 updatedAttributedTitle.foregroundColor = foregoundColor // 강조 상태 텍스트 색상
+                 updatedConfig?.background.backgroundColor = pressedColor // 강조 상태 배경색
+             } else {
+                 updatedAttributedTitle.foregroundColor = foregoundColor // 기본 텍스트 색상
+                 updatedConfig?.background.backgroundColor = backGroundColor // 기본 배경색
+             }
+             
+             updatedConfig?.attributedTitle = updatedAttributedTitle
+             button.configuration = updatedConfig
+         }
     }
     
     required init?(coder: NSCoder) {

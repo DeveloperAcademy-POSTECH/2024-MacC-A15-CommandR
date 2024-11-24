@@ -8,38 +8,24 @@
 import UIKit
 class ControlButtonView: UIView {
     let playPauseButton = PlayPauseButton()
-    let resetButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.circlepath"),
+    let resetButton = MeasureControllerButton(icon: UIImage(named: "restart"),
                                               title: "처음부터", backGroundColor: .buttonTertiary,
                                               foregoundColor: .lableSecondary,
-                                              strokeColor: .borderActive, pressedColor: .buttonTertiaryPress)
-    let previousButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.left"),
+                                              strokeColor: .borderTertiary, pressedColor: .buttonTertiaryPress)
+    let previousButton = MeasureControllerButton(icon: UIImage(named: "previous"),
                                                  title: "이전마디", backGroundColor: .buttonSecondary,
                                                  foregoundColor: .lableSecondary, pressedColor: .buttonSecondaryPress)
-    let nextButton = MeasureControllerButton(icon: UIImage(systemName: "arrow.right"),
+    let nextButton = MeasureControllerButton(icon: UIImage(named: "next"),
                                              title: "다음마디", backGroundColor: .buttonSecondary,
                                              foregoundColor: .lableSecondary, pressedColor: .buttonSecondaryPress)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        resetButton.configurationUpdateHandler = { button in
-            var updatedConfig = button.configuration
-            updatedConfig?.background.strokeColor = button.isEnabled ? .borderActive : UIColor(named: "button_inactive")
-            button.configuration = updatedConfig
-        }
-        
         setupButtons()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
-        resetButton.configurationUpdateHandler = { button in
-            var updatedConfig = button.configuration
-            updatedConfig?.background.strokeColor = button.isEnabled ? .borderActive : UIColor(named: "button_inactive")
-            button.configuration = updatedConfig
-        }
-        
         setupButtons()
     }
     
@@ -47,7 +33,7 @@ class ControlButtonView: UIView {
         
         let measureStack = UIStackView(arrangedSubviews: [previousButton, resetButton, nextButton])
         measureStack.axis = .horizontal
-        measureStack.distribution = .fillProportionally
+        measureStack.distribution = .equalCentering
         measureStack.spacing = 8
         measureStack.translatesAutoresizingMaskIntoConstraints = false
         
@@ -64,7 +50,9 @@ class ControlButtonView: UIView {
             mainVStack.topAnchor.constraint(equalTo: topAnchor),
             mainVStack.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            resetButton.widthAnchor.constraint(equalToConstant: 120)
+            previousButton.trailingAnchor.constraint(equalTo: resetButton.leadingAnchor, constant: -8),
+            resetButton.widthAnchor.constraint(equalToConstant: 120),
+            nextButton.leadingAnchor.constraint(equalTo: resetButton.trailingAnchor, constant: 8)
         ])
     }
 }
