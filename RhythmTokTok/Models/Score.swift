@@ -14,14 +14,16 @@ class Score: ObservableObject {
     var title: String = ""
     var bpm: Int = 60
     var soundOption: SoundSetting = .melodyBeat
+    var soundKeyOption: Double = 0.0 // 조변경 관련
     var hapticOption: Bool = false
-
+    
     //MARK: - Score 객체 관리 관련
-    init(id: String = UUID().uuidString, title: String = "", bpm: Int = 60, soundOption: SoundSetting = .melodyBeat, hapticOption: Bool = false) {
+    init(id: String = UUID().uuidString, title: String = "", bpm: Int = 60, soundOption: SoundSetting = .melodyBeat, soundKeyOption: Double = 0.0, hapticOption: Bool = false) {
         self.id = id
         self.title = title
         self.bpm = bpm
         self.soundOption = soundOption
+        self.soundKeyOption = soundKeyOption
         self.hapticOption = hapticOption
     }
     
@@ -30,6 +32,7 @@ class Score: ObservableObject {
         self.title = entity.title ?? ""
         self.bpm = Int(entity.bpm)
         self.soundOption = SoundSetting(rawValue: entity.soundOption) ?? .melodyBeat
+        self.soundKeyOption = entity.soundKeyOption
         self.hapticOption = entity.isHapticOn
     }
     
@@ -37,11 +40,13 @@ class Score: ObservableObject {
         self.bpm = Int(entity.bpm)
         self.title = entity.title ?? ""
         self.soundOption = SoundSetting(rawValue: entity.soundOption) ?? .melodyBeat
+        self.soundKeyOption = entity.soundKeyOption
         self.hapticOption = entity.isHapticOn
     }
-    
-    // MARK: - XML 변환 요소 관련
+}
 
+// MARK: - XML 변환 요소 관련
+extension Score {
     // 파트 추가
     func addPart(_ part: Part) {
         parts.append(part)
@@ -62,9 +67,10 @@ class Score: ObservableObject {
     }
 }
 
+// MARK: - Score 비교 관리 관련
 extension Score: CustomStringConvertible {
     var description: String {
-        return "Score(id: \(id), title: \(title), bpm: \(bpm), soundOption: \(soundOption), hapticOption: \(hapticOption))"
+        return "Score(id: \(id), title: \(title), bpm: \(bpm), soundOption: \(soundOption), soundKeyOption: \(soundKeyOption), hapticOption: \(hapticOption))"
     }
 }
 
@@ -73,6 +79,7 @@ extension Score: Equatable {
         return
         lhs.bpm == rhs.bpm &&
         lhs.soundOption == rhs.soundOption &&
+        lhs.soundKeyOption == rhs.soundKeyOption &&
         lhs.hapticOption == rhs.hapticOption
     }
 }
@@ -81,11 +88,12 @@ extension Score {
     func clone() -> Score {
         let copy = Score()
         copy.id = self.id
-        copy.parts = self.parts // 깊은 복사 필요 시, 요소들 복사 논리 추가
+        copy.parts = self.parts
         copy.divisions = self.divisions
         copy.title = self.title
         copy.bpm = self.bpm
         copy.soundOption = self.soundOption
+        copy.soundKeyOption = self.soundKeyOption
         copy.hapticOption = self.hapticOption
         return copy
     }

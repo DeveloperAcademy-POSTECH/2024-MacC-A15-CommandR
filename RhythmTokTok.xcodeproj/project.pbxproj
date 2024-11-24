@@ -146,6 +146,8 @@
 		D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */; };
 		EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */; };
 		EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1B9BB52CD647A000073215 /* BPMDescription.swift */; };
+		EE2305362CF02C5C00D47367 /* SoundKeySettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2305352CF02C5300D47367 /* SoundKeySettingSectionView.swift */; };
+		EE23053A2CF0AE3500D47367 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2305392CF0AE3300D47367 /* Helper.swift */; };
 		EE4203962CD226800081F2A1 /* BPMSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */; };
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
 		EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */; };
@@ -347,6 +349,8 @@
 		D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreSearchViewController.swift; sourceTree = "<group>"; };
 		EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTitleChangeViewController.swift; sourceTree = "<group>"; };
 		EE1B9BB52CD647A000073215 /* BPMDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMDescription.swift; sourceTree = "<group>"; };
+		EE2305352CF02C5300D47367 /* SoundKeySettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundKeySettingSectionView.swift; sourceTree = "<group>"; };
+		EE2305392CF0AE3300D47367 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
 		EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingSectionView.swift; sourceTree = "<group>"; };
@@ -626,6 +630,7 @@
 				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
+				EE2305352CF02C5300D47367 /* SoundKeySettingSectionView.swift */,
 				EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */,
 				EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */,
 				EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */,
@@ -665,6 +670,7 @@
 		1EF8A0A82CB53EAF00ADB783 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				EE2305392CF0AE3300D47367 /* Helper.swift */,
 				02CFE1312CB68479008454B8 /* ErrorHandler.swift */,
 				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
 				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
@@ -1061,6 +1067,7 @@
 				D30101D92CE1EADC005742E6 /* CustomAlertViewController.swift in Sources */,
 				EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */,
 				1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */,
+				EE2305362CF02C5C00D47367 /* SoundKeySettingSectionView.swift in Sources */,
 				D37DFEE32CE9D5020073ABAB /* EmptyStateView.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
@@ -1069,6 +1076,7 @@
 				EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				D3C17AE72CED089A0016837A /* EmptyResultView.swift in Sources */,
+				EE23053A2CF0AE3500D47367 /* Helper.swift in Sources */,
 				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */,

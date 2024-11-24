@@ -21,7 +21,7 @@ class BPMSettingSectionView: UIView {
         let label = UILabel()
         label.text = "· 원하는 BPM을 설정하면, 악보가 그 BPM에 맞춰 재생됩니다."
         label.font = UIFont(name: "Pretendard-Regular", size: 14)
-        label.textColor = .gray
+        label.textColor = .lableTertiary
         label.numberOfLines = 0
         return label
     }()

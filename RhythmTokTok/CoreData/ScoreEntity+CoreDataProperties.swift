@@ -23,6 +23,7 @@ extension ScoreEntity {
     @NSManaged public var isHapticOn: Bool
     @NSManaged public var isScoreDeleted: Bool
     @NSManaged public var soundOption: String
+    @NSManaged public var soundKeyOption: Double
     @NSManaged public var notes: NSOrderedSet?
 
 }

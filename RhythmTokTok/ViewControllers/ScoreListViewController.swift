@@ -283,7 +283,7 @@ extension ScoreListViewController: ScoreTitleChangeDelegate {
             confirmButtonText: "삭제하기",
             cancelButtonText: "닫기",
             confirmButtonColor: UIColor(named: "button_danger") ?? .red,
-            cancelButtonColor: UIColor(named: "button_secondary") ?? .gray,
+            cancelButtonColor: UIColor(named: "button_cancel") ?? .gray,
             highlightedTexts: ["다시 복구할 수 없어요"]
         )
         
