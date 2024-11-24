@@ -130,6 +130,7 @@ class ServerManager {
         let headers = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
         let request = createServerRequest(endpoint: "/api/score", method: "POST", headers: headers, body: body)
         
+        // 요청 보냄
         sendPDFuploadRequest(request)
     }
     
