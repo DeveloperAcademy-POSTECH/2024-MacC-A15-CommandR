@@ -19,35 +19,45 @@ class InternetErrorViewController: UIViewController {
         // 기본 배경색 설정
         view.backgroundColor = .white
 
-        // 1. 와이파이 경고 아이콘
+        // 1. 스택뷰 생성 (중앙 정렬을 위해 사용)
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+
+        // 2. 와이파이 경고 아이콘
         let wifiIcon = UIImageView()
         wifiIcon.image = UIImage(named: "caution.wifi") ?? UIImage(systemName: "wifi.exclamationmark")
         wifiIcon.tintColor = .gray300
         wifiIcon.contentMode = .scaleAspectFit
         wifiIcon.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(wifiIcon)
+        wifiIcon.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        wifiIcon.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        stackView.addArrangedSubview(wifiIcon)
 
-        // 2. 메인 메시지 레이블
+        // 3. 메인 메시지 레이블
         let mainMessageLabel = UILabel()
         mainMessageLabel.text = "인터넷 연결이 끊겼어요"
         mainMessageLabel.textColor = .lablePrimary
         mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
-        mainMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         mainMessageLabel.adjustsFontForContentSizeCategory = true
-        view.addSubview(mainMessageLabel)
+        mainMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(mainMessageLabel)
 
-        // 3. 하위 메시지 레이블
+        // 4. 하위 메시지 레이블
         let subMessageLabel = UILabel()
         subMessageLabel.text = "확인 후 다시 시도해 주세요"
         subMessageLabel.textColor = .lableTertiary
         subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
-        subMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         subMessageLabel.adjustsFontForContentSizeCategory = true
-        view.addSubview(subMessageLabel)
+        subMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(subMessageLabel)
 
-        // 4. 버튼
+        // 5. 버튼
         let retryButton = UIButton(type: .system)
         retryButton.setTitle("재시도", for: .normal)
         retryButton.setTitleColor(.white, for: .normal)
@@ -55,35 +65,16 @@ class InternetErrorViewController: UIViewController {
         retryButton.backgroundColor = .buttonPrimary
         retryButton.layer.cornerRadius = 10
         retryButton.translatesAutoresizingMaskIntoConstraints = false
+        retryButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        retryButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         retryButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        view.addSubview(retryButton)
-
-        // 버튼 액션 추가
         retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
+        stackView.addArrangedSubview(retryButton)
 
-        // 5. Auto Layout 설정
+        // 스택뷰 중앙 정렬
         NSLayoutConstraint.activate([
-            // 와이파이 아이콘
-            wifiIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            wifiIcon.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            wifiIcon.widthAnchor.constraint(equalToConstant: 80),
-            wifiIcon.heightAnchor.constraint(equalToConstant: 80),
-
-            // 메인 메시지 레이블
-            mainMessageLabel.topAnchor.constraint(equalTo: wifiIcon.bottomAnchor, constant: 20),
-            mainMessageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            mainMessageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            // 하위 메시지 레이블
-            subMessageLabel.topAnchor.constraint(equalTo: mainMessageLabel.bottomAnchor, constant: 10),
-            subMessageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            subMessageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            // 버튼
-            retryButton.topAnchor.constraint(equalTo: subMessageLabel.bottomAnchor, constant: 30),
-            retryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            retryButton.widthAnchor.constraint(equalToConstant: 150),
-            retryButton.heightAnchor.constraint(equalToConstant: 44)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
