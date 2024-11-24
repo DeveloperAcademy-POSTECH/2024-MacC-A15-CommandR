@@ -32,6 +32,8 @@
 		1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
 		1A5E09122CEB83AD00E17FF4 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5E09112CEB83AD00E17FF4 /* Fonts.swift */; };
+		1AD0F9862CEF5E09009538B4 /* PDFUploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */; };
+		1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */; };
 		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */; };
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
@@ -105,7 +107,7 @@
 		61B209602CD771F000E51C67 /* mutedClap.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 61B2095F2CD771F000E51C67 /* mutedClap.sf2 */; };
 		61F12AAD2CDA58E20005EFED /* metronome.xml in Resources */ = {isa = PBXBuildFile; fileRef = 61F12AAC2CDA58E20005EFED /* metronome.xml */; };
 		723CA00B2CD3639E00CC91EF /* Countdown.Watch.json in Resources */ = {isa = PBXBuildFile; fileRef = 723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */; };
-		729220562CBE48DB008C8FCF /* change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* change.json */; };
+		729220562CBE48DB008C8FCF /* Change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* Change.json */; };
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
 		D30101D52CE1DC35005742E6 /* InProgressInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */; };
 		D30101D72CE1E56C005742E6 /* ToastAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30101D62CE1E56C005742E6 /* ToastAlert.swift */; };
@@ -239,6 +241,8 @@
 		1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadDoneViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1A5E09112CEB83AD00E17FF4 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Fonts.swift; path = RhythmTokTok/Temp/Fonts.swift; sourceTree = SOURCE_ROOT; };
+		1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressView.swift; sourceTree = "<group>"; };
+		1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressViewController.swift; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFView.swift; sourceTree = "<group>"; };
@@ -313,7 +317,7 @@
 		61B2095F2CD771F000E51C67 /* mutedClap.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mutedClap.sf2; sourceTree = "<group>"; };
 		61F12AAC2CDA58E20005EFED /* metronome.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = metronome.xml; sourceTree = "<group>"; };
 		723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.Watch.json; sourceTree = "<group>"; };
-		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
+		729220552CBE48DB008C8FCF /* Change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
 		D30101D42CE1DC35005742E6 /* InProgressInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InProgressInfoView.swift; sourceTree = "<group>"; };
 		D30101D62CE1E56C005742E6 /* ToastAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlert.swift; sourceTree = "<group>"; };
@@ -499,6 +503,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */,
 				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
@@ -603,7 +608,7 @@
 		1ED9FEBD2CBD571300472C51 /* Lotties */ = {
 			isa = PBXGroup;
 			children = (
-				729220552CBE48DB008C8FCF /* change.json */,
+				729220552CBE48DB008C8FCF /* Change.json */,
 				1ED9FEBE2CBD573D00472C51 /* Loading.json */,
 				729220572CBE799D008C8FCF /* Countdown.json */,
 				723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */,
@@ -626,6 +631,7 @@
 			isa = PBXGroup;
 			children = (
 				1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */,
+				1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */,
 				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
 				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
@@ -960,7 +966,7 @@
 				1E3E09342CB2AAB400EE1868 /* reh.mp3 in Resources */,
 				1E3E09422CB3ED5000EE1868 /* speechDo.mp3 in Resources */,
 				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
-				729220562CBE48DB008C8FCF /* change.json in Resources */,
+				729220562CBE48DB008C8FCF /* Change.json in Resources */,
 				1E3E09492CB3EE0600EE1868 /* speechPa.mp3 in Resources */,
 				1E3E09352CB2AAB400EE1868 /* pah.mp3 in Resources */,
 				D3CE18C42CE72A34008D120C /* cry.pdf in Resources */,
@@ -1123,8 +1129,10 @@
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
 				EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */,
 				1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */,
+				1AD0F9862CEF5E09009538B4 /* PDFUploadProgressView.swift in Sources */,
 				1ED9FECD2CBE797C00472C51 /* ProgressTableViewCell.swift in Sources */,
 				EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */,
+				1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
