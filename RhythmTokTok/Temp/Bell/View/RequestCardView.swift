@@ -42,6 +42,7 @@ class RequestCardView: UIView {
             requestActionButton.setTitleColor(.white, for: .normal)
         default:
             requestActionButton.isHidden = true
+            print("RequestActionButton hidden for status: \(request.status)")
         }
     }
     
@@ -90,6 +91,7 @@ class RequestCardView: UIView {
         requestActionButton.titleLabel?.numberOfLines = 0 // 멀티라인 허용
         requestActionButton.titleLabel?.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         requestActionButton.layer.cornerRadius = 8
+        requestActionButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12) // 패딩 추가
         
         // 오토레이아웃 제약 조건 설정
         NSLayoutConstraint.activate([
@@ -103,9 +105,9 @@ class RequestCardView: UIView {
             
             // 버튼 제약 조건
             requestActionButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            requestActionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-//            requestActionButton.widthAnchor.constraint(equalToConstant: 80),
-//            requestActionButton.heightAnchor.constraint(equalToConstant: 40)
+            requestActionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+//            requestActionButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 32), // 최소 높이 설정
+//            requestActionButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 64) // 최소 너비 설정
         ])
     }
 }

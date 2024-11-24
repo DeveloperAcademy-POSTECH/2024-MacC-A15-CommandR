@@ -142,7 +142,7 @@ class RequestProcessingViewController: UIViewController,
             groupedRequests[request.status, default: []].append(request)
         }
         
-        let statuses: [RequestStatus] = [.scoreReady, .inProgress, .errorOccurred]
+        let statuses: [RequestStatus] = [.errorOccurred, .scoreReady, .inProgress]
         
         for status in statuses {
             guard var requestsForStatus = groupedRequests[status] else { continue }
@@ -184,12 +184,13 @@ class RequestProcessingViewController: UIViewController,
             }
             
             for request in requestsForStatus {
+                print("Adding request: \(request)")
                 let requestView = RequestCardView()
                 requestView.request = request
                 requestView.requestActionButton.addTarget(self,
                                                           action: #selector(handleButtonAction(_:)),
                                                           for: .touchUpInside)
-                requestView.requestActionButton.tag = requests.firstIndex(where: { $0.id == request.id }) ?? 0
+                requestView.requestActionButton.tag = requests.firstIndex(where: { $0.id == request.id }) ?? -1
                 requestView.translatesAutoresizingMaskIntoConstraints = false
                 stackView.addArrangedSubview(requestView)
             }
@@ -199,23 +200,41 @@ class RequestProcessingViewController: UIViewController,
             }
         }
     }
-    
     @objc private func handleButtonAction(_ sender: UIButton) {
-        let index = sender.tag
-        let request = requests[index]
-        
-        switch request.status {
-        case .inProgress:
-            showCancelAlert(for: request, index: index)
-            //            showErrorOccurredAlert(for: request, index: index)
-        case .errorOccurred:
-            showErrorOccurredAlert(for: request, index: index)
-        case .scoreReady:
-            addScore(at: index)
-        case .downloaded, .deleted, .cancelled:
+        guard sender.tag >= 0, sender.tag < requests.count else {
+            print("Invalid button tag: \(sender.tag)")
             return
         }
+        let request = requests[sender.tag]
+        print("Handling action for request: \(request)")
+
+        switch request.status {
+        case .inProgress:
+            showCancelAlert(for: request, index: sender.tag)
+        case .errorOccurred:
+            showErrorOccurredAlert(for: request, index: sender.tag)
+        case .scoreReady:
+            addScore(at: sender.tag)
+        default:
+            print("Unhandled status: \(request.status)")
+        }
     }
+//    @objc private func handleButtonAction(_ sender: UIButton) {
+//        let index = sender.tag
+//        let request = requests[index]
+//        
+//        switch request.status {
+//        case .inProgress:
+//            showCancelAlert(for: request, index: index)
+////                        showErrorOccurredAlert(for: request, index: index) // 테스트하려고 뷰 바꿈
+//        case .errorOccurred:
+//            showErrorOccurredAlert(for: request, index: index)
+//        case .scoreReady:
+//            addScore(at: index)
+//        case .downloaded, .deleted, .cancelled:
+//            return
+//        }
+//    }
     
     // MARK: - 서버에서 데이터 가져오기
     private func fetchRequestsFromServer() {
@@ -325,11 +344,13 @@ class RequestProcessingViewController: UIViewController,
     
     // MARK: - 요청 취소 메서드 추가
     private func cancelRequest(at index: Int, completion: @escaping (Bool) -> Void) {
+        print("cancelRequest called with index: \(index)")
         let request = requests[index]
         
         ServerManager.shared.updateScoreStatus(deviceID: deviceID,
                                                scoreID: String(request.id),
                                                newStatus: 11) { [weak self] status, message in
+            print("Server responded with status: \(status), message: \(message)") // 여기가 호출되는지 확인
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -370,6 +391,7 @@ class RequestProcessingViewController: UIViewController,
 // 음악 추가 요청 취소 팝업
 extension RequestProcessingViewController {
     private func showCancelAlert(for request: Request, index: Int) {
+        print("showCancelAlert called for request: \(request), index: \(index)")
         let alertVC = CustomAlertViewController(
             title: "음악 추가 요청을 취소하시겠어요?",
             message: "취소 후에는 되돌릴 수 없어요.",
@@ -381,13 +403,17 @@ extension RequestProcessingViewController {
         )
         
         alertVC.onConfirm = { [weak self] in
-            // 요청 삭제 동작
-            guard let self = self else { return }
-            self.deleteRequest(for: request.id)
+            print("Confirm button tapped")
+            self?.deleteRequest(for: request.id) // weak self를 안전하게 사용
+        }
+        
+        alertVC.onCancel = {
+            print("Cancel button tapped")
         }
         
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
+        print("Alert initialized with title: \(alertVC.titleText) and message: \(alertVC.messageText)")
         present(alertVC, animated: true, completion: nil)
     }
 }
