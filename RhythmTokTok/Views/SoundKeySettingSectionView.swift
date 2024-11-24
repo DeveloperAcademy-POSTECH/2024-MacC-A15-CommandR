@@ -216,6 +216,7 @@ extension SoundKeySettingSectionView {
             return
         }
         currentSoundKey -= 0.5
+        updateDisplaySoundKey()
     }
     
     @objc private func sharpButtonTapped() {
