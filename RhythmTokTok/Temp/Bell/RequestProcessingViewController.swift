@@ -158,6 +158,8 @@ class RequestProcessingViewController: UIViewController,
             headerLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
             headerLabel.adjustsFontForContentSizeCategory = true
             headerLabel.textColor = UIColor(named: "lable_primary")
+            headerLabel.numberOfLines = 0 // 멀티라인 허용
+            headerLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
             
             let headerText = status.headerText
             let countText = "\(requestsForStatus.count)"
