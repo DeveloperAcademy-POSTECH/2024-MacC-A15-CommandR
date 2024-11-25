@@ -109,7 +109,7 @@ class MediaManager {
                 measures.flatMap { $0.notes }
             }
         }
-        let outputURL = try await createMIDIFile(from: notes, division: Double(parsedScore.divisions))
+        let outputURL = try await createMIDIFile(from: notes, division: Double(parsedScore.divisions), soundOption: currentScore?.soundOption ?? .melody)
         
         return outputURL
     }
@@ -132,13 +132,37 @@ class MediaManager {
             }
         }
         
+        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions), soundOption: currentScore?.soundOption ?? .melody)
+        return outputURL
+    }
+    
+    // 미리 듣기 MIDI 파일 생성
+    func getPartPreviewMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
+        var notes: [Note] = []
+        
+        // 마디 번호 3번까지만 필터링
+        let filteredMeasures = part.measures
+            .filter { $0.key <= 3 } // 마디 번호가 3번 이하만 선택
+            .sorted(by: { $0.key < $1.key }) // 정렬
+        
+        // 선택된 마디의 노트 추출
+        if !isChordEnabled {
+            notes = filteredMeasures.flatMap { (_, measures) in
+                measures.flatMap { $0.notes.filter { $0.staff == 1 } } // 높은음자리표만 선택
+            }
+        } else {
+            notes = filteredMeasures.flatMap { (_, measures) in
+                measures.flatMap { $0.notes } // 모든 노트 선택
+            }
+        }
+        
         let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
         return outputURL
     }
     
     func getClipMIDIFile(part: Part, divisions: Int, startNumber: Int, endNumber: Int) async throws -> URL? {
         if let adjustedNotes = getAdjustedNotes(from: part, startNumber: startNumber, endNumber: endNumber) {
-            let outputURL = try await createMIDIFile(from: adjustedNotes, division: Double(divisions))
+            let outputURL = try await createMIDIFile(from: adjustedNotes, division: Double(divisions), soundOption: currentScore?.soundOption ?? .melody)
             return outputURL
         } else {
             return nil
@@ -310,93 +334,92 @@ class MediaManager {
 
     // MARK: - MIDI 파일 생성 부분
     // MIDI 파일로 변환하는 기능
-    func createMIDIFile(from notes: [Note], division: Double) async throws -> URL {
+    func createMIDIFile(
+        from notes: [Note],
+        division: Double,
+        soundOption: SoundSetting = .melody // 기본값 제공
+    ) async throws -> URL {
         var musicSequence: MusicSequence?
         var musicTrack: MusicTrack?
         var tempoTrack: MusicTrack?
         var tieStartNotes: [String: Note] = [:]
-        
+
         // MusicSequence 생성
         NewMusicSequence(&musicSequence)
-        
+
         // MusicTrack 추가
         MusicSequenceNewTrack(musicSequence!, &musicTrack)
-        
-        // 템포 트랙을 따로 생성
+
+        // 템포 트랙 생성
         MusicSequenceGetTempoTrack(musicSequence!, &tempoTrack)
-        
+
         // 기준 division과의 보정 값
         let divisionCorrectionFactor = standardDivision / division
-        tempoBPM = Double(currentScore?.bpm ?? 60)
+        let tempoBPM = Double(currentScore?.bpm ?? 60)
         let correctedTempoBPM = tempoBPM * standardDivision
-        // 템포 설정 (0 번째 시점에서 보정된 템포 이벤트 추가)
+
+        // 템포 설정
         MusicTrackNewExtendedTempoEvent(tempoTrack!, 0, correctedTempoBPM)
-        
+
         for index in 0..<notes.count {
             var note = notes[index]
-            
-            // 붙임줄 관련 처리 로직
-            if note.tieType != nil {
+
+            // 붙임줄 관련 처리
+            if let tieType = note.tieType {
                 if let modifiedNote = handleNoteTie(note, &tieStartNotes) {
-                    // tieType이 end일 때 바꿔넣을 note가 return됨
-                    // note 바꿔넣기
                     note = modifiedNote
                 } else {
                     continue
                 }
             }
-            
-            if note.isRest {
-                continue // 쉼표는 MIDI 이벤트를 생성하지 않으므로 다음 음표로 넘어감
-            }
-            
-            // 음표의 시작 시간을 note.startTime으로 설정
+
+            // 쉼표 처리
+            if note.isRest { continue }
+
+            // 노트 시작 시간 계산
             let noteStartTick = MusicTimeStamp(Double(note.startTime) * divisionCorrectionFactor)
-            
-  
+
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
-                note: UInt8(currentScore?.soundOption == .melody || currentScore?.soundOption == .melodyBeat ?
-                            note.pitchNoteNumber() :
-                            60), // pitch를 MIDI note number로 변환
-                velocity: currentScore?.soundOption == .mute ? 1 : 64, // 음의 강도 (나중에 수정 가능)
+                note: UInt8(soundOption == .melody || soundOption == .melodyBeat
+                            ? note.pitchNoteNumber()
+                            : 60), // 사운드 옵션에 따라 MIDI 노트 번호 설정
+                velocity: soundOption == .mute ? 1 : 64,
                 releaseVelocity: 0,
                 duration: 0
             )
-            
-            // 노트 온 이벤트를 트랙에 추가
+
+            // 노트 온 이벤트 추가
             MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick, &noteOnMessage)
-            
-            // 노트의 길이를 MIDI 틱으로 변환
-            let noteDurationTicks = MusicTimeStamp(Double(currentScore?.soundOption == .melody || currentScore?.soundOption == .melodyBeat ?
-                                                          note.duration :
-                                                            0) * divisionCorrectionFactor)
- 
+
+            // 노트 길이 계산
+            let noteDurationTicks = MusicTimeStamp(Double(soundOption == .melody || soundOption == .melodyBeat
+                                                          ? note.duration
+                                                          : 0) * divisionCorrectionFactor)
+
             // 노트 오프 이벤트 생성
             var noteOffMessage = MIDINoteMessage(
                 channel: 0,
                 note: UInt8(note.pitchNoteNumber()), // 동일한 pitch로 오프
-                velocity: 0, // 음을 끌 때는 velocity 0
+                velocity: 0,
                 releaseVelocity: 0,
-                duration: 0 // duration은 사용되지 않음
+                duration: 0
             )
-            
-            // 노트 오프 이벤트를 트랙에 추가 (note의 시작시간 + duration 시점에서)
+
+            // 노트 오프 이벤트 추가
             MusicTrackNewMIDINoteEvent(musicTrack!, noteStartTick + MusicTimeStamp(noteDurationTicks), &noteOffMessage)
         }
-        
-        // MIDI 파일 경로 설정
+
+        // MIDI 파일 저장
         let midiFileURL = URL(fileURLWithPath: midiOutputPath)
-        // MusicSequence를 파일로 저장
         let status = MusicSequenceFileCreate(musicSequence!, midiFileURL as CFURL,
                                              .midiType, .eraseFile, Int16(standardDivision))
-        
+
         if status != noErr {
-            ErrorHandler.handleError(error: "Failed to create MIDI file. Error code: \(status)")
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: nil)
         }
-        print("MIDI file created at: \(midiFileURL)")
+
         return midiFileURL
     }
     

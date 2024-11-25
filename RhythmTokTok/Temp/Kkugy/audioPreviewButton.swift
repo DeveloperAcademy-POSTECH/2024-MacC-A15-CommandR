@@ -114,8 +114,8 @@ class AudioPreviewButton: UIView {
     private func showGIF() {
         guard let gifPath = Bundle.main.path(forResource: "previewPlay", ofType: "gif") else { return }
         let gifData = try? Data(contentsOf: URL(fileURLWithPath: gifPath))
-        webView.load(gifData!, mimeType: "image/gif", characterEncodingName: "utf-8", baseURL: URL(fileURLWithPath: gifPath))
-
+        webView.load(gifData!, mimeType: "image/gif",
+                     characterEncodingName: "utf-8", baseURL: URL(fileURLWithPath: gifPath))
         webView.isHidden = false
         imageView.isHidden = true // 기본 이미지 숨기기
     }

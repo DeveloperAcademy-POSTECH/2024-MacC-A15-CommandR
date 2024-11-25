@@ -144,6 +144,12 @@ class MusicPlayer: ObservableObject {
         }
     }
     
+    func playPreviewMIDI() {
+        if let midiPlayer {
+            midiPlayer.play()
+        }
+    }
+    
     // MIDI 파일 실행
     func playMIDI(futureTime: Date = Date()) {
         print("Play MIDI")
