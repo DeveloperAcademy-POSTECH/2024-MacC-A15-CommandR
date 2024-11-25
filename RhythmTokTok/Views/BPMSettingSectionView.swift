@@ -13,14 +13,16 @@ class BPMSettingSectionView: UIView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "빠르기 설정"
-        label.font = UIFont(name: "Pretendard-Bold", size: 21)
+        label.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "· 원하는 BPM을 설정하면, 악보가 그 BPM에 맞춰 재생됩니다."
-        label.font = UIFont(name: "Pretendard-Regular", size: 14)
+        label.font = UIFont.customFont(forTextStyle: .captionRegular)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .lableTertiary
         label.numberOfLines = 0
         return label
@@ -39,7 +41,8 @@ class BPMSettingSectionView: UIView {
     let bpmLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont(name: "Pretendard-Medium", size: 21)
+        label.font = UIFont.customFont(forTextStyle: .heading1Medium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .black
         return label
     }()
@@ -47,7 +50,8 @@ class BPMSettingSectionView: UIView {
     let bpmDescriptionLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont(name: "Pretendard-Regular", size: 18)
+        label.font = UIFont.customFont(forTextStyle: .subheadingRegular)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .gray
         return label
     }()
