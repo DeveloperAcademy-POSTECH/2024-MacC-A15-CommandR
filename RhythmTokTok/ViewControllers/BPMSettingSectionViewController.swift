@@ -40,13 +40,26 @@ class BPMSettingSectionViewController: UIViewController {
         bpmTextField.addTarget(self, action: #selector(bpmTextFieldDidChange), for: .editingChanged)
         
         if let sheet = sheetPresentationController {
-            let customDetent = UISheetPresentationController.Detent.custom(resolver: { context in
-                return context.maximumDetentValue * 0.3 // 모달 높이 조정
-            })
-            sheet.detents = [customDetent]
+            sheet.detents = [
+                .custom { context in
+                    // 동적으로 콘텐츠 크기에 맞는 높이 계산
+                    let contentHeight = self.calculateContentHeight()
+                    return min(contentHeight, context.maximumDetentValue)
+                }
+            ]
             sheet.prefersGrabberVisible = true
             sheet.prefersScrollingExpandsWhenScrolledToEdge = false
         }
+    }
+    
+    private func calculateContentHeight() -> CGFloat {
+        let titleHeight = titleLabel.intrinsicContentSize.height
+        let textFieldHeight = bpmTextField.intrinsicContentSize.height + 20 // 패딩 포함
+        let buttonHeight = confirmButton.intrinsicContentSize.height
+        let spacing: CGFloat = 32 + 40 + 32 // 요소 간 거리 합산
+        let totalHeight = titleHeight + textFieldHeight + buttonHeight + spacing
+
+        return totalHeight
     }
     
     private func setupUI() {
@@ -73,7 +86,7 @@ class BPMSettingSectionViewController: UIViewController {
             bpmTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
             bpmTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             bpmTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            bpmTextField.widthAnchor.constraint(equalToConstant: 335),
+            bpmTextField.widthAnchor.constraint(greaterThanOrEqualToConstant: 335),
             bpmTextField.heightAnchor.constraint(equalToConstant: 64),
             
             confirmButton.topAnchor.constraint(equalTo: bpmTextField.bottomAnchor, constant: 32),
@@ -90,7 +103,8 @@ class BPMSettingSectionViewController: UIViewController {
 extension BPMSettingSectionViewController {
     func setTitleLabelUI() {
         titleLabel.text = "빠르기 설정"
-        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        titleLabel.font = UIFont.customFont(forTextStyle: .subheadingBold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 }
@@ -103,7 +117,8 @@ extension BPMSettingSectionViewController {
         bpmTextField.layer.cornerRadius = 12
         bpmTextField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
         bpmTextField.keyboardType = .numberPad
-        bpmTextField.font = UIFont(name: "Pretendard-Medium", size: 36)
+        bpmTextField.font = UIFont.customFont(forTextStyle: .displayMedium)
+        bpmTextField.adjustsFontForContentSizeCategory = true
         bpmTextField.translatesAutoresizingMaskIntoConstraints = false
         
         let clearButton = UIButton(type: .custom)
@@ -122,6 +137,20 @@ extension BPMSettingSectionViewController {
         
         bpmTextField.rightView = rightPaddingView
         bpmTextField.rightViewMode = .always
+        
+        // 텍스트 크기에 따라 높이 조정
+        bpmTextField.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        bpmTextField.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // 텍스트 필드 높이를 텍스트 크기에 맞게 조정
+        if let font = bpmTextField.font {
+            let size = ("999" as NSString).size(withAttributes: [.font: font]) // 999는 3자리 기준 크기
+            bpmTextField.heightAnchor.constraint(equalToConstant: size.height + 20).isActive = true
+        }
     }
     
     @objc private func bpmTextFieldDidChange() {
@@ -139,7 +168,8 @@ extension BPMSettingSectionViewController {
 extension BPMSettingSectionViewController {
     func setConfirmButtonUI() {
         confirmButton.setTitle("설정 완료", for: .normal)
-        confirmButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        confirmButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
+        confirmButton.titleLabel?.adjustsFontForContentSizeCategory = true
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.backgroundColor = UIColor(named: "button_primary")
         confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
