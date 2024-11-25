@@ -198,7 +198,7 @@ class LoadingViewController: UIViewController {
             if selectedPart != nil {
                 midiFilePathURL = try await mediaManager.getPartMIDIFile(part: selectedPart!,
                                                                          divisions: score.divisions,
-                                                                         isChordEnabled: isChordEnabled)
+                                                                         soundKey: score.soundKeyOption ,isChordEnabled: isChordEnabled)
             } else {
                 midiFilePathURL = try await mediaManager.getTotalPartMIDIFile(parsedScore: score)
             }

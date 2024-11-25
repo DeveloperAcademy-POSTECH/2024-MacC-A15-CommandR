@@ -114,7 +114,7 @@ class MediaManager {
         return outputURL
     }
     
-    func getPartMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
+    func getPartMIDIFile(part: Part, divisions: Int, soundKey: Double,isChordEnabled: Bool = false) async throws -> URL {
         var notes: [Note] = []
         
         // 현재 무조건적으로 if 문 타게 해놨음, 높은음자리표만 나오게
@@ -132,12 +132,13 @@ class MediaManager {
             }
         }
         
-        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions), soundOption: currentScore?.soundOption ?? .melody)
+        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions), soundOption: currentScore?.soundOption ?? .melody, soundKey: soundKey)
         return outputURL
     }
     
     // 미리 듣기 MIDI 파일 생성
-    func getPartPreviewMIDIFile(part: Part, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
+    func getPartPreviewMIDIFile(currnetScore: Score, divisions: Int, isChordEnabled: Bool = false) async throws -> URL {
+        let part = currnetScore.parts.last!
         var notes: [Note] = []
         
         // 마디 번호 3번까지만 필터링
@@ -156,7 +157,7 @@ class MediaManager {
             }
         }
         
-        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions))
+        let outputURL = try await createMIDIFile(from: notes, division: Double(divisions), soundKey: currnetScore.soundKeyOption)
         return outputURL
     }
     
@@ -221,7 +222,7 @@ class MediaManager {
             }
             
             // 붙임줄 관련 처리 로직
-            if let tieType = note.tieType {
+            if note.tieType != nil {
                 if let modifiedNote = handleNoteTie(note, &tieStartNotes) {
                     // tieType이 end일 때 바꿔넣을 note가 return됨
                     // note 바꿔넣기
@@ -337,7 +338,8 @@ class MediaManager {
     func createMIDIFile(
         from notes: [Note],
         division: Double,
-        soundOption: SoundSetting = .melody // 기본값 제공
+        soundOption: SoundSetting = .melody, // 기본값 제공
+        soundKey: Double = 0.0
     ) async throws -> URL {
         var musicSequence: MusicSequence?
         var musicTrack: MusicTrack?
@@ -378,13 +380,19 @@ class MediaManager {
 
             // 노트 시작 시간 계산
             let noteStartTick = MusicTimeStamp(Double(note.startTime) * divisionCorrectionFactor)
+            
+            let noteNumber: UInt8 = {
+                if soundOption == .melody || soundOption == .melodyBeat {
+                    return UInt8(note.pitchNoteNumber(with: soundKey)) // 사운드 옵션에 따라 MIDI 노트 번호 설정
+                } else {
+                    return 60 // 기본값
+                }
+            }()
 
             // 노트 온 이벤트 생성
             var noteOnMessage = MIDINoteMessage(
                 channel: 0,
-                note: UInt8(soundOption == .melody || soundOption == .melodyBeat
-                            ? note.pitchNoteNumber()
-                            : 60), // 사운드 옵션에 따라 MIDI 노트 번호 설정
+                note: noteNumber,
                 velocity: soundOption == .mute ? 1 : 64,
                 releaseVelocity: 0,
                 duration: 0
@@ -401,7 +409,7 @@ class MediaManager {
             // 노트 오프 이벤트 생성
             var noteOffMessage = MIDINoteMessage(
                 channel: 0,
-                note: UInt8(note.pitchNoteNumber()), // 동일한 pitch로 오프
+                note: noteNumber, // 동일한 pitch로 오프
                 velocity: 0,
                 releaseVelocity: 0,
                 duration: 0

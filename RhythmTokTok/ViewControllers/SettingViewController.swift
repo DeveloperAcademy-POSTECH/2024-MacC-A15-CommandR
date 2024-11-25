@@ -130,11 +130,14 @@ extension SettingViewController {
     private func playPreviewScore() {
         let isPlaying = settingView.soundKeySettingSection.audioPreviewButton.isPlaying
         
+        // 현재 악보 키값 설정
+        currentScore.soundKeyOption = settingView.soundKeySettingSection.currentSoundKey
+        
         // 실행 중이 아닐 때 플레이
         if !isPlaying {
             Task {
                 let mediaManager = MediaManager()
-                let midiFilePathURL = try await mediaManager.getPartPreviewMIDIFile(part: currentScore.parts.last!,
+                let midiFilePathURL = try await mediaManager.getPartPreviewMIDIFile(currnetScore: currentScore,
                                                                                     divisions: currentScore.divisions,
                                                                                     isChordEnabled: false)
                 // MIDI 파일 로드

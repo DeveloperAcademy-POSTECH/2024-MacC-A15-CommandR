@@ -476,6 +476,7 @@ extension ScorePracticeViewController {
             mediaManager.setCurrentPart(part: score.parts.last!, division: Double(score.divisions))
             midiFilePathURL = try await mediaManager.getPartMIDIFile(part: score.parts.last!,
                                                                      divisions: score.divisions,
+                                                                     soundKey: currentScore.soundKeyOption,
                                                                      isChordEnabled: false)
             try await createHaptics(midiFilePathURL: midiFilePathURL, score: score)
             
