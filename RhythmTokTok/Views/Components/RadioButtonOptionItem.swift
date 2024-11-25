@@ -33,7 +33,8 @@ class RadioButtonOptionItem: UIView {
         // 타이틀 라벨 설정
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = title
-        titleLabel.font = UIFont.systemFont(ofSize: 16)
+        titleLabel.font = UIFont.customFont(forTextStyle: .body1Medium)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.isUserInteractionEnabled = true // 라벨에 제스처 추가 가능하도록 설정
         
         // 라벨에 터치 제스처 추가
@@ -48,14 +49,28 @@ class RadioButtonOptionItem: UIView {
         NSLayoutConstraint.activate([
             radioButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             radioButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            radioButton.widthAnchor.constraint(equalToConstant: 24),
-            radioButton.heightAnchor.constraint(equalToConstant: 24),
+            radioButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 24),
+            radioButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 24),
             
             titleLabel.leadingAnchor.constraint(equalTo: radioButton.trailingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: 24)
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 24)
         ])
+        
+        // 폰트 크기에 따라 라디오 버튼 크기 동기화
+        adjustRadioButtonSize()
+    }
+    
+    private func adjustRadioButtonSize() {
+        // 폰트 크기 기반으로 라디오 버튼 크기 조정
+        if let fontSize = titleLabel.font?.pointSize {
+            let buttonSize = fontSize * 1.2 // 폰트 크기의 1.2배로 설정
+            NSLayoutConstraint.activate([
+                radioButton.widthAnchor.constraint(equalToConstant: buttonSize),
+                radioButton.heightAnchor.constraint(equalToConstant: buttonSize)
+            ])
+        }
     }
     
     @objc private func labelTapped() {
