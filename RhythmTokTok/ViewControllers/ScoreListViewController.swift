@@ -74,12 +74,30 @@ class ScoreListViewController: UIViewController {
         scoreList = [] // 리스트 한번 비워주기
         
         let storedScores = scoreService.fetchAllScores()
-        
         print("loading score")
+        
+        var titlesFromCoreData: [String] = []
+        
         for storedScore in storedScores {
             let score = convertScore(storedScore)
             scoreList.append(score)
+            titlesFromCoreData.append(score.title) // CoreData에서 제목 수집
         }
+        
+        // UserDefaults에 저장된 takenTitle 배열 가져오기
+        var takenTitles = UserDefaults.standard.stringArray(forKey: "takenTitle") ?? []
+        
+        // CoreData에서 불러온 제목을 중복 없이 추가
+        for title in titlesFromCoreData {
+            if !takenTitles.contains(title) {
+                takenTitles.append(title)
+            }
+        }
+        
+        // 업데이트된 배열을 UserDefaults에 저장
+        UserDefaults.standard.set(takenTitles, forKey: "takenTitle")
+        
+        print("UserDefaults: takenTitle: \(UserDefaults.standard.stringArray(forKey: "takenTitle"))")
         
         DispatchQueue.main.async {
             self.scoreListView.tableView.reloadData() // 테이블뷰 업데이트
