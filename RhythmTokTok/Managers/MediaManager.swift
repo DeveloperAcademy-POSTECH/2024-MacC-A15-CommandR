@@ -9,8 +9,13 @@ import AVFoundation
 import AudioToolbox
 
 class MediaManager {
-    var currentScore: Score?
-    
+    var currentScore: Score? {
+        didSet {
+            // currentScore가 변경될 때 tempoBPM을 업데이트
+            tempoBPM = Double(currentScore?.bpm ?? 60)
+        }
+    }
+
     private let volumeScale: Float32 = 5.0 // 볼륨
     private let standardDivision: Double = 480.0  // 기준 division 값
     private lazy var tempoBPM: Double = Double(currentScore?.bpm ?? 60)
@@ -445,6 +450,7 @@ class MediaManager {
 
         // TempoTrack 생성 및 보정된 템포 설정
         MusicSequenceGetTempoTrack(musicSequence!, &tempoTrack)
+        let tempoBPM = Double(currentScore?.bpm ?? 60)
         let correctedTempoBPM = tempoBPM * standardDivision
         MusicTrackNewExtendedTempoEvent(tempoTrack!, 0, correctedTempoBPM)
 
