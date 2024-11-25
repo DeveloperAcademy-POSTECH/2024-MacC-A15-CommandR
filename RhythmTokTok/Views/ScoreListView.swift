@@ -18,9 +18,9 @@ class ScoreListView: UIView {
     let tableHeaderLabel: UILabel = {
         let label = UILabel()
         label.text = "음악 목록"
-        let customFont = UIFont(name: "Pretendard-Bold", size: 24)
-        label.font = customFont
-        label.textAlignment = .left  // 좌측 정렬
+        label.font = UIFont.customFont(forTextStyle: .heading1Bold)
+        label.adjustsFontForContentSizeCategory = true
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -42,6 +42,15 @@ class ScoreListView: UIView {
         button.backgroundColor = UIColor.systemBlue
         button.layer.cornerRadius = 12
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.customFont(forTextStyle: .body2Medium)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        
+        // 텍스트와 아이콘 간의 여백 설정
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        
+        // 버튼 크기를 텍스트와 이미지에 맞게 조정
+        button.sizeToFit()
+        
         return button
     }()
     
@@ -110,8 +119,8 @@ class ScoreListView: UIView {
             tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
             // 하단 버튼 레이아웃
-            addButton.widthAnchor.constraint(equalToConstant: 139),
-            addButton.heightAnchor.constraint(equalToConstant: 56),
+            addButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 139),
+            addButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 56),
             addButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             addButton.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
