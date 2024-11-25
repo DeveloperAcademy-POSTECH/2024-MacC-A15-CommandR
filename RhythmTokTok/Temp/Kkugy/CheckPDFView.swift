@@ -172,7 +172,7 @@ class CheckPDFView: UIView {
             subHeaderLabel.text = "연습할 음악의 악보가 맞는지 확인해 주세요."
             collectionContainerView.isHidden = true
             confirmButton.isEnabled = false
-            confirmButton.backgroundColor = .buttonInactive
+            confirmButton.backgroundColor = .buttonDisabled
             changePDFButton.isHidden = true
             addPDFButton.isHidden = false
         }

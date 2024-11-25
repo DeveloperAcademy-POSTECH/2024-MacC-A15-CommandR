@@ -68,9 +68,13 @@ class EmptyResultView: UIView {
         
             messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 22),
+            messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16), // 좌측 여백
+            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16), // 우측 여백
             
             suggestionLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            suggestionLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 4)
+            suggestionLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 4),
+            suggestionLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16), // 좌측 여백
+            suggestionLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16) // 우측 여백
         ])
     }
 }
