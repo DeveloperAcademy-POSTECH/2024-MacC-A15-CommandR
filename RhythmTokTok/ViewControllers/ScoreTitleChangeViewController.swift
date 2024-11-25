@@ -117,7 +117,8 @@ extension ScoreTitleChangeViewController {
 extension ScoreTitleChangeViewController {
     func setConfirmButtonUI() {
         confirmButton.setTitle("제목 수정 완료", for: .normal)
-        confirmButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        confirmButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
+        confirmButton.titleLabel?.adjustsFontForContentSizeCategory = true
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.backgroundColor = UIColor(named: "button_primary")
         confirmButton.addTarget(self, action: #selector(confirmButtonTapped), for: .touchUpInside)
