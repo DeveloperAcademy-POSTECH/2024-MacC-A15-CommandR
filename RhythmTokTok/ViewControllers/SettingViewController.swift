@@ -69,6 +69,7 @@ class SettingViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        musicPlayer.stopPreviewMIDI()
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
@@ -127,14 +128,29 @@ extension SettingViewController: BPMSettingDelegate {
 // MARK: - [Ext] 키 조절 미리 듣기 관련
 extension SettingViewController {
     private func playPreviewScore() {
-        Task {
-            let mediaManager = MediaManager()
-            let midiFilePathURL = try await mediaManager.getPartPreviewMIDIFile(part: currentScore.parts.last!,
-                                                                         divisions: currentScore.divisions,
-                                                                         isChordEnabled: false)
-            // MIDI 파일 로드
-            musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
-            musicPlayer.playPreviewMIDI()
+        let isPlaying = settingView.soundKeySettingSection.audioPreviewButton.isPlaying
+        
+        // 실행 중이 아닐 때 플레이
+        if !isPlaying {
+            Task {
+                let mediaManager = MediaManager()
+                let midiFilePathURL = try await mediaManager.getPartPreviewMIDIFile(part: currentScore.parts.last!,
+                                                                                    divisions: currentScore.divisions,
+                                                                                    isChordEnabled: false)
+                // MIDI 파일 로드
+                musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+                // 로드 안정성 확보
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.musicPlayer.playPreviewMIDI { isCompleted in
+                        if isCompleted {
+                            self.settingView.soundKeySettingSection.audioPreviewButton.isPlaying = false
+                            print("Playback successfully completed.")
+                        }
+                    }
+                }
+            }
+        } else {
+            musicPlayer.stopPreviewMIDI()
         }
     }
 }

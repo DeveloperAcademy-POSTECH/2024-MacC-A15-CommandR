@@ -107,24 +107,31 @@ class AudioPreviewButton: UIView {
     }
     
     @objc private func audioPreviewButtonTapped() {
-        isPlaying.toggle()
         onAudioPreviewButtonTapped?()
+        isPlaying.toggle()
     }
     
     private func showGIF() {
-        guard let gifPath = Bundle.main.path(forResource: "previewPlay", ofType: "gif") else { return }
-        let gifData = try? Data(contentsOf: URL(fileURLWithPath: gifPath))
-        webView.load(gifData!, mimeType: "image/gif",
-                     characterEncodingName: "utf-8", baseURL: URL(fileURLWithPath: gifPath))
-        webView.isHidden = false
-        imageView.isHidden = true // 기본 이미지 숨기기
+        DispatchQueue.main.async {
+            guard let gifPath = Bundle.main.path(forResource: "previewPlay", ofType: "gif") else { return }
+            if let gifData = try? Data(contentsOf: URL(fileURLWithPath: gifPath)) {
+                self.webView.load(gifData, mimeType: "image/gif",
+                                  characterEncodingName: "utf-8", baseURL: URL(fileURLWithPath: gifPath))
+            }
+            self.webView.isHidden = false
+            self.imageView.isHidden = true // 기본 이미지 숨기기
+        }
     }
-    
+
     private func hideGIF() {
-        webView.isHidden = true
+        DispatchQueue.main.async {
+            self.webView.isHidden = true
+        }
     }
-    
+
     private func showStaticImage() {
-        imageView.isHidden = false // 기본 이미지 표시
+        DispatchQueue.main.async {
+            self.imageView.isHidden = false // 기본 이미지 표시
+        }
     }
 }
