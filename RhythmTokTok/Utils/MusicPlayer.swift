@@ -145,43 +145,67 @@ class MusicPlayer: ObservableObject {
     }
     
     // MIDI 파일 실행
-    func playMIDI(startTime: TimeInterval = 0) {
+    func playMIDI(futureTime: Date = Date()) {
         print("Play MIDI")
         if let midiPlayer, let metronomeMIDIPlayer {
             print("midiPlayer: \(midiPlayer), metronomeMIIDPlayer: \(metronomeMIDIPlayer)")
-            if startTime == 0, lastPosition != 0 {
-                // 이전에 일시 정지된 위치에서 재개
-                midiPlayer.currentPosition = lastPosition
-                metronomeMIDIPlayer.currentPosition = lastPosition
+            
+            // 이전에 일시 정지된 위치에서 재개
+            midiPlayer.currentPosition = lastPosition
+            metronomeMIDIPlayer.currentPosition = lastPosition
+            
+            if lastPosition != 0 {
+                // 일시정지 처리 후 초기화
                 lastPosition = 0
-            } else {
-                // 시작 틱 위치
-                midiPlayer.currentPosition = startTime
-                metronomeMIDIPlayer.currentPosition = startTime
             }
+            
             isEnd = false
-            // 재생 시작
-            DispatchQueue.main.async {
-                
-                if self.soundOption == .melodyBeat {
-                    if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
-                        metronomeMIDIPlayer.play()
-                    }
-                }
-                
-                midiPlayer.play {
-                    print("MIDI playback completed.")
-                    if !self.isTemporarilyStopped {
-                        print("마무리")
-                        self.isEnd = true
-                        self.lastPosition = 0
-                        metronomeMIDIPlayer.stop()
-                    }
-                }
-                
-                self.startTimer()
+            
+            // 예약된 매트로놈 MIDI 재생 시작
+            if self.soundOption == .melodyBeat {
+                let metronomepPlayTimer = Timer(fireAt: futureTime, interval: 0,
+                                                target: self, selector: #selector(startMetronomeMIDIPlay),
+                                                userInfo: nil, repeats: false)
+                RunLoop.main.add(metronomepPlayTimer, forMode: .common)
             }
+            
+            // 예약된 시간에 MIDI 재생 시작
+            let playTimer = Timer(fireAt: futureTime, interval: 0,
+                                  target: self, selector: #selector(startMIDIPlay),
+                                  userInfo: nil, repeats: false)
+            RunLoop.main.add(playTimer, forMode: .common)
+            
             isTemporarilyStopped = false
+        }
+    }
+    
+    @objc private func startMIDIPlay() {
+        guard let midiPlayer, let metronomeMIDIPlayer else { return }
+        
+        DispatchQueue.main.async {
+            // MIDI 플레이어 재생
+            midiPlayer.play {
+                print("MIDI playback completed.")
+                if !self.isTemporarilyStopped {
+                    print("Playback finished")
+                    self.isEnd = true
+                    self.lastPosition = 0
+                    metronomeMIDIPlayer.stop()
+                }
+            }
+            
+            // 타이머 동작 추가
+            self.startTimer()
+        }
+    }
+    
+    @objc private func startMetronomeMIDIPlay() {
+        guard let metronomeMIDIPlayer else { return }
+        
+        DispatchQueue.main.async {
+            if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
+                metronomeMIDIPlayer.play()
+            }
         }
     }
     

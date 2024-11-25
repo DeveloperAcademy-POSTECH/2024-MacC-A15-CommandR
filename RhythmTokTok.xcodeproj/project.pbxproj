@@ -32,6 +32,8 @@
 		1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */; };
 		1A2B6EB02CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */; };
 		1A5E09122CEB83AD00E17FF4 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5E09112CEB83AD00E17FF4 /* Fonts.swift */; };
+		1AD0F9862CEF5E09009538B4 /* PDFUploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */; };
+		1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */; };
 		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */; };
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
@@ -105,7 +107,7 @@
 		61B209602CD771F000E51C67 /* mutedClap.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 61B2095F2CD771F000E51C67 /* mutedClap.sf2 */; };
 		61F12AAD2CDA58E20005EFED /* metronome.xml in Resources */ = {isa = PBXBuildFile; fileRef = 61F12AAC2CDA58E20005EFED /* metronome.xml */; };
 		723CA00B2CD3639E00CC91EF /* Countdown.Watch.json in Resources */ = {isa = PBXBuildFile; fileRef = 723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */; };
-		729220562CBE48DB008C8FCF /* change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* change.json */; };
+		729220562CBE48DB008C8FCF /* Change.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220552CBE48DB008C8FCF /* Change.json */; };
 		729220582CBE799D008C8FCF /* Countdown.json in Resources */ = {isa = PBXBuildFile; fileRef = 729220572CBE799D008C8FCF /* Countdown.json */; };
 		D30101D52CE1DC35005742E6 /* ExtraInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30101D42CE1DC35005742E6 /* ExtraInfoView.swift */; };
 		D30101D72CE1E56C005742E6 /* ToastAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30101D62CE1E56C005742E6 /* ToastAlert.swift */; };
@@ -146,6 +148,8 @@
 		D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */; };
 		EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */; };
 		EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1B9BB52CD647A000073215 /* BPMDescription.swift */; };
+		EE2305362CF02C5C00D47367 /* SoundKeySettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2305352CF02C5300D47367 /* SoundKeySettingSectionView.swift */; };
+		EE23053A2CF0AE3500D47367 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE2305392CF0AE3300D47367 /* Helper.swift */; };
 		EE4203962CD226800081F2A1 /* BPMSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */; };
 		EE4203982CD277690081F2A1 /* BPMSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */; };
 		EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */; };
@@ -237,6 +241,8 @@
 		1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadDoneViewController.swift; sourceTree = "<group>"; };
 		1A2B6EAF2CD0D89100AAEC7C /* Drum Set JD Rockset 5.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Drum Set JD Rockset 5.sf2"; sourceTree = "<group>"; };
 		1A5E09112CEB83AD00E17FF4 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Fonts.swift; path = RhythmTokTok/Temp/Fonts.swift; sourceTree = SOURCE_ROOT; };
+		1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressView.swift; sourceTree = "<group>"; };
+		1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressViewController.swift; sourceTree = "<group>"; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFView.swift; sourceTree = "<group>"; };
@@ -311,7 +317,7 @@
 		61B2095F2CD771F000E51C67 /* mutedClap.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = mutedClap.sf2; sourceTree = "<group>"; };
 		61F12AAC2CDA58E20005EFED /* metronome.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = metronome.xml; sourceTree = "<group>"; };
 		723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.Watch.json; sourceTree = "<group>"; };
-		729220552CBE48DB008C8FCF /* change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = change.json; sourceTree = "<group>"; };
+		729220552CBE48DB008C8FCF /* Change.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Change.json; sourceTree = "<group>"; };
 		729220572CBE799D008C8FCF /* Countdown.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Countdown.json; sourceTree = "<group>"; };
 		D30101D42CE1DC35005742E6 /* ExtraInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraInfoView.swift; sourceTree = "<group>"; };
 		D30101D62CE1E56C005742E6 /* ToastAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlert.swift; sourceTree = "<group>"; };
@@ -347,6 +353,8 @@
 		D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreSearchViewController.swift; sourceTree = "<group>"; };
 		EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTitleChangeViewController.swift; sourceTree = "<group>"; };
 		EE1B9BB52CD647A000073215 /* BPMDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMDescription.swift; sourceTree = "<group>"; };
+		EE2305352CF02C5300D47367 /* SoundKeySettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundKeySettingSectionView.swift; sourceTree = "<group>"; };
+		EE2305392CF0AE3300D47367 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionViewController.swift; sourceTree = "<group>"; };
 		EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSettingSectionView.swift; sourceTree = "<group>"; };
 		EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingSectionView.swift; sourceTree = "<group>"; };
@@ -369,18 +377,8 @@
 		EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		1ECDC57C2CEDCDEF008948E7 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 1ECDC56F2CEDCDEE008948E7 /* ComplicationWidgetExtension */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1ECDC5732CEDCDEE008948E7 /* ComplicationWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1ECDC57C2CEDCDEF008948E7 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ComplicationWidget; sourceTree = "<group>"; };
+		1ECDC5732CEDCDEE008948E7 /* ComplicationWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ComplicationWidget; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -505,6 +503,7 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */,
 				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
@@ -609,7 +608,7 @@
 		1ED9FEBD2CBD571300472C51 /* Lotties */ = {
 			isa = PBXGroup;
 			children = (
-				729220552CBE48DB008C8FCF /* change.json */,
+				729220552CBE48DB008C8FCF /* Change.json */,
 				1ED9FEBE2CBD573D00472C51 /* Loading.json */,
 				729220572CBE799D008C8FCF /* Countdown.json */,
 				723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */,
@@ -632,10 +631,12 @@
 			isa = PBXGroup;
 			children = (
 				1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */,
+				1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */,
 				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
 				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
+				EE2305352CF02C5300D47367 /* SoundKeySettingSectionView.swift */,
 				EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */,
 				EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */,
 				EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */,
@@ -675,6 +676,7 @@
 		1EF8A0A82CB53EAF00ADB783 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				EE2305392CF0AE3300D47367 /* Helper.swift */,
 				02CFE1312CB68479008454B8 /* ErrorHandler.swift */,
 				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
 				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
@@ -964,7 +966,7 @@
 				1E3E09342CB2AAB400EE1868 /* reh.mp3 in Resources */,
 				1E3E09422CB3ED5000EE1868 /* speechDo.mp3 in Resources */,
 				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
-				729220562CBE48DB008C8FCF /* change.json in Resources */,
+				729220562CBE48DB008C8FCF /* Change.json in Resources */,
 				1E3E09492CB3EE0600EE1868 /* speechPa.mp3 in Resources */,
 				1E3E09352CB2AAB400EE1868 /* pah.mp3 in Resources */,
 				D3CE18C42CE72A34008D120C /* cry.pdf in Resources */,
@@ -1071,6 +1073,7 @@
 				D30101D92CE1EADC005742E6 /* CustomAlertViewController.swift in Sources */,
 				EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */,
 				1E7592652CE1E02B0050D10D /* ToolTipView.swift in Sources */,
+				EE2305362CF02C5C00D47367 /* SoundKeySettingSectionView.swift in Sources */,
 				D37DFEE32CE9D5020073ABAB /* EmptyStateView.swift in Sources */,
 				1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */,
 				D323308D2CDE36E9007D1003 /* ServerManager.swift in Sources */,
@@ -1079,6 +1082,7 @@
 				EE00541C2CEDCE1700EB91DD /* ScoreTitleChangeViewController.swift in Sources */,
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				D3C17AE72CED089A0016837A /* EmptyResultView.swift in Sources */,
+				EE23053A2CF0AE3500D47367 /* Helper.swift in Sources */,
 				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */,
@@ -1125,8 +1129,10 @@
 				EEBE60C02CB66D6800BC6739 /* MediaManager.swift in Sources */,
 				EE7B28AC2CBE8A8000325725 /* ScoreListView.swift in Sources */,
 				1EF8A0BC2CB55A7A00ADB783 /* Accidental.swift in Sources */,
+				1AD0F9862CEF5E09009538B4 /* PDFUploadProgressView.swift in Sources */,
 				1ED9FECD2CBE797C00472C51 /* ProgressTableViewCell.swift in Sources */,
 				EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */,
+				1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,11 +5,14 @@
 //  Created by Byeol Kim on 11/8/24.
 //
 import UIKit
+import Combine
 
 class ServerManager {
     static let shared = ServerManager()
     private init() {}
-    
+    @Published var isUploading: Bool = false
+    private var uploadResponse: (Int, String) = (0, "")
+
     // 서버 IP 파일 분리
     private let serverBaseURL = Config.serverBaseURL
     
@@ -44,12 +47,49 @@ class ServerManager {
         }
         request.httpBody = body
         return request
+        }
+    
+    
+    func sendPDFuploadRequest(_ request : URLRequest) {
+        // 서버 통신
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                ErrorHandler.handleError(error: "서버 요청 오류: \(error.localizedDescription)")
+                self.setUploadResponse(0, "Request error: \(error.localizedDescription)")
+                self.setIsUploading(isUploading: false)
+                return
+            }
+            guard let data = data else {
+                print("서버 응답 데이터 없음")
+                self.setUploadResponse(0, "No response data")
+                self.setIsUploading(isUploading: false)
+                return
+            }
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let code = json["code"] as? Int,
+                   let message = json["message"] as? String {
+                    self.setUploadResponse(code, message)
+                    self.setIsUploading(isUploading: false)
+                } else {
+                    ErrorHandler.handleError(error: "잘못된 응답 형식: \(String(data: data, encoding: .utf8) ?? "Unknown")")
+                    self.setUploadResponse(0, "Invalid response format")
+                    self.setIsUploading(isUploading: false)
+                }
+            } catch {
+                ErrorHandler.handleError(error: "JSON 파싱 오류: \(error.localizedDescription)")
+                self.setUploadResponse(0, "JSON parsing error: \(error.localizedDescription)")
+                self.setIsUploading(isUploading: false)
+            }
+        }
+        task.resume()
     }
     
     // 1. PDF 업로드 기능
     func uploadPDF(deviceID: String, deviceToken: Data,
-                   title: String, pdfFileURL: URL, page: Int,
-                   completion: @escaping (Int, String) -> Void) {
+                   title: String, pdfFileURL: URL, page: Int) {
+        
+        setIsUploading(isUploading: true)
         let boundary = "Boundary-\(UUID().uuidString)"
         var body = Data()
         
@@ -79,7 +119,8 @@ class ServerManager {
             body.append("\r\n".data(using: .utf8)!)
         } catch {
             ErrorHandler.handleError(error: "PDF 파일 읽기 실패: \(error.localizedDescription)")
-            completion(0, "Failed to load PDF file")
+            setUploadResponse(0, "Failed to load PDF file")
+            setIsUploading(isUploading: false)
             return
         }
         
@@ -89,33 +130,17 @@ class ServerManager {
         let headers = ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
         let request = createServerRequest(endpoint: "/api/score", method: "POST", headers: headers, body: body)
         
-        // 서버 통신
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                ErrorHandler.handleError(error: "서버 요청 오류: \(error.localizedDescription)")
-                completion(0, "Request error: \(error.localizedDescription)")
-                return
-            }
-            guard let data = data else {
-                print("서버 응답 데이터 없음")
-                completion(0, "No response data")
-                return
-            }
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let code = json["code"] as? Int,
-                   let message = json["message"] as? String {
-                    completion(code, message)
-                } else {
-                    ErrorHandler.handleError(error: "잘못된 응답 형식: \(String(data: data, encoding: .utf8) ?? "Unknown")")
-                    completion(0, "Invalid response format")
-                }
-            } catch {
-                ErrorHandler.handleError(error: "JSON 파싱 오류: \(error.localizedDescription)")
-                completion(0, "JSON parsing error: \(error.localizedDescription)")
-            }
-        }
-        task.resume()
+        // 요청 보냄
+        sendPDFuploadRequest(request)
+    }
+    
+        
+    func setIsUploading(isUploading: Bool) {
+        self.isUploading = isUploading
+    }
+    
+    func setUploadResponse(_ code: Int, _ message : String) {
+        uploadResponse = (code, message)
     }
     
     // 2. 음악 요청 조회 기능

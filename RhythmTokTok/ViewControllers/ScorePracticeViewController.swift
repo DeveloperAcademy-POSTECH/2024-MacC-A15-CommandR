@@ -58,7 +58,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         super.init(nibName: nil, bundle: nil) // Calls the designated initializer
         
         // musicPlayer에 soundOption을 전달
-        print("ScorePracticeViewController-init2-currentScore:\(currentScore)")
         musicPlayer.soundOption = currentScore.soundOption
     }
     
@@ -103,7 +102,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     private func handleScoreChange() {
         if let previousState = previousScoreState, previousState != currentScore {
-            print("Score has changed: \(previousState) -> \(currentScore)")
             ToastAlert.show(message: "설정이 변경 되었어요.", in: self.view, iconName: "check.circle.color")
         }
         previousScoreState = currentScore.clone()
@@ -392,10 +390,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         let countDownTimer = Timer(fireAt: countDownTime, interval: 0, target: self, selector: #selector(startCountDownAnimation), userInfo: nil, repeats: false)
         RunLoop.main.add(countDownTimer, forMode: .common)
         
-        // 예약된 시간에 MIDI 재생 시작
-        let playTimer = Timer(fireAt: futureTime, interval: 0, target: self, selector: #selector(actionStart), userInfo: nil, repeats: false)
-        RunLoop.main.add(playTimer, forMode: .common)
-        
+        // MIDI 파일 재생시간 offset
+        let midiOffset = -0.065
+        actionStart(futureTime: futureTime.addingTimeInterval(midiOffset))
         // 타이머 설정
         countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             if self.countdownTime > 0 {
@@ -416,8 +413,8 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         countDownLottieView?.play()
     }
     
-    @objc func actionStart() {
-        self.musicPlayer.playMIDI()
+    @objc func actionStart(futureTime: Date) {
+        self.musicPlayer.playMIDI(futureTime: futureTime)
     }
     
     func playSystemAlertSound() {
@@ -444,8 +441,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         jumpMeasureWorkItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
             Task {
-                let startTime = self.mediaManager.getMeasureStartTime(currentMeasure: Int(self.currentMeasure),
-                                                                      division: Double(self.currentScore.divisions))
+                let startTime = self.mediaManager.getMeasureStartTime(currentMeasure: Int(self.currentMeasure), division: Double(self.currentScore.divisions))
                 // 멜로디 마디 점프 햅틱 시퀀스 재산출
 //                let hapticSequence = try await self.mediaManager.getClipMeasureHapticSequence(part: self.currentScore.parts.last!,
 //                                                                                              divisions: self.currentScore.divisions,
@@ -513,7 +509,6 @@ extension ScorePracticeViewController {
 // MARK: - [Ext] 컨트롤러 버튼 관련
 extension ScorePracticeViewController {
     @objc private func playButtonTapped() {
-        print("현재 버튼 상태 \(IOStoWatchConnectivityManager.shared.playStatus)")
         if IOStoWatchConnectivityManager.shared.playStatus == .play {
             // 현재 재생 중이면 일시정지로 변경
             IOStoWatchConnectivityManager.shared.playStatus = .pause
@@ -581,7 +576,6 @@ extension ScorePracticeViewController {
     
     // 마디 점프 메시지 전송
     func sendJumpMeasureToWatch(hapticSequence: [Double], startTimeInterVal: TimeInterval) {
-        let scoreTitle = currentScore.title
         IOStoWatchConnectivityManager.shared.sendUpdateStatusWithHapticSequence(currentScore: currentScore,
                                                                                 hapticSequence: hapticSequence,
                                                                                 status: .jump,

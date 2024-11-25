@@ -26,27 +26,29 @@ class StatusTagView: UIView {
     }
     
     private func setupView() {
-        soundSetTag.backgroundColor = UIColor(named: "background_secondary")
-        soundSetTag.layer.cornerRadius = 12
+        soundSetTag.backgroundColor = .clear
+        soundSetTag.layer.cornerRadius = 20
         soundSetTag.layer.borderWidth = 1
-        soundSetTag.layer.borderColor = UIColor(named: "background_tertiary")?.cgColor
+        soundSetTag.layer.borderColor = UIColor.borderTertiary.cgColor
         soundSetTag.translatesAutoresizingMaskIntoConstraints = false
         
-        hapticSetTag.backgroundColor = UIColor(named: "background_secondary")
-        hapticSetTag.layer.cornerRadius = 12
+        hapticSetTag.backgroundColor = .clear
+        hapticSetTag.layer.cornerRadius = 20
         hapticSetTag.layer.borderWidth = 1
-        hapticSetTag.layer.borderColor = UIColor(named: "background_tertiary")?.cgColor
+        hapticSetTag.layer.borderColor = UIColor.borderTertiary.cgColor
         hapticSetTag.translatesAutoresizingMaskIntoConstraints = false
         
         soundSetLabel.text = ""
         soundSetLabel.textAlignment = .center
-        soundSetLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
+        soundSetLabel.font = UIFont.customFont(forTextStyle: .body2Medium)
+        soundSetLabel.adjustsFontForContentSizeCategory = true
         soundSetLabel.textColor = UIColor(named: "lable_tertiary")
         soundSetLabel.translatesAutoresizingMaskIntoConstraints = false
         
         hapticLabel.text = ""
         hapticLabel.textAlignment = .center
-        hapticLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
+        hapticLabel.font = UIFont.customFont(forTextStyle: .body2Medium)
+        hapticLabel.adjustsFontForContentSizeCategory = true
         hapticLabel.textColor = UIColor(named: "lable_tertiary")
         hapticLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -82,8 +84,6 @@ class StatusTagView: UIView {
     func updateTag() {
         guard let soundSetting = currentScore?.soundOption else { return }
         guard let hapticSetting = currentScore?.hapticOption else { return }
-        
-        print("스테이터스Score : \(currentScore)")
 
         switch soundSetting {
         case .melodyBeat:
