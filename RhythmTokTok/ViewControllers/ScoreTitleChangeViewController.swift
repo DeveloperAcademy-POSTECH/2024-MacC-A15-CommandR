@@ -81,7 +81,8 @@ extension ScoreTitleChangeViewController {
         titleTextField.layer.borderWidth = 2
         titleTextField.layer.cornerRadius = 12
         titleTextField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
-        titleTextField.font = UIFont(name: "Pretendard-Medium", size: 36)
+        titleTextField.font = UIFont.customFont(forTextStyle: .body1Medium)
+        titleTextField.adjustsFontForContentSizeCategory = true
         titleTextField.translatesAutoresizingMaskIntoConstraints = false
         
         let clearButton = UIButton(type: .custom)
@@ -100,6 +101,10 @@ extension ScoreTitleChangeViewController {
         
         titleTextField.rightView = rightPaddingView
         titleTextField.rightViewMode = .always
+        
+        // 텍스트 크기에 따라 높이 조정
+        titleTextField.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        titleTextField.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     @objc private func titleTextFieldDidChange() {

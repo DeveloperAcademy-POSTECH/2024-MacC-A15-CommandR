@@ -20,7 +20,7 @@ class BPMSettingSectionView: UIView {
     
     let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "· 원하는 BPM을 설정하면, 악보가 그 BPM에 맞춰 재생됩니다."
+        label.text = "· 원하는 빠르기를 설정하면, 그 빠르기에 맞는 멜로디와 메트로놈이 함께 재생돼요."
         label.font = UIFont.customFont(forTextStyle: .captionRegular)
         label.adjustsFontForContentSizeCategory = true
         label.textColor = .lableTertiary

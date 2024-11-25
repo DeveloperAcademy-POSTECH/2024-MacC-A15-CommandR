@@ -92,7 +92,7 @@ class BPMSettingSectionViewController: UIViewController {
             confirmButton.topAnchor.constraint(equalTo: bpmTextField.bottomAnchor, constant: 32),
             confirmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             confirmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            confirmButton.heightAnchor.constraint(equalToConstant: 56),
+            confirmButton.heightAnchor.constraint(equalToConstant: 64),
             confirmButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             confirmButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
         ])
@@ -142,16 +142,16 @@ extension BPMSettingSectionViewController {
         bpmTextField.setContentHuggingPriority(.defaultHigh, for: .vertical)
         bpmTextField.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // 텍스트 필드 높이를 텍스트 크기에 맞게 조정
-        if let font = bpmTextField.font {
-            let size = ("999" as NSString).size(withAttributes: [.font: font]) // 999는 3자리 기준 크기
-            bpmTextField.heightAnchor.constraint(equalToConstant: size.height + 20).isActive = true
-        }
-    }
+//    
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        
+//        // 텍스트 필드 높이를 텍스트 크기에 맞게 조정
+//        if let font = bpmTextField.font {
+//            let size = ("999" as NSString).size(withAttributes: [.font: font]) // 999는 3자리 기준 크기
+//            bpmTextField.heightAnchor.constraint(equalToConstant: size.height + 20).isActive = true
+//        }
+//    }
     
     @objc private func bpmTextFieldDidChange() {
         if let text = bpmTextField.text, text.count > 3 {

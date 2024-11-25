@@ -47,10 +47,15 @@ class ScoreListView: UIView {
         
         // 텍스트와 아이콘 간의 여백 설정
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        
+
         // 버튼 크기를 텍스트와 이미지에 맞게 조정
         button.sizeToFit()
-        
+
+        // 그림자 설정
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2) // 그림자의 방향과 거리
+        button.layer.shadowOpacity = 0.3 // 그림자의 투명도
+        button.layer.shadowRadius = 4 // 그림자의 흐림 정도
         return button
     }()
     
