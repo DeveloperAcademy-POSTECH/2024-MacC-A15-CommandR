@@ -30,7 +30,8 @@ class EmptyStateView: UIView {
 
         let messageLabel = UILabel()
         messageLabel.text = message
-        messageLabel.font = UIFont.systemFont(ofSize: 21, weight: .bold)
+        messageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        messageLabel.adjustsFontForContentSizeCategory = true
         messageLabel.textColor = UIColor(named: "lable_primary")
         messageLabel.textAlignment = .center
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +39,8 @@ class EmptyStateView: UIView {
 
         let subMessageLabel = UILabel()
         subMessageLabel.text = subMessage
-        subMessageLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
+        subMessageLabel.adjustsFontForContentSizeCategory = true
         subMessageLabel.textColor = UIColor(named: "lable_tertiary")
         subMessageLabel.textAlignment = .center
         subMessageLabel.translatesAutoresizingMaskIntoConstraints = false

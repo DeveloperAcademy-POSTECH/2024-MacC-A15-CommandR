@@ -12,8 +12,8 @@ class ScoreSearchViewController: UIViewController, UITableViewDelegate, UITableV
         return view as? ScoreSearchView
     }
     
-    private var scoreList: [Score] = [] // 모든 악보 리스트
-    private var filteredScores: [Score] = [] // 검색된 악보 리스트
+    private var scoreList: [Score] = [] // 모든 음악 리스트
+    private var filteredScores: [Score] = [] // 검색된 음악 리스트
     
     override func loadView() {
         view = ScoreSearchView()

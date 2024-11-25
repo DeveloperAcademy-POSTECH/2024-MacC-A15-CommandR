@@ -7,13 +7,33 @@
 
 import Foundation
 
-enum RequestStatus {
-    case downloaded
-    case inProgress
-    case scoreReady
-    case deleted
-    case cancelled
-    case errorOccurred
+enum RequestStatus: Int {
+    case inProgress = 0
+    case scoreReady = 1
+    case downloaded = 2
+    case deleted = 3
+    case cancelled = 11
+    case errorOccurred = 22
+    
+    init?(rawValue: Int) {
+           switch rawValue {
+           case 0:
+               self = .inProgress
+           case 1:
+               self = .scoreReady
+           case 2:
+               self = .downloaded
+           case 3:
+               self = .deleted
+           case 11:
+               self = .cancelled
+           case 22, 23, 24, 25:
+               self = .errorOccurred
+           default:
+               ErrorHandler.handleError(error: "알수없는 상태: \(rawValue)")
+               return nil
+           }
+       }
     
     var headerText: String {
         switch self {
@@ -22,7 +42,7 @@ enum RequestStatus {
         case .scoreReady:
             return "완성된 음악"
         case .errorOccurred:
-            return "다시 요청이 필요한 음악"
+            return "확인이 필요한 악보"
         case .downloaded, .deleted, .cancelled:
             return ""
         }

@@ -125,7 +125,7 @@ class CheckPDFView: UIView {
             subHeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             subHeaderLabel.heightAnchor.constraint(equalToConstant: 24),
 
-            containerView.topAnchor.constraint(equalTo: subHeaderLabel.bottomAnchor, constant: 20),
+            containerView.topAnchor.constraint(equalTo: subHeaderLabel.bottomAnchor, constant: 24),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             containerView.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -28),
@@ -172,7 +172,7 @@ class CheckPDFView: UIView {
             subHeaderLabel.text = "연습할 음악의 악보가 맞는지 확인해 주세요."
             collectionContainerView.isHidden = true
             confirmButton.isEnabled = false
-            confirmButton.backgroundColor = .buttonInactive
+            confirmButton.backgroundColor = .buttonDisabled
             changePDFButton.isHidden = true
             addPDFButton.isHidden = false
         }

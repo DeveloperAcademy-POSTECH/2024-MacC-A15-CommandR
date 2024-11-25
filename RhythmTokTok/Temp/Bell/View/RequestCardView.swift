@@ -12,6 +12,7 @@ class RequestCardView: UIView {
     private let dateLabel = UILabel()
     let requestActionButton = UIButton(type: .system)
     private let contentStackView = UIStackView()
+    private let mainStackView = UIStackView()
     
     var request: Request? {
         didSet {
@@ -34,8 +35,8 @@ class RequestCardView: UIView {
             requestActionButton.setTitleColor(UIColor(named: "red500"), for: .normal)
         case .errorOccurred:
             requestActionButton.setTitle("자세히", for: .normal)
-            requestActionButton.backgroundColor = UIColor(named: "button_primary")
-            requestActionButton.setTitleColor(.white, for: .normal)
+            requestActionButton.backgroundColor = UIColor(named: "button_secondary")
+            requestActionButton.setTitleColor(.black, for: .normal)
         case .scoreReady:
             requestActionButton.setTitle("음악 추가", for: .normal)
             requestActionButton.backgroundColor = UIColor(named: "button_primary")
@@ -43,6 +44,7 @@ class RequestCardView: UIView {
         default:
             requestActionButton.isHidden = true
         }
+        updateStackViewAxis()
     }
     
     override init(frame: CGRect) {
@@ -59,42 +61,72 @@ class RequestCardView: UIView {
         self.layer.cornerRadius = 12
         self.backgroundColor = UIColor(named: "background_primary")
         
-        // UI 요소들 추가
-        addSubview(contentStackView)
-        addSubview(requestActionButton)
+        // Main StackView 설정
+        mainStackView.axis = .horizontal
+        mainStackView.spacing = 10
+        mainStackView.alignment = .top
+        mainStackView.distribution = .fill
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        requestActionButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        // 스택뷰 설정
+        // Content StackView 설정
         contentStackView.axis = .vertical
         contentStackView.alignment = .leading
         contentStackView.spacing = 10
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
         
         contentStackView.addArrangedSubview(titleLabel)
         contentStackView.addArrangedSubview(dateLabel)
         
-        // 추가적인 스타일 설정
-        titleLabel.font = UIFont(name: "Pretendard-Bold", size: 18)
+        // Label 설정
+        titleLabel.font = UIFont.customFont(forTextStyle: .body1Bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = UIColor(named: "lable_secondary")
-        dateLabel.font = UIFont(name: "Pretendard-Regular", size: 14)
-        dateLabel.textColor = UIColor(named: "lable_tertiary")
-        requestActionButton.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
-        requestActionButton.layer.cornerRadius = 8
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
         
-        // 오토레이아웃 제약 조건 설정
+        dateLabel.font = UIFont.customFont(forTextStyle: .captionRegular)
+        dateLabel.adjustsFontForContentSizeCategory = true
+        dateLabel.textColor = UIColor(named: "lable_tertiary")
+        dateLabel.numberOfLines = 0
+        dateLabel.lineBreakMode = .byWordWrapping
+        
+        // Button 설정
+        requestActionButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button2Medium)
+        requestActionButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        requestActionButton.titleLabel?.numberOfLines = 0
+        requestActionButton.titleLabel?.lineBreakMode = .byWordWrapping
+        requestActionButton.layer.cornerRadius = 8
+        requestActionButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        requestActionButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Main StackView에 요소 추가
+        mainStackView.addArrangedSubview(contentStackView)
+        mainStackView.addArrangedSubview(requestActionButton)
+        addSubview(mainStackView)
+        
+        // Auto Layout 제약 조건
         NSLayoutConstraint.activate([
-            // 컨텐츠 스택뷰 제약 조건
-            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            contentStackView.trailingAnchor.constraint(lessThanOrEqualTo: requestActionButton.leadingAnchor,
-                                                       constant: -10),
+            mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             
-            // 버튼 제약 조건
-            requestActionButton.centerYAnchor.constraint(equalTo: centerYAnchor),
-            requestActionButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            requestActionButton.widthAnchor.constraint(equalToConstant: 80),
-            requestActionButton.heightAnchor.constraint(equalToConstant: 40)
+            // 버튼의 크기 제약 조건
+            requestActionButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 84),
+            requestActionButton.heightAnchor.constraint(greaterThanOrEqualTo: requestActionButton.titleLabel!.heightAnchor, constant: 16)
         ])
+    }
+    
+    private func updateStackViewAxis() {
+        // 버튼 크기에 따라 스택뷰 방향 변경
+        if requestActionButton.intrinsicContentSize.width > 100 {
+            mainStackView.axis = .vertical
+            mainStackView.alignment = .leading
+        } else {
+            mainStackView.axis = .horizontal
+            mainStackView.alignment = .top
+        }
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 }
