@@ -26,8 +26,8 @@ class CommonNavigationBar: UIView {
         imageView.tintColor = .error
         return imageView
     }()
-    private let requestButtonImage: UIButton = {
-        let button = UIButton(type: .system)
+    let requestButtonImage: BadgeButton = {
+        let button = BadgeButton(type: .system)
         button.setImage(UIImage(named: "list"), for: .normal)
         button.tintColor = .lableSecondary
         return button
