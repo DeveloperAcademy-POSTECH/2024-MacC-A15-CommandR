@@ -231,7 +231,7 @@ class RequestProcessingViewController: UIViewController,
             DispatchQueue.main.async {
                 print("code : \(code)")
                 if [-1, -2].contains(code) {
-                    let errorViewController = ErrorViewController()
+                    let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
                     self?.navigationController?.pushViewController(errorViewController, animated: true)
                     return
                 }
@@ -318,8 +318,9 @@ class RequestProcessingViewController: UIViewController,
                         print("Update status: \(code), message: \(message)")
                         
                         if [-1, -2].contains(code) {
-                            let errorViewController = ErrorViewController()
+                            let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
                             self.navigationController?.pushViewController(errorViewController, animated: true)
+                            return
                         }
                     }
                     
@@ -356,13 +357,13 @@ class RequestProcessingViewController: UIViewController,
             print("Server Response - Status: \(code), Message: \(message)")
             
             if [-1, -2].contains(code) {
-                let errorViewController = ErrorViewController()
+                let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
                 self.navigationController?.pushViewController(errorViewController, animated: true)
+                return
             }
             
-            
-            if code == 1 {
-              DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if code == 1 {
                     // 요청 상태를 .cancelled로 변경
                     self.requests[index].status = .cancelled
                     print("요청 취소 성공쓰 Updating UI...")

@@ -165,8 +165,6 @@ class ServerManager {
     private func sendRequest(request: URLRequest,
                              hasResponseData: Bool,
                              completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
-        print("request \(request)")
-        
         // 서버 통신
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard self.checkNetworkError() != -1 else {
@@ -175,6 +173,9 @@ class ServerManager {
             }
             
             if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
+                print("data \(data)")
+                print("response \(response)")
+                print("error \(error)")
                 completion(-2, "응답 코드가 잘못되었습니다.", [])
                 return
             }

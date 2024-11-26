@@ -136,8 +136,9 @@ class PDFConvertRequestConfirmationViewController: UIViewController,
         ServerManager.shared.uploadPDF(deviceID: deviceID, deviceToken: deviceToken, title: title, pdfFileURL: pdfURL, page: page, completion: { code, status, data in
             
             if [-1, -2].contains(code) {
-                let errorViewController = ErrorViewController()
+                let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
                 self.navigationController?.pushViewController(errorViewController, animated: true)
+                return
             }
         })
     }
