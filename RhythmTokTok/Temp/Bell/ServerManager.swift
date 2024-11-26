@@ -182,7 +182,6 @@ class ServerManager {
             
             if let error = error {
                 ErrorHandler.handleError(error: error)
-                self.setIsUploading(isUploading: false)
                 completion(-2, "에러가 발생했습니다.", [])
                 return
             }
@@ -197,7 +196,6 @@ class ServerManager {
                            let data = json["scores"] as? [[String: Any]] {
                             completion(status, message, data)
                         } else {
-                            self.setIsUploading(isUploading: false)
                             completion(-2, "JSON 형식이 아닙니다.", [])
                         }
                     } catch {
@@ -207,8 +205,9 @@ class ServerManager {
                     }
                 }
             }
-            
         }
+        // 종료되면 isUploading
+        self.setIsUploading(isUploading: false)
         task.resume()
     }
     

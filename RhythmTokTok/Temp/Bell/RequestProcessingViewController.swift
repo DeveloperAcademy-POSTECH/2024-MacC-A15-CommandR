@@ -359,7 +359,7 @@ class RequestProcessingViewController: UIViewController,
             if [-1, -2].contains(code) {
                 let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
                 self.navigationController?.pushViewController(errorViewController, animated: true)
-                return
+                completion(false)
             }
             
             DispatchQueue.main.async {
