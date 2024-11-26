@@ -165,10 +165,14 @@ class ServerManager {
     private func sendRequest(request: URLRequest, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
         // 서버 통신
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            self.checkNetworkError()
+            guard self.checkNetworkError() != -1 else {
+                completion(-1, "네트워크가 연결되지 않았습니다.", [])
+                return
+            }
             
             if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
                 completion(-2, "응답 코드가 잘못되었습니다.", [])
+                return
             }
             
             if let error = error {
@@ -208,11 +212,10 @@ class ServerManager {
         return monitor.currentPath.status == .satisfied
     }
     
-    private func checkNetworkError() {
+    private func checkNetworkError() -> Int {
         if !isNetworkAvailable() {
-            //TODO: - -1로 리턴하기
-            //            showInternetErrorViewController()
-            return
+            return -1
         }
+        return 0
     }
 }

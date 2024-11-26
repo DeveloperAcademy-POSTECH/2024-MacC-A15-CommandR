@@ -235,8 +235,9 @@ class RequestProcessingViewController: UIViewController,
                     return
                 }
                 
-                if code == 0 {
-                    self?.navigationController?.pushViewController(InternetErrorViewController(), animated: true)
+                if [-1, -2].contains(code) {
+                    let errorViewController = ErrorViewController()
+                    self?.navigationController?.pushViewController(errorViewController, animated: true)
                 }
                 
                 if scores.isEmpty {
@@ -311,8 +312,13 @@ class RequestProcessingViewController: UIViewController,
                     // 서버에 상태 업데이트를 요청합니다.
                     ServerManager.shared.updateScoreStatus(deviceID: self.deviceID,
                                                            scoreID: String(request.id),
-                                                           newStatus: 2) { status, message in
-                        print("Update status: \(status), message: \(message)")
+                                                           newStatus: 2) { code, message in
+                        print("Update status: \(code), message: \(message)")
+                        
+                        if [-1, -2].contains(code) {
+                            let errorViewController = ErrorViewController()
+                            self.navigationController?.pushViewController(errorViewController, animated: true)
+                        }
                     }
                     
                     // 토스트 알림을 표시합니다.
@@ -342,11 +348,20 @@ class RequestProcessingViewController: UIViewController,
         ServerManager.shared.updateScoreStatus(deviceID: deviceID,
                                                scoreID: String(request.id),
                                                newStatus: 11)
-        { [weak self] status, message in
+        { [weak self] code, message in
             guard let self = self else { return }
+            print("Request ID: \(request.id), Device ID: \(self.deviceID), New Status: 11")
+            print("Server Response - Status: \(code), Message: \(message)")
             
-            DispatchQueue.main.async {
-                if status == 1 {
+            if [-1, -2].contains(code) {
+                let errorViewController = ErrorViewController()
+                self.navigationController?.pushViewController(errorViewController, animated: true)
+            }
+            
+            
+            if code == 1 {
+              DispatchQueue.main.async {
+                    // 요청 상태를 .cancelled로 변경
                     self.requests[index].status = .cancelled
                     print("요청 취소 성공쓰 Updating UI...")
                     self.updateRequestsUI()
