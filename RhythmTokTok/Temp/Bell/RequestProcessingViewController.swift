@@ -218,7 +218,7 @@ class RequestProcessingViewController: UIViewController,
             ErrorHandler.handleError(error: "정의되지 않은 요청상태: \(request.status)")
         }
     }
-    
+
     // MARK: - 서버에서 데이터 가져오기
     private func fetchRequestsFromServer() {
         ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in

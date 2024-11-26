@@ -38,7 +38,7 @@ class ToastAlert {
         toastContainer.layer.cornerRadius = 12
         toastContainer.clipsToBounds = true
         toastContainer.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // setBlurView 확장 메서드 호출로 블러 추가
         toastContainer.setBlurView(style: .light, radius: 12)
         
@@ -60,7 +60,7 @@ class ToastAlert {
         toastContainer.addSubview(iconImageView)
         toastContainer.addSubview(toastLabel)
         view.addSubview(toastContainer)
-        
+
         // 오토레이아웃 설정
         NSLayoutConstraint.activate([
             // 컨테이너 제약 조건
