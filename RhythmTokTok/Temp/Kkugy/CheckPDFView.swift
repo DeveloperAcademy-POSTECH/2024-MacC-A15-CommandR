@@ -131,7 +131,7 @@ class CheckPDFView: UIView {
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             containerView.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -28),
 
-            collectionContainerView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 48),
+            collectionContainerView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
             collectionContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 74),
             collectionContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -73),
             collectionContainerView.heightAnchor.constraint(equalToConstant: 266),
