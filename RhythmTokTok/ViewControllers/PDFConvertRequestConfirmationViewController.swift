@@ -141,7 +141,7 @@ class PDFConvertRequestConfirmationViewController: UIViewController,
                                        completion: { code, message, data in
             
             if [-1, -2].contains(code) {
-                let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
+                let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
                 self.navigationController?.pushViewController(errorViewController, animated: true)
                 return
             }

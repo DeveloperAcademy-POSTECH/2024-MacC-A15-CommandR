@@ -231,7 +231,7 @@ class RequestProcessingViewController: UIViewController,
             DispatchQueue.main.async {
                 print("code : \(code)")
                 if [-1, -2].contains(code) {
-                    let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
+                    let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
                     self?.navigationController?.pushViewController(errorViewController, animated: true)
                     return
                 }
@@ -318,7 +318,7 @@ class RequestProcessingViewController: UIViewController,
                         print("Update status: \(code), message: \(message)")
                         
                         if [-1, -2].contains(code) {
-                            let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
+                            let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
                             self.navigationController?.pushViewController(errorViewController, animated: true)
                             return
                         }
@@ -357,7 +357,7 @@ class RequestProcessingViewController: UIViewController,
             print("Server Response - Status: \(code), Message: \(message)")
             
             if [-1, -2].contains(code) {
-                let errorViewController = code == -1 ? ErrorViewController() : InternetErrorViewController()
+                let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
                 self.navigationController?.pushViewController(errorViewController, animated: true)
                 completion(false)
             }
