@@ -194,6 +194,11 @@ class RequestProcessingViewController: UIViewController,
                 requestView.requestActionButton.tag = requests.firstIndex(where: { $0.id == request.id }) ?? -1
                 requestView.translatesAutoresizingMaskIntoConstraints = false
                 stackView.addArrangedSubview(requestView)
+                // 최소 크기 설정
+                NSLayoutConstraint.activate([
+                    requestView.heightAnchor.constraint(greaterThanOrEqualToConstant: 96), // 최소 높이
+                    requestView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -40) // 스택 뷰 너비와 일치 (좌우 마진 고려)
+                ])
             }
             
             if let lastView = stackView.arrangedSubviews.last {

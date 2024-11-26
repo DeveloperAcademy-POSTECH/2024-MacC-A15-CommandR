@@ -33,6 +33,8 @@ class EmptyStateView: UIView {
         messageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         messageLabel.adjustsFontForContentSizeCategory = true
         messageLabel.textColor = UIColor(named: "lable_primary")
+        messageLabel.numberOfLines = 0 // 멀티라인 허용
+        messageLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         messageLabel.textAlignment = .center
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(messageLabel)
@@ -44,6 +46,8 @@ class EmptyStateView: UIView {
         subMessageLabel.textColor = UIColor(named: "lable_tertiary")
         subMessageLabel.textAlignment = .center
         subMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        subMessageLabel.numberOfLines = 0 // 멀티라인 허용
+        subMessageLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         addSubview(subMessageLabel)
 
         // 레이아웃 설정
@@ -56,10 +60,14 @@ class EmptyStateView: UIView {
             messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
             messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16), // 좌측 여백
+            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16), // 우측 여백
 
             subMessageLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 10),
             subMessageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            subMessageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
+            subMessageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            subMessageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16), // 좌측 여백
+            subMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16) // 우측 여백
         ])
     }
 }
