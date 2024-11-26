@@ -75,12 +75,18 @@ class CommonNavigationBar: UIView {
         super.init(frame: frame)
         setupView()
         setupConstraints()
+        addObservers()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupView()
         setupConstraints()
+        addObservers()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self) // Remove observer to avoid memory leaks
     }
     
     // MARK: - Setup
@@ -215,6 +221,17 @@ class CommonNavigationBar: UIView {
             
             updateRequestHistoryButton()
         }
+    }
+    
+    @objc private func appDidBecomeActive() {
+        updateRequestHistoryButton()
+    }
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(appDidBecomeActive),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
     }
     
     func updateRequestHistoryButton() {
