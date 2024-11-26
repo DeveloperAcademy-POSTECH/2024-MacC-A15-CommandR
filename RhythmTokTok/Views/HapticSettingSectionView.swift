@@ -16,14 +16,16 @@ class HapticSettingSectionView: UIView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "진동 가이드 설정"
-        label.font = UIFont(name: "Pretendard-Bold", size: 21)
+        label.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "· Watch에서 진동 가이드 받기를 켜면, 악보가 재생될 때 손목에서 메트로놈 진동을 느낄 수 있어요."
-        label.font = UIFont(name: "Pretendard-Regular", size: 14)
+        label.font = UIFont.customFont(forTextStyle: .captionRegular)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .lableTertiary
         label.numberOfLines = 0
         return label
@@ -32,8 +34,11 @@ class HapticSettingSectionView: UIView {
     let watchGuideLabel: UILabel = {
         let label = UILabel()
         label.text = "Watch에서 진동 가이드 받기"
-        label.font = UIFont(name: "Pretendard-Medium", size: 18)
+        label.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .black
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
@@ -41,7 +46,6 @@ class HapticSettingSectionView: UIView {
         let imageView = UIImageView()
         imageView.image = UIImage(named: currentScore?.hapticOption ?? false ? "SwitchOn" :"SwitchOff")
         imageView.isUserInteractionEnabled = true // 제스처 인식을 위해 필요
-        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
@@ -76,6 +80,9 @@ class HapticSettingSectionView: UIView {
 
         // 제약 조건 설정
         NSLayoutConstraint.activate([
+            toggleImageView.heightAnchor.constraint(equalToConstant: 36),
+            toggleImageView.widthAnchor.constraint(equalToConstant: 72),
+            
             // Title Label Constraints
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
@@ -84,8 +91,7 @@ class HapticSettingSectionView: UIView {
             // StackView Constraints
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            stackView.heightAnchor.constraint(equalToConstant: 48),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
 
             // DescriptionLabel Constraints
             descriptionLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),

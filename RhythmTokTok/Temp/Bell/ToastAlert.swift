@@ -38,7 +38,7 @@ class ToastAlert {
         toastContainer.layer.cornerRadius = 12
         toastContainer.clipsToBounds = true
         toastContainer.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // setBlurView 확장 메서드 호출로 블러 추가
         toastContainer.setBlurView(style: .light, radius: 12)
         
@@ -49,22 +49,24 @@ class ToastAlert {
         
         let toastLabel = UILabel()
         toastLabel.text = message
+        toastLabel.numberOfLines = 0 // 멀티라인 허용
+        toastLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         toastLabel.textColor = UIColor.white
-        toastLabel.font = UIFont(name: "Pretendard-Medium", size: 16)
+        toastLabel.font = UIFont.customFont(forTextStyle: .body2Medium)
+        toastLabel.adjustsFontForContentSizeCategory = true
         toastLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // Icon과 Label을 toastContainer에 추가
         toastContainer.addSubview(iconImageView)
         toastContainer.addSubview(toastLabel)
         view.addSubview(toastContainer)
-        
+
         // 오토레이아웃 설정
         NSLayoutConstraint.activate([
             // 컨테이너 제약 조건
             toastContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             toastContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             toastContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
-            toastContainer.heightAnchor.constraint(equalToConstant: 64),
             
             // 아이콘 이미지 제약 조건
             iconImageView.leadingAnchor.constraint(equalTo: toastContainer.leadingAnchor, constant: 20),

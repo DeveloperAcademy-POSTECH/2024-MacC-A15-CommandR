@@ -21,7 +21,8 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "소리 설정"
-        label.font = UIFont(name: "Pretendard-Bold", size: 21)
+        label.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     

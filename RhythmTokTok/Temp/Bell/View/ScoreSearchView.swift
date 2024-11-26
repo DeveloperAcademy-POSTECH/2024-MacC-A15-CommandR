@@ -27,14 +27,17 @@ class ScoreSearchView: UIView {
         textField.backgroundColor = UIColor(named: "background_secondary")
         textField.layer.cornerRadius = 8
         textField.layer.masksToBounds = true
-        textField.font = UIFont(name: "Pretendard-Medium", size: 16)
+        textField.textColor = UIColor(named: "lable_secondary")
+        textField.font = UIFont.customFont(forTextStyle: .body2Medium)
+        textField.adjustsFontForContentSizeCategory = true
         
         // placeholder에 커스텀 폰트 적용
         let placeholderText = "음악 제목을 입력해 주세요"
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor(named: "placeholder") ?? .lightGray,
-            .font: UIFont(name: "Pretendard-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
+            .font: UIFont.customFont(forTextStyle: .body2Regular),
         ]
+        textField.adjustsFontForContentSizeCategory = true
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         textField.setLeftPaddingPoints(36)
         textField.layer.borderWidth = 1
@@ -62,7 +65,8 @@ class ScoreSearchView: UIView {
     
     let tableHeaderLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Pretendard-Bold", size: 24)
+        label.font = UIFont.customFont(forTextStyle: .heading1Bold)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = UIColor(named: "label_primary")
         label.text = "검색 결과"
         label.isHidden = true // 초기에는 숨김

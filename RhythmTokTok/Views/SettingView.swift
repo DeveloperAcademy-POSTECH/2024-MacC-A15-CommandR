@@ -41,11 +41,12 @@ class SettingView: UIView {
         let button = UIButton(type: .custom)
         button.setTitle("완료", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
         button.backgroundColor = .buttonPrimary
         button.layer.cornerRadius = 12
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }()
     
@@ -231,7 +232,8 @@ class CustomNavigationBar: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false // Enable Auto Layout
         label.textAlignment = .center
         label.text = "설정"
-        label.font = UIFont(name: "Pretendard-Medium", size: 18)
+        label.font = UIFont.customFont(forTextStyle: .subheadingMedium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .black
         return label
     }()
