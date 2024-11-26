@@ -19,6 +19,7 @@ class CommonNavigationBar: UIView {
     private let titleLabel = UILabel()
     private let backButton = UIButton(type: .system)
     private let rightButtonStackView = UIStackView()
+    
     private let appTitleImageView: UIImageView = {
         let imageView = UIImageView()
         let image = UIImage(named: "apptitle")
@@ -26,7 +27,7 @@ class CommonNavigationBar: UIView {
         imageView.tintColor = .error
         return imageView
     }()
-    let requestButtonImage: BadgeButton = {
+    let requestHistoryButton: BadgeButton = {
         let button = BadgeButton(type: .system)
         button.setImage(UIImage(named: "list"), for: .normal)
         button.tintColor = .lableSecondary
@@ -47,7 +48,7 @@ class CommonNavigationBar: UIView {
         imageView.tintColor = .error
         return imageView
     }()
-
+    
     private let settingButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("설정", for: .normal)
@@ -55,7 +56,7 @@ class CommonNavigationBar: UIView {
         button.tintColor = .blue500
         return button
     }()
-
+    
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "close"), for: .normal)
@@ -66,9 +67,9 @@ class CommonNavigationBar: UIView {
     var onBackButtonTapped: (() -> Void)?
     var onSettingButtonTapped: (() -> Void)?
     var onCloseButtonTapped: (() -> Void)?
-    var onListButtonTapped: (() -> Void)?
+    var onRequestHistoryButtonTapped: (() -> Void)?
     var onSearchButtonTapped: (() -> Void)?
-
+    
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,52 +82,55 @@ class CommonNavigationBar: UIView {
         setupView()
         setupConstraints()
     }
-
+    
     // MARK: - Setup
     private func setupView() {
+        // requestHistoryButton의 badge 상태 관리에 쓰일 "isBadgeOn"의 디폴트 값 설정
+        UserDefaults.standard.register(defaults: ["isBadgeOn": false])
+        
         backgroundColor = .backgroundPrimary
-
+        
         // Back Button
         backButton.setImage(UIImage(named: "back"), for: .normal)
         backButton.tintColor = .lableSecondary
         backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         addSubview(backButton)
-
+        
         // Title Label
         titleLabel.font = UIFont(name: "Pretendard-Medium", size: 18)
         titleLabel.textColor = .lablePrimary
         titleLabel.textAlignment = .center
         addSubview(titleLabel)
-
+        
         // Right Button Stack View
         rightButtonStackView.axis = .horizontal
         rightButtonStackView.alignment = .center
         rightButtonStackView.spacing = 25
         addSubview(rightButtonStackView)
     }
-
+    
     private func setupConstraints() {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         rightButtonStackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             // Back Button
             backButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
             backButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             backButton.widthAnchor.constraint(equalToConstant: 48),
             backButton.heightAnchor.constraint(equalToConstant: 48),
-
+            
             // Title Label
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-
+            
             // Right Button Stack View
             rightButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             rightButtonStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
-
+    
     // MARK: - Actions
     @objc private func backButtonTapped() {
         onBackButtonTapped?()
@@ -140,8 +144,8 @@ class CommonNavigationBar: UIView {
         onCloseButtonTapped?()
     }
     
-    @objc private func closeListTapped() {
-        onListButtonTapped?()
+    @objc private func requestButtonImageTapped() {
+        onRequestHistoryButtonTapped?()
     }
     
     @objc private func searchButtonTapped() {
@@ -155,7 +159,7 @@ class CommonNavigationBar: UIView {
         
         // 기존 버튼 제거
         rightButtonStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-
+        
         // 버튼 타입에 따른 구성
         switch buttonType {
         case .none:
@@ -168,7 +172,7 @@ class CommonNavigationBar: UIView {
                 watchConnectImageView.widthAnchor.constraint(equalToConstant: 24),
                 watchConnectImageView.heightAnchor.constraint(equalToConstant: 24)
             ])
-
+            
             // 설정 버튼 추가
             rightButtonStackView.addArrangedSubview(settingButton)
             settingButton.addTarget(self, action: #selector(settingButtonTapped), for: .touchUpInside)
@@ -183,10 +187,10 @@ class CommonNavigationBar: UIView {
         case .main:
             
             backButton.isHidden = true
-
+            
             addSubview(appTitleImageView)
             appTitleImageView.translatesAutoresizingMaskIntoConstraints = false
-
+            
             NSLayoutConstraint.activate([
                 appTitleImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
                 appTitleImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -200,17 +204,30 @@ class CommonNavigationBar: UIView {
                 searchButton.heightAnchor.constraint(equalToConstant: 24)
             ])
             searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
-
+            
             // 요청 리스트 버튼
-            rightButtonStackView.addArrangedSubview(requestButtonImage)
+            rightButtonStackView.addArrangedSubview(requestHistoryButton)
             NSLayoutConstraint.activate([
-                requestButtonImage.widthAnchor.constraint(equalToConstant: 24),
-                requestButtonImage.heightAnchor.constraint(equalToConstant: 24)
+                requestHistoryButton.widthAnchor.constraint(equalToConstant: 24),
+                requestHistoryButton.heightAnchor.constraint(equalToConstant: 24)
             ])
-            requestButtonImage.addTarget(self, action: #selector(closeListTapped), for: .touchUpInside)
+            requestHistoryButton.addTarget(self, action: #selector(requestButtonImageTapped), for: .touchUpInside)
+            
+            updateRequestHistoryButton()
         }
     }
-
+    
+    func updateRequestHistoryButton() {
+        let isBadgeOn = UserDefaults.standard.bool(forKey: "isBadgeOn")
+        if isBadgeOn {
+            // 뱃지 보이기
+            requestHistoryButton.showBadge(blink: false, text: "")
+        } else {
+            // 뱃지 숨기기
+            requestHistoryButton.hideBadge()
+        }
+    }
+    
     func setWatchImage(isConnected: Bool) {
         DispatchQueue.main.async {
             if isConnected {
