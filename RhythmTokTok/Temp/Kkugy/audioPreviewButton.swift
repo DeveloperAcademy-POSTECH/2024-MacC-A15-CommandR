@@ -14,15 +14,15 @@ class AudioPreviewButton: UIView {
     private let textLabel: UILabel = {
         let label = UILabel()
         label.text = "미리듣기"
-        label.font = UIFont(name: "Pretendard-Medium", size: 16)
-        label.textColor = UIColor(named: "label_secondary") ?? UIColor.darkGray
+        label.font = UIFont.customFont(forTextStyle: .button2Medium)
+        label.textColor = .lableSecondary
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let button: UIButton = {
         let button = UIButton(type: .custom)
-        button.backgroundColor = UIColor(named: "button_secondary")
+        button.backgroundColor = .buttonSecondary
         button.layer.cornerRadius = 8
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -39,6 +39,7 @@ class AudioPreviewButton: UIView {
     var isPlaying = false {
         didSet {
             if isPlaying {
+                hideStaticImage()
                 showLottieAnimation()
             } else {
                 hideLottieAnimation()
@@ -116,7 +117,6 @@ class AudioPreviewButton: UIView {
         DispatchQueue.main.async {
             self.lottieAnimationView.isHidden = false
             self.lottieAnimationView.play()
-            self.imageView.isHidden = true // 기본 이미지 숨기기
         }
     }
 
@@ -130,6 +130,18 @@ class AudioPreviewButton: UIView {
     private func showStaticImage() {
         DispatchQueue.main.async {
             self.imageView.isHidden = false // 기본 이미지 표시
+            self.button.backgroundColor = .buttonSecondary
+            self.textLabel.text = "미리듣기"
+            self.textLabel.textColor = .lableSecondary
+        }
+    }
+    
+    private func hideStaticImage() {
+        DispatchQueue.main.async {
+            self.imageView.isHidden = true // 기본 이미지 표시
+            self.button.backgroundColor = .gray800
+            self.textLabel.text = "재생 중"
+            self.textLabel.textColor = .white
         }
     }
 }
