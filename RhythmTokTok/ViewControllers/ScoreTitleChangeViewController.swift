@@ -13,7 +13,7 @@ protocol ScoreTitleChangeDelegate: AnyObject {
 
 class ScoreTitleChangeViewController: UIViewController {
     var delegate: ScoreTitleChangeDelegate?
-    var currentTitle: String = ""
+    var currentTitle: String = "수정할 음악 제목을 입력하세요"
     var maxCharacterLimit: Int = 20
     var onTitleChanged: ((String) -> Void)?
 
@@ -26,6 +26,9 @@ class ScoreTitleChangeViewController: UIViewController {
         
         view.layer.cornerRadius = 24 // 모달 뷰의 모서리 설정
         titleTextField.becomeFirstResponder() // 키패드가 띄워지도록 자동 포커스
+        
+        // 선택된 아이템의 제목으로 초기화
+        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -37,7 +40,9 @@ class ScoreTitleChangeViewController: UIViewController {
         super.viewDidLoad()
 
         setupUI()
-        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
+//        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
+        titleTextField.addTarget(self, action: #selector(updateBorderColor), for: .editingChanged) // Register for text changes
+
         confirmButton.addTarget(self, action: #selector(titleTextFieldDidChange), for: .editingChanged)
         
         if let sheet = sheetPresentationController {
@@ -149,33 +154,31 @@ extension ScoreTitleChangeViewController {
     @objc private func confirmButtonTapped() {
         self.view.endEditing(true)
         
-        if let titleText = titleTextField.text {
-            if titleText == "" {
-                let alert = UIAlertController(title: "오류", message: "수정할 제목을 입력하세요.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
-                    self.clearTextField()
-                    self.titleTextField.becomeFirstResponder()
-                }))
-                self.present(alert, animated: true)
-            } else if titleText.count > 20 {
-                let alert = UIAlertController(title: "오류", message: "제목은 20자 이하로 입력하세요.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
-                    self.clearTextField()
-                    self.titleTextField.becomeFirstResponder()
-                }))
-                self.present(alert, animated: true)
-            } else {
-                onTitleChanged?(titleText)
-                dismiss(animated: true, completion: nil)
-            }
-        } else {
-            let alert = UIAlertController(title: "오류", message: "제목을 입력하세요.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
-                self.clearTextField()
-                self.titleTextField.becomeFirstResponder()
-            }))
-            self.present(alert, animated: true)
+        guard let titleText = titleTextField.text else {
+            showAlert(message: "제목을 입력하세요.")
+            return
         }
+        
+        // 유효성 검사
+        if titleText.isEmpty {
+            showAlert(message: "수정할 제목을 입력하세요.")
+        } else if titleText.count > 20 {
+            showAlert(message: "제목은 20자 이하로 입력하세요.")
+        } else {
+            onTitleChanged?(titleText)
+            updateTitleInUserDefaults(oldTitle: currentTitle, newTitle: titleText)
+            dismiss(animated: true, completion: nil)
+        }
+    }
+
+    // MARK: - Helper Methods
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "오류", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
+            self.clearTextField()
+            self.titleTextField.becomeFirstResponder()
+        }))
+        self.present(alert, animated: true)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -196,7 +199,7 @@ extension ScoreTitleChangeViewController {
         textFieldDidBeginEditing(titleTextField)
     }
     
-    func updateBorderColor() {
+    @objc func updateBorderColor() {
         guard let text = titleTextField.text else { return }
         
         if text.isEmpty {
@@ -227,7 +230,8 @@ extension ScoreTitleChangeViewController {
             confirmButton.backgroundColor = UIColor(named: "button_primary")
         }
     }
-    
+
+// MARK: - UserDefaults 로 이미 있는 타이틀 관리
     private func isTitleTaken(_ title: String, _ currentTitle: String) -> Bool {
         var result: Bool = true
 
@@ -241,5 +245,27 @@ extension ScoreTitleChangeViewController {
         }
         
         return result
+    }
+    
+    private func updateTitleInUserDefaults(oldTitle: String, newTitle: String) {
+        let userDefaults = UserDefaults.standard
+        let key = "takenTitle"
+        
+        // 기존 제목 배열 가져오기
+        var savedTitles = userDefaults.stringArray(forKey: key) ?? []
+        
+        // 기존 제목 삭제
+        if let index = savedTitles.firstIndex(of: oldTitle) {
+            savedTitles.remove(at: index)
+        }
+        
+        // 새 제목 추가
+        if !savedTitles.contains(newTitle) {
+            savedTitles.append(newTitle)
+        }
+        
+        // 업데이트된 배열 저장
+        userDefaults.set(savedTitles, forKey: key)
+        print("Updated Titles in UserDefaults: \(savedTitles)")
     }
 }
