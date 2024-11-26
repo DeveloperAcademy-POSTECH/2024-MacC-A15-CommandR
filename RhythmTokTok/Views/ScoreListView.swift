@@ -73,7 +73,7 @@ class ScoreListView: UIView {
             divider.trailingAnchor.constraint(equalTo: trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 1)
         ])
-        navigationBar.requestButtonImage.showBadge(blink: false, text: "3")
+        navigationBar.requestHistoryButton.showBadge(blink: false, text: "3")
     }
     
     // 뷰 구성

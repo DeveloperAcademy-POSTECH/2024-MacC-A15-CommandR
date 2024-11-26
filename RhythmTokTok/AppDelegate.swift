@@ -33,6 +33,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    func application(_ application: UIApplication,
+         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // Silent Push Notification processing
+    if let silentNotification = userInfo["aps"] as? [String: AnyObject],
+       silentNotification["content-available"] as? Int == 1 {
+        // badge 관련 userDefault값 업데이트
+        UserDefaults.standard.set(true, forKey: "isBadgeOn")
+    }
+        // 백그라운드 operation 종료
+    completionHandler(.noData)
+    }
+    
     // MARK: - Remote Notification 등록 성공
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         self.deviceToken = deviceToken // deviceToken 저장
