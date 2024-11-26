@@ -235,6 +235,10 @@ class RequestProcessingViewController: UIViewController,
                     return
                 }
                 
+                if code == 0 {
+                    self?.navigationController?.pushViewController(InternetErrorViewController(), animated: true)
+                }
+                
                 if scores.isEmpty {
                     // 데이터가 없을 경우 EmptyStateView 표시
                     self?.showEmptyState()
@@ -337,7 +341,8 @@ class RequestProcessingViewController: UIViewController,
         
         ServerManager.shared.updateScoreStatus(deviceID: deviceID,
                                                scoreID: String(request.id),
-                                               newStatus: 11) { [weak self] status, message in
+                                               newStatus: 11)
+        { [weak self] status, message in
             guard let self = self else { return }
             
             DispatchQueue.main.async {

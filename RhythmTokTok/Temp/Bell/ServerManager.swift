@@ -6,13 +6,26 @@
 //
 import UIKit
 import Combine
+import Network
 
 class ServerManager {
     static let shared = ServerManager()
-    private init() {}
+    
+    // 네트워크 상태 모니터링
+    private let monitor = NWPathMonitor()
+    private let queue = DispatchQueue(label: "NetworkMonitor")
+    
+    init() {
+        monitor.start(queue: queue)
+    }
+    
+    deinit {
+        monitor.cancel()
+    }
+    
     @Published var isUploading: Bool = false
     private var uploadResponse: (Int, String) = (0, "")
-
+    
     // 서버 IP 파일 분리
     private let serverBaseURL = Config.serverBaseURL
     
@@ -21,73 +34,9 @@ class ServerManager {
         return UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
     }
     
-    // deviceToken 암호화 메서드
-    private func encryptDeviceToken(_ deviceToken: Data) -> String {
-        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        do {
-            let encryptedToken = try AES256Cryption.encrypt(string: tokenString)
-            return encryptedToken
-        } catch {
-            ErrorHandler.handleError(error: "Device Token 암호화 실패: \(error.localizedDescription)")
-            return ""
-        }
-    }
-    
-    // URLRequest 생성 메서드 추가
-    private func createServerRequest(
-        endpoint: String,
-        method: String,
-        headers: [String: String]? = nil,
-        body: Data? = nil
-    ) -> URLRequest {
-        var request = URLRequest(url: URL(string: "\(serverBaseURL)\(endpoint)")!)
-        request.httpMethod = method
-        headers?.forEach { key, value in
-            request.setValue(value, forHTTPHeaderField: key)
-        }
-        request.httpBody = body
-        return request
-        }
-    
-    
-    func sendPDFuploadRequest(_ request : URLRequest) {
-        // 서버 통신
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                ErrorHandler.handleError(error: "서버 요청 오류: \(error.localizedDescription)")
-                self.setUploadResponse(0, "Request error: \(error.localizedDescription)")
-                self.setIsUploading(isUploading: false)
-                return
-            }
-            guard let data = data else {
-                print("서버 응답 데이터 없음")
-                self.setUploadResponse(0, "No response data")
-                self.setIsUploading(isUploading: false)
-                return
-            }
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let code = json["code"] as? Int,
-                   let message = json["message"] as? String {
-                    self.setUploadResponse(code, message)
-                    self.setIsUploading(isUploading: false)
-                } else {
-                    ErrorHandler.handleError(error: "잘못된 응답 형식: \(String(data: data, encoding: .utf8) ?? "Unknown")")
-                    self.setUploadResponse(0, "Invalid response format")
-                    self.setIsUploading(isUploading: false)
-                }
-            } catch {
-                ErrorHandler.handleError(error: "JSON 파싱 오류: \(error.localizedDescription)")
-                self.setUploadResponse(0, "JSON parsing error: \(error.localizedDescription)")
-                self.setIsUploading(isUploading: false)
-            }
-        }
-        task.resume()
-    }
-    
     // 1. PDF 업로드 기능
     func uploadPDF(deviceID: String, deviceToken: Data,
-                   title: String, pdfFileURL: URL, page: Int) {
+                   title: String, pdfFileURL: URL, page: Int, completion: @escaping (Int, String, [[String: Any]]? ) -> Void) {
         
         setIsUploading(isUploading: true)
         let boundary = "Boundary-\(UUID().uuidString)"
@@ -119,7 +68,7 @@ class ServerManager {
             body.append("\r\n".data(using: .utf8)!)
         } catch {
             ErrorHandler.handleError(error: "PDF 파일 읽기 실패: \(error.localizedDescription)")
-            setUploadResponse(0, "Failed to load PDF file")
+            setUploadResponse(-2, "Failed to load PDF file")
             setIsUploading(isUploading: false)
             return
         }
@@ -131,16 +80,9 @@ class ServerManager {
         let request = createServerRequest(endpoint: "/api/score", method: "POST", headers: headers, body: body)
         
         // 요청 보냄
-        sendPDFuploadRequest(request)
-    }
-    
-        
-    func setIsUploading(isUploading: Bool) {
-        self.isUploading = isUploading
-    }
-    
-    func setUploadResponse(_ code: Int, _ message : String) {
-        uploadResponse = (code, message)
+        sendRequest(request: request) { resultCode, message, data in
+            completion(resultCode, message, data)
+        }
     }
     
     // 2. 음악 요청 조회 기능
@@ -153,33 +95,9 @@ class ServerManager {
         print("deviceID --------: \(deviceID)")
         
         // 서버 통신
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                // 서버 오류 발생 시 빈배열 반환
-                ErrorHandler.handleError(error: "Error: \(error.localizedDescription). Returning example data as fallback.")
-                completion(1, "Success", [])
-                return
-            }
-            
-            guard let data = data else {
-                return
-            }
-            
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let status = json["code"] as? Int,
-                   let message = json["message"] as? String,
-                   let scores = json["scores"] as? [[String: Any]] {
-                    completion(status, message, scores)
-                } else {
-                    completion(0, "Invalid response format", nil)
-                }
-            } catch {
-                ErrorHandler.handleError(error: error)
-                completion(0, "JSON parsing error: \(error.localizedDescription)", nil)
-            }
+        sendRequest(request: request) { resultCode, message, data in
+            completion(resultCode, message, data)
         }
-        task.resume()
     }
     
     // 3. 음악 요청 상태 변경 기능
@@ -194,7 +112,7 @@ class ServerManager {
         
         // JSON 직렬화
         guard let body = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-            completion(0, "JSON serialization error")
+            completion(-2, "JSON 직렬화 에러")
             return
         }
         
@@ -202,31 +120,99 @@ class ServerManager {
         let request = createServerRequest(endpoint: endpoint, method: "PUT", headers: headers, body: body)
         
         // 서버 통신
+        sendRequest(request: request) { resultCode, message, data in
+            completion(resultCode, message)
+        }
+    }
+    
+    private func setIsUploading(isUploading: Bool) {
+        self.isUploading = isUploading
+    }
+    
+    private func setUploadResponse(_ code: Int, _ message : String) {
+        uploadResponse = (code, message)
+    }
+    
+    // deviceToken 암호화 메서드
+    private func encryptDeviceToken(_ deviceToken: Data) -> String {
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        do {
+            let encryptedToken = try AES256Cryption.encrypt(string: tokenString)
+            return encryptedToken
+        } catch {
+            ErrorHandler.handleError(error: "Device Token 암호화 실패: \(error.localizedDescription)")
+            return ""
+        }
+    }
+    
+    // URLRequest 생성 메서드 추가
+    private func createServerRequest(
+        endpoint: String,
+        method: String,
+        headers: [String: String]? = nil,
+        body: Data? = nil
+    ) -> URLRequest {
+        var request = URLRequest(url: URL(string: "\(serverBaseURL)\(endpoint)")!)
+        request.httpMethod = method
+        headers?.forEach { key, value in
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        request.httpBody = body
+        return request
+    }
+    
+    // HTTP 요청 공통함수
+    private func sendRequest(request: URLRequest, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
+        // 서버 통신
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            self.checkNetworkError()
+            
+            if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
+                completion(-2, "응답 코드가 잘못되었습니다.", [])
+            }
+            
             if let error = error {
                 ErrorHandler.handleError(error: error)
-                completion(0, "Error: \(error.localizedDescription)")
+                self.setIsUploading(isUploading: false)
+                completion(-2, "에러가 발생했습니다.", [])
                 return
             }
             
             guard let data = data else {
-                completion(0, "No data received")
+                self.setIsUploading(isUploading: false)
+                completion(-2, "데이터가 없습니다.", [])
                 return
             }
             
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let status = json["code"] as? Int,
-                   let message = json["message"] as? String {
-                    completion(status, message)
+                   let message = json["message"] as? String,
+                   let data = json["scores"] as? [[String: Any]] {
+                    completion(status, message, data)
                 } else {
-                    completion(0, "Invalid response format")
+                    self.setIsUploading(isUploading: false)
+                    completion(-2, "JSON 형식이 아닙니다.", [])
                 }
             } catch {
+                self.setIsUploading(isUploading: false)
                 ErrorHandler.handleError(error: error)
-                completion(0, "JSON parsing error: \(error.localizedDescription)")
+                completion(-2, "JSON 변환 에러", [])
             }
         }
         task.resume()
+    }
+    
+    // 네트워크 상태 확인
+    private func isNetworkAvailable() -> Bool {
+        return monitor.currentPath.status == .satisfied
+    }
+    
+    private func checkNetworkError() {
+        if !isNetworkAvailable() {
+            //TODO: - -1로 리턴하기
+            //            showInternetErrorViewController()
+            return
+        }
     }
 }
