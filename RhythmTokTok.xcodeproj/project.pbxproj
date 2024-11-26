@@ -37,6 +37,7 @@
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
 		1E3D56D72CF44A9300986EEE /* audioPreviewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */; };
 		1E3D56D92CF44AD300986EEE /* previewPlay.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1E3D56D82CF44AD300986EEE /* previewPlay.gif */; };
+		1E3D56E92CF607CE00986EEE /* sound.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E3D56E82CF607CE00986EEE /* sound.json */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
@@ -247,6 +248,7 @@
 		1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonNavigationBar.swift; sourceTree = "<group>"; };
 		1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = audioPreviewButton.swift; sourceTree = "<group>"; };
 		1E3D56D82CF44AD300986EEE /* previewPlay.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = previewPlay.gif; sourceTree = "<group>"; };
+		1E3D56E82CF607CE00986EEE /* sound.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sound.json; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicXMLParser.swift; sourceTree = "<group>"; };
@@ -620,6 +622,7 @@
 			children = (
 				729220552CBE48DB008C8FCF /* change.json */,
 				1ED9FEBE2CBD573D00472C51 /* Loading.json */,
+				1E3D56E82CF607CE00986EEE /* sound.json */,
 				729220572CBE799D008C8FCF /* Countdown.json */,
 				723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */,
 			);
@@ -979,6 +982,7 @@
 				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
 				729220562CBE48DB008C8FCF /* change.json in Resources */,
 				1E3E09492CB3EE0600EE1868 /* speechPa.mp3 in Resources */,
+				1E3D56E92CF607CE00986EEE /* sound.json in Resources */,
 				1E3E09352CB2AAB400EE1868 /* pah.mp3 in Resources */,
 				D3CE18C42CE72A34008D120C /* cry.pdf in Resources */,
 				1E3E09362CB2AAB400EE1868 /* sol.mp3 in Resources */,
