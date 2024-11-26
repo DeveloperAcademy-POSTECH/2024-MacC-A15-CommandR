@@ -6,10 +6,11 @@
 //
 
 import UIKit
-import WebKit
+import Lottie
 
 class AudioPreviewButton: UIView {
-    private var webView: WKWebView!
+    private var lottieAnimationView: LottieAnimationView!
+    
     private let textLabel: UILabel = {
         let label = UILabel()
         label.text = "미리듣기"
@@ -38,9 +39,9 @@ class AudioPreviewButton: UIView {
     var isPlaying = false {
         didSet {
             if isPlaying {
-                showGIF()
+                showLottieAnimation()
             } else {
-                hideGIF()
+                hideLottieAnimation()
                 showStaticImage()
             }
         }
@@ -72,20 +73,20 @@ class AudioPreviewButton: UIView {
         ])
         
         // WebView 설정
-        webView = WKWebView()
-        webView.isUserInteractionEnabled = false // 사용자 상호작용 비활성화
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.isHidden = true
-        webView.isOpaque = false
-        webView.backgroundColor = .clear
-        addSubview(webView)
+        // LottieAnimationView 설정
+        lottieAnimationView = LottieAnimationView(name: "sound")
+        lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
+        lottieAnimationView.loopMode = .loop
+        lottieAnimationView.contentMode = .scaleAspectFit
+        lottieAnimationView.isHidden = true // 초기에는 숨김
+        addSubview(lottieAnimationView)
         
-        // WebView 제약 조건
+        // LottieAnimationView 제약 조건
         NSLayoutConstraint.activate([
-            webView.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 13),
-            webView.centerYAnchor.constraint(equalTo: button.centerYAnchor),
-            webView.widthAnchor.constraint(equalToConstant: 24), // GIF 크기
-            webView.heightAnchor.constraint(equalToConstant: 24)
+            lottieAnimationView.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 13),
+            lottieAnimationView.centerYAnchor.constraint(equalTo: button.centerYAnchor),
+            lottieAnimationView.widthAnchor.constraint(equalToConstant: 24),
+            lottieAnimationView.heightAnchor.constraint(equalToConstant: 24)
         ])
         
         // ImageView 제약 조건
@@ -111,21 +112,18 @@ class AudioPreviewButton: UIView {
         isPlaying.toggle()
     }
     
-    private func showGIF() {
+    private func showLottieAnimation() {
         DispatchQueue.main.async {
-            guard let gifPath = Bundle.main.path(forResource: "previewPlay", ofType: "gif") else { return }
-            if let gifData = try? Data(contentsOf: URL(fileURLWithPath: gifPath)) {
-                self.webView.load(gifData, mimeType: "image/gif",
-                                  characterEncodingName: "utf-8", baseURL: URL(fileURLWithPath: gifPath))
-            }
-            self.webView.isHidden = false
+            self.lottieAnimationView.isHidden = false
+            self.lottieAnimationView.play()
             self.imageView.isHidden = true // 기본 이미지 숨기기
         }
     }
 
-    private func hideGIF() {
+    private func hideLottieAnimation() {
         DispatchQueue.main.async {
-            self.webView.isHidden = true
+            self.lottieAnimationView.isHidden = true
+            self.lottieAnimationView.stop()
         }
     }
 
