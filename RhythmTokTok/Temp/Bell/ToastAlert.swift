@@ -67,6 +67,7 @@ class ToastAlert {
             toastContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             toastContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             toastContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            toastContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: 64), // 최소 높이 설정
             
             // 아이콘 이미지 제약 조건
             iconImageView.leadingAnchor.constraint(equalTo: toastContainer.leadingAnchor, constant: 20),
