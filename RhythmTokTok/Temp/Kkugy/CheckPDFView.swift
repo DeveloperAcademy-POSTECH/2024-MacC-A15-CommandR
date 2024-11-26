@@ -46,6 +46,8 @@ class CheckPDFView: UIView {
         // Subheader Label 설정
         subHeaderLabel.textAlignment = .left
         subHeaderLabel.font = UIFont.customFont(forTextStyle: .body2Regular)
+        subHeaderLabel.text = "디지털 PDF 악보만 지원되며, 사진이나 스캔본은\n사용할 수 없어요."
+        subHeaderLabel.numberOfLines = 0
         subHeaderLabel.adjustsFontForContentSizeCategory = true
         subHeaderLabel.textColor = .lableTertiary
         subHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -123,7 +125,6 @@ class CheckPDFView: UIView {
             subHeaderLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 8),
             subHeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             subHeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            subHeaderLabel.heightAnchor.constraint(equalToConstant: 24),
 
             containerView.topAnchor.constraint(equalTo: subHeaderLabel.bottomAnchor, constant: 24),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
@@ -161,7 +162,6 @@ class CheckPDFView: UIView {
     private func updateLayoutForFileSelection() {
         if isFileSelected {
             headerLabel.text = "선택한 파일이 맞나요?"
-            subHeaderLabel.text = "잘못된 파일은 변환이 안될 수도 있어요."
             collectionContainerView.isHidden = false
             confirmButton.isEnabled = true
             confirmButton.backgroundColor = .buttonPrimary
@@ -169,7 +169,6 @@ class CheckPDFView: UIView {
             addPDFButton.isHidden = true
         } else {
             headerLabel.text = "악보 PDF 파일을 선택해주세요"
-            subHeaderLabel.text = "연습할 음악의 악보가 맞는지 확인해 주세요."
             collectionContainerView.isHidden = true
             confirmButton.isEnabled = false
             confirmButton.backgroundColor = .buttonDisabled
