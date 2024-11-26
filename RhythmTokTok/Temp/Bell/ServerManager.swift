@@ -80,7 +80,7 @@ class ServerManager {
         let request = createServerRequest(endpoint: "/api/score", method: "POST", headers: headers, body: body)
         
         // 요청 보냄
-        sendRequest(request: request) { resultCode, message, data in
+        sendRequest(request: request, hasResponseData: false) { resultCode, message, data in
             completion(resultCode, message, data)
         }
     }
@@ -95,7 +95,7 @@ class ServerManager {
         print("deviceID --------: \(deviceID)")
         
         // 서버 통신
-        sendRequest(request: request) { resultCode, message, data in
+        sendRequest(request: request, hasResponseData: true) { resultCode, message, data in
             completion(resultCode, message, data)
         }
     }
@@ -120,7 +120,7 @@ class ServerManager {
         let request = createServerRequest(endpoint: endpoint, method: "PUT", headers: headers, body: body)
         
         // 서버 통신
-        sendRequest(request: request) { resultCode, message, data in
+        sendRequest(request: request, hasResponseData: false) { resultCode, message, data in
             completion(resultCode, message)
         }
     }
@@ -162,7 +162,11 @@ class ServerManager {
     }
     
     // HTTP 요청 공통함수
-    private func sendRequest(request: URLRequest, completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
+    private func sendRequest(request: URLRequest,
+                             hasResponseData: Bool,
+                             completion: @escaping (Int, String, [[String: Any]]?) -> Void) {
+        print("request \(request)")
+        
         // 서버 통신
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard self.checkNetworkError() != -1 else {
@@ -182,27 +186,27 @@ class ServerManager {
                 return
             }
             
-            guard let data = data else {
-                self.setIsUploading(isUploading: false)
-                completion(-2, "데이터가 없습니다.", [])
-                return
+            // response Data 값을 가질때만 실행
+            if hasResponseData {
+                if let data = data {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                           let status = json["code"] as? Int,
+                           let message = json["message"] as? String,
+                           let data = json["scores"] as? [[String: Any]] {
+                            completion(status, message, data)
+                        } else {
+                            self.setIsUploading(isUploading: false)
+                            completion(-2, "JSON 형식이 아닙니다.", [])
+                        }
+                    } catch {
+                        self.setIsUploading(isUploading: false)
+                        ErrorHandler.handleError(error: error)
+                        completion(-2, "JSON 변환 에러", [])
+                    }
+                }
             }
             
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let status = json["code"] as? Int,
-                   let message = json["message"] as? String,
-                   let data = json["scores"] as? [[String: Any]] {
-                    completion(status, message, data)
-                } else {
-                    self.setIsUploading(isUploading: false)
-                    completion(-2, "JSON 형식이 아닙니다.", [])
-                }
-            } catch {
-                self.setIsUploading(isUploading: false)
-                ErrorHandler.handleError(error: error)
-                completion(-2, "JSON 변환 에러", [])
-            }
         }
         task.resume()
     }

@@ -70,6 +70,7 @@ class ErrorViewController: UIViewController {
     
     @objc private func retryButtonTapped() {
         // 버튼 클릭 시 동작 (처음 화면으로 이동)
-        self.dismiss(animated: true, completion: nil)
+        navigationController?.popToRootViewController(animated: true)
+//        self.dismiss(animated: true, completion: nil)
     }
 }

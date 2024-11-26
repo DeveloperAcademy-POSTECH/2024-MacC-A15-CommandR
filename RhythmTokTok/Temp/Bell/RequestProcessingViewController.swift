@@ -229,15 +229,17 @@ class RequestProcessingViewController: UIViewController,
         ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in
             
             DispatchQueue.main.async {
+                print("code : \(code)")
+                if [-1, -2].contains(code) {
+                    let errorViewController = ErrorViewController()
+                    self?.navigationController?.pushViewController(errorViewController, animated: true)
+                    return
+                }
+                
                 guard code == 1, let scores = scores else {
                     ErrorHandler.handleError(error: "서버데이터 불러오기 실패: \(message)")
                     self?.showEmptyState()
                     return
-                }
-                
-                if [-1, -2].contains(code) {
-                    let errorViewController = ErrorViewController()
-                    self?.navigationController?.pushViewController(errorViewController, animated: true)
                 }
                 
                 if scores.isEmpty {
