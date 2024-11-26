@@ -158,7 +158,6 @@
 		EE42039A2CD277A60081F2A1 /* SoundSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */; };
 		EE42039C2CD277B20081F2A1 /* HapticSettingSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */; };
 		EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */; };
-		EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203A62CD3D26A0081F2A1 /* RadioButton.swift */; };
 		EE4203A92CD3D2C40081F2A1 /* RadioButtonOptionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */; };
 		EE4203AB2CD3D50C0081F2A1 /* RadioButtonOptionItemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */; };
 		EE7A8B932CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */; };
@@ -366,7 +365,6 @@
 		EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingSectionView.swift; sourceTree = "<group>"; };
 		EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingSectionView.swift; sourceTree = "<group>"; };
 		EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingSectionViewController.swift; sourceTree = "<group>"; };
-		EE4203A62CD3D26A0081F2A1 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonOptionItem.swift; sourceTree = "<group>"; };
 		EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonOptionItemPicker.swift; sourceTree = "<group>"; };
 		EE7A8B912CCFB7E800079D75 /* ScoreEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -681,7 +679,6 @@
 			children = (
 				EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */,
 				EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */,
-				EE4203A62CD3D26A0081F2A1 /* RadioButton.swift */,
 				1ED9FED02CBF653800472C51 /* BPMLabel.swift */,
 				EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */,
 				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
@@ -1104,7 +1101,6 @@
 				02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */,
 				D3C17AE72CED089A0016837A /* EmptyResultView.swift in Sources */,
 				EE23053A2CF0AE3500D47367 /* Helper.swift in Sources */,
-				EE4203A72CD3D2700081F2A1 /* RadioButton.swift in Sources */,
 				EE7B28902CBE517A00325725 /* RhythmTokTok.xcdatamodeld in Sources */,
 				1A0AE6D92CE5DD5300564859 /* PDFUploadDoneViewController.swift in Sources */,
 				1E7592672CE1EFC70050D10D /* AppleWatchStatus.swift in Sources */,

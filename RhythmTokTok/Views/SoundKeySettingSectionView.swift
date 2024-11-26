@@ -158,11 +158,11 @@ class SoundKeySettingSectionView: UIView {
         currentSoundKeyLabelStackView.alignment = .center
         currentSoundKeyLabelStackView.spacing = 8
 
-        let soundKeyAudioPriviewStackView = UIStackView(arrangedSubviews: [currentSoundKeyLabelStackView, audioPreviewButton])
-        soundKeyAudioPriviewStackView.axis = .horizontal
-        soundKeyAudioPriviewStackView.alignment = .center
-        soundKeyAudioPriviewStackView.spacing = 16
-        soundKeyAudioPriviewStackView.distribution = .equalSpacing
+        let soundKeyAudioPreviewStackView = UIStackView(arrangedSubviews: [currentSoundKeyLabelStackView, audioPreviewButton])
+        soundKeyAudioPreviewStackView.axis = .horizontal
+        soundKeyAudioPreviewStackView.alignment = .center
+        soundKeyAudioPreviewStackView.spacing = 16
+        soundKeyAudioPreviewStackView.distribution = .equalSpacing
         
         let soundKeyButtonStackView = UIStackView(arrangedSubviews: [flatButton, sharpButton])
         soundKeyButtonStackView.axis = .horizontal
@@ -176,36 +176,36 @@ class SoundKeySettingSectionView: UIView {
         descriptionStackView.spacing = 4
         
         addSubview(titleLabel)
-        addSubview(soundKeyAudioPriviewStackView)
+        addSubview(soundKeyAudioPreviewStackView)
         addSubview(soundKeyButtonStackView)
         addSubview(descriptionStackView)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        soundKeyAudioPriviewStackView.translatesAutoresizingMaskIntoConstraints = false
+        soundKeyAudioPreviewStackView.translatesAutoresizingMaskIntoConstraints = false
         soundKeyButtonStackView.translatesAutoresizingMaskIntoConstraints = false
         descriptionStackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             audioPreviewButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 110),
             audioPreviewButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
             
-            soundKeyAudioPriviewStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            soundKeyAudioPriviewStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            soundKeyAudioPriviewStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            soundKeyAudioPriviewStackView.heightAnchor.constraint(equalToConstant: 48),
+            soundKeyAudioPreviewStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            soundKeyAudioPreviewStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            soundKeyAudioPreviewStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            soundKeyAudioPreviewStackView.heightAnchor.constraint(equalToConstant: 48),
 
             soundKeyButtonStackView.topAnchor.constraint(equalTo: currentSoundKeyStackView.bottomAnchor, constant: 16),
-            soundKeyButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            soundKeyButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            soundKeyButtonStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            soundKeyButtonStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             soundKeyButtonStackView.heightAnchor.constraint(equalToConstant: 48),
             
             descriptionStackView.topAnchor.constraint(equalTo: soundKeyButtonStackView.bottomAnchor, constant: 8),
-            descriptionStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            descriptionStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            descriptionStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            descriptionStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             descriptionStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }

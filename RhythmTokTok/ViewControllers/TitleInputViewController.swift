@@ -132,9 +132,9 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-            // Update the border color when the text field is touched
-            titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
-        }
+        // Update the border color when the text field is touched
+        titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         // Optionally reset the border color when editing ends
