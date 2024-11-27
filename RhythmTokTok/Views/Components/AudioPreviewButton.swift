@@ -1,5 +1,5 @@
 //
-//  audioPreviewButton.swift
+//  AudioPreviewButton.swift
 //  RhythmTokTok
 //
 //  Created by sungkug_apple_developer_ac on 11/25/24.

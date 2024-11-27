@@ -200,7 +200,7 @@ class CommonNavigationBar: UIView {
             NSLayoutConstraint.activate([
                 appTitleImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
                 appTitleImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                appTitleImageView.heightAnchor.constraint(equalToConstant: 20)
+                appTitleImageView.heightAnchor.constraint(equalToConstant: 32)
             ])
             
             // 검색버튼
