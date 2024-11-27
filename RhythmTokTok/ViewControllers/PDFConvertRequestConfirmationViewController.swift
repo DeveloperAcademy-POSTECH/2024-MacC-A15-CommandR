@@ -133,7 +133,27 @@ class PDFConvertRequestConfirmationViewController: UIViewController,
         // 서버로 업로드
         let title = filename // 사용자 입력 제목
         let deviceID = encrypt(ServerManager.shared.getDeviceUUID())
-        ServerManager.shared.uploadPDF(deviceID: deviceID, deviceToken: deviceToken, title: title, pdfFileURL: pdfURL, page: page)
+        ServerManager.shared.uploadPDF(deviceID: deviceID,
+                                       deviceToken: deviceToken,
+                                       title: title,
+                                       pdfFileURL: pdfURL,
+                                       page: page,
+                                       completion: { code, message, data in
+            
+            if [-1, -2].contains(code) {
+                let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
+                
+                // Retry 클로저 설정
+                if let internetErrorVC = errorViewController as? InternetErrorViewController {
+                    internetErrorVC.onRetry = { [weak self] in
+                        self?.uploadPDFtoServer()
+                    }
+                }
+                
+                self.navigationController?.pushViewController(errorViewController, animated: true)
+                return
+            }
+        })
     }
     
     private func encrypt(_ input: String) -> String {

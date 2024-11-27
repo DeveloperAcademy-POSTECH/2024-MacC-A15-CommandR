@@ -11,6 +11,8 @@
 		0232D4A12CD5F5A600FDBFAF /* cry.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D49E2CD5F5A600FDBFAF /* cry.xml */; };
 		0232D4AC2CDC721B00FDBFAF /* doraji.xml in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4AB2CDC721B00FDBFAF /* doraji.xml */; };
 		0232D4E72CDDC52A00FDBFAF /* DummyScores in Resources */ = {isa = PBXBuildFile; fileRef = 0232D4E62CDDC52400FDBFAF /* DummyScores */; };
+		023AA6222CEF1B05006A8DFA /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */; };
+		023AA6242CEF228D006A8DFA /* InternetErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */; };
 		023E35242CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */; };
 		023E352D2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */; };
 		02BFECEC2CB10A13003CEC8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BFECEB2CB10A13003CEC8A /* AppDelegate.swift */; };
@@ -222,6 +224,8 @@
 		0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = shinsadong.xml; sourceTree = "<group>"; };
 		0232D4AB2CDC721B00FDBFAF /* doraji.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = doraji.xml; sourceTree = "<group>"; };
 		0232D4E62CDDC52400FDBFAF /* DummyScores */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DummyScores; path = RhythmTokTok/Resources/DummyScores; sourceTree = SOURCE_ROOT; };
+		023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ErrorViewController.swift; path = RhythmTokTok/Temp/ErrorViewController.swift; sourceTree = SOURCE_ROOT; };
+		023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InternetErrorViewController.swift; path = RhythmTokTok/Temp/InternetErrorViewController.swift; sourceTree = SOURCE_ROOT; };
 		023E35232CDF4D5500F89412 /* ScoreEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScoreEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		023E352C2CDF680F00F89412 /* NoteEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoteEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		02BFECE82CB10A13003CEC8A /* RhythmTokTok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhythmTokTok.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -523,11 +527,14 @@
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
+				023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
+				023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
 				1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */,
 				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
+				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
 				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
 				EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */,
 				1ED9FEC62CBE4B2E00472C51 /* ScorePracticeViewController.swift */,
@@ -642,6 +649,7 @@
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
 				EE7A8B952CCFB88200079D75 /* ScoreService.swift */,
 				EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */,
 				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
@@ -758,8 +766,6 @@
 		1EF8A0AC2CB559CE00ADB783 /* Bell */ = {
 			isa = PBXGroup;
 			children = (
-				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
-				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
 			);
@@ -1065,6 +1071,7 @@
 				D3ABDF6F2CB6A395005CD01F /* UserDefaults.swift in Sources */,
 				1ED9FED12CBF654400472C51 /* BPMLabel.swift in Sources */,
 				1ED9FED32CBF826B00472C51 /* SetBPMViewController.swift in Sources */,
+				023AA6242CEF228D006A8DFA /* InternetErrorViewController.swift in Sources */,
 				D3F8C5352CEC406B00D2B012 /* ScoreSearchViewController.swift in Sources */,
 				D32330952CDE382C007D1003 /* RequestStatus.swift in Sources */,
 				1EB7B3ED2CD3701B00FF4244 /* CountDownLottieView.swift in Sources */,
@@ -1147,6 +1154,7 @@
 				1ED9FECD2CBE797C00472C51 /* ProgressTableViewCell.swift in Sources */,
 				EE7B28AE2CBE8B8B00325725 /* ScoreListViewController.swift in Sources */,
 				1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */,
+				023AA6222CEF1B05006A8DFA /* ErrorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
