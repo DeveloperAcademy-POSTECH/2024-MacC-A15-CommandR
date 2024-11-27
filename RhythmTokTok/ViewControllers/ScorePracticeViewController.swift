@@ -86,6 +86,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         resetMIDIPlayer()
         resetSwipeGesture()
+        NotificationCenter.default.removeObserver(self)
         cancellables.removeAll()
         super.viewWillDisappear(animated)
     }
