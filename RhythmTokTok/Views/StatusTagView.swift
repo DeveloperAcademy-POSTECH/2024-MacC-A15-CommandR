@@ -91,7 +91,7 @@ class StatusTagView: UIView {
         case .melody:
             soundSetLabel.text = "🎵 멜로디"
         case .beat:
-            soundSetLabel.text = "🥁 박자"
+            soundSetLabel.text = "🥁 메트로놈"
         case .mute:
             soundSetLabel.text = "🔇 소리 끄기"
         case .voice:

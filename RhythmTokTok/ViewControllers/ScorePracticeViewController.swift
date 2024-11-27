@@ -79,12 +79,16 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         navigationController?.setNavigationBarHidden(true, animated: animated)
         Task { await createMIDIWithHaptic(score: currentScore) }
         setupScoreState()
+        setupBindings()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
+        resetMIDIPlayer()
         resetSwipeGesture()
+        NotificationCenter.default.removeObserver(self)
+        cancellables.removeAll()
+        super.viewWillDisappear(animated)
     }
     
     override func viewDidLoad() {
@@ -97,7 +101,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
         scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
         setupActions()
-        setupBindings()
     }
     
     private func handleScoreChange() {

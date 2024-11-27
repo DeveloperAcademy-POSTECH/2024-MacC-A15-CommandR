@@ -157,7 +157,6 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 실행
     func playMIDI(futureTime: Date = Date()) {
-        print("Play MIDI")
         if let midiPlayer, let metronomeMIDIPlayer {
             print("midiPlayer: \(midiPlayer), metronomeMIIDPlayer: \(metronomeMIDIPlayer)")
             
@@ -173,7 +172,7 @@ class MusicPlayer: ObservableObject {
             isEnd = false
             
             // 예약된 매트로놈 MIDI 재생 시작
-            if self.soundOption == .melodyBeat {
+            if self.soundOption == .melodyBeat || self.soundOption == .beat {
                 let metronomepPlayTimer = Timer(fireAt: futureTime, interval: 0,
                                                 target: self, selector: #selector(startMetronomeMIDIPlay),
                                                 userInfo: nil, repeats: false)
@@ -181,10 +180,12 @@ class MusicPlayer: ObservableObject {
             }
             
             // 예약된 시간에 MIDI 재생 시작
-            let playTimer = Timer(fireAt: futureTime, interval: 0,
-                                  target: self, selector: #selector(startMIDIPlay),
-                                  userInfo: nil, repeats: false)
-            RunLoop.main.add(playTimer, forMode: .common)
+            if self.soundOption == .melodyBeat || self.soundOption == .melody {
+                let playTimer = Timer(fireAt: futureTime, interval: 0,
+                                      target: self, selector: #selector(startMIDIPlay),
+                                      userInfo: nil, repeats: false)
+                RunLoop.main.add(playTimer, forMode: .common)
+            }
             
             isTemporarilyStopped = false
         }
