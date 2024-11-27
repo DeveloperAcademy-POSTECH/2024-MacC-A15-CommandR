@@ -187,22 +187,21 @@ class ServerManager {
             }
             
             // response Data 값을 가질때만 실행
-            if hasResponseData {
-                if let data = data {
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                           let status = json["code"] as? Int,
-                           let message = json["message"] as? String,
-                           let data = json["scores"] as? [[String: Any]] {
-                            completion(status, message, data)
-                        } else {
-                            completion(-2, "JSON 형식이 아닙니다.", [])
-                        }
-                    } catch {
-                        self.setIsUploading(isUploading: false)
-                        ErrorHandler.handleError(error: error)
-                        completion(-2, "JSON 변환 에러", [])
+            if let data = data {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let status = json["code"] as? Int,
+                       let message = json["message"] as? String {
+                        // 조건에 따라 scores 데이터 처리
+                        let scores = hasResponseData ? (json["scores"] as? [[String: Any]]) ?? [] : []
+                        completion(status, message, scores)
+                    } else {
+                        completion(-2, "JSON 형식이 아닙니다.", [])
                     }
+                } catch {
+                    self.setIsUploading(isUploading: false)
+                    ErrorHandler.handleError(error: error)
+                    completion(-2, "JSON 변환 에러", [])
                 }
             }
         }
