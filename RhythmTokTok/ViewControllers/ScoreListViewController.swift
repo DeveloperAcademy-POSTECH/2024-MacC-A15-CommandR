@@ -28,8 +28,8 @@ class ScoreListViewController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.setNavigationBarHidden(true, animated: false)
-        scoreListView.navigationBar.onListButtonTapped = {  [weak self] in
-            self?.didTapRequestButton()
+        scoreListView.navigationBar.onRequestHistoryButtonTapped = {  [weak self] in
+            self?.didTapRequestHistoryButton()
         }
         scoreListView.navigationBar.onSearchButtonTapped = { [weak self] in
             self?.didTapSearch()
@@ -42,6 +42,7 @@ class ScoreListViewController: UIViewController {
         super.viewWillAppear(animated)
         // 초기 데이터 확인 후 필요시 삽입
         checkAndInsertDummyDataIfNeeded()
+        scoreListView.navigationBar.updateRequestHistoryButton()
     }
     
     // 초기 데이터 확인 및 삽입 함수
@@ -199,7 +200,11 @@ extension ScoreListViewController {
         let checkPDFViewController = CheckPDFViewController()
         navigationController?.pushViewController(checkPDFViewController, animated: true)
     }
-    @objc func didTapRequestButton() {
+    @objc func didTapRequestHistoryButton() {
+        // requestHistoryButton badge 관련 userdefault 값 업데이트
+        UserDefaults.standard.set(false, forKey: "isBadgeOn")
+        
+        //navigate
         let requestViewController = RequestProcessingViewController()
         navigationController?.pushViewController(requestViewController, animated: true)
     }

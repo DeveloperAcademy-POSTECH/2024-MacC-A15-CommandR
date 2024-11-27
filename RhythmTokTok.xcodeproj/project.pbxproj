@@ -34,6 +34,7 @@
 		1A5E09122CEB83AD00E17FF4 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5E09112CEB83AD00E17FF4 /* Fonts.swift */; };
 		1AD0F9862CEF5E09009538B4 /* PDFUploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */; };
 		1AD0F9882CEF5F9A009538B4 /* PDFUploadProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */; };
+		1AD0F9BB2CF46F8E009538B4 /* BadgeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD0F9BA2CF46F8E009538B4 /* BadgeContainer.swift */; };
 		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */; };
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
@@ -246,6 +247,7 @@
 		1A5E09112CEB83AD00E17FF4 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Fonts.swift; path = RhythmTokTok/Temp/Fonts.swift; sourceTree = SOURCE_ROOT; };
 		1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressView.swift; sourceTree = "<group>"; };
 		1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFUploadProgressViewController.swift; sourceTree = "<group>"; };
+		1AD0F9BA2CF46F8E009538B4 /* BadgeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BadgeContainer.swift; path = RhythmTokTok/Temp/BadgeContainer.swift; sourceTree = SOURCE_ROOT; };
 		1E05EDBD2CC583A8008B2201 /* RhythmTokTokWatchApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RhythmTokTokWatchApp.entitlements; sourceTree = "<group>"; };
 		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFView.swift; sourceTree = "<group>"; };
@@ -778,6 +780,7 @@
 			isa = PBXGroup;
 			children = (
 				1A5E09112CEB83AD00E17FF4 /* Fonts.swift */,
+				1AD0F9BA2CF46F8E009538B4 /* BadgeContainer.swift */,
 			);
 			path = Lyosha;
 			sourceTree = "<group>";
@@ -1115,6 +1118,7 @@
 				D34EEB622CC2A80F007BE568 /* PlayStatus.swift in Sources */,
 				1EF5145D2CD763FD00F68084 /* Logger.swift in Sources */,
 				EE42039C2CD277B20081F2A1 /* HapticSettingSectionView.swift in Sources */,
+				1AD0F9BB2CF46F8E009538B4 /* BadgeContainer.swift in Sources */,
 				D30101D52CE1DC35005742E6 /* ExtraInfoView.swift in Sources */,
 				D32330932CDE37FB007D1003 /* Request.swift in Sources */,
 				D3D6D1BB2CBE909C00D22886 /* WatchTestViewController.swift in Sources */,
