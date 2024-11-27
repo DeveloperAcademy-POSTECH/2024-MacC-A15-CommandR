@@ -121,11 +121,10 @@ class RequestCardView: UIView {
         // 버튼 크기에 따라 스택뷰 방향 변경
         if requestActionButton.intrinsicContentSize.width > 100 {
             mainStackView.axis = .vertical
-            mainStackView.alignment = .leading
         } else {
             mainStackView.axis = .horizontal
-            mainStackView.alignment = .top
         }
+        mainStackView.alignment = .center
         setNeedsLayout()
         layoutIfNeeded()
     }

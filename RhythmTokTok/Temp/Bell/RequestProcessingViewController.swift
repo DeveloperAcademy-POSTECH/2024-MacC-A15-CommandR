@@ -194,6 +194,11 @@ class RequestProcessingViewController: UIViewController,
                 requestView.requestActionButton.tag = requests.firstIndex(where: { $0.id == request.id }) ?? -1
                 requestView.translatesAutoresizingMaskIntoConstraints = false
                 stackView.addArrangedSubview(requestView)
+                // 최소 크기 설정
+                NSLayoutConstraint.activate([
+                    requestView.heightAnchor.constraint(greaterThanOrEqualToConstant: 96), // 최소 높이
+                    requestView.widthAnchor.constraint(equalTo: stackView.widthAnchor, constant: -40) // 스택 뷰 너비와 일치 (좌우 마진 고려)
+                ])
             }
             
             if let lastView = stackView.arrangedSubviews.last {
@@ -328,6 +333,7 @@ class RequestProcessingViewController: UIViewController,
     // MARK: - 요청 취소 메서드 추가
     private func cancelRequest(at index: Int, completion: @escaping (Bool) -> Void) {
         let request = requests[index]
+        print("Cancel request initiated for request ID: \(request.id)")
         
         ServerManager.shared.updateScoreStatus(deviceID: deviceID,
                                                scoreID: String(request.id),
@@ -337,6 +343,7 @@ class RequestProcessingViewController: UIViewController,
             DispatchQueue.main.async {
                 if status == 1 {
                     self.requests[index].status = .cancelled
+                    print("요청 취소 성공쓰 Updating UI...")
                     self.updateRequestsUI()
                     completion(true)
                 } else {
@@ -458,16 +465,20 @@ extension RequestProcessingViewController {
     }
     private func deleteRequest(for requestID: Int) {
         guard let index = requests.firstIndex(where: { $0.id == requestID }) else {
+            print("Request ID \(requestID) not found in requests array")
             ErrorHandler.handleError(error: "Request ID \(requestID) 를 찾을 수 없음")
             return
         }
+        print("Delete request initiated for request ID: \(requestID)")
         
         cancelRequest(at: index) { [weak self] success in
             guard let self = self else { return }
             
             if success {
+                print("Delete request successful. Showing toast...")
                 ToastAlert.show(message: "요청이 삭제되었습니다.", in: self.view, iconName: "check.circle.color")
             } else {
+                print("Delete request failed. Showing error toast...")
                 ToastAlert.show(message: "요청 삭제에 실패했습니다.", in: self.view, iconName: "error_icon")
             }
         }
