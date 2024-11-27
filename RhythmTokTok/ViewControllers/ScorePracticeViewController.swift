@@ -83,11 +83,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
+        resetMIDIPlayer()
         resetSwipeGesture()
-        musicPlayer.stopMIDI()
         cancellables.removeAll()
+        super.viewWillDisappear(animated)
     }
     
     override func viewDidLoad() {
