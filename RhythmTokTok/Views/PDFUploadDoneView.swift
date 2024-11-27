@@ -111,6 +111,7 @@ class PDFUploadDoneView: UIView {
         navigateButton.backgroundColor = UIColor(.white)
         navigateButton.layer.cornerRadius = 12
         // TODO: navigateButton action 연결하기
+        navigateButton.addTarget(self, action: #selector(navigateButtonTapped), for: .touchUpInside)
         addSubview(navigateButton)
     }
     
