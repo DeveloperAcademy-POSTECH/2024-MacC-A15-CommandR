@@ -5,17 +5,19 @@
 //  Created by © 2020 SwiftEverywhere. Can be used free of charge.
 
 import Foundation
-
-
 import UIKit
-//protocol
-protocol BadgeContainer: class {
+
+// protocol
+protocol BadgeContainer: AnyObject {
     var badgeView: UIView? { get set }
     var badgeLabel: UILabel? { get set }
+    
     func showBadge(blink: Bool, text: String?)
+    
     func hideBadge()
 }
-//default protocol implementation
+
+// default protocol implementation
 extension BadgeContainer where Self: UIView {
     func showBadge(blink: Bool, text: String?) {
         if badgeView != nil {
@@ -30,7 +32,7 @@ extension BadgeContainer where Self: UIView {
         guard let badgeViewUnwrapped = badgeView else {
             return
         }
-        //adds the badge at the top
+        // adds the badge at the top
         addSubview(badgeViewUnwrapped)
         badgeViewUnwrapped.translatesAutoresizingMaskIntoConstraints = false
 
@@ -87,13 +89,14 @@ extension BadgeContainer where Self: UIView {
     }
 }
 
-//custom class
+// custom class
 class BadgeButton: UIButton, BadgeContainer {
     var badgeTimer: Timer?
     var badgeView: UIView?
     var badgeLabel: UILabel?
 }
-//extension of UIView for proper positioning of visual children
+
+// extension of UIView for proper positioning of visual children
 extension UIView {
     @IBInspectable var cornerRadius: CGFloat {
         get {
