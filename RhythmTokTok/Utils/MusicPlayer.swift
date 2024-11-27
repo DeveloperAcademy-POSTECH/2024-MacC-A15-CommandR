@@ -157,7 +157,6 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 실행
     func playMIDI(futureTime: Date = Date()) {
-        print("Play MIDI")
         if let midiPlayer, let metronomeMIDIPlayer {
             print("midiPlayer: \(midiPlayer), metronomeMIIDPlayer: \(metronomeMIDIPlayer)")
             

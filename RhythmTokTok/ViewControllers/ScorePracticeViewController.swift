@@ -85,6 +85,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         super.viewWillDisappear(animated)
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         resetSwipeGesture()
+        cancellables.removeAll()
     }
     
     override func viewDidLoad() {
