@@ -38,7 +38,7 @@
 		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */; };
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
-		1E3D56D72CF44A9300986EEE /* audioPreviewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */; };
+		1E3D56D72CF44A9300986EEE /* AudioPreviewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3D56D62CF44A7D00986EEE /* AudioPreviewButton.swift */; };
 		1E3D56D92CF44AD300986EEE /* previewPlay.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1E3D56D82CF44AD300986EEE /* previewPlay.gif */; };
 		1E3D56E92CF607CE00986EEE /* sound.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E3D56E82CF607CE00986EEE /* sound.json */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
@@ -251,7 +251,7 @@
 		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFView.swift; sourceTree = "<group>"; };
 		1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonNavigationBar.swift; sourceTree = "<group>"; };
-		1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = audioPreviewButton.swift; sourceTree = "<group>"; };
+		1E3D56D62CF44A7D00986EEE /* AudioPreviewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPreviewButton.swift; sourceTree = "<group>"; };
 		1E3D56D82CF44AD300986EEE /* previewPlay.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = previewPlay.gif; sourceTree = "<group>"; };
 		1E3D56E82CF607CE00986EEE /* sound.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sound.json; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
@@ -511,6 +511,7 @@
 				1E3E09172CB298A900EE1868 /* Note.swift */,
 				1E54A8FC2CBA8F3500753A3E /* Part.swift */,
 				1E54A8FA2CBA8EE100753A3E /* Score.swift */,
+				D32330922CDE37FB007D1003 /* Request.swift */,
 				1EF8A0A62CB53E6B00ADB783 /* Enum */,
 			);
 			path = Models;
@@ -519,20 +520,22 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
+				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
+				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
+				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
+				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
+				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
+				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
 				1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */,
 				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
-				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
-				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
-				EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */,
-				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
-				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
-				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
-				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
-				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
-				1ED9FEC62CBE4B2E00472C51 /* ScorePracticeViewController.swift */,
 				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
 				EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */,
+				1ED9FEC62CBE4B2E00472C51 /* ScorePracticeViewController.swift */,
+				D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */,
+				EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */,
+				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
 				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 			);
 			path = ViewControllers;
@@ -637,6 +640,7 @@
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				EE7A8B952CCFB88200079D75 /* ScoreService.swift */,
 				EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */,
 				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
 				D3ABDF6E2CB6A395005CD01F /* UserDefaults.swift */,
@@ -648,17 +652,30 @@
 		1EF8A0A52CB53E2700ADB783 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D3C17AE42CED088C0016837A /* BeforeSearchView.swift */,
+				EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */,
+				1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */,
+				1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */,
+				1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */,
+				D3C17AE62CED089A0016837A /* EmptyResultView.swift */,
+				D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */,
+				D30101D42CE1DC35005742E6 /* ExtraInfoView.swift */,
+				EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */,
+				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
+				1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */,
 				1A0AE6D62CE5DD4D00564859 /* PDFUploadDoneView.swift */,
 				1AD0F9852CEF5E03009538B4 /* PDFUploadProgressView.swift */,
-				1A0AE6CE2CE1EA5000564859 /* PDFConvertRequestConfirmationView.swift */,
-				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
+				1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */,
+				D323308E2CDE37C9007D1003 /* RequestCardView.swift */,
+				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
 				1ED9FEC22CBE4A7A00472C51 /* ScorePracticeScoreCardView.swift */,
+				D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */,
 				D3ABDF6A2CB6A325005CD01F /* SettingView.swift */,
 				EE2305352CF02C5300D47367 /* SoundKeySettingSectionView.swift */,
-				EE4203972CD277630081F2A1 /* BPMSettingSectionView.swift */,
 				EE4203992CD277A60081F2A1 /* SoundSettingSectionView.swift */,
-				EE42039B2CD277B20081F2A1 /* HapticSettingSectionView.swift */,
-				EE7B28AB2CBE8A7800325725 /* ScoreListView.swift */,
+				1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */,
+				61318FA62CDF8D4100D8FC26 /* TitleInputView.swift */,
+				1E7592642CE1E0220050D10D /* ToolTipView.swift */,
 				1EF8A0A72CB53E9A00ADB783 /* Components */,
 			);
 			path = Views;
@@ -667,10 +684,12 @@
 		1EF8A0A62CB53E6B00ADB783 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
+				1E7592662CE1EFC50050D10D /* AppleWatchStatus.swift */,
 				61318FAA2CE772D700D8FC26 /* ButtonStatus.swift */,
 				EE1B9BB52CD647A000073215 /* BPMDescription.swift */,
-				1EF8A0BB2CB55A6300ADB783 /* Accidental.swift */,
 				1E3E091B2CB29E5100EE1868 /* Pitch.swift */,
+				D32330942CDE382C007D1003 /* RequestStatus.swift */,
 				D39BAA262CBA6536002AD1C0 /* SoundSetting.swift */,
 			);
 			path = Enum;
@@ -679,13 +698,17 @@
 		1EF8A0A72CB53E9A00ADB783 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */,
-				EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */,
+				1E3D56D62CF44A7D00986EEE /* AudioPreviewButton.swift */,
 				1ED9FED02CBF653800472C51 /* BPMLabel.swift */,
+				1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */,
 				EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */,
 				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
+				1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */,
 				1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */,
 				1ED9FECE2CBE8EB800472C51 /* PlayPauseButton.swift */,
+				EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */,
+				EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */,
+				D30101D62CE1E56C005742E6 /* ToastAlert.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -693,10 +716,13 @@
 		1EF8A0A82CB53EAF00ADB783 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				EE2305392CF0AE3300D47367 /* Helper.swift */,
+				1AD0F9BA2CF46F8E009538B4 /* BadgeContainer.swift */,
 				02CFE1312CB68479008454B8 /* ErrorHandler.swift */,
-				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
+				1A5E09112CEB83AD00E17FF4 /* Fonts.swift */,
+				EE2305392CF0AE3300D47367 /* Helper.swift */,
+				1EF5145C2CD763DA00F68084 /* Logger.swift */,
 				1E3E091D2CB2A1E700EE1868 /* MusicPlayer.swift */,
+				1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */,
 				D3ABDF702CB6B68C005CD01F /* Notification.swift */,
 			);
 			path = Utils;
@@ -725,18 +751,6 @@
 		1EF8A0AB2CB559C500ADB783 /* Kkugy */ = {
 			isa = PBXGroup;
 			children = (
-				1E91466C2CD0C8A300DBCD00 /* ControlButtonView.swift */,
-				1EB7B3E22CD2128900FF4244 /* ProgressBarView.swift */,
-				1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */,
-				1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */,
-				1EF5145C2CD763DA00F68084 /* Logger.swift */,
-				1E7592642CE1E0220050D10D /* ToolTipView.swift */,
-				1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */,
-				1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */,
-				1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */,
-				1E7592662CE1EFC50050D10D /* AppleWatchStatus.swift */,
-				1EB7B3E42CD21F9500FF4244 /* StatusTagView.swift */,
-				1EB7B3EC2CD3701B00FF4244 /* CountDownLottieView.swift */,
 			);
 			path = Kkugy;
 			sourceTree = "<group>";
@@ -745,13 +759,7 @@
 			isa = PBXGroup;
 			children = (
 				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
-				D32330922CDE37FB007D1003 /* Request.swift */,
-				D32330942CDE382C007D1003 /* RequestStatus.swift */,
-				D30101D62CE1E56C005742E6 /* ToastAlert.swift */,
 				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
-				D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */,
-				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
-				D3C17AE32CED087D0016837A /* View */,
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
 			);
@@ -761,7 +769,6 @@
 		1EF8A0AD2CB559D300ADB783 /* Norang */ = {
 			isa = PBXGroup;
 			children = (
-				EE7A8B952CCFB88200079D75 /* ScoreService.swift */,
 			);
 			path = Norang;
 			sourceTree = "<group>";
@@ -776,8 +783,6 @@
 		1EF8A0AF2CB559E100ADB783 /* Lyosha */ = {
 			isa = PBXGroup;
 			children = (
-				1A5E09112CEB83AD00E17FF4 /* Fonts.swift */,
-				1AD0F9BA2CF46F8E009538B4 /* BadgeContainer.swift */,
 			);
 			path = Lyosha;
 			sourceTree = "<group>";
@@ -799,19 +804,6 @@
 				D3693D6E2CD3C7EE00E37D2C /* WatchCountdownView.swift */,
 				D3D6D1B62CBE568C00D22886 /* WatchPlayView.swift */,
 				D3D6D1B82CBE8B6300D22886 /* WatchScoreTitleView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		D3C17AE32CED087D0016837A /* View */ = {
-			isa = PBXGroup;
-			children = (
-				D30101D42CE1DC35005742E6 /* ExtraInfoView.swift */,
-				D323308E2CDE37C9007D1003 /* RequestCardView.swift */,
-				D3C17AE82CEF0CA50016837A /* ScoreSearchView.swift */,
-				D3C17AE42CED088C0016837A /* BeforeSearchView.swift */,
-				D3C17AE62CED089A0016837A /* EmptyResultView.swift */,
-				D37DFEE22CE9D5020073ABAB /* EmptyStateView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1137,7 +1129,7 @@
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,
 				EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */,
 				1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */,
-				1E3D56D72CF44A9300986EEE /* audioPreviewButton.swift in Sources */,
+				1E3D56D72CF44A9300986EEE /* AudioPreviewButton.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				1ED9FECB2CBE781000472C51 /* MeasureProgressView.swift in Sources */,
