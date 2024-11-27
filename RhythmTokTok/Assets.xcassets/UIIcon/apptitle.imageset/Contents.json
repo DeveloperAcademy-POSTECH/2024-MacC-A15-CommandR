@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "리듬톡톡.svg",
+      "filename" : "apptitle.svg",
       "idiom" : "universal"
     }
   ],
@@ -10,7 +10,6 @@
     "version" : 1
   },
   "properties" : {
-    "compression-type" : "automatic",
     "preserves-vector-representation" : true
   }
 }
