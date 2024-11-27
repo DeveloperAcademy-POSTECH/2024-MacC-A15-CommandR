@@ -234,20 +234,67 @@ extension ScoreListViewController {
 
 // MARK: - [Ext] 악보 삭제, 수정 기능 관련
 extension ScoreListViewController: ScoreTitleChangeDelegate {
-    private func presentTitleChangeModal() {
+    private func presentTitleChangeModal(currentTitle: String, onTitleChanged: @escaping (String) -> Void) {
+        // 중복 호출 방지
+        if presentedViewController != nil {
+            print("모달이 이미 표시되어 있습니다.")
+            return
+        }
+
+        // Dimmed Background 추가
         if dimmedBackgroundView == nil {
             dimmedBackgroundView = UIView(frame: view.bounds)
             dimmedBackgroundView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
             dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             view.addSubview(dimmedBackgroundView!)
         }
+
+        // 새로운 ScoreTitleChangeViewController 생성
+        let scoreTitleChangeVC = ScoreTitleChangeViewController()
         scoreTitleChangeVC.delegate = self
+        scoreTitleChangeVC.currentTitle = currentTitle
+        scoreTitleChangeVC.onTitleChanged = onTitleChanged
         scoreTitleChangeVC.modalPresentationStyle = .pageSheet
+
+        // Sheet Presentation 설정
+        if let sheet = scoreTitleChangeVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+        }
+
         present(scoreTitleChangeVC, animated: true)
     }
+    //    private func presentTitleChangeModal() {
+//        // 이미 모달이 표시된 경우 중복 표시 방지
+//            if presentedViewController != nil {
+//                print("모달이 이미 표시되어 있습니다.")
+//                return
+//            }
+//        
+//        if dimmedBackgroundView == nil {
+//            dimmedBackgroundView = UIView(frame: view.bounds)
+//            dimmedBackgroundView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+//            dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//            view.addSubview(dimmedBackgroundView!)
+//        }
+//        
+//        scoreTitleChangeVC.delegate = self
+//        scoreTitleChangeVC.modalPresentationStyle = .pageSheet
+//        
+//        // Adjusting sheet height
+//        if let sheet = scoreTitleChangeVC.sheetPresentationController {
+//            sheet.detents = [
+//                .medium() // 기본 medium 높이 제공
+//            ]
+//            sheet.prefersGrabberVisible = true // Grabber 표시 여부
+//        }
+//        
+//        present(scoreTitleChangeVC, animated: true)
+//    }
     
     func removeOverlay() {
         dimmedBackgroundView?.removeFromSuperview()
+        dimmedBackgroundView = nil // 참조 해제
     }
     
     private func showActionSheet(for index: Int) {
@@ -271,16 +318,28 @@ extension ScoreListViewController: ScoreTitleChangeDelegate {
         let scoreToEdit = scoreList[index]
         print("수정하기 선택: \(scoreToEdit.title)")
 
-        scoreTitleChangeVC.currentTitle = scoreToEdit.title // Pass the current title to the modal
-        scoreTitleChangeVC.onTitleChanged = { [weak self] changedTitle in
+        presentTitleChangeModal(currentTitle: scoreToEdit.title) { [weak self] changedTitle in
+            guard let self = self else { return }
             print("Title changed to: \(changedTitle)")
-            self?.scoreList[index].title = changedTitle // Update the score list with the new title
-            self?.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle) // Update Core Data
-            self?.scoreListView.tableView.reloadData() // Refresh the table view
+            self.scoreList[index].title = changedTitle
+            self.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle)
+            self.scoreListView.tableView.reloadData()
         }
-
-        presentTitleChangeModal()
     }
+//    private func editScore(at index: Int) {
+//        let scoreToEdit = scoreList[index]
+//        print("수정하기 선택: \(scoreToEdit.title)")
+//
+//        scoreTitleChangeVC.currentTitle = scoreToEdit.title // Pass the current title to the modal
+//        scoreTitleChangeVC.onTitleChanged = { [weak self] changedTitle in
+//            print("Title changed to: \(changedTitle)")
+//            self?.scoreList[index].title = changedTitle // Update the score list with the new title
+//            self?.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle) // Update Core Data
+//            self?.scoreListView.tableView.reloadData() // Refresh the table view
+//        }
+//
+//        presentTitleChangeModal()
+//    }
     
     private func deleteScore(at index: Int) {
         let scoreToDelete = scoreList[index]

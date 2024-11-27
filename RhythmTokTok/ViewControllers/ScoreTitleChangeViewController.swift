@@ -6,7 +6,6 @@
 //
 import UIKit
 
-// 모달이 닫혔을 때 어두운 배경을 제거하기
 protocol ScoreTitleChangeDelegate: AnyObject {
     func removeOverlay()
 }
@@ -20,15 +19,51 @@ class ScoreTitleChangeViewController: UIViewController {
     private let titleTextField = UITextField()
     private let subtitleLabel = UILabel()
     private let confirmButton = UIButton(type: .system)
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        view.layer.cornerRadius = 24 // 모달 뷰의 모서리 설정
-        titleTextField.becomeFirstResponder() // 키패드가 띄워지도록 자동 포커스
-        
-        // 선택된 아이템의 제목으로 초기화
+        print("ScoreTitleChangeViewController viewWillAppear")
+
+        view.layer.cornerRadius = 24
+        titleTextField.becomeFirstResponder()
         titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
+
+        if let sheet = sheetPresentationController {
+            sheet.detents = [
+                .custom { context in
+                    let contentHeight = self.calculateContentHeight()
+                    return min(contentHeight, context.maximumDetentValue)
+                }
+            ]
+            sheet.prefersGrabberVisible = true
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
+    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        print("ScoreTitleChangeViewController viewWillAppear")
+//
+//        super.viewWillAppear(animated)
+//        
+//        view.layer.cornerRadius = 24
+//        titleTextField.becomeFirstResponder()
+//        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
+//        
+//        if let sheet = sheetPresentationController {
+//            sheet.detents = [
+//                .custom { context in
+//                    let contentHeight = self.calculateContentHeight()
+//                    return min(contentHeight, context.maximumDetentValue)
+//                }
+//            ]
+//            sheet.prefersGrabberVisible = true
+//            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+//        }
+//    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("ScoreTitleChangeViewController viewDidAppear")
+        super.viewDidAppear(animated)
+        titleTextField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -37,27 +72,24 @@ class ScoreTitleChangeViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        print("ScoreTitleChangeViewController viewDidLoad")
+
         super.viewDidLoad()
-
         setupUI()
-//        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
-        titleTextField.addTarget(self, action: #selector(updateBorderColor), for: .editingChanged) // Register for text changes
-
+        titleTextField.addTarget(self, action: #selector(updateBorderColor), for: .editingChanged)
         confirmButton.addTarget(self, action: #selector(titleTextFieldDidChange), for: .editingChanged)
-        
-        if let sheet = sheetPresentationController {
-            let customDetent = UISheetPresentationController.Detent.custom(resolver: { context in
-                return context.maximumDetentValue * 0.3 // 모달 높이 조정
-            })
-            sheet.detents = [customDetent]
-            sheet.prefersGrabberVisible = true
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-        }
+    }
+    
+    private func calculateContentHeight() -> CGFloat {
+        let textFieldHeight = titleTextField.intrinsicContentSize.height + 20
+        let buttonHeight = confirmButton.intrinsicContentSize.height
+        let spacing: CGFloat = 40 + 32
+        return textFieldHeight + buttonHeight + spacing
     }
     
     private func setupUI() {
         view.backgroundColor = .white
-
+        
         setTitleTextFieldUI()
         setSubtitleLabelUI()
         setConfirmButtonUI()
