@@ -18,14 +18,16 @@ class SoundKeySettingSectionView: UIView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "조 설정"
-        label.font = UIFont(name: "Pretendard-Bold", size: 21)
+        label.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        label.adjustsFontForContentSizeCategory = true
         return label
     }()
     
     let currentSoundKeyLabel: UILabel = {
         let label = UILabel()
         label.text = "현재 음"
-        label.font = UIFont(name: "Pretendard-Medium", size: 24)
+        label.font = UIFont.customFont(forTextStyle: .heading1Medium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .lableSecondary
         return label
     }()
@@ -40,7 +42,8 @@ class SoundKeySettingSectionView: UIView {
     let currentSoundKeyValueLabel: UILabel = {
         let label = UILabel()
         label.text = "0"
-        label.font = UIFont(name: "Pretendard-Medium", size: 24)
+        label.font = UIFont.customFont(forTextStyle: .heading1Medium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .info
         return label
     }()
@@ -52,12 +55,13 @@ class SoundKeySettingSectionView: UIView {
         button.setImage(UIImage(named: "flat"), for: .normal)
         button.tintColor = .lableSecondary
         button.setTitle("내림", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        button.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitleColor(.lableSecondary, for: .normal)
         button.backgroundColor = UIColor(named: "button_tertiary")
         button.setBackgroundColor(.lightGray, for: .highlighted)
-        button.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 163.5).isActive = true
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 48).isActive = true
+        button.widthAnchor.constraint(greaterThanOrEqualToConstant: 163.5).isActive = true
         button.layer.borderColor = UIColor(named: "border_primary")?.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 8
@@ -67,6 +71,14 @@ class SoundKeySettingSectionView: UIView {
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 4)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: -4)
         
+        // 이미지 크기 조정
+        if let fontSize = button.titleLabel?.font.pointSize {
+            let config = UIImage.SymbolConfiguration(pointSize: fontSize, weight: .medium)
+            button.setPreferredSymbolConfiguration(config, forImageIn: .normal)
+        }
+        
+        button.sizeToFit()
+        
         return button
     }()
     
@@ -75,12 +87,13 @@ class SoundKeySettingSectionView: UIView {
         button.setImage(UIImage(named: "sharp"), for: .normal)
         button.tintColor = .lableSecondary
         button.setTitle("올림", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        button.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.setTitleColor(.lableSecondary, for: .normal)
         button.backgroundColor = UIColor(named: "button_tertiary")
         button.setBackgroundColor(.lightGray, for: .highlighted)
-        button.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 163.5).isActive = true
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 48).isActive = true
+        button.widthAnchor.constraint(greaterThanOrEqualToConstant: 163.5).isActive = true
         button.layer.borderColor = UIColor(named: "border_primary")?.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 8
@@ -91,13 +104,22 @@ class SoundKeySettingSectionView: UIView {
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 4)
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: -4)
         
+        // 이미지 크기 조정
+        if let fontSize = button.titleLabel?.font.pointSize {
+            let config = UIImage.SymbolConfiguration(pointSize: fontSize, weight: .medium)
+            button.setPreferredSymbolConfiguration(config, forImageIn: .normal)
+        }
+        
+        button.sizeToFit()
+        
         return button
     }()
     
     let descriptionLabel1: UILabel = {
         let label = UILabel()
         label.text = "· 한 번에 0.5씩, 반음 단위로 높이거나 낮출 수 있어요."
-        label.font = UIFont(name: "Pretendard-Regular", size: 14)
+        label.font = UIFont.customFont(forTextStyle: .captionRegular)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .lableTertiary
         label.numberOfLines = 0
         return label
@@ -106,7 +128,8 @@ class SoundKeySettingSectionView: UIView {
     let descriptionLabel2: UILabel = {
         let label = UILabel()
         label.text = "· 조를 변경한 후, 미리듣기로 변경된 소리를 들을 수 있어요."
-        label.font = UIFont(name: "Pretendard-Regular", size: 14)
+        label.font = UIFont.customFont(forTextStyle: .captionRegular)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .lableTertiary
         label.numberOfLines = 0
         return label
@@ -167,8 +190,8 @@ class SoundKeySettingSectionView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
 
-            audioPreviewButton.widthAnchor.constraint(equalToConstant: 110),
-            audioPreviewButton.heightAnchor.constraint(equalToConstant: 40),
+            audioPreviewButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 110),
+            audioPreviewButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
             
             soundKeyAudioPriviewStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             soundKeyAudioPriviewStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),

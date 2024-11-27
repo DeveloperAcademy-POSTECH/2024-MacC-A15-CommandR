@@ -37,7 +37,7 @@ class ToolTipView: UIView {
         // 라운드 박스 설정
         containerView.layer.cornerRadius = 12
         containerView.layer.shadowColor = UIColor.black.cgColor // 그림자 색상
-        containerView.layer.shadowOpacity = 0.2 // 그림자 투명도 (0.0 ~ 1.0)
+        containerView.layer.shadowOpacity = 0.25 // 그림자 투명도 (0.0 ~ 1.0)
         containerView.layer.shadowOffset = CGSize(width: 0, height: 4) // 그림자 오프셋
         containerView.layer.shadowRadius = 8 // 그림자의 블러 반경
         containerView.layer.masksToBounds = false // 그림자가 컨테이너 밖으로 보이게 설정

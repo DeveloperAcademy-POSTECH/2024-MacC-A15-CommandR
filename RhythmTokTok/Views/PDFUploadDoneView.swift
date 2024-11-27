@@ -36,7 +36,7 @@ class PDFUploadDoneView: UIView {
     
     private func setupUI() {
         // LottieView 셋업
-        lottieView = LottieAnimationView(name: "Loading")
+        lottieView = LottieAnimationView(name: "Change")
         lottieView.translatesAutoresizingMaskIntoConstraints = false
         lottieView.contentMode = .center
         lottieView.loopMode = .loop
@@ -127,7 +127,7 @@ class PDFUploadDoneView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             
-            subtitleLabel1.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            subtitleLabel1.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
             subtitleLabel1.centerXAnchor.constraint(equalTo: centerXAnchor),
             subtitleLabel1.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             subtitleLabel1.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),

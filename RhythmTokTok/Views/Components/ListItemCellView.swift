@@ -27,7 +27,8 @@ class ListItemCellView: UITableViewCell {
     // 레이블
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Pretendard-Bold", size: 18)
+        label.font = UIFont.customFont(forTextStyle: .body1Bold)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = UIColor(named: "lable_secondary")
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

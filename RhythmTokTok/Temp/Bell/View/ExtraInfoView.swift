@@ -1,5 +1,5 @@
 //
-//  InProgressInfoView.swift
+//  ExtraInfoView.swift
 //  RhythmTokTok
 //
 //  Created by Byeol Kim on 11/11/24.
@@ -7,21 +7,29 @@
 
 import UIKit
 
-class InProgressInfoView: UIView {
+class ExtraInfoView: UIView {
+    
+    var text: String? {
+        didSet {
+            infoLabel.text = text
+        }
+    }
     
     private let infoLabel: UILabel = {
         let label = UILabel()
-        label.text = "🚨 음악 완성까지 약 1~2일이 소요될 수 있어요"
-        label.font = UIFont(name: "Pretendard-Regular", size: 14)
+        label.font = UIFont.customFont(forTextStyle: .captionMedium)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = UIColor(named: "lable_tertiary")
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(text: String? = nil) {
+        self.text = text
+        super.init(frame: .zero)
         setupView()
+        infoLabel.text = text
     }
     
     required init?(coder: NSCoder) {
@@ -39,8 +47,7 @@ class InProgressInfoView: UIView {
             infoLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             infoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             infoLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            infoLabel.heightAnchor.constraint(equalToConstant: 24)
+            infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }
 }

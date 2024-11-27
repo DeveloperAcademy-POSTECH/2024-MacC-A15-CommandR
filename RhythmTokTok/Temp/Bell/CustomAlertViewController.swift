@@ -8,8 +8,8 @@
 import UIKit
 
 class CustomAlertViewController: UIViewController {
-    private let titleText: String
-    private let messageText: String
+    let titleText: String
+    let messageText: String
     private let confirmButtonText: String
     private let cancelButtonText: String
     private let confirmButtonColor: UIColor
@@ -45,7 +45,13 @@ class CustomAlertViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBackgroundDismissGesture()
         setupAlertView()
+    }
+    
+    private func setupBackgroundDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundTap))
+        view.addGestureRecognizer(tapGesture)
     }
     
     private func setupAlertView() {
@@ -54,26 +60,50 @@ class CustomAlertViewController: UIViewController {
         let alertContainer = createAlertContainer()
         view.addSubview(alertContainer)
 
-        let titleLabel = createLabel(text: titleText, fontName: "Pretendard-Bold", fontSize: 21)
+        let titleLabel = UILabel()
+        titleLabel.text = titleText
+        titleLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.textColor = UIColor(named: "lable_primary")
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.numberOfLines = 0 // 멀티라인 허용
+        titleLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         alertContainer.addSubview(titleLabel)
-
-        let messageLabel = createLabel(text: messageText, fontName: "Pretendard-Medium", fontSize: 16)
+        
+        let messageLabel = UILabel()
+        messageLabel.text = messageText
+        messageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
+        messageLabel.adjustsFontForContentSizeCategory = true
+        messageLabel.textColor = UIColor(named: "lable_tertiary")
+        messageLabel.numberOfLines = 0 // 멀티라인 허용
+        messageLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         applyHighlights(to: messageLabel)
         alertContainer.addSubview(messageLabel)
 
-        let closeButton = createButton(title: cancelButtonText, color: cancelButtonColor, action: #selector(cancelButtonTapped))
+        let closeButton = createButton(title: cancelButtonText,
+                                       color: cancelButtonColor,
+                                       action: #selector(cancelButtonTapped))
         alertContainer.addSubview(closeButton)
 
-        let confirmButton = createButton(title: confirmButtonText, color: confirmButtonColor, action: #selector(confirmAction))
+        let confirmButton = createButton(title: confirmButtonText,
+                                         color: confirmButtonColor,
+                                         action: #selector(confirmAction))
         alertContainer.addSubview(confirmButton)
 
-        setupConstraints(for: alertContainer, titleLabel: titleLabel, messageLabel: messageLabel, closeButton: closeButton, confirmButton: confirmButton)
+        setupConstraints(for: alertContainer,
+                         titleLabel: titleLabel,
+                         messageLabel: messageLabel,
+                         closeButton: closeButton,
+                         confirmButton: confirmButton)
     }
 
     private func createAlertContainer() -> UIView {
         let alertContainer = UIView()
         alertContainer.backgroundColor = UIColor(named: "background_primary")
         alertContainer.layer.cornerRadius = 16
+        alertContainer.isUserInteractionEnabled = true
         alertContainer.translatesAutoresizingMaskIntoConstraints = false
         return alertContainer
     }
@@ -90,7 +120,11 @@ class CustomAlertViewController: UIViewController {
     private func createButton(title: String, color: UIColor, action: Selector) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        button.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.numberOfLines = 0 // 멀티라인 허용
+        button.titleLabel?.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
+//        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 38, bottom: 10, right: )
         button.layer.cornerRadius = 12
         button.backgroundColor = color
         
@@ -106,30 +140,45 @@ class CustomAlertViewController: UIViewController {
         return button
     }
 
-    private func setupConstraints(for alertContainer: UIView, titleLabel: UILabel, messageLabel: UILabel, closeButton: UIButton, confirmButton: UIButton) {
+    private func setupConstraints(for alertContainer: UIView,
+                                  titleLabel: UILabel,
+                                  messageLabel: UILabel,
+                                  closeButton: UIButton,
+                                  confirmButton: UIButton) {
         NSLayoutConstraint.activate([
-            alertContainer.widthAnchor.constraint(equalToConstant: 335),
-            alertContainer.heightAnchor.constraint(equalToConstant: 166),
+            alertContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            alertContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             alertContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            alertContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            alertContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            alertContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: 196),
             
+            // titleLabel 제약 조건
             titleLabel.topAnchor.constraint(equalTo: alertContainer.topAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: alertContainer.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: alertContainer.trailingAnchor, constant: -16),
-            
+            titleLabel.trailingAnchor.constraint(equalTo: alertContainer.trailingAnchor, constant: -20),
+
+            // messageLabel 제약 조건
             messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 14),
             messageLabel.leadingAnchor.constraint(equalTo: alertContainer.leadingAnchor, constant: 20),
-            messageLabel.trailingAnchor.constraint(equalTo: alertContainer.trailingAnchor, constant: -16),
+            messageLabel.trailingAnchor.constraint(equalTo: alertContainer.trailingAnchor, constant: -20),
             
+            // closeButton 제약 조건
             closeButton.leadingAnchor.constraint(equalTo: alertContainer.leadingAnchor, constant: 20),
             closeButton.bottomAnchor.constraint(equalTo: alertContainer.bottomAnchor, constant: -20),
-            closeButton.widthAnchor.constraint(equalToConstant: 143),
-            closeButton.heightAnchor.constraint(equalToConstant: 48),
-            
+            closeButton.widthAnchor.constraint(equalTo: confirmButton.widthAnchor), // 버튼 크기 동일
+            closeButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48), // 텍스트 + 패딩
+
+            // confirmButton 제약 조건
             confirmButton.trailingAnchor.constraint(equalTo: alertContainer.trailingAnchor, constant: -20),
             confirmButton.bottomAnchor.constraint(equalTo: alertContainer.bottomAnchor, constant: -20),
-            confirmButton.widthAnchor.constraint(equalToConstant: 143),
-            confirmButton.heightAnchor.constraint(equalToConstant: 48)
+            confirmButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 143), // 최소 가로 크기
+            confirmButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48), // 텍스트 + 패딩
+            
+            // 버튼 간 간격
+            closeButton.trailingAnchor.constraint(equalTo: confirmButton.leadingAnchor, constant: -10),
+            
+            // alertContainer의 동적 높이 설정
+            messageLabel.bottomAnchor.constraint(equalTo: closeButton.topAnchor, constant: -20)
         ])
     }
 
@@ -166,4 +215,13 @@ class CustomAlertViewController: UIViewController {
             self.onCancel?()
         }
     }
+    
+    // 알림창 말고 배경 누를때 창 꺼지기
+    @objc private func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
+         let touchPoint = gesture.location(in: view)
+         let alertFrame = view.subviews.first?.frame ?? .zero
+         if !alertFrame.contains(touchPoint) {
+             dismiss(animated: true, completion: nil)
+         }
+     }
 }

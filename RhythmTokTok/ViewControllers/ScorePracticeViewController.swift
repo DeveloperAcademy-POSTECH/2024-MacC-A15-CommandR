@@ -262,6 +262,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
             .sink { isEnd in
                 if isEnd {
                     IOStoWatchConnectivityManager.shared.playStatus = .done
+                    DispatchQueue.main.async {
+                        ToastAlert.show(message: "악보 연습을 마쳤어요! 최고인데요?", in: self.view, iconName: "congratulation")
+                    }
                 }
             }
             .store(in: &cancellables)
