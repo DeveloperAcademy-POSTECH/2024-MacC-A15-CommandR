@@ -43,6 +43,23 @@ class PDFUploadDoneViewController: UIViewController, PDFUploadDoneViewDelegate {
     }
     
     func didTapNavigateButton() {
-        
+        // Step 1: home view controller 생성
+           let homeViewController = ScoreListViewController()
+
+           // Step 2: request processing view controller 생성
+           let requestViewController = RequestProcessingViewController()
+
+           // Step 3: 새로운 navigationController 생성
+           let navigationController = UINavigationController(rootViewController: homeViewController)
+
+           // Step 4: 새로운 navigationController 위에 requestViewController를 push
+           navigationController.pushViewController(requestViewController, animated: false)
+
+           // Step 5: 새로운 navigationController를 root controller로 설정
+           if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first {
+               window.rootViewController = navigationController
+               window.makeKeyAndVisible()
+           }
     }
 }
