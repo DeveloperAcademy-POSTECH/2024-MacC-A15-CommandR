@@ -527,11 +527,14 @@
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
+				023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
+				023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
 				1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */,
 				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
+				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
 				D3ABDF6C2CB6A343005CD01F /* SettingViewController.swift */,
 				EE7B28AD2CBE8B8300325725 /* ScoreListViewController.swift */,
 				1ED9FEC62CBE4B2E00472C51 /* ScorePracticeViewController.swift */,
@@ -646,6 +649,7 @@
 		1EF8A0A42CB53DF100ADB783 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
 				EE7A8B952CCFB88200079D75 /* ScoreService.swift */,
 				EEBE60BF2CB66D6300BC6739 /* MediaManager.swift */,
 				EEBE60BB2CB66C9000BC6739 /* PDFConvertManager.swift */,
@@ -748,8 +752,6 @@
 		1EF8A0AA2CB559C000ADB783 /* Wendy */ = {
 			isa = PBXGroup;
 			children = (
-				023AA6212CEF1B05006A8DFA /* ErrorViewController.swift */,
-				023AA6232CEF228D006A8DFA /* InternetErrorViewController.swift */,
 			);
 			path = Wendy;
 			sourceTree = "<group>";
@@ -764,8 +766,6 @@
 		1EF8A0AC2CB559CE00ADB783 /* Bell */ = {
 			isa = PBXGroup;
 			children = (
-				D323308C2CDE36E9007D1003 /* ServerManager.swift */,
-				D32330962CDE5272007D1003 /* RequestProcessingViewController.swift */,
 				D3CE18C52CE9B520008D120C /* AES256Cryption.swift */,
 				D37DFEE02CE9C3F30073ABAB /* ServerSetting.swift */,
 			);
