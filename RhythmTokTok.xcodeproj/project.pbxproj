@@ -520,13 +520,11 @@
 		1E3E09212CB2A34700EE1868 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
 				EE4203952CD226750081F2A1 /* BPMSettingSectionViewController.swift */,
 				EEE9D6B62CBBF7D800E8E10E /* CheckPDFViewController.swift */,
 				D30101D82CE1EADC005742E6 /* CustomAlertViewController.swift */,
 				EE4203A32CD297A80081F2A1 /* HapticSettingSectionViewController.swift */,
 				1E3E091F2CB2A32500EE1868 /* LoadingViewController.swift */,
-				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
 				1AD0F9872CEF5F90009538B4 /* PDFUploadProgressViewController.swift */,
 				1A0AE6D82CE5DD5200564859 /* PDFUploadDoneViewController.swift */,
 				1A0AE6D02CE1ED7400564859 /* PDFConvertRequestConfirmationViewController.swift */,
@@ -536,7 +534,6 @@
 				D3F8C5342CEC406B00D2B012 /* ScoreSearchViewController.swift */,
 				EE00541B2CEDCE0D00EB91DD /* ScoreTitleChangeViewController.swift */,
 				61318FA42CDF8D3100D8FC26 /* TitleInputViewController.swift */,
-				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -608,11 +605,16 @@
 		1E526F8C2CC91FB9004E1C6E /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				EEBE60B72CB6526400BC6739 /* AddGridViewController.swift */,
 				1ED9FED22CBF826900472C51 /* SetBPMViewController.swift */,
 				1ED9FECA2CBE780000472C51 /* MeasureProgressView.swift */,
 				1ED9FECC2CBE793600472C51 /* ProgressTableViewCell.swift */,
 				616BD0972CC3F76300F2C72D /* ScoreView.swift */,
+				1ED9FEBB2CBD56C700472C51 /* LottieViewController.swift */,
+				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
+				1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */,
 				D3D6D1BA2CBE909C00D22886 /* WatchTestViewController.swift */,
+				02BFECEF2CB10A13003CEC8A /* ViewController.swift */,
 			);
 			path = Deprecated;
 			sourceTree = "<group>";
@@ -702,9 +704,7 @@
 				1ED9FED02CBF653800472C51 /* BPMLabel.swift */,
 				1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */,
 				EE7B28AF2CBE8F4500325725 /* ListItemCellView.swift */,
-				616BD0D72CC5269100F2C72D /* MeasureButton.swift */,
 				1EB7B3E82CD26B6E00FF4244 /* MeasureControllerButton.swift */,
-				1ED9FEC82CBE53E100472C51 /* PracticeNavigationBar.swift */,
 				1ED9FECE2CBE8EB800472C51 /* PlayPauseButton.swift */,
 				EE4203AA2CD3D5050081F2A1 /* RadioButtonOptionItemPicker.swift */,
 				EE4203A82CD3D2B80081F2A1 /* RadioButtonOptionItem.swift */,
