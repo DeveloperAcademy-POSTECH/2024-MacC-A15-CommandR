@@ -140,19 +140,19 @@ class BPMSettingSectionView: UIView {
         NSLayoutConstraint.activate([
             // titleLabel 제약 조건
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             // bpmButton 제약 조건
             bpmButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            bpmButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            bpmButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            bpmButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+            bpmButton.trailingAnchor.constraint(equalTo: trailingAnchor),
             bpmButton.heightAnchor.constraint(equalToConstant: 44), // 버튼 높이 설정
             
             // descriptionLabel 제약 조건
             descriptionLabel.topAnchor.constraint(equalTo: bpmButton.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)
         ])
     }

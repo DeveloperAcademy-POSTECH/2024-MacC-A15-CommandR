@@ -107,6 +107,10 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
     
     func didTapCompleteButton(with filename: String) {
         if buttonStatus == .active {
+            // UserDefaults에 제목 추가
+            addTitleToUserDefaults(filename)
+            
+            // 다음 화면으로 이동
             let pdfConfirmationViewController = PDFConvertRequestConfirmationViewController()
             pdfConfirmationViewController.fileURL = fileURL
             pdfConfirmationViewController.filename = filename
@@ -117,11 +121,20 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-            // Update the border color when the text field is touched
-            titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
-        }
+    private func addTitleToUserDefaults(_ title: String) {
+        // 기존 takenTitle 배열 가져오기
+        var takenTitles = UserDefaults.standard.stringArray(forKey: "takenTitle") ?? []
+
+        // UserDefaults 에 새로운 제목 추가
+        takenTitles.append(title)
+        UserDefaults.standard.set(takenTitles, forKey: "takenTitle")
+        print("UserDefaults에 제목 저장: \(title)")
+    }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Update the border color when the text field is touched
+        titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+    }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         // Optionally reset the border color when editing ends
@@ -137,29 +150,48 @@ class TitleInputViewController: UIViewController, TitleInputViewDelegate, UIText
     }
     
     func updateBorderColor() {
-        if let text = titleInputView.textField.text, text.isEmpty {
+        guard let text = titleInputView.textField.text else { return }
+        
+        if text.isEmpty {
             // TextField가 비어 있을 때 버튼 비활성화
             buttonStatus = .inactive
             titleInputView.completeButton.backgroundColor = UIColor(named: "button_inactive")
             titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
             titleInputView.subtitleLabel.textColor = UIColor(named: "lable_tertiary")
             updateAccessoryButtonState(isEnabled: false) // Update accessory button
-        } else if let text = titleInputView.textField.text, text.count > maxCharacterLimit {
+        } else if text.count > maxCharacterLimit {
             // 글자 수 제한 초과 시 버튼 비활성화 및 텍스트필드 색 변경
             titleInputView.textField.layer.borderColor = UIColor(named: "button_danger")?.cgColor
             titleInputView.subtitleLabel.textColor = UIColor(named: "button_danger")
+            titleInputView.subtitleLabel.text = "제목은 최대 \(maxCharacterLimit)글자까지 쓸 수 있어요"
             buttonStatus = .inactive
             titleInputView.completeButton.isEnabled = false
             titleInputView.completeButton.backgroundColor = UIColor(named: "button_inactive")
             updateAccessoryButtonState(isEnabled: false) // Update accessory button
+        } else if isTitleTaken(text) {
+            // 제목이 중복될 때 버튼 비활성화 및 텍스트필드 색 변경
+            titleInputView.textField.layer.borderColor = UIColor(named: "button_danger")?.cgColor
+            titleInputView.subtitleLabel.textColor = UIColor(named: "button_danger")
+            titleInputView.subtitleLabel.text = "이미 있는 제목이에요"
+            buttonStatus = .inactive
+            titleInputView.completeButton.isEnabled = false
+            titleInputView.completeButton.backgroundColor = UIColor(named: "button_inactive")
+            updateAccessoryButtonState(isEnabled: false)
         } else {
             // 조건이 맞을 시 버튼 활성화
             buttonStatus = .active
             titleInputView.textField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
             titleInputView.subtitleLabel.textColor = UIColor(named: "lable_tertiary")
+            titleInputView.subtitleLabel.text = ""
             titleInputView.completeButton.isEnabled = true
             titleInputView.completeButton.backgroundColor = UIColor(named: "button_primary")
             updateAccessoryButtonState(isEnabled: true) // Update accessory button
         }
+    }
+    
+    private func isTitleTaken(_ title: String) -> Bool {
+        // UserDefaults에서 takenTitle 배열 가져오기
+        let takenTitles = UserDefaults.standard.stringArray(forKey: "takenTitle") ?? []
+        return takenTitles.contains(title)
     }
 }

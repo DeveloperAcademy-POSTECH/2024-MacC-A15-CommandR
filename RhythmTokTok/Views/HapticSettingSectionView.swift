@@ -85,18 +85,18 @@ class HapticSettingSectionView: UIView {
             
             // Title Label Constraints
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             // StackView Constraints
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             // DescriptionLabel Constraints
             descriptionLabel.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }

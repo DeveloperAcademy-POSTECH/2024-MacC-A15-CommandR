@@ -346,11 +346,26 @@ class RequestProcessingViewController: UIViewController,
                     print("요청 취소 성공쓰 Updating UI...")
                     self.updateRequestsUI()
                     completion(true)
+                    
+                    // UserDefaults takenTitles 에서 해당 제목 삭제
+                    self.removeTitleFromUserDefaults(request.title)
                 } else {
                     ErrorHandler.handleError(error: "요청 취소 실패: \(message)")
                     completion(false)
                 }
             }
+        }
+    }
+    
+    private func removeTitleFromUserDefaults(_ title: String) {
+        // UserDefaults에서 takenTitle 배열 가져오기
+        var takenTitles = UserDefaults.standard.stringArray(forKey: "takenTitle") ?? []
+        
+        // 배열에서 해당 제목 제거
+        if let index = takenTitles.firstIndex(of: title) {
+            takenTitles.remove(at: index)
+            UserDefaults.standard.set(takenTitles, forKey: "takenTitle")
+            print("UserDefaults에서 제목 삭제: \(title)")
         }
     }
     
@@ -463,6 +478,7 @@ extension RequestProcessingViewController {
             }
         }
     }
+    
     private func deleteRequest(for requestID: Int) {
         guard let index = requests.firstIndex(where: { $0.id == requestID }) else {
             print("Request ID \(requestID) not found in requests array")

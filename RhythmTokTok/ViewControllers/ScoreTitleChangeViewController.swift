@@ -6,24 +6,64 @@
 //
 import UIKit
 
-// 모달이 닫혔을 때 어두운 배경을 제거하기
 protocol ScoreTitleChangeDelegate: AnyObject {
     func removeOverlay()
 }
 
 class ScoreTitleChangeViewController: UIViewController {
     var delegate: ScoreTitleChangeDelegate?
-    var currentTitle: String = ""
+    var currentTitle: String = "수정할 음악 제목을 입력하세요"
+    var maxCharacterLimit: Int = 20
     var onTitleChanged: ((String) -> Void)?
 
     private let titleTextField = UITextField()
+    private let subtitleLabel = UILabel()
     private let confirmButton = UIButton(type: .system)
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        view.layer.cornerRadius = 24 // 모달 뷰의 모서리 설정
-        titleTextField.becomeFirstResponder() // 키패드가 띄워지도록 자동 포커스
+        print("ScoreTitleChangeViewController viewWillAppear")
+
+        view.layer.cornerRadius = 24
+        titleTextField.becomeFirstResponder()
+        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
+
+        if let sheet = sheetPresentationController {
+            sheet.detents = [
+                .custom { context in
+                    let contentHeight = self.calculateContentHeight()
+                    return min(contentHeight, context.maximumDetentValue)
+                }
+            ]
+            sheet.prefersGrabberVisible = true
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
+    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        print("ScoreTitleChangeViewController viewWillAppear")
+//
+//        super.viewWillAppear(animated)
+//        
+//        view.layer.cornerRadius = 24
+//        titleTextField.becomeFirstResponder()
+//        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
+//        
+//        if let sheet = sheetPresentationController {
+//            sheet.detents = [
+//                .custom { context in
+//                    let contentHeight = self.calculateContentHeight()
+//                    return min(contentHeight, context.maximumDetentValue)
+//                }
+//            ]
+//            sheet.prefersGrabberVisible = true
+//            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+//        }
+//    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("ScoreTitleChangeViewController viewDidAppear")
+        super.viewDidAppear(animated)
+        titleTextField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -32,38 +72,43 @@ class ScoreTitleChangeViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        print("ScoreTitleChangeViewController viewDidLoad")
 
+        super.viewDidLoad()
         setupUI()
-        titleTextField.text = currentTitle.isEmpty ? "Untitled" : currentTitle
+        titleTextField.addTarget(self, action: #selector(updateBorderColor), for: .editingChanged)
         confirmButton.addTarget(self, action: #selector(titleTextFieldDidChange), for: .editingChanged)
-        
-        if let sheet = sheetPresentationController {
-            let customDetent = UISheetPresentationController.Detent.custom(resolver: { context in
-                return context.maximumDetentValue * 0.3 // 모달 높이 조정
-            })
-            sheet.detents = [customDetent]
-            sheet.prefersGrabberVisible = true
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-        }
+    }
+    
+    private func calculateContentHeight() -> CGFloat {
+        let textFieldHeight = titleTextField.intrinsicContentSize.height + 20
+        let buttonHeight = confirmButton.intrinsicContentSize.height
+        let spacing: CGFloat = 40 + 32
+        return textFieldHeight + buttonHeight + spacing
     }
     
     private func setupUI() {
         view.backgroundColor = .white
-
+        
         setTitleTextFieldUI()
+        setSubtitleLabelUI()
         setConfirmButtonUI()
         
         view.addSubview(titleTextField)
+        view.addSubview(subtitleLabel)
         view.addSubview(confirmButton)
         
         NSLayoutConstraint.activate([
-            titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
+            subtitleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
+            subtitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            subtitleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 8),
+
+            titleTextField.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 8),
             titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             titleTextField.widthAnchor.constraint(equalToConstant: 335),
             titleTextField.heightAnchor.constraint(equalToConstant: 64),
-            
+
             confirmButton.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 32),
             confirmButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             confirmButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -107,6 +152,14 @@ extension ScoreTitleChangeViewController {
         titleTextField.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
+    func setSubtitleLabelUI() {
+        subtitleLabel.text = ""
+        subtitleLabel.textColor = UIColor(named: "lable_tertiary")
+        subtitleLabel.font = UIFont.customFont(forTextStyle: .body2Regular)
+        subtitleLabel.adjustsFontForContentSizeCategory = true
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
     @objc private func titleTextFieldDidChange() {
         if let text = titleTextField.text, text.count > 3 {
             titleTextField.text = String(text.prefix(3)) // 첫 3글자만 남김
@@ -133,32 +186,118 @@ extension ScoreTitleChangeViewController {
     @objc private func confirmButtonTapped() {
         self.view.endEditing(true)
         
-        if let titleText = titleTextField.text {
-            if titleText == "" {
-                let alert = UIAlertController(title: "오류", message: "수정할 제목을 입력하세요.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
-                    self.clearTextField()
-                    self.titleTextField.becomeFirstResponder()
-                }))
-                self.present(alert, animated: true)
-            } else if titleText.count > 20 {
-                let alert = UIAlertController(title: "오류", message: "제목은 20자 이하로 입력하세요.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
-                    self.clearTextField()
-                    self.titleTextField.becomeFirstResponder()
-                }))
-                self.present(alert, animated: true)
-            } else {
-                onTitleChanged?(titleText)
-                dismiss(animated: true, completion: nil)
-            }
-        } else {
-            let alert = UIAlertController(title: "오류", message: "제목을 입력하세요.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
-                self.clearTextField()
-                self.titleTextField.becomeFirstResponder()
-            }))
-            self.present(alert, animated: true)
+        guard let titleText = titleTextField.text else {
+            showAlert(message: "제목을 입력하세요.")
+            return
         }
+        
+        // 유효성 검사
+        if titleText.isEmpty {
+            showAlert(message: "수정할 제목을 입력하세요.")
+        } else if titleText.count > 20 {
+            showAlert(message: "제목은 20자 이하로 입력하세요.")
+        } else {
+            onTitleChanged?(titleText)
+            updateTitleInUserDefaults(oldTitle: currentTitle, newTitle: titleText)
+            dismiss(animated: true, completion: nil)
+        }
+    }
+
+    // MARK: - Helper Methods
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "오류", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in
+            self.clearTextField()
+            self.titleTextField.becomeFirstResponder()
+        }))
+        self.present(alert, animated: true)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Update the border color when the text field is touched
+        titleTextField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        // Optionally reset the border color when editing ends
+        updateBorderColor()
+        titleTextField.layer.borderColor = UIColor(named: "border_primary")?.cgColor
+    }
+    
+    func didClearTextField() {
+        titleTextField.text = ""
+        updateBorderColor()
+        titleTextField.becomeFirstResponder()
+        textFieldDidBeginEditing(titleTextField)
+    }
+    
+    @objc func updateBorderColor() {
+        guard let text = titleTextField.text else { return }
+        
+        if text.isEmpty {
+            // TextField가 비어 있을 때 버튼 비활성화
+            confirmButton.isEnabled = false
+            confirmButton.backgroundColor = UIColor(named: "button_inactive")
+            titleTextField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+        } else if text.count > maxCharacterLimit {
+            // 글자 수 제한 초과 시 버튼 비활성화 및 텍스트필드 색 변경
+            titleTextField.layer.borderColor = UIColor(named: "button_danger")?.cgColor
+            subtitleLabel.textColor = UIColor(named: "button_danger")
+            subtitleLabel.text = "제목은 최대 \(maxCharacterLimit)글자까지 쓸 수 있어요"
+            confirmButton.isEnabled = false
+            confirmButton.backgroundColor = UIColor(named: "button_inactive")
+        } else if isTitleTaken(text, currentTitle) {
+            // 제목이 중복될 때 버튼 비활성화 및 텍스트필드 색 변경
+            titleTextField.layer.borderColor = UIColor(named: "button_danger")?.cgColor
+            subtitleLabel.textColor = UIColor(named: "button_danger")
+            subtitleLabel.text = "이미 있는 제목이에요"
+            confirmButton.isEnabled = false
+            confirmButton.backgroundColor = UIColor(named: "button_inactive")
+        } else {
+            // 조건이 맞을 시 버튼 활성화
+            titleTextField.layer.borderColor = UIColor(named: "button_primary")?.cgColor
+            subtitleLabel.textColor = UIColor(named: "lable_tertiary")
+            subtitleLabel.text = ""
+            confirmButton.isEnabled = true
+            confirmButton.backgroundColor = UIColor(named: "button_primary")
+        }
+    }
+
+// MARK: - UserDefaults 로 이미 있는 타이틀 관리
+    private func isTitleTaken(_ title: String, _ currentTitle: String) -> Bool {
+        var result: Bool = true
+
+        // UserDefaults에서 takenTitle 배열 가져오기
+        let takenTitles = UserDefaults.standard.stringArray(forKey: "takenTitle") ?? []
+        
+        // 적고있는 제목이 현재 제목이랑 같거나 -> result = false
+        // 적고있는 제목이 다른 기존 제목이랑 다른건 됨 -> result = false
+        if title == currentTitle || !takenTitles.contains(title) {
+            result = false
+        }
+        
+        return result
+    }
+    
+    private func updateTitleInUserDefaults(oldTitle: String, newTitle: String) {
+        let userDefaults = UserDefaults.standard
+        let key = "takenTitle"
+        
+        // 기존 제목 배열 가져오기
+        var savedTitles = userDefaults.stringArray(forKey: key) ?? []
+        
+        // 기존 제목 삭제
+        if let index = savedTitles.firstIndex(of: oldTitle) {
+            savedTitles.remove(at: index)
+        }
+        
+        // 새 제목 추가
+        if !savedTitles.contains(newTitle) {
+            savedTitles.append(newTitle)
+        }
+        
+        // 업데이트된 배열 저장
+        userDefaults.set(savedTitles, forKey: key)
+        print("Updated Titles in UserDefaults: \(savedTitles)")
     }
 }

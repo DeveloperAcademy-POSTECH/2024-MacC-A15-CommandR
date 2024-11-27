@@ -167,8 +167,8 @@ class SettingView: UIView {
             divider0.heightAnchor.constraint(equalToConstant: 1),
 
             bpmSettingSection.topAnchor.constraint(equalTo: divider0.bottomAnchor, constant: 16),
-            bpmSettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            bpmSettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            bpmSettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            bpmSettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
             divider1.topAnchor.constraint(equalTo: bpmSettingSection.bottomAnchor, constant: 16),
             divider1.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -176,8 +176,8 @@ class SettingView: UIView {
             divider1.heightAnchor.constraint(equalToConstant: 1),
 
             soundKeySettingSection.topAnchor.constraint(equalTo: divider1.bottomAnchor, constant: 16),
-            soundKeySettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            soundKeySettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            soundKeySettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            soundKeySettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
             divider2.topAnchor.constraint(equalTo: soundKeySettingSection.bottomAnchor, constant: 16),
             divider2.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -185,8 +185,8 @@ class SettingView: UIView {
             divider2.heightAnchor.constraint(equalToConstant: 1),
 
             soundSettingSection.topAnchor.constraint(equalTo: divider2.bottomAnchor, constant: 16),
-            soundSettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            soundSettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            soundSettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            soundSettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
             divider3.topAnchor.constraint(equalTo: soundSettingSection.bottomAnchor, constant: 16),
             divider3.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -194,13 +194,13 @@ class SettingView: UIView {
             divider3.heightAnchor.constraint(equalToConstant: 1),
 
             hapticSettingSection.topAnchor.constraint(equalTo: divider3.bottomAnchor, constant: 16),
-            hapticSettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            hapticSettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            hapticSettingSection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            hapticSettingSection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
             // Bottom Spacer View
             bottomSpacerView.topAnchor.constraint(equalTo: hapticSettingSection.bottomAnchor, constant: 16),
-            bottomSpacerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            bottomSpacerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+            bottomSpacerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            bottomSpacerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             bottomSpacerView.heightAnchor.constraint(equalToConstant: 130),
             bottomSpacerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 

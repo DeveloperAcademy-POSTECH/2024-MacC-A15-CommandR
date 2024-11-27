@@ -68,13 +68,13 @@ class SoundSettingSectionView: UIView, RadioButtonOptionItemPickerDelegate {
         NSLayoutConstraint.activate([
             // Title Label Constraints
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             // RadioButtonPicker Constraints
             radioButtonPicker.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            radioButtonPicker.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            radioButtonPicker.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            radioButtonPicker.leadingAnchor.constraint(equalTo: leadingAnchor),
+            radioButtonPicker.trailingAnchor.constraint(equalTo: trailingAnchor),
             radioButtonPicker.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
         ])
     }

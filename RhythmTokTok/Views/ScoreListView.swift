@@ -14,6 +14,7 @@ class ScoreListView: UIView {
         view.backgroundColor = .backgroundTertiary
         return view
     }()
+    
     // 테이블 라벨 선언
     let tableHeaderLabel: UILabel = {
         let label = UILabel()

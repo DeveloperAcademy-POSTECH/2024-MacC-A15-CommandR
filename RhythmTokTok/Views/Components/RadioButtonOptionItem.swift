@@ -7,10 +7,17 @@
 import UIKit
 
 class RadioButtonOptionItem: UIView {
-    let radioButton = RadioButton()
-    let titleLabel = UILabel()
-    
-    // 항목 식별자 또는 값
+    // 클릭 이벤트를 전달하기 위한 클로저
+    var onTapped: (() -> Void)?
+
+    var isChecked: Bool = false {
+            didSet {
+                updateRadioButtonImage()
+            }
+        }
+
+    private let radioButton = UIButton(type: .custom)
+    private let titleLabel = UILabel()
     let optionValue: String
     
     init(title: String, value: String) {
@@ -28,8 +35,9 @@ class RadioButtonOptionItem: UIView {
     private func setupView(title: String) {
         // 라디오 버튼 설정
         radioButton.translatesAutoresizingMaskIntoConstraints = false
-        radioButton.isChecked = false
-        
+        updateRadioButtonImage()
+        radioButton.addTarget(self, action: #selector(itemTapped), for: .touchUpInside)
+
         // 타이틀 라벨 설정
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = title
@@ -38,7 +46,7 @@ class RadioButtonOptionItem: UIView {
         titleLabel.isUserInteractionEnabled = true // 라벨에 제스처 추가 가능하도록 설정
         
         // 라벨에 터치 제스처 추가
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(itemTapped))
         titleLabel.addGestureRecognizer(tapGesture)
         
         // 뷰에 추가
@@ -73,8 +81,13 @@ class RadioButtonOptionItem: UIView {
         }
     }
     
-    @objc private func labelTapped() {
-        // 라벨 눌렀을 때 라디오 버튼 동작 실행
-        radioButton.sendActions(for: .touchUpInside)
+    private func updateRadioButtonImage() {
+        let imageName = isChecked ? "radioButtonOn" : "radioButtonOff"
+        let image = UIImage(named: imageName)
+        radioButton.setImage(image, for: .normal)
+    }
+    
+    @objc private func itemTapped() {
+        onTapped?() // 이벤트 전달
     }
 }

@@ -142,16 +142,6 @@ extension BPMSettingSectionViewController {
         bpmTextField.setContentHuggingPriority(.defaultHigh, for: .vertical)
         bpmTextField.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
-//    
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        
-//        // 텍스트 필드 높이를 텍스트 크기에 맞게 조정
-//        if let font = bpmTextField.font {
-//            let size = ("999" as NSString).size(withAttributes: [.font: font]) // 999는 3자리 기준 크기
-//            bpmTextField.heightAnchor.constraint(equalToConstant: size.height + 20).isActive = true
-//        }
-//    }
     
     @objc private func bpmTextFieldDidChange() {
         if let text = bpmTextField.text, text.count > 3 {

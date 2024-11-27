@@ -75,12 +75,30 @@ class ScoreListViewController: UIViewController {
         scoreList = [] // 리스트 한번 비워주기
         
         let storedScores = scoreService.fetchAllScores()
-        
         print("loading score")
+        
+        var titlesFromCoreData: [String] = []
+        
         for storedScore in storedScores {
             let score = convertScore(storedScore)
             scoreList.append(score)
+            titlesFromCoreData.append(score.title) // CoreData에서 제목 수집
         }
+        
+        // UserDefaults에 저장된 takenTitle 배열 가져오기
+        var takenTitles = UserDefaults.standard.stringArray(forKey: "takenTitle") ?? []
+        
+        // CoreData에서 불러온 제목을 중복 없이 추가
+        for title in titlesFromCoreData {
+            if !takenTitles.contains(title) {
+                takenTitles.append(title)
+            }
+        }
+        
+        // 업데이트된 배열을 UserDefaults에 저장
+        UserDefaults.standard.set(takenTitles, forKey: "takenTitle")
+        
+        print("UserDefaults: takenTitle: \(UserDefaults.standard.stringArray(forKey: "takenTitle"))")
         
         DispatchQueue.main.async {
             self.scoreListView.tableView.reloadData() // 테이블뷰 업데이트
@@ -221,20 +239,67 @@ extension ScoreListViewController {
 
 // MARK: - [Ext] 악보 삭제, 수정 기능 관련
 extension ScoreListViewController: ScoreTitleChangeDelegate {
-    private func presentTitleChangeModal() {
+    private func presentTitleChangeModal(currentTitle: String, onTitleChanged: @escaping (String) -> Void) {
+        // 중복 호출 방지
+        if presentedViewController != nil {
+            print("모달이 이미 표시되어 있습니다.")
+            return
+        }
+
+        // Dimmed Background 추가
         if dimmedBackgroundView == nil {
             dimmedBackgroundView = UIView(frame: view.bounds)
             dimmedBackgroundView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
             dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             view.addSubview(dimmedBackgroundView!)
         }
+
+        // 새로운 ScoreTitleChangeViewController 생성
+        let scoreTitleChangeVC = ScoreTitleChangeViewController()
         scoreTitleChangeVC.delegate = self
+        scoreTitleChangeVC.currentTitle = currentTitle
+        scoreTitleChangeVC.onTitleChanged = onTitleChanged
         scoreTitleChangeVC.modalPresentationStyle = .pageSheet
+
+        // Sheet Presentation 설정
+        if let sheet = scoreTitleChangeVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+        }
+
         present(scoreTitleChangeVC, animated: true)
     }
+    //    private func presentTitleChangeModal() {
+//        // 이미 모달이 표시된 경우 중복 표시 방지
+//            if presentedViewController != nil {
+//                print("모달이 이미 표시되어 있습니다.")
+//                return
+//            }
+//        
+//        if dimmedBackgroundView == nil {
+//            dimmedBackgroundView = UIView(frame: view.bounds)
+//            dimmedBackgroundView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+//            dimmedBackgroundView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//            view.addSubview(dimmedBackgroundView!)
+//        }
+//        
+//        scoreTitleChangeVC.delegate = self
+//        scoreTitleChangeVC.modalPresentationStyle = .pageSheet
+//        
+//        // Adjusting sheet height
+//        if let sheet = scoreTitleChangeVC.sheetPresentationController {
+//            sheet.detents = [
+//                .medium() // 기본 medium 높이 제공
+//            ]
+//            sheet.prefersGrabberVisible = true // Grabber 표시 여부
+//        }
+//        
+//        present(scoreTitleChangeVC, animated: true)
+//    }
     
     func removeOverlay() {
         dimmedBackgroundView?.removeFromSuperview()
+        dimmedBackgroundView = nil // 참조 해제
     }
     
     private func showActionSheet(for index: Int) {
@@ -258,16 +323,28 @@ extension ScoreListViewController: ScoreTitleChangeDelegate {
         let scoreToEdit = scoreList[index]
         print("수정하기 선택: \(scoreToEdit.title)")
 
-        scoreTitleChangeVC.currentTitle = scoreToEdit.title // Pass the current title to the modal
-        scoreTitleChangeVC.onTitleChanged = { [weak self] changedTitle in
+        presentTitleChangeModal(currentTitle: scoreToEdit.title) { [weak self] changedTitle in
+            guard let self = self else { return }
             print("Title changed to: \(changedTitle)")
-            self?.scoreList[index].title = changedTitle // Update the score list with the new title
-            self?.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle) // Update Core Data
-            self?.scoreListView.tableView.reloadData() // Refresh the table view
+            self.scoreList[index].title = changedTitle
+            self.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle)
+            self.scoreListView.tableView.reloadData()
         }
-
-        presentTitleChangeModal()
     }
+//    private func editScore(at index: Int) {
+//        let scoreToEdit = scoreList[index]
+//        print("수정하기 선택: \(scoreToEdit.title)")
+//
+//        scoreTitleChangeVC.currentTitle = scoreToEdit.title // Pass the current title to the modal
+//        scoreTitleChangeVC.onTitleChanged = { [weak self] changedTitle in
+//            print("Title changed to: \(changedTitle)")
+//            self?.scoreList[index].title = changedTitle // Update the score list with the new title
+//            self?.scoreService.updateScoreTitle(id: scoreToEdit.id, newTitle: changedTitle) // Update Core Data
+//            self?.scoreListView.tableView.reloadData() // Refresh the table view
+//        }
+//
+//        presentTitleChangeModal()
+//    }
     
     private func deleteScore(at index: Int) {
         let scoreToDelete = scoreList[index]

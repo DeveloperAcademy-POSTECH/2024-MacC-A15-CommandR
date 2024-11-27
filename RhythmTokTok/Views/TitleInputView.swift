@@ -46,7 +46,7 @@ class TitleInputView: UIView {
         // Subtitle label 셋업
         subtitleLabel = UILabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.text = "제목은 최대 20글자까지 쓸 수 있어요"
+        subtitleLabel.text = ""
         subtitleLabel.font = UIFont.customFont(forTextStyle: .body2Regular)
         subtitleLabel.adjustsFontForContentSizeCategory = true
         subtitleLabel.textColor = UIColor(named: "lable_tertiary")
