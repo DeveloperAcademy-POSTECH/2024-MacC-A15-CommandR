@@ -37,6 +37,9 @@
 		1E311DA22CE63D99003B8F00 /* PDFPageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */; };
 		1E311DA42CE646BA003B8F00 /* CheckPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */; };
 		1E311E712CEB63C1003B8F00 /* CommonNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */; };
+		1E3D56D72CF44A9300986EEE /* audioPreviewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */; };
+		1E3D56D92CF44AD300986EEE /* previewPlay.gif in Resources */ = {isa = PBXBuildFile; fileRef = 1E3D56D82CF44AD300986EEE /* previewPlay.gif */; };
+		1E3D56E92CF607CE00986EEE /* sound.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E3D56E82CF607CE00986EEE /* sound.json */; };
 		1E3E09162CB2989B00EE1868 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09152CB2988300EE1868 /* Measure.swift */; };
 		1E3E09182CB298AB00EE1868 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09172CB298A900EE1868 /* Note.swift */; };
 		1E3E091A2CB298E600EE1868 /* MusicXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */; };
@@ -247,6 +250,9 @@
 		1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFPageCell.swift; sourceTree = "<group>"; };
 		1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckPDFView.swift; sourceTree = "<group>"; };
 		1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonNavigationBar.swift; sourceTree = "<group>"; };
+		1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = audioPreviewButton.swift; sourceTree = "<group>"; };
+		1E3D56D82CF44AD300986EEE /* previewPlay.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = previewPlay.gif; sourceTree = "<group>"; };
+		1E3D56E82CF607CE00986EEE /* sound.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sound.json; sourceTree = "<group>"; };
 		1E3E09152CB2988300EE1868 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		1E3E09172CB298A900EE1868 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		1E3E09192CB298E300EE1868 /* MusicXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicXMLParser.swift; sourceTree = "<group>"; };
@@ -550,6 +556,7 @@
 				0232D49F2CD5F5A600FDBFAF /* shinsadong.xml */,
 				0232D4AB2CDC721B00FDBFAF /* doraji.xml */,
 				61F12AAC2CDA58E20005EFED /* metronome.xml */,
+				1E3D56D82CF44AD300986EEE /* previewPlay.gif */,
 				1ED9FEBD2CBD571300472C51 /* Lotties */,
 				1E3E09432CB3ED5400EE1868 /* Sound */,
 			);
@@ -620,6 +627,7 @@
 			children = (
 				729220552CBE48DB008C8FCF /* Change.json */,
 				1ED9FEBE2CBD573D00472C51 /* Loading.json */,
+				1E3D56E82CF607CE00986EEE /* sound.json */,
 				729220572CBE799D008C8FCF /* Countdown.json */,
 				723CA00A2CD3639E00CC91EF /* Countdown.Watch.json */,
 			);
@@ -724,6 +732,7 @@
 				1E311DA12CE63D94003B8F00 /* PDFPageCell.swift */,
 				1EF5145C2CD763DA00F68084 /* Logger.swift */,
 				1E7592642CE1E0220050D10D /* ToolTipView.swift */,
+				1E3D56D62CF44A7D00986EEE /* audioPreviewButton.swift */,
 				1E311DA32CE646AB003B8F00 /* CheckPDFView.swift */,
 				1E311E702CEB63AD003B8F00 /* CommonNavigationBar.swift */,
 				1E7592662CE1EFC50050D10D /* AppleWatchStatus.swift */,
@@ -957,6 +966,7 @@
 				1ED9FEE32CC26E6000472C51 /* mannam-f 2.xml in Resources */,
 				1ED9FEE42CC26E6000472C51 /* mannam.xml in Resources */,
 				02BFED042CB10B52003CEC8A /* .swiftlint.yml in Resources */,
+				1E3D56D92CF44AD300986EEE /* previewPlay.gif in Resources */,
 				61F12AAD2CDA58E20005EFED /* metronome.xml in Resources */,
 				1E3E094B2CB3EE3D00EE1868 /* speechSol.mp3 in Resources */,
 				02BFECF82CB10A15003CEC8A /* Assets.xcassets in Resources */,
@@ -978,6 +988,7 @@
 				1E3E09472CB3EDD800EE1868 /* speechMe.mp3 in Resources */,
 				729220562CBE48DB008C8FCF /* Change.json in Resources */,
 				1E3E09492CB3EE0600EE1868 /* speechPa.mp3 in Resources */,
+				1E3D56E92CF607CE00986EEE /* sound.json in Resources */,
 				1E3E09352CB2AAB400EE1868 /* pah.mp3 in Resources */,
 				D3CE18C42CE72A34008D120C /* cry.pdf in Resources */,
 				1E3E09362CB2AAB400EE1868 /* sol.mp3 in Resources */,
@@ -1126,6 +1137,7 @@
 				EE4203A42CD297A80081F2A1 /* HapticSettingSectionViewController.swift in Sources */,
 				EE1B9BB62CD647AA00073215 /* BPMDescription.swift in Sources */,
 				1A0AE6D12CE1ED7D00564859 /* PDFConvertRequestConfirmationViewController.swift in Sources */,
+				1E3D56D72CF44A9300986EEE /* audioPreviewButton.swift in Sources */,
 				D39BAA272CBA6536002AD1C0 /* SoundSetting.swift in Sources */,
 				1E3E091E2CB2A1F000EE1868 /* MusicPlayer.swift in Sources */,
 				1ED9FECB2CBE781000472C51 /* MeasureProgressView.swift in Sources */,

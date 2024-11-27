@@ -5,8 +5,10 @@
 //  Created by Kyuhee hong on 11/22/24.
 //
 import UIKit
+import Lottie
 
 class SoundKeySettingSectionView: UIView {
+    
     var currentSoundKey: Double = 0 {
         didSet {
             updateDisplaySoundKey()
@@ -46,28 +48,7 @@ class SoundKeySettingSectionView: UIView {
         return label
     }()
     
-    let audioPreviewButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "sound"), for: .normal)
-        button.tintColor = .lableSecondary
-        button.setTitle("미리듣기", for: .normal)
-        button.titleLabel?.font = UIFont.customFont(forTextStyle: .button2Medium)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitleColor(UIColor(named: "label_secondary") ?? UIColor.darkGray, for: .normal)
-        button.backgroundColor = UIColor(named: "button_secondary")
-        button.layer.cornerRadius = 8
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.gray, for: .highlighted)
-        button.isUserInteractionEnabled = true
-
-        // 이미지와 텍스트 위치 조정
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -2, bottom: 0, right: 2)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2)
-
-        button.sizeToFit()
-
-        return button
-    }()
+    let audioPreviewButton = AudioPreviewButton()
     
     let flatButton: UIButton = {
         let button = UIButton(type: .system)
@@ -269,12 +250,5 @@ extension SoundKeySettingSectionView {
         
         flatButton.isEnabled = currentSoundKey > -6
         sharpButton.isEnabled = currentSoundKey < 6
-    }
-}
-
-// MARK: - Setup Actions (미리듣기) :예정
-extension SoundKeySettingSectionView {
-    func audioPreviewButtonTapped() {
-        print("미리듣기 버튼 누름")
     }
 }

@@ -144,6 +144,17 @@ class MusicPlayer: ObservableObject {
         }
     }
     
+    func playPreviewMIDI(completion: @escaping (Bool) -> Void) {
+        if let midiPlayer {
+            midiPlayer.play {
+                print("MIDI playback completed.")
+                completion(true) // 재생 완료 시 true 반환
+            }
+        } else {
+            completion(false) // MIDI 플레이어가 없을 경우 false 반환
+        }
+    }
+    
     // MIDI 파일 실행
     func playMIDI(futureTime: Date = Date()) {
         print("Play MIDI")
@@ -200,7 +211,7 @@ class MusicPlayer: ObservableObject {
     }
     
     @objc private func startMetronomeMIDIPlay() {
-        guard let metronomeMIDIPlayer else { return }
+        guard metronomeMIDIPlayer != nil else { return }
         
         DispatchQueue.main.async {
             if let metronomeMIDIPlayer = self.metronomeMIDIPlayer {
@@ -238,6 +249,12 @@ class MusicPlayer: ObservableObject {
         midiPlayer.currentPosition = lastPosition
         midiPlayer.play()
         print("MIDI playback resumed from \(lastPosition) seconds.")
+    }
+    
+    func stopPreviewMIDI() {
+        guard let midiPlayer else { return }
+        midiPlayer.stop()
+        midiPlayer.currentPosition = 0
     }
     
     // MIDI 파일 처음으로 셋팅

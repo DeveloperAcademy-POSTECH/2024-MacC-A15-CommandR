@@ -14,6 +14,9 @@ class SettingViewController: UIViewController {
     // Score CRUD
     let scoreService = ScoreService()
     
+    // 미리듣기 플레이어
+    private var musicPlayer = MusicPlayer()
+    
     // MARK: - init
     init(currentScore: Score) {
         self.currentScore = currentScore
@@ -36,6 +39,11 @@ class SettingViewController: UIViewController {
         // [BPM 버튼] 탭 시 BPM 설정 모달창을 띄우는 액션 설정
         settingView.onBPMButtonTapped = { [weak self] in
             self?.presentBPMSettingModal()
+        }
+        
+        // [미리듣기 버튼] 탭 시 미리듣기 액션 설정
+        settingView.soundKeySettingSection.audioPreviewButton.onAudioPreviewButtonTapped = { [weak self] in
+            self?.playPreviewScore()
         }
         
         // [설정 완료 버튼] 탭 시 액션 설정
@@ -61,6 +69,7 @@ class SettingViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        musicPlayer.stopPreviewMIDI()
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
@@ -113,5 +122,38 @@ extension SettingViewController: BPMSettingDelegate {
     
     func removeOverlay() {
         dimmedBackgroundView?.removeFromSuperview()
+    }
+}
+
+// MARK: - [Ext] 키 조절 미리 듣기 관련
+extension SettingViewController {
+    private func playPreviewScore() {
+        let isPlaying = settingView.soundKeySettingSection.audioPreviewButton.isPlaying
+        
+        // 현재 악보 키값 설정
+        currentScore.soundKeyOption = settingView.soundKeySettingSection.currentSoundKey
+        
+        // 실행 중이 아닐 때 플레이
+        if !isPlaying {
+            Task {
+                let mediaManager = MediaManager()
+                let midiFilePathURL = try await mediaManager.getPartPreviewMIDIFile(currnetScore: currentScore,
+                                                                                    divisions: currentScore.divisions,
+                                                                                    isChordEnabled: false)
+                // MIDI 파일 로드
+                musicPlayer.loadMIDIFile(midiURL: midiFilePathURL)
+                // 로드 안정성 확보
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.musicPlayer.playPreviewMIDI { isCompleted in
+                        if isCompleted {
+                            self.settingView.soundKeySettingSection.audioPreviewButton.isPlaying = false
+                            print("Playback successfully completed.")
+                        }
+                    }
+                }
+            }
+        } else {
+            musicPlayer.stopPreviewMIDI()
+        }
     }
 }
