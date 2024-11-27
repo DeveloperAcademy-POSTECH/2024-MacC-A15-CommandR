@@ -223,15 +223,22 @@ class RequestProcessingViewController: UIViewController,
             ErrorHandler.handleError(error: "정의되지 않은 요청상태: \(request.status)")
         }
     }
-
+    
     // MARK: - 서버에서 데이터 가져오기
     private func fetchRequestsFromServer() {
         ServerManager.shared.fetchScores(deviceID: deviceID) { [weak self] code, message, scores in
             
             DispatchQueue.main.async {
-                print("code : \(code)")
                 if [-1, -2].contains(code) {
                     let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
+                    
+                    // Retry 클로저 설정
+                    if let internetErrorVC = errorViewController as? InternetErrorViewController {
+                        internetErrorVC.onRetry = { [weak self] in
+                            self?.fetchRequestsFromServer() // 다시 호출
+                        }
+                    }
+                    
                     self?.navigationController?.pushViewController(errorViewController, animated: true)
                     return
                 }
@@ -319,6 +326,14 @@ class RequestProcessingViewController: UIViewController,
                         
                         if [-1, -2].contains(code) {
                             let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
+                            
+                            // Retry 클로저 설정
+                            if let internetErrorVC = errorViewController as? InternetErrorViewController {
+                                internetErrorVC.onRetry = { [weak self] in
+                                    self?.addScore(at: index)
+                                }
+                            }
+                            
                             self.navigationController?.pushViewController(errorViewController, animated: true)
                             return
                         }
@@ -356,14 +371,22 @@ class RequestProcessingViewController: UIViewController,
             print("Request ID: \(request.id), Device ID: \(self.deviceID), New Status: 11")
             print("Server Response - Status: \(code), Message: \(message)")
             
-            if [-1, -2].contains(code) {
-                let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
-                self.navigationController?.pushViewController(errorViewController, animated: true)
-                completion(false)
-            }
-            
             DispatchQueue.main.async {
-                if code == 1 {
+                if [-1, -2].contains(code) {
+                    let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
+                    
+                    // Retry 클로저 설정
+                    if let internetErrorVC = errorViewController as? InternetErrorViewController {
+                        internetErrorVC.onRetry = { [weak self] in
+                            guard let self = self else { return }
+                            self.cancelRequest(at: index, completion: completion)
+                        }
+                    }
+                    
+                    self.navigationController?.pushViewController(errorViewController, animated: true)
+                    completion(false)
+                    return
+                } else if code == 1 {
                     // 요청 상태를 .cancelled로 변경
                     self.requests[index].status = .cancelled
                     print("요청 취소 성공쓰 Updating UI...")

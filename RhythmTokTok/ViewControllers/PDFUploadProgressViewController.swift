@@ -33,9 +33,11 @@ class PDFUploadProgressViewController: UIViewController {
     
     private func observeUploadStatus() {
         ServerManager.shared.$isUploading
+            .combineLatest(ServerManager.shared.$hasError)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isUploading in
-                if !isUploading {
+            .sink { [weak self] isUploading, hasError in
+                // 에러페이지
+                if !isUploading && !hasError {
                     self?.navigateToPDFUploadDoneView()
                 }
             }

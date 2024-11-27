@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class InternetErrorViewController: UIViewController {
+    var onRetry: (() -> Void)? // 클로저 선언
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,8 +90,8 @@ class InternetErrorViewController: UIViewController {
     }
 
     @objc private func retryButtonTapped() {
-        // 재시도 버튼 동작
-        print("재시도 버튼 클릭됨")
-        // 네트워크 연결 상태를 재확인하거나 다른 동작 추가 가능
+        // 이전 화면으로 이동
+        navigationController?.popViewController(animated: true)
+        onRetry?() // 클로저 실행
     }
 }

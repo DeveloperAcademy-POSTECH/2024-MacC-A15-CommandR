@@ -24,6 +24,7 @@ class ServerManager {
     }
     
     @Published var isUploading: Bool = false
+    @Published var hasError: Bool = false // 에러상태 추가
     private var uploadResponse: (Int, String) = (0, "")
     
     // 서버 IP 파일 분리
@@ -168,19 +169,19 @@ class ServerManager {
         // 서버 통신
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard self.checkNetworkError() != -1 else {
+                self.hasError = true
                 completion(-1, "네트워크가 연결되지 않았습니다.", [])
                 return
             }
             
             if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
-                print("data \(data)")
-                print("response \(response)")
-                print("error \(error)")
+                self.hasError = true
                 completion(-2, "응답 코드가 잘못되었습니다.", [])
                 return
             }
             
             if let error = error {
+                self.hasError = true
                 ErrorHandler.handleError(error: error)
                 completion(-2, "에러가 발생했습니다.", [])
                 return
@@ -194,11 +195,14 @@ class ServerManager {
                        let message = json["message"] as? String {
                         // 조건에 따라 scores 데이터 처리
                         let scores = hasResponseData ? (json["scores"] as? [[String: Any]]) ?? [] : []
+                        self.hasError = false
                         completion(status, message, scores)
                     } else {
+                        self.hasError = true
                         completion(-2, "JSON 형식이 아닙니다.", [])
                     }
                 } catch {
+                    self.hasError = true
                     self.setIsUploading(isUploading: false)
                     ErrorHandler.handleError(error: error)
                     completion(-2, "JSON 변환 에러", [])

@@ -142,6 +142,14 @@ class PDFConvertRequestConfirmationViewController: UIViewController,
             
             if [-1, -2].contains(code) {
                 let errorViewController = code == -1 ? InternetErrorViewController() : ErrorViewController()
+                
+                // Retry 클로저 설정
+                if let internetErrorVC = errorViewController as? InternetErrorViewController {
+                    internetErrorVC.onRetry = { [weak self] in
+                        self?.uploadPDFtoServer()
+                    }
+                }
+                
                 self.navigationController?.pushViewController(errorViewController, animated: true)
                 return
             }
