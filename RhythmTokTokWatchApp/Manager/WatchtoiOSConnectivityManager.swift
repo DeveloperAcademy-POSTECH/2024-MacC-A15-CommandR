@@ -170,8 +170,11 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     
     // Background Session 활성화 여부 상태 전달
     private func sendSessionStatusToIOS(_ isActive: Bool) {
-        let userInfo = ["SessionStatus": isActive]
-        
+        let userInfo: [String: Any] = [
+            "SessionStatus": isActive,
+            "Timestamp": Date().timeIntervalSince1970 // 현재 타임스탬프
+        ]
+   
         if WCSession.default.activationState == .activated {
             WCSession.default.transferUserInfo(userInfo)
             print("User info transferred using transferUserInfo with status: \(isActive)")
