@@ -117,6 +117,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             self.hapticManager.stopHaptic()
             self.selectedScoreTitle = scoreTitle
             self.hapticSequence = hapticSequence
+            self.isSelectedScore = !scoreTitle.isEmpty
         } else {
             ErrorHandler.handleError(error: "받은 햅틱이 없습니다")
         }

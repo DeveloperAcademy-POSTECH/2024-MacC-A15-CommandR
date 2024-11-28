@@ -84,7 +84,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
-        musicPlayer.stopMIDI()
+        resetScore()
         resetSwipeGesture()
         NotificationCenter.default.removeObserver(self)
         cancellables.removeAll()
@@ -347,17 +347,15 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // MARK: 네비게이션 버튼 액션
     @objc private func backButtonTapped() {
         // 뒤로 가기 동작
+        resetScore()
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func resetScore() {
         musicPlayer.stopMIDI()
         IOStoWatchConnectivityManager.shared.playStatus = .ready
         // 초기화 로직
-//        let emptyScore = Score()
         IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: "", hapticSequence: [])
-//            .sendUpdateStatusWithHapticSequence(currentScore: emptyScore,
-//                                                hapticSequence: [],
-//                                                status: .ready, startTime: 0)
-        
-        
-        self.navigationController?.popViewController(animated: true)
     }
 
     func handlePlayStatusChange(_ status: PlayStatus) {
