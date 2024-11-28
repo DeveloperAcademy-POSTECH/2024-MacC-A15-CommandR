@@ -50,6 +50,7 @@ class ControlButtonView: UIView {
             mainVStack.topAnchor.constraint(equalTo: topAnchor),
             mainVStack.bottomAnchor.constraint(equalTo: bottomAnchor),
             
+            previousButton.heightAnchor.constraint(lessThanOrEqualToConstant: 150),
             previousButton.trailingAnchor.constraint(equalTo: resetButton.leadingAnchor, constant: -8),
             resetButton.widthAnchor.constraint(equalToConstant: 120),
             nextButton.leadingAnchor.constraint(equalTo: resetButton.trailingAnchor, constant: 8)

@@ -173,45 +173,45 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
         NSLayoutConstraint.activate([
             // 커스텀 네비게이션 바 레이아웃 설정
             practiceNavBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            practiceNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            practiceNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            practiceNavBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            practiceNavBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             practiceNavBar.heightAnchor.constraint(equalToConstant: 64),
             
             // 툴팁 뷰 레이아웃
             toolTipView.topAnchor.constraint(equalTo: practiceNavBar.bottomAnchor, constant: 4),
             toolTipView.centerXAnchor.constraint(equalTo: practiceNavBar.watchConnectImageView.centerXAnchor, constant: -90),
-            toolTipView.widthAnchor.constraint(equalToConstant: 253), // 툴팁의 최대 너비 설정
+            toolTipView.widthAnchor.constraint(equalToConstant: 253),
             toolTipView.heightAnchor.constraint(equalToConstant: 88),
 
-            // divider
-            divider.topAnchor.constraint(equalTo: practiceNavBar.bottomAnchor, constant: 0),
-            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor), // 좌우 패딩 없이 전체 너비
+            // Divider
+            divider.topAnchor.constraint(equalTo: practiceNavBar.bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 1),  // 1pt 너비로 가로선 추가
-            
-            // 프로그래스바
-            progressBar.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 0),
+            divider.heightAnchor.constraint(equalToConstant: 1),
+
+            // ProgressBar
+            progressBar.topAnchor.constraint(equalTo: divider.bottomAnchor),
             progressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             progressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             progressBar.heightAnchor.constraint(equalToConstant: 4),
-            
-            // 멜로디, 진동 셋팅 테그
+
+            // Status Tags
             statusTags.topAnchor.constraint(equalTo: progressBar.bottomAnchor, constant: 32),
             statusTags.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             statusTags.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            statusTags.heightAnchor.constraint(equalToConstant: 40),
-            
-            // ScorePracticeView 레이아웃 설정 (네비게이션 바 아래에 위치)
+            statusTags.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+
+            // Score Card View
             scoreCardView.topAnchor.constraint(equalTo: statusTags.bottomAnchor, constant: 8),
             scoreCardView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             scoreCardView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            // 컨트롤러뷰
-            controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            controlButtonView.topAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: 102),
-            controlButtonView.heightAnchor.constraint(equalToConstant: 248),
+            scoreCardView.heightAnchor.constraint(greaterThanOrEqualToConstant: 220),
+
+            // Controller Button View
+            controlButtonView.heightAnchor.constraint(greaterThanOrEqualToConstant: 248),
             controlButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            controlButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            controlButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            controlButtonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
     }
     
