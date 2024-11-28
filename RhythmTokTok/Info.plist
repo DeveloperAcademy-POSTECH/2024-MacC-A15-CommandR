@@ -4,6 +4,10 @@
 <dict>
 	<key>Aps</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.commandR.RhythmTokTok.backgroundtask</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
