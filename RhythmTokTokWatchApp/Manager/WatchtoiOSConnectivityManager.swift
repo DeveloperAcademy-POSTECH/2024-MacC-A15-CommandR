@@ -76,6 +76,17 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            // 빈 타이틀 일 때, 리스트 뷰로 돌아 갔을 때
+            if let scoreTitle = applicationContext["scoreTitle"] as? String {
+                if scoreTitle.isEmpty {
+                    DispatchQueue.main.async {
+                        self.isSelectedScore = false
+                        self.hapticManager.cancelExtendedRuntimeSession()
+                        return
+                    }
+                }
+            }
+            
             hapticManager.startExtendedSession()
 
             // Haptic Guide 설정 업데이트
@@ -106,7 +117,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             self.hapticManager.stopHaptic()
             self.selectedScoreTitle = scoreTitle
             self.hapticSequence = hapticSequence
-            self.isSelectedScore = !scoreTitle.isEmpty
         } else {
             ErrorHandler.handleError(error: "받은 햅틱이 없습니다")
         }
