@@ -12,7 +12,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     static let shared = IOStoWatchConnectivityManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
     var scoreTitle: String?
-    private var lastProcessedTimestamp: TimeInterval = 0 // 마지막 처리된 데이터의 타임스탬프
+    private var creationTimestamp: TimeInterval = 0 // 마지막 처리된 데이터의 타임스탬프
 
     // 런치 용도
 //    let healthStore = HKHealthStore()
@@ -28,6 +28,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     private override init() {
         super.init()
         setupSession()
+        creationTimestamp = Date().timeIntervalSince1970
     }
     
     // WCSession 설정
@@ -178,9 +179,8 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
                 return
             }
 
-            // 이전 타임스탬프보다 최신 데이터만 처리
-            if timestamp > self.lastProcessedTimestamp {
-                self.lastProcessedTimestamp = timestamp
+            // 생성 타임스탬프보다 최신 데이터만 처리
+            if timestamp > self.creationTimestamp {
                 print("Processing new SessionStatus: \(isActive) at \(timestamp)")
 
                 if isActive {

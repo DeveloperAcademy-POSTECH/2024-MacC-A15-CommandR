@@ -94,13 +94,9 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         // 스와이프 제스처 인식기 설정
+        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
-//        practiceNavBar.configure(title: "", buttonType: .watch)
-//        configureUI()
-//        totalMeasure = mediaManager.getMainPartMeasureCount(score: currentScore)
-//        scoreCardView.setTotalMeasure(totalMeasure: totalMeasure)
-//        setupActions()
     }
     
     private func handleScoreChange() {
