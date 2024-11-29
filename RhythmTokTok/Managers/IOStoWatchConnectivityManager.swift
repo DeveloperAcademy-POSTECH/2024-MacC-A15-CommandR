@@ -171,6 +171,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
     }
     
+    // MARK: UserInfo 수신
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
         DispatchQueue.main.async {
             guard let isActive = userInfo["SessionStatus"] as? Bool,
@@ -185,12 +186,30 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
 
                 if isActive {
                     self.watchAppStatus = .connected
-                } else if self.watchAppStatus == .connected || self.watchAppStatus == .ready {
-                    print("백그라운드 세션 안됨 받음")
-                    self.watchAppStatus = .backgroundInactive
+
+                } else {
+                    if self.watchAppStatus == .connected || self.watchAppStatus == .ready {
+                        self.watchAppStatus = .backgroundInactive
+                    }
                 }
-            } else {
-                print("Ignoring outdated SessionStatus data")
+            }
+        }
+    }
+    
+    // MARK: Context 수신
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+        DispatchQueue.main.async {
+            if let playStatusString = applicationContext["playStatus"] as? String,
+               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
+                self.receivedPlayStatus = receivedPlayStatus
+                print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
+                
+                // 상태 변경에 대한 알림을 전송
+                if receivedPlayStatus == .play {
+                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
+                } else if receivedPlayStatus == .pause {
+                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
+                }
             }
         }
     }
