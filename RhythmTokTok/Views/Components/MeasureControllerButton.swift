@@ -12,7 +12,8 @@ class MeasureControllerButton: UIButton {
         super.init(frame: .zero)
         
         var config = UIButton.Configuration.plain()
-        config.image = icon?            .withRenderingMode(.alwaysTemplate)
+        config.image = icon?
+            .withRenderingMode(.alwaysTemplate)
         config.imagePlacement = .top // 이미지와 텍스트 위치
         config.imagePadding = 8 // 이미지와 텍스트 사이 간격
         config.baseForegroundColor = foregoundColor // 텍스트 및 이미지 색상
@@ -49,6 +50,16 @@ class MeasureControllerButton: UIButton {
              updatedConfig?.attributedTitle = updatedAttributedTitle
              button.configuration = updatedConfig
          }
+        
+        // 버튼 텍스트가 벗어나지 않도록 설정
+        self.titleLabel?.lineBreakMode = .byWordWrapping // 줄바꿈 허용
+        self.titleLabel?.numberOfLines = 0 // 줄 수 무제한
+        
+        // 버튼의 크기를 텍스트와 이미지에 맞추도록 설정
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.contentHorizontalAlignment = .center
+        self.contentVerticalAlignment = .center
+        self.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
     }
     
     required init?(coder: NSCoder) {

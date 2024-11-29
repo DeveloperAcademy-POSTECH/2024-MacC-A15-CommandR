@@ -54,31 +54,24 @@ class ScorePracticeScoreCardView: UIView {
         scoreCardView.addSubview(bpmLabel)
         
         currentMeasureLabel.text = "1"
-        currentMeasureLabel.textAlignment = .left
+        currentMeasureLabel.textAlignment = .center
         currentMeasureLabel.textColor = UIColor.blue500
         currentMeasureLabel.font = UIFont.customFont(forTextStyle: .heading1Regular)
         currentMeasureLabel.adjustsFontForContentSizeCategory = true
         currentMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+        scoreCardView.addSubview(currentMeasureLabel)
+
         totalMeasureLabel.text = "/ 0"
         totalMeasureLabel.textAlignment = .left
         totalMeasureLabel.textColor = UIColor(named: "lable_tertiary")
         totalMeasureLabel.font = UIFont.customFont(forTextStyle: .heading1Regular)
         totalMeasureLabel.adjustsFontForContentSizeCategory = true
         totalMeasureLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        currentMeasureHStack.axis = .horizontal
-        currentMeasureHStack.alignment = .center
-        currentMeasureHStack.spacing = 0
-        currentMeasureHStack.addArrangedSubview(currentMeasureLabel)
-        currentMeasureHStack.addArrangedSubview(totalMeasureLabel)
-        currentMeasureHStack.translatesAutoresizingMaskIntoConstraints = false
-        scoreCardView.addSubview(currentMeasureHStack)
+        scoreCardView.addSubview(totalMeasureLabel)
 
         // 레이아웃 설정
         NSLayoutConstraint.activate([
             // 배경
-            scoreCardView.centerXAnchor.constraint(equalTo: centerXAnchor),
             scoreCardView.topAnchor.constraint(equalTo: topAnchor),
             scoreCardView.bottomAnchor.constraint(equalTo: bottomAnchor),
             scoreCardView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -88,14 +81,20 @@ class ScorePracticeScoreCardView: UIView {
             titleLabel.topAnchor.constraint(equalTo: scoreCardView.topAnchor, constant: 20),
             titleLabel.leadingAnchor.constraint(equalTo: scoreCardView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: scoreCardView.trailingAnchor, constant: -16),
-            titleLabel.heightAnchor.constraint(equalToConstant: 34),
-            
+
             // BPM
             bpmLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
             bpmLabel.leadingAnchor.constraint(equalTo: scoreCardView.leadingAnchor, constant: 16),
+            bpmLabel.trailingAnchor.constraint(equalTo: scoreCardView.trailingAnchor, constant: -16),
+
+            currentMeasureLabel.topAnchor.constraint(greaterThanOrEqualTo: bpmLabel.bottomAnchor, constant: 12),
+            currentMeasureLabel.leadingAnchor.constraint(equalTo: scoreCardView.leadingAnchor, constant: 16),
+            currentMeasureLabel.bottomAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: -20),
             
-            currentMeasureHStack.leadingAnchor.constraint(equalTo: scoreCardView.leadingAnchor, constant: 16),
-            currentMeasureHStack.bottomAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: -20)
+            totalMeasureLabel.topAnchor.constraint(greaterThanOrEqualTo: bpmLabel.bottomAnchor, constant: 12),
+            totalMeasureLabel.leadingAnchor.constraint(equalTo: currentMeasureLabel.trailingAnchor),
+            totalMeasureLabel.trailingAnchor.constraint(equalTo: scoreCardView.trailingAnchor, constant: -16),
+            totalMeasureLabel.bottomAnchor.constraint(equalTo: scoreCardView.bottomAnchor, constant: -20)
         ])
     }
     

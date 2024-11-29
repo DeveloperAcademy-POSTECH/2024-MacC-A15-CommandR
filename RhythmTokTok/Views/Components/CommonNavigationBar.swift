@@ -52,7 +52,8 @@ class CommonNavigationBar: UIView {
     private let settingButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("설정", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Pretendard-Medium", size: 16)
+        button.titleLabel?.font =  UIFont.customFont(forTextStyle: .body2Medium)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.tintColor = .blue500
         return button
     }()
@@ -103,7 +104,8 @@ class CommonNavigationBar: UIView {
         addSubview(backButton)
         
         // Title Label
-        titleLabel.font = UIFont(name: "Pretendard-Medium", size: 18)
+        titleLabel.font = UIFont.customFont(forTextStyle: .body2Medium)
+        titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.textColor = .lablePrimary
         titleLabel.textAlignment = .center
         addSubview(titleLabel)

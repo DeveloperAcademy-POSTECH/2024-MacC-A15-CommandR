@@ -42,11 +42,17 @@ class BPMLabel: UIView {
         valueLabel.adjustsFontForContentSizeCategory = true
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
 
+        // 오른쪽 여백을 위한 투명한 UIView 추가
+        let spacerView = UIView()
+        spacerView.translatesAutoresizingMaskIntoConstraints = false
+        spacerView.setContentHuggingPriority(.defaultLow, for: .horizontal) // 가로 공간 최대 활용
+        
         BPMHStackView.axis = .horizontal
-        BPMHStackView.alignment = .center
+        BPMHStackView.alignment = .leading
         BPMHStackView.spacing = 2
         BPMHStackView.addArrangedSubview(speedStatusLabel)
         BPMHStackView.addArrangedSubview(valueLabel)
+        BPMHStackView.addArrangedSubview(spacerView)
         BPMHStackView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(BPMHStackView)
