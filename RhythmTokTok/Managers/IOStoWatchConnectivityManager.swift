@@ -12,6 +12,8 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     static let shared = IOStoWatchConnectivityManager()
     // 아래 곡 제목에 실제 곡 제목을 넣어주세용
     var scoreTitle: String?
+    private var creationTimestamp: TimeInterval = 0 // 마지막 처리된 데이터의 타임스탬프
+
     // 런치 용도
 //    let healthStore = HKHealthStore()
 //    let allTypes = Set([HKObjectType.workoutType()])
@@ -26,6 +28,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     private override init() {
         super.init()
         setupSession()
+        creationTimestamp = Date().timeIntervalSince1970
     }
     
     // WCSession 설정
@@ -171,10 +174,19 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     // MARK: UserInfo 수신
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any]) {
         DispatchQueue.main.async {
-            if let isActive = userInfo["SessionStatus"] as? Bool {
-                print("Received SessionStatus in background: \(isActive)")
+            guard let isActive = userInfo["SessionStatus"] as? Bool,
+                  let timestamp = userInfo["Timestamp"] as? TimeInterval else {
+                print("Invalid or missing data")
+                return
+            }
+
+            // 생성 타임스탬프보다 최신 데이터만 처리
+            if timestamp > self.creationTimestamp {
+                print("Processing new SessionStatus: \(isActive) at \(timestamp)")
+
                 if isActive {
                     self.watchAppStatus = .connected
+
                 } else {
                     if self.watchAppStatus == .connected || self.watchAppStatus == .ready {
                         self.watchAppStatus = .backgroundInactive
