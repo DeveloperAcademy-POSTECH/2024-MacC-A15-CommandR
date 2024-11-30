@@ -77,15 +77,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             // 빈 타이틀 일 때, 리스트 뷰로 돌아 갔을 때
-            if let scoreTitle = applicationContext["scoreTitle"] as? String {
-                if scoreTitle.isEmpty {
-                    DispatchQueue.main.async {
-                        self.isSelectedScore = false
-                        self.hapticManager.cancelExtendedRuntimeSession()
-                        return
-                    }
-                }
-            }
             
             hapticManager.startExtendedSession()
 
