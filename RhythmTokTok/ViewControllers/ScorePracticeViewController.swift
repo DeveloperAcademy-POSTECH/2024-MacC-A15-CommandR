@@ -74,6 +74,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // MARK: - 뷰 생명주기
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        IOStoWatchConnectivityManager.shared.checkAndActivateSession()
         setupPracticeView()
         handleScoreChange()
         configureMusicPlayer()
@@ -83,7 +84,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         resetScore()
         resetSwipeGesture()
         NotificationCenter.default.removeObserver(self)

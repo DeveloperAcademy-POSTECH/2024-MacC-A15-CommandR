@@ -43,7 +43,9 @@ struct WatchPlayView: View {
                 )
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
+                
                 Spacer()
+                
                 Button {
                     if connectivityManager.playStatus == .play {
                         // 재생 중일 때 일시정지 동작
@@ -57,12 +59,21 @@ struct WatchPlayView: View {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.blue500)
                         
-                        Image(systemName: connectivityManager.playStatus != .play ?
-                              "play.fill" : "pause.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 24)
-                        .foregroundColor(.white)
+                        if connectivityManager.isSending {
+                            // 로딩 상태일 때 ProgressView 표시
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .frame(height: 24)
+                                .foregroundColor(.white)
+                        } else {
+                            // 재생/일시정지 아이콘
+                            Image(systemName: connectivityManager.playStatus != .play ?
+                                  "play.fill" : "pause.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 24)
+                            .foregroundColor(.white)
+                        }
                     }
                     .frame(height: 64)
                 }
@@ -71,6 +82,7 @@ struct WatchPlayView: View {
                 .padding(.bottom, 24)
             }
             .padding(.top, 16)
+            .disabled(connectivityManager.isSending) // 버튼 활성화/비활성화 조건
             
             // 카운트다운 뷰 (countdownNumber가 nil이 아닐 때만 표시)
             if countdownNumber != nil {
