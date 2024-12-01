@@ -92,7 +92,7 @@ struct WatchPlayView: View {
         .onReceive(connectivityManager.$startTime) { newStartTime in
             if connectivityManager.playStatus == .play,
                let startTime = newStartTime {
-                scheduleCountdown(startTime: startTime)
+                scheduleCountdown(for: startTime)
             }
         }
         .onDisappear {
@@ -100,54 +100,74 @@ struct WatchPlayView: View {
         }
     }
     
-    private func scheduleCountdown(startTime: TimeInterval) {
+    private func scheduleCountdown(for startTime: TimeInterval) {
         stopCountdown()
-        
+
         let currentTime = Date().timeIntervalSince1970
-        let countdownStartTime = startTime - 3
-        let delay = countdownStartTime - currentTime
+        let timeRemaining = startTime - currentTime
         
-        if delay > 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                startCountdown()
-            }
+        if timeRemaining > 0 {
+            countdownNumber = Int(ceil(timeRemaining)) // 남은 시간 정수화
+            startCountdown(for: startTime)
         } else {
-            startCountdown()
+            countdownNumber = nil
         }
     }
-    
-    private func startCountdown() {
-        countdownNumber = 3
-        playHaptic(for: 3)
-        
+
+    private func startCountdown(for startTime: TimeInterval) {
+        let currentTime = Date().timeIntervalSince1970
+        let timeRemaining = startTime - currentTime // 시작 시간까지 남은 시간 계산
+
+        if timeRemaining > 3 {
+            // 3초 이상 남았을 경우, (timeRemaining - 3)만큼 대기 후 카운트다운 시작
+            let delay = timeRemaining - 3
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                self.beginCountdown(from: 3) // 3초부터 시작
+            }
+        } else if timeRemaining > 0 {
+            // 3초보다 적게 남았을 경우, 남은 시간만큼 대기한 후 카운트다운 시작
+            let delay = timeRemaining.truncatingRemainder(dividingBy: 1) // 초 단위 대기 시간
+            let startNumber = Int(floor(timeRemaining)) // 정수로 내림하여 시작 숫자 계산
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                self.beginCountdown(from: startNumber)
+            }
+        } else {
+            // 남은 시간이 0 이하인 경우 종료
+            countdownNumber = nil
+        }
+    }
+
+    // 카운트다운 실행 로직
+    private func beginCountdown(from startNumber: Int) {
+        countdownNumber = startNumber
+        playHaptic(for: startNumber)
+
+        // 정확히 1초 간격으로 Timer 설정
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            if let currentNumber = countdownNumber, currentNumber > 1 {
-                countdownNumber = currentNumber - 1
-                playHaptic(for: currentNumber - 1)
+            if let currentCountdown = countdownNumber, currentCountdown > 1 {
+                countdownNumber = currentCountdown - 1
+                playHaptic(for: currentCountdown - 1)
             } else {
                 countdownNumber = nil
                 stopCountdown()
             }
         }
     }
-    
+
     private func stopCountdown() {
         timer?.invalidate()
         timer = nil
+        countdownNumber = nil
     }
-    
+
     private func playHaptic(for number: Int) {
-        if connectivityManager.isHapticGuideOn {
-            switch number {
-            case 3:
-                WKInterfaceDevice.current().play(.retry)
-            case 2:
-                WKInterfaceDevice.current().play(.retry)
-            case 1:
-                WKInterfaceDevice.current().play(.retry)
-            default:
-                break
-            }
+        guard connectivityManager.isHapticGuideOn else { return }
+        switch number {
+        case 3, 2, 1:
+            WKInterfaceDevice.current().play(.retry)
+        default:
+            break
         }
     }
 }

@@ -14,7 +14,6 @@ struct WatchWaitingView: View {
     @StateObject var logger = Logger.shared
     
     var body: some View {
-//        TabView {
             ZStack {
                 Image("BasicBackground")
                     .resizable()
@@ -31,18 +30,6 @@ struct WatchWaitingView: View {
                         .padding()
                 }
             }
-//            .tabItem {
-//                Image(systemName: "music.note.list")
-//                Text("Play")
-//            }
-//            
-//            // 햅틱 선택 뷰
-//            WatchHapticOptionView()
-//                .tabItem {
-//                    Image(systemName: "waveform.path.badge.plus")
-//                    Text("Haptics")
-//                }
-//        }
     }
 }
 

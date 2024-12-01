@@ -169,21 +169,7 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
             self.isSending = false
         }
     }
-    
-//    // MARK: 아이폰으로 Context 전달
-//    // 플레이 상태 전달
-//    private func sendPlayStatusToiOS(status: PlayStatus) {
-//        let message = ["playStatus": status.rawValue]
-//        do {
-//            print("아이폰에 상태 본냄\(status)")
-//            if WCSession.default.activationState == .activated {
-//                print("활성화되어있음")
-//            }
-//            try WCSession.default.updateApplicationContext(message)
-//        } catch {
-//            ErrorHandler.handleError(error: error)
-//        }
-//    }
+
     private func sendPlayStatusToiOS(status: PlayStatus) {
         let message = ["playStatus": status.rawValue]
 
