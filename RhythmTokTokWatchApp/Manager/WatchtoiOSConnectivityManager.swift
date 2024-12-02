@@ -18,6 +18,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     @Published var hapticSequence: [Double] = []
     @Published var isHapticGuideOn: Bool = true
     @Published var startTime: TimeInterval?
+    @Published var isSending: Bool = false
+    
     var hapticManager = HapticScheduleManager()
     private var cancellables = Set<AnyCancellable>()
 
@@ -76,17 +78,6 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            // 빈 타이틀 일 때, 리스트 뷰로 돌아 갔을 때
-            if let scoreTitle = applicationContext["scoreTitle"] as? String {
-                if scoreTitle.isEmpty {
-                    DispatchQueue.main.async {
-                        self.isSelectedScore = false
-                        self.hapticManager.cancelExtendedRuntimeSession()
-                        return
-                    }
-                }
-            }
-            
             hapticManager.startExtendedSession()
 
             // Haptic Guide 설정 업데이트
@@ -128,7 +119,8 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
         if let playStatusString = applicationContext["playStatus"] as? String,
            let playStatus = PlayStatus(rawValue: playStatusString) {
             self.playStatus = playStatus
-            
+            self.isSending = false
+        
             switch playStatus {
             case .play:
                 if let startTime = applicationContext["startTime"] as? TimeInterval {
@@ -157,25 +149,42 @@ class WatchtoiOSConnectivityManager: NSObject, ObservableObject, WCSessionDelega
     
     // 아이폰으로 상태 변화 요청
     func playButtonTapped() {
-        playStatus = .play
+        isSending = true
         sendPlayStatusToiOS(status: .play)
+        
+        // 10초 타임아웃 추가
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            self.isSending = false
+        }
     }
     
     // 일시정지 버튼을 누르면 호출되는 함수
     func pauseButtonTapped() {
-        playStatus = .pause
+        isSending = true
         sendPlayStatusToiOS(status: .pause)
         hapticManager.stopHaptic()
+        
+        // 10초 타임아웃 추가
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            self.isSending = false
+        }
     }
-    
-    // MARK: 아이폰으로 Context 전달
-    // 플레이 상태 전달
+
     private func sendPlayStatusToiOS(status: PlayStatus) {
         let message = ["playStatus": status.rawValue]
-        do {
-            try WCSession.default.updateApplicationContext(message)
-        } catch {
-            ErrorHandler.handleError(error: error)
+
+        // 연결 상태 확인
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(message, replyHandler: { response in
+                // 응답 처리 (필요 시)
+                print("iPhone acknowledged the message with response: \(response)")
+            }, errorHandler: { error in
+                // 에러 처리
+                print("Failed to send message to iPhone: \(error.localizedDescription)")
+            })
+            print("Sent play status to iPhone: \(status.rawValue)")
+        } else {
+            print("iPhone is not reachable. Cannot send play status.")
         }
     }
     

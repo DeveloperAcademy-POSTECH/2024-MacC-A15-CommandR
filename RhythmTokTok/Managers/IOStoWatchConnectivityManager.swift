@@ -44,6 +44,24 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         print("iPhone 앱에서 WCSession 활성화 요청")
     }
     
+    // 세션 활성화 확인 후 비활성화시 재활성화
+    func checkAndActivateSession() {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            
+            // 세션 상태 확인
+            if session.activationState != .activated {
+                print("WCSession is not activated. Activating now...")
+                session.activate()
+            } else {
+                print("WCSession is already activated.")
+            }
+        } else {
+            print("WCSession is not supported on this device.")
+        }
+    }
+    
     // MARK: - WCSessionDelegate 메서드
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if activationState == .activated {
@@ -72,22 +90,19 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     
     private func updateWatchAppReachability(_ session: WCSession) {
         DispatchQueue.main.async {
-            //            if session.isReachable {
-            //                self.isWatchAppConnected = true
-            //            }
             print("isWatchAppReachable: \(self.watchAppStatus)")
         }
     }
     
-    // MARK: - 워치 런치
-    func launchWatch() async -> Bool {
-        guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
-            self.watchAppStatus = .notInstalled
-            ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
-            return false
-        }
-        
-        let result = await withTaskGroup(of: Bool.self) { group -> Bool in
+//    // MARK: - 워치 런치
+//    func launchWatch() async -> Bool {
+//        guard WCSession.default.isPaired && WCSession.default.isWatchAppInstalled else {
+//            self.watchAppStatus = .notInstalled
+//            ErrorHandler.handleError(error: "Apple Watch가 연결되어 있지 않거나 앱이 설치되어 있지 않습니다.")
+//            return false
+//        }
+//        
+//        let result = await withTaskGroup(of: Bool.self) { group -> Bool in
 //            // startAppTask 추가
 //            group.addTask {
 //                do {
@@ -98,30 +113,30 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
 //                    return false
 //                }
 //            }
-            
-            // timeoutTask 추가 (5초 타임아웃)
-            group.addTask {
-                try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
-                print("timeoutTask 완료 (타임아웃)")
-                return false
-            }
-            
-            // 첫 번째로 완료된 작업의 결과를 반환하고 나머지 작업은 취소
-            if let firstResult = await group.next() {
-                group.cancelAll()
-                if !firstResult {
-                    self.watchAppStatus = .lowBattery
-                    ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
-                }
-                print("결과 \(firstResult)")
-                return firstResult
-            } else {
-                return false
-            }
-        }
-        
-        return result
-    }
+//            
+//            // timeoutTask 추가 (5초 타임아웃)
+//            group.addTask {
+//                try? await Task.sleep(nanoseconds: 5_000_000_000) // 5초 대기
+//                print("timeoutTask 완료 (타임아웃)")
+//                return false
+//            }
+//            
+//            // 첫 번째로 완료된 작업의 결과를 반환하고 나머지 작업은 취소
+//            if let firstResult = await group.next() {
+//                group.cancelAll()
+//                if !firstResult {
+//                    self.watchAppStatus = .lowBattery
+//                    ErrorHandler.handleError(error: "Apple Watch가 꺼져 있거나 배터리가 부족할 수 있습니다. 배터리를 확인하거나 Watch가 켜져 있는지 확인해 주세요.")
+//                }
+//                print("결과 \(firstResult)")
+//                return firstResult
+//            } else {
+//                return false
+//            }
+//        }
+//        
+//        return result
+//    }
     
     // MARK: - 워치로 메시지 보내는 부분
     // 곡 선택 후 [제목],[햅틱시퀀스] 보냄 (리스트뷰에서 곡을 선택할 때 작동)
@@ -196,21 +211,32 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
         }
     }
     
-    // MARK: Context 수신
-    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+    // MARK: Message 수신
+    func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
         DispatchQueue.main.async {
-            if let playStatusString = applicationContext["playStatus"] as? String,
-               let receivedPlayStatus = PlayStatus(rawValue: playStatusString) {
-                self.receivedPlayStatus = receivedPlayStatus
-                print("워치로부터 수신한 재생 상태: \(receivedPlayStatus.rawValue)")
-                
-                // 상태 변경에 대한 알림을 전송
-                if receivedPlayStatus == .play {
-                    NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
-                } else if receivedPlayStatus == .pause {
-                    NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
-                }
+            print("Message received: \(message)")
+            
+            // 메시지에서 재생 상태를 안전하게 파싱
+            guard let playStatusString = message["playStatus"] as? String,
+                  let receivedPlayStatus = PlayStatus(rawValue: playStatusString) else {
+                print("Invalid playStatus received in message.")
+                replyHandler(["status": "error", "message": "Invalid playStatus"])
+                return
             }
+            
+            // 수신된 상태 업데이트
+            self.receivedPlayStatus = receivedPlayStatus
+            print("Received play status from Watch: \(receivedPlayStatus.rawValue)")
+            
+            // 상태 변경에 따른 알림 전송
+            if receivedPlayStatus == .play {
+                NotificationCenter.default.post(name: .watchPlayButtonTapped, object: nil)
+            } else if receivedPlayStatus == .pause {
+                NotificationCenter.default.post(name: .watchPauseButtonTapped, object: nil)
+            }
+            
+            // 성공 응답 전송
+            replyHandler(["status": "success"])
         }
     }
 }

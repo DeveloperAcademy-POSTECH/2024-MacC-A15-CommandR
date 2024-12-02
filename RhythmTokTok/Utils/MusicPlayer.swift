@@ -242,16 +242,6 @@ class MusicPlayer: ObservableObject {
         print("MIDI playback jump at \(lastPosition) seconds.")
     }
     
-    // MIDI 파일 재개
-    func resumeMIDI() {
-        guard let midiPlayer = midiPlayer else { return }
-        
-        // 저장된 위치에서 다시 재생
-        midiPlayer.currentPosition = lastPosition
-        midiPlayer.play()
-        print("MIDI playback resumed from \(lastPosition) seconds.")
-    }
-    
     func stopPreviewMIDI() {
         guard let midiPlayer else { return }
         midiPlayer.stop()
@@ -260,16 +250,20 @@ class MusicPlayer: ObservableObject {
     
     // MIDI 파일 처음으로 셋팅
     func stopMIDI() {
-        guard let midiPlayer, let metronomeMIDIPlayer else { return }
+        if let midiPlayer {
+            midiPlayer.stop()
+            midiPlayer.currentPosition = 0
+
+        }
+        if let metronomeMIDIPlayer {
+            metronomeMIDIPlayer.stop()
+            metronomeMIDIPlayer.currentPosition = 0
+        }
         // 처음으로
         isTemporarilyStopped = true
-        midiPlayer.stop()
-        midiPlayer.currentPosition = 0
         currentTime = 0
         lastPosition = 0
         stopTimer()
-        metronomeMIDIPlayer.stop()
-        metronomeMIDIPlayer.currentPosition = 0
     }
     
     // 타이머 시작

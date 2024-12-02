@@ -9,7 +9,6 @@ import UIKit
 import PDFKit
 
 struct PDFConvertManager {
-    
     // 이미지 -> PDF로 변환하는 함수
     static func convertImageToPDF(image: UIImage) async -> Data? {
         await withCheckedContinuation { continuation in
