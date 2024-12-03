@@ -29,6 +29,16 @@ struct Measure {
         currentTimes[staff] = currentStaffTime + note.duration
     }
     
+    mutating func addChordNote(_ note: Note, previousNote: Note) {
+        var updatedNote = note
+        var staff = note.staff // 높은음자리표 낮은음자리표 구분 (높은음자리표 : 1, 낮은음자리표 : 2)
+        var currentStaffTime = currentTimes[staff] ?? 0
+
+        updatedNote.startTime = currentStaffTime - previousNote.duration
+        // 음표를 추가
+        notes.append(updatedNote)
+    }
+    
     // TODO: 일단 1번째 staff 만 forward, backup 적용되게 했습니다. 나중에 voice값에 따라 startTime을 관리하게 해야됩니다
     mutating func backupNoteTime(duration: Int, staff: Int) {
         let currentStaffTime = currentTimes[staff] ?? 0
