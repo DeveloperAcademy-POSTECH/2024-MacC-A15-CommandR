@@ -28,4 +28,17 @@ struct Measure {
         // 해당 스태프의 시간을 음표의 duration만큼 증가
         currentTimes[staff] = currentStaffTime + note.duration
     }
+    
+    // TODO: 일단 1번째 staff 만 forward, backup 적용되게 했습니다. 나중에 voice값에 따라 startTime을 관리하게 해야됩니다
+    mutating func backupNoteTime(duration: Int, staff: Int) {
+        let currentStaffTime = currentTimes[staff] ?? 0
+        
+        currentTimes[staff] = currentStaffTime - duration
+    }
+    
+    mutating func forwardNoteTime(duration: Int, staff: Int) {
+        let currentStaffTime = currentTimes[staff] ?? 0
+        
+        currentTimes[staff] = currentStaffTime + duration
+    }
 }

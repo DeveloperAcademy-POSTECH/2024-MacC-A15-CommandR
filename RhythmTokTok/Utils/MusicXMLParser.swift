@@ -12,6 +12,8 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
     private var score = Score()           // Score 객체로 파싱된 데이터를 저장
     private var currentMeasure: Measure?
     private var currentNote: Note?
+    private var isBackup: Bool = false // 백업 처리 구분
+    private var isForward: Bool = false // 포워드 처리 구분
     private var currentElement: String = ""
     private var currentVoice: String = "" // 현재 `voice` 값 저장
     private var currentPartId: String? // 파싱할 `part`의 `id` 값
@@ -133,13 +135,18 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             }
             
             currentMeasure = Measure(number: measureNumber, notes: [],
-                                     currentTimes: previousTimes, startTime: previousTimes[1] ?? 0,
+                                     currentTimes: previousTimes, startTime: previousTimes[currentNote?.staff ?? 1] ?? 0,
                                      beats: 0, beatType: 0)  // 두 개의 스태프 관리
         }
 
         // 노트(note) 태그를 만났을 때
         if elementName == "note" {
             currentNote = Note(pitch: "", duration: 0, octave: 0, type: "", voice: 0, staff: 1, startTime: 0)
+        } else if elementName == "backup" {
+            // 백업 처리
+            isBackup = true
+        } else if elementName == "forward" {
+            isForward = true
         }
         
         // 쉼표 처리: `rest` 태그를 만났을 때
@@ -173,9 +180,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
                 currentNote?.octave = octave
             }
         case "duration":
-            if let duration = Int(trimmedString) {
-                currentNote?.duration = duration
-            }
+            parseDuration(trimmedString)
         case "voice":
             if let voice = Int(trimmedString), var note = currentNote {
                 note.voice = voice
@@ -208,6 +213,20 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
             
         default:
             break
+        }
+    }
+    
+    private func parseDuration(_ value: String) {
+        if let duration = Int(value) {
+            if isBackup {
+                currentMeasure?.backupNoteTime(duration: duration, staff: currentNote?.staff ?? 1)
+                isBackup = false
+            } else if isForward {
+                currentMeasure?.forwardNoteTime(duration: duration, staff: currentNote?.staff ?? 1)
+                isForward = false
+            } else {
+                currentNote?.duration = duration
+            }
         }
     }
 
@@ -267,7 +286,7 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         if elementName == "note", let note = currentNote, currentMeasure != nil {
             // 마디에 음표 추가
             currentMeasure?.addNote(note)
-            currentNote = nil
+//            currentNote = nil
         }
         
         if elementName == "measure", var measure = currentMeasure {
