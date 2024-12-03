@@ -74,6 +74,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // MARK: - 뷰 생명주기
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         IOStoWatchConnectivityManager.shared.checkAndActivateSession()
         setupPracticeView()
         handleScoreChange()
@@ -94,7 +95,6 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         // 스와이프 제스처 인식기 설정
-        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(backButtonTapped))
     }
@@ -228,6 +228,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     // MARK: 프로퍼티 구독
     private func setupBindings() {
         IOStoWatchConnectivityManager.shared.$watchAppStatus
+            .prepend(IOStoWatchConnectivityManager.shared.$watchAppStatus)  // 현재 값을 먼저 방출
             .sink { [weak self] watchStatus in
                 self?.handleWatchAppConnectionChange(watchStatus)
             }
@@ -292,9 +293,11 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     private func handleWatchAppConnectionChange(_ watchStatus: AppleWatchStatus) {
         DispatchQueue.main.async {
             if watchStatus == .connected {
+//                print("연결")
                 self.practiceNavBar.setWatchImage(isConnected: true)
                 self.toolTipView.setStatus(.connected)
             } else {
+//                print("연결끊김")
                 self.practiceNavBar.setWatchImage(isConnected: false)
                 self.toolTipView.setStatus(watchStatus)
             }
@@ -350,6 +353,7 @@ class ScorePracticeViewController: UIViewController, UIGestureRecognizerDelegate
     func resetScore() {
         musicPlayer.stopMIDI()
         IOStoWatchConnectivityManager.shared.playStatus = .ready
+        IOStoWatchConnectivityManager.shared.watchAppStatus = .ready
         // 초기화 로직
         IOStoWatchConnectivityManager.shared.sendScoreSelection(scoreTitle: "", hapticSequence: [])
     }

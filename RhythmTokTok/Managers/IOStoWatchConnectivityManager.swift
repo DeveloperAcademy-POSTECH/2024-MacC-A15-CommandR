@@ -28,7 +28,6 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
     private override init() {
         super.init()
         setupSession()
-        creationTimestamp = Date().timeIntervalSince1970
     }
     
     // WCSession 설정
@@ -53,6 +52,7 @@ class IOStoWatchConnectivityManager: NSObject, WCSessionDelegate, ObservableObje
             // 세션 상태 확인
             if session.activationState != .activated {
                 print("WCSession is not activated. Activating now...")
+                creationTimestamp = Date().timeIntervalSince1970
                 session.activate()
             } else {
                 print("WCSession is already activated.")
