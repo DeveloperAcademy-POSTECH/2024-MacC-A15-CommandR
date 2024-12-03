@@ -30,6 +30,7 @@ class ScoreListView: UIView {
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.isScrollEnabled = false
         tableView.backgroundColor = UIColor(named: "background_tertiary")
         return tableView
     }()
@@ -93,16 +94,36 @@ class ScoreListView: UIView {
     // 뷰 구성
     private func setupView() {
         backgroundColor = .backgroundPrimary
+      
         let containerView: UIView = {
             let view = UIView()
             view.backgroundColor = .backgroundTertiary // 배경색 설정
             view.translatesAutoresizingMaskIntoConstraints = false
             return view
         }()
-        
+
         addSubview(containerView)
-        containerView.addSubview(tableHeaderLabel)
-        containerView.addSubview(tableView)
+        
+        // ScrollView 선언
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .backgroundTertiary
+        containerView.addSubview(scrollView)
+
+        // ContentView (스크롤뷰 내부 콘텐츠) 선언
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentView)
+        
+        // Header + TableView를 합친 새로운 뷰 선언
+        let headerAndTableView = UIView()
+        headerAndTableView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(headerAndTableView)
+
+        headerAndTableView.addSubview(tableHeaderLabel)
+        headerAndTableView.addSubview(tableView)
+//        containerView.addSubview(tableHeaderLabel)
+//        containerView.addSubview(tableView)
         containerView.addSubview(addButton)
         
         // Auto Layout 설정
@@ -113,16 +134,31 @@ class ScoreListView: UIView {
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
+            scrollView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            headerAndTableView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            headerAndTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            headerAndTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
             // 헤더 레이블 레이아웃
-            tableHeaderLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
-            tableHeaderLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            tableHeaderLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            tableHeaderLabel.topAnchor.constraint(equalTo: headerAndTableView.topAnchor),
+            tableHeaderLabel.leadingAnchor.constraint(equalTo: headerAndTableView.leadingAnchor),
+            tableHeaderLabel.trailingAnchor.constraint(equalTo: headerAndTableView.trailingAnchor),
             
             // 테이블뷰 레이아웃
-            tableView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor, constant: 8),
+            tableView.leadingAnchor.constraint(equalTo: headerAndTableView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: headerAndTableView.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: headerAndTableView.bottomAnchor),
             
             // 하단 버튼 레이아웃
             addButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 139),
