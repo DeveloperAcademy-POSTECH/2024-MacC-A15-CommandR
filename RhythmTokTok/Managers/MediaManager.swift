@@ -460,7 +460,7 @@ class MediaManager {
         let beatInterval = MusicTimeStamp(standardDivision) // 바뀐 부분: BPM에 맞춘 4분음표 간격 계산
 
         // 보정된 전체 길이 설정
-        let totalDurationInBeats = MusicTimeStamp(160.0 * standardDivision) // 바뀐 부분: BPM에 따른 전체 길이 계산
+        let totalDurationInBeats = MusicTimeStamp(480.0 * standardDivision) // 바뀐 부분: BPM에 따른 전체 길이 계산
 
         // 여러 박자를 반복하여 드럼 노트 추가
         for beat in stride(from: 0.0, to: totalDurationInBeats, by: beatInterval) {
