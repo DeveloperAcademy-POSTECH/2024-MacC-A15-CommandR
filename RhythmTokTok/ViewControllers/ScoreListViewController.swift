@@ -35,7 +35,7 @@ class ScoreListViewController: UIViewController {
             self?.didTapSearch()
         }
         setupTableView()
-        scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
+//        scoreListView.addButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {

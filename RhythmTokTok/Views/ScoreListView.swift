@@ -39,31 +39,32 @@ class ScoreListView: UIView {
         return tableView
     }()
     
-    // 하단 버튼 선언
-    let addButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle(" 음악 추가하기", for: .normal)
-        button.setImage(UIImage(named: "add"), for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = UIColor.systemBlue
-        button.layer.cornerRadius = 12
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.customFont(forTextStyle: .body2Medium)
-        button.titleLabel?.adjustsFontForContentSizeCategory = true
-        
-        // 텍스트와 아이콘 간의 여백 설정
-        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        
-        // 버튼 크기를 텍스트와 이미지에 맞게 조정
-        button.sizeToFit()
-        
-        // 그림자 설정
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 2) // 그림자의 방향과 거리
-        button.layer.shadowOpacity = 0.3 // 그림자의 투명도
-        button.layer.shadowRadius = 4 // 그림자의 흐림 정도
-        return button
-    }()
+    // TODO: 악보 추가하기 버튼 임시 주석처리
+//    // 하단 버튼 선언
+//    let addButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        button.setTitle(" 음악 추가하기", for: .normal)
+//        button.setImage(UIImage(named: "add"), for: .normal)
+//        button.tintColor = .white
+//        button.backgroundColor = UIColor.systemBlue
+//        button.layer.cornerRadius = 12
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        button.titleLabel?.font = UIFont.customFont(forTextStyle: .body2Medium)
+//        button.titleLabel?.adjustsFontForContentSizeCategory = true
+//        
+//        // 텍스트와 아이콘 간의 여백 설정
+//        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+//        
+//        // 버튼 크기를 텍스트와 이미지에 맞게 조정
+//        button.sizeToFit()
+//        
+//        // 그림자 설정
+//        button.layer.shadowColor = UIColor.black.cgColor
+//        button.layer.shadowOffset = CGSize(width: 0, height: 2) // 그림자의 방향과 거리
+//        button.layer.shadowOpacity = 0.3 // 그림자의 투명도
+//        button.layer.shadowRadius = 4 // 그림자의 흐림 정도
+//        return button
+//    }()
     
     // MARK: - 초기화
 
@@ -102,7 +103,7 @@ class ScoreListView: UIView {
         backgroundColor = .backgroundPrimary
         
         addSubview(tableView)
-        addSubview(addButton)
+//        addSubview(addButton)
         
         // 테이블 헤더 설정
         let headerContainer = UIView()
@@ -131,11 +132,11 @@ class ScoreListView: UIView {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            // 추가 버튼 레이아웃
-            addButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 139),
-            addButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 56),
-            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            addButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
+//            // 추가 버튼 레이아웃
+//            addButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 139),
+//            addButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 56),
+//            addButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+//            addButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
     
