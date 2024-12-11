@@ -306,27 +306,27 @@ class MusicXMLParser: NSObject, XMLParserDelegate {
         
         if elementName == "measure", var measure = currentMeasure {
             // 부족한 박자를 채워 넣는 보정 작업
-            for staffKey in 1...2 {
-                let filteredNotes = currentMeasure!.notes.filter { $0.staff == staffKey }
-                // 마디 내에 위치한 모든 노트들의 duration의 sum을 구함
-                let totalNotesDuration = filteredNotes.reduce(0) { $0 + $1.duration }
-                // 마디의 duration에 대한 통계를 유지
-                measureDurationsCount[totalNotesDuration, default: 0] += 1
-                
-                // 마디에 저장된 비트 혹은 통계를 통해 현 마디에 있어야 할 길이를 구함
-                let measureFullDuration = getMeasureFullDuration()
-                
-                // 마디 내에서 부족한 길이를 구함
-                let remainingDuration = measureFullDuration - totalNotesDuration
-                
-                // 부족한 길이만큼 쉼표를 생성하여 마디에 추가함
-                if remainingDuration > 0 {
-                    currentNote = Note(pitch: "", duration: remainingDuration, octave: 0, type: "", voice: 1, staff: staffKey, startTime: 0, isRest: true)
-                    currentNote?.isRest = true
-                    currentMeasure?.addNote(currentNote!)
-                    measure = currentMeasure!
-                }
-            }
+//            for staffKey in 1...2 {
+//                let filteredNotes = currentMeasure!.notes.filter { $0.staff == staffKey }
+//                // 마디 내에 위치한 모든 노트들의 duration의 sum을 구함
+//                let totalNotesDuration = filteredNotes.reduce(0) { $0 + $1.duration }
+//                // 마디의 duration에 대한 통계를 유지
+//                measureDurationsCount[totalNotesDuration, default: 0] += 1
+//                
+//                // 마디에 저장된 비트 혹은 통계를 통해 현 마디에 있어야 할 길이를 구함
+//                let measureFullDuration = getMeasureFullDuration()
+//                
+//                // 마디 내에서 부족한 길이를 구함
+//                let remainingDuration = measureFullDuration - totalNotesDuration
+//                
+//                // 부족한 길이만큼 쉼표를 생성하여 마디에 추가함
+//                if remainingDuration > 0 {
+//                    currentNote = Note(pitch: "", duration: remainingDuration, octave: 0, type: "", voice: 1, staff: staffKey, startTime: 0, isRest: true)
+//                    currentNote?.isRest = true
+//                    currentMeasure?.addNote(currentNote!)
+//                    measure = currentMeasure!
+//                }
+//            }
                
             // TODO: 마디 줄 파싱 로직 더 좋은 방법 구상 필요
             // 초기값 최댓값으로 설정
