@@ -53,6 +53,9 @@
 
 
 <br>
+## 🕸️ 아키텍처 다이어그램
+![diagram-3](https://github.com/user-attachments/assets/0b667d0d-6eff-4fb6-b3f3-e4c001f88d57)
+https://gitdiagram.com/DeveloperAcademy-POSTECH/2024-MacC-A15-CommandR
 
 ## 🛠 Stacks
 
