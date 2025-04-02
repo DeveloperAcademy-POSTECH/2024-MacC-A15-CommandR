@@ -50,11 +50,11 @@
 - User별 PDF → 음악 변환 상태값 확인 가능
 - 변환 완료시 알림 및 저장
   
-
-
 <br>
+
+
 ## 🕸️ 아키텍처 다이어그램
-![diagram-3](https://github.com/user-attachments/assets/0b667d0d-6eff-4fb6-b3f3-e4c001f88d57)
+![diagram-3](https://github.com/user-attachments/assets/3b25da7d-006a-42a6-94c8-8bd372810952)
 https://gitdiagram.com/DeveloperAcademy-POSTECH/2024-MacC-A15-CommandR
 
 ## 🛠 Stacks
