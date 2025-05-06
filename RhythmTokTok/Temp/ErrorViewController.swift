@@ -35,7 +35,10 @@ class ErrorViewController: UIViewController {
         mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
         mainMessageLabel.adjustsFontForContentSizeCategory = true
-        
+        mainMessageLabel.numberOfLines = 0
+        mainMessageLabel.lineBreakMode = .byWordWrapping
+        mainMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+
         // 3. 하위 메시지 레이블
         let subMessageLabel = UILabel()
         subMessageLabel.text = "문제가 발생했으니 다시 시도해 주세요"
@@ -43,6 +46,9 @@ class ErrorViewController: UIViewController {
         subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
         subMessageLabel.adjustsFontForContentSizeCategory = true
+        subMessageLabel.numberOfLines = 0
+        subMessageLabel.lineBreakMode = .byWordWrapping
+        subMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         
         // 4. 버튼
         let retryButton = UIButton(type: .system)
@@ -51,10 +57,16 @@ class ErrorViewController: UIViewController {
         retryButton.titleLabel?.font = UIFont.customFont(forTextStyle: .button1Medium)
         retryButton.backgroundColor = .buttonPrimary
         retryButton.layer.cornerRadius = 10
+        retryButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 24, bottom: 10, right: 24)
         retryButton.translatesAutoresizingMaskIntoConstraints = false
-        retryButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        retryButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+//        retryButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        retryButton.setContentHuggingPriority(.required, for: .horizontal)
+        retryButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         retryButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        retryButton.titleLabel?.numberOfLines = 1
+        retryButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        retryButton.titleLabel?.minimumScaleFactor = 0.7
+        retryButton.titleLabel?.lineBreakMode = .byClipping
         
         // 버튼 액션 추가
         retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
@@ -71,10 +83,15 @@ class ErrorViewController: UIViewController {
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
+
             // 경고 아이콘 크기 지정
             warningIcon.widthAnchor.constraint(equalToConstant: 80),
-            warningIcon.heightAnchor.constraint(equalToConstant: 80)
+            warningIcon.heightAnchor.constraint(equalToConstant: 80),
+
+            mainMessageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
+            mainMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32),
+            subMessageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
+            subMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32)
         ])
     }
     

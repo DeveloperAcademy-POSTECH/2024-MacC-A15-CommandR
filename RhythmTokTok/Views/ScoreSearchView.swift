@@ -12,7 +12,7 @@ class ScoreSearchView: UIView {
     let beforeSearchView = BeforeSearchView()
     let emptyResultView = EmptyResultView()
     weak var parentViewController: UIViewController?
-    
+
     let searchBackgroundView: UIView = {
         let view = UIView()
         //        view.backgroundColor = .red
@@ -32,14 +32,14 @@ class ScoreSearchView: UIView {
         textField.adjustsFontForContentSizeCategory = true
         
         // placeholder에 커스텀 폰트 적용
-        let placeholderText = "음악 제목을 입력해 주세요"
+        let placeholderText = "음악 제목"
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor(named: "placeholder") ?? .lightGray,
             .font: UIFont.customFont(forTextStyle: .body2Regular),
         ]
-        textField.adjustsFontForContentSizeCategory = true
+        textField.adjustsFontForContentSizeCategory = true // 다이나믹 폰트 적용을 위한 설정
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
-        textField.setLeftPaddingPoints(36)
+        textField.setLeftPaddingPoints(44)
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor(named: "border_secondary")?.cgColor
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -48,8 +48,10 @@ class ScoreSearchView: UIView {
     
     let searchIcon: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "search")?.withRenderingMode(.alwaysTemplate))
+        
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
         imageView.tintColor = UIColor(named: "lable_tertiary")
         return imageView
     }()
@@ -89,6 +91,9 @@ class ScoreSearchView: UIView {
         setupStateViews() // 상태 뷰 추가
         setupCancelIconGesture() // Cancel 버튼 제스처 추가
         setupKeyboardDismissGesture()
+        NotificationCenter.default.addObserver(self, selector: #selector(contentSizeChanged), name: UIContentSizeCategory.didChangeNotification, object: nil)
+        updateSearchIconSize()
+        updateCancelIconSize()
     }
     
     required init?(coder: NSCoder) {
@@ -122,6 +127,10 @@ class ScoreSearchView: UIView {
     }
     
     private func setupView() {
+        let baseIconSize: CGFloat = 20
+        let metrics = UIFontMetrics(forTextStyle: .body)
+        let scaledIconSize = metrics.scaledValue(for: baseIconSize)
+
         backgroundColor = UIColor(named: "background_primary")
         
         addSubview(searchBackgroundView)
@@ -159,15 +168,16 @@ class ScoreSearchView: UIView {
                 searchTextField.heightAnchor.constraint(equalToConstant: 48),
                 
                 // 검색 고정 아이콘
+                
                 searchIcon.leadingAnchor
-                    .constraint(
-                        equalTo: searchTextField.leadingAnchor,
-                        constant: 12
-                    ),
+                        .constraint(equalTo: searchTextField.leadingAnchor, constant: 12),
                 searchIcon.centerYAnchor
                     .constraint(equalTo: searchTextField.centerYAnchor),
-                searchIcon.widthAnchor.constraint(equalToConstant: 20),
-                searchIcon.heightAnchor.constraint(equalToConstant: 20),
+                searchIcon.widthAnchor
+                    .constraint(equalToConstant: scaledIconSize),
+                searchIcon.heightAnchor
+                    .constraint(equalToConstant: scaledIconSize),
+                
                 
                 // 취소 고정 아이콘
                 cancelIcon.trailingAnchor
@@ -176,8 +186,8 @@ class ScoreSearchView: UIView {
                         constant: -12),
                 cancelIcon.centerYAnchor
                     .constraint(equalTo: searchTextField.centerYAnchor),
-                cancelIcon.widthAnchor.constraint(equalToConstant: 20),
-                cancelIcon.heightAnchor.constraint(equalToConstant: 20)
+                cancelIcon.widthAnchor.constraint(equalToConstant: scaledIconSize),
+                cancelIcon.heightAnchor.constraint(equalToConstant: scaledIconSize)
             ])
     }
     
@@ -232,7 +242,7 @@ class ScoreSearchView: UIView {
             beforeSearchView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             
             // No Result View
-            emptyResultView.topAnchor.constraint(equalTo: tableHeaderLabel.bottomAnchor),
+            emptyResultView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -20),
             emptyResultView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             emptyResultView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             emptyResultView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
@@ -260,6 +270,47 @@ class ScoreSearchView: UIView {
     
     @objc private func dismissKeyboard() {
         self.endEditing(true) // 현재 활성화된 텍스트 필드의 키보드를 숨김
+    }
+
+    @objc private func contentSizeChanged() {
+        updateSearchIconSize()
+        updateCancelIconSize()
+    }
+
+    private func updateSearchIconSize() {
+        let baseIconSize: CGFloat = 20
+        let metrics = UIFontMetrics(forTextStyle: .body)
+        let scaledIconSize = metrics.scaledValue(for: baseIconSize)
+
+        for constraint in searchIcon.constraints {
+            if constraint.firstAttribute == .width || constraint.firstAttribute == .height {
+                searchIcon.removeConstraint(constraint)
+            }
+        }
+
+        NSLayoutConstraint.activate([
+            searchIcon.widthAnchor.constraint(equalToConstant: scaledIconSize),
+            searchIcon.heightAnchor.constraint(equalToConstant: scaledIconSize)
+        ])
+
+        searchTextField.setLeftPaddingPoints(scaledIconSize + 24)
+    }
+    
+    private func updateCancelIconSize() {
+        let baseIconSize: CGFloat = 20
+        let metrics = UIFontMetrics(forTextStyle: .body)
+        let scaledIconSize = metrics.scaledValue(for: baseIconSize)
+
+        for constraint in cancelIcon.constraints {
+            if constraint.firstAttribute == .width || constraint.firstAttribute == .height {
+                cancelIcon.removeConstraint(constraint)
+            }
+        }
+
+        NSLayoutConstraint.activate([
+            cancelIcon.widthAnchor.constraint(equalToConstant: scaledIconSize),
+            cancelIcon.heightAnchor.constraint(equalToConstant: scaledIconSize)
+        ])
     }
 }
 

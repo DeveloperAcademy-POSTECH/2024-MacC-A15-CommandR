@@ -55,6 +55,8 @@ class InternetErrorViewController: UIViewController {
         mainMessageLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
         mainMessageLabel.textAlignment = .center
         mainMessageLabel.adjustsFontForContentSizeCategory = true
+        mainMessageLabel.numberOfLines = 0
+        mainMessageLabel.lineBreakMode = .byWordWrapping
         mainMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(mainMessageLabel)
 
@@ -65,6 +67,8 @@ class InternetErrorViewController: UIViewController {
         subMessageLabel.font = UIFont.customFont(forTextStyle: .subheadingRegular)
         subMessageLabel.textAlignment = .center
         subMessageLabel.adjustsFontForContentSizeCategory = true
+        subMessageLabel.numberOfLines = 0
+        subMessageLabel.lineBreakMode = .byWordWrapping
         subMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(subMessageLabel)
 
@@ -76,8 +80,9 @@ class InternetErrorViewController: UIViewController {
         retryButton.backgroundColor = .buttonPrimary
         retryButton.layer.cornerRadius = 10
         retryButton.translatesAutoresizingMaskIntoConstraints = false
-        retryButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        retryButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        retryButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 24, bottom: 10, right: 24)
+        retryButton.setContentHuggingPriority(.required, for: .horizontal)
+        retryButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         retryButton.titleLabel?.adjustsFontForContentSizeCategory = true
         retryButton.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         stackView.addArrangedSubview(retryButton)
@@ -85,7 +90,11 @@ class InternetErrorViewController: UIViewController {
         // 스택뷰 중앙 정렬
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            mainMessageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
+            mainMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32),
+            subMessageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 32),
+            subMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -32)
         ])
     }
 
