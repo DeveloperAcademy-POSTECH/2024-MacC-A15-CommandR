@@ -38,19 +38,22 @@ class BeforeSearchView: UIView {
     }
     
     private func setupView() {
-        addSubview(imageView)
-        addSubview(messageLabel)
-        
+        let stackView = UIStackView(arrangedSubviews: [imageView, messageLabel])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 22
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(stackView)
+
         NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 200),
             imageView.widthAnchor.constraint(equalToConstant: 100),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
-            
-            messageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 22),
-            messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16), // 좌측 여백
-            messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16) // 우측 여백
+
+            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -40),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16)
         ])
     }
 }

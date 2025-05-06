@@ -50,20 +50,36 @@ class EmptyStateView: UIView {
         subMessageLabel.lineBreakMode = .byWordWrapping // 단어 단위로 줄바꿈
         addSubview(subMessageLabel)
 
+        let verticalOffset: CGFloat
+        let spacingToMessage: CGFloat
+        let spacingToSubMessage: CGFloat
+
+        switch traitCollection.preferredContentSizeCategory {
+        case .accessibilityMedium, .accessibilityLarge, .accessibilityExtraLarge,
+             .accessibilityExtraExtraLarge, .accessibilityExtraExtraExtraLarge:
+            verticalOffset = -160
+            spacingToMessage = 12
+            spacingToSubMessage = 6
+        default:
+            verticalOffset = -90
+            spacingToMessage = 20
+            spacingToSubMessage = 10
+        }
+
         // 레이아웃 설정
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -90),
+            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: verticalOffset),
             imageView.widthAnchor.constraint(equalToConstant: 150),
             imageView.heightAnchor.constraint(equalToConstant: 150),
 
-            messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: spacingToMessage),
             messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             messageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16), // 좌측 여백
             messageLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16), // 우측 여백
 
-            subMessageLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 10),
+            subMessageLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: spacingToSubMessage),
             subMessageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             subMessageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             subMessageLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16), // 좌측 여백
