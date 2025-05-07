@@ -5,13 +5,6 @@
 //  Created by sungkug_apple_developer_ac on 11/14/24.
 //
 
-//
-//  CheckPDFView.swift
-//  RhythmTokTok
-//
-//  Created by sungkug_apple_developer_ac on 11/14/24.
-//
-
 import UIKit
 
 class CheckPDFView: UIView {
@@ -25,13 +18,15 @@ class CheckPDFView: UIView {
     let addPDFButton = UIButton()
     let collectionContainerView = UIView()
     var collectionView: UICollectionView!
+    
+    private var collectionContainerViewHeightConstraint: NSLayoutConstraint?
 
     var isFileSelected: Bool = false {
         didSet {
             updateLayoutForFileSelection()
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -49,10 +44,10 @@ class CheckPDFView: UIView {
         scrollView.isScrollEnabled = true
         scrollView.isUserInteractionEnabled = true
         addSubview(scrollView)
-        
+
         contentView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
-        
+
         // Header Label 설정
         headerLabel.textAlignment = .left
         headerLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
@@ -62,7 +57,7 @@ class CheckPDFView: UIView {
         headerLabel.textColor = .lableSecondary
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(headerLabel)
-        
+
         // Subheader Label 설정
         subHeaderLabel.textAlignment = .left
         subHeaderLabel.font = UIFont.customFont(forTextStyle: .body2Regular)
@@ -73,7 +68,6 @@ class CheckPDFView: UIView {
         subHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(subHeaderLabel)
 
-        
         // 악보 뒤의 회색 배경 Container View 설정
         containerView.layer.cornerRadius = 12
         containerView.layer.masksToBounds = true
@@ -88,7 +82,7 @@ class CheckPDFView: UIView {
         collectionContainerView.layer.shadowOpacity = 0.25
         collectionContainerView.layer.shadowOffset = CGSize(width: 0, height: 2)
         collectionContainerView.layer.shadowRadius = 4
-        contentView.addSubview(collectionContainerView)
+        containerView.addSubview(collectionContainerView) // Moved to containerView
 
         // Collection View 설정
         let layout = UICollectionViewFlowLayout()
@@ -133,13 +127,13 @@ class CheckPDFView: UIView {
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.layer.cornerRadius = 12
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(confirmButton)
+        contentView.addSubview(confirmButton)
     }
 
     private func setupConstraints() {
-        let containerBottomConstraint = containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20)
-        containerBottomConstraint.priority = .defaultLow
-
+        let collectionHeightConstraint = collectionContainerView.heightAnchor.constraint(equalToConstant: 266)
+           collectionContainerViewHeightConstraint = collectionHeightConstraint // Store the reference
+        
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -150,7 +144,6 @@ class CheckPDFView: UIView {
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor), // Important for vertical scroll
 
             headerLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
@@ -164,42 +157,42 @@ class CheckPDFView: UIView {
             containerView.topAnchor.constraint(equalTo: subHeaderLabel.bottomAnchor, constant: 8),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-
+            
+            collectionHeightConstraint, //activate constraint
             collectionContainerView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
             collectionContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 74),
             collectionContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -73),
-            collectionContainerView.heightAnchor.constraint(equalToConstant: 266),
 
             collectionView.topAnchor.constraint(equalTo: collectionContainerView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: collectionContainerView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: collectionContainerView.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: collectionContainerView.bottomAnchor),
-            
-            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 20),
 
+//            addPDFButton.topAnchor.constraint(equalTo: collectionContainerView.bottomAnchor, constant: 40), // Stacked vertically
+            addPDFButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             addPDFButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             addPDFButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            addPDFButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             addPDFButton.heightAnchor.constraint(equalToConstant: 56),
 
-            changePDFButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
+            changePDFButton.topAnchor.constraint(equalTo: collectionContainerView.bottomAnchor, constant: 8), // Stacked vertically
             changePDFButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             changePDFButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             changePDFButton.heightAnchor.constraint(equalToConstant: 48),
+            changePDFButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20), // Pin bottom of container
 
-            confirmButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            confirmButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -27),
-            confirmButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            confirmButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            confirmButton.heightAnchor.constraint(equalToConstant: 64)
+            confirmButton.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 27), // Below the container
+            confirmButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            confirmButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            confirmButton.heightAnchor.constraint(equalToConstant: 64),
+            confirmButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -27), // Pin bottom of contentView
         ])
     }
 
-    
     private func updateLayoutForFileSelection() {
         if isFileSelected {
             headerLabel.text = "선택한 파일이 맞나요?"
             collectionContainerView.isHidden = false
+            collectionContainerViewHeightConstraint?.constant = 380 // Set to the desired height
             confirmButton.isEnabled = true
             confirmButton.backgroundColor = .buttonPrimary
             changePDFButton.isHidden = false
@@ -207,6 +200,7 @@ class CheckPDFView: UIView {
         } else {
             headerLabel.text = "악보 PDF 파일을 선택해주세요"
             collectionContainerView.isHidden = true
+            collectionContainerViewHeightConstraint?.constant = 380     // 빈 공간의 높이를 조절
             confirmButton.isEnabled = false
             confirmButton.backgroundColor = .buttonDisabled
             changePDFButton.isHidden = true
