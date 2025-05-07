@@ -10,7 +10,6 @@ import UIKit
 class CheckPDFView: UIView {
     let headerLabel = UILabel()
     let subHeaderLabel = UILabel()
-    let subHeaderLabel2 = UILabel()
     let confirmButton = UIButton()
     let containerView = UIView()
     let changePDFButton = UIButton()
@@ -39,6 +38,8 @@ class CheckPDFView: UIView {
         // Header Label 설정
         headerLabel.textAlignment = .left
         headerLabel.font = UIFont.customFont(forTextStyle: .heading2Bold)
+        headerLabel.text = "악보 PDF 파일을 선택해주세요"
+        headerLabel.numberOfLines = 0
         headerLabel.adjustsFontForContentSizeCategory = true
         headerLabel.textColor = .lableSecondary
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -47,21 +48,13 @@ class CheckPDFView: UIView {
         // Subheader Label 설정
         subHeaderLabel.textAlignment = .left
         subHeaderLabel.font = UIFont.customFont(forTextStyle: .body2Regular)
-        subHeaderLabel.text = "디지털 PDF 악보만 지원되며, 사진이나 스캔본은"
+        subHeaderLabel.text = "디지털 PDF 악보만 지원되며, 사진이나 스캔본은 사용할 수 없어요."
         subHeaderLabel.numberOfLines = 0
         subHeaderLabel.adjustsFontForContentSizeCategory = true
         subHeaderLabel.textColor = .lableTertiary
         subHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(subHeaderLabel)
-        
-        // Subheader Label2 설정
-        subHeaderLabel2.font = UIFont.customFont(forTextStyle: .body2Regular)
-        subHeaderLabel2.text = "사용할 수 없어요."
-        subHeaderLabel2.numberOfLines = 0
-        subHeaderLabel2.adjustsFontForContentSizeCategory = true
-        subHeaderLabel2.textColor = .lableTertiary
-        subHeaderLabel2.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(subHeaderLabel2)
+
         
         // Container View 설정
         containerView.layer.cornerRadius = 12
@@ -130,17 +123,12 @@ class CheckPDFView: UIView {
             headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 40),
             headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             headerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            headerLabel.heightAnchor.constraint(equalToConstant: 34),
 
             subHeaderLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 8),
             subHeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             subHeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             
-            subHeaderLabel2.topAnchor.constraint(equalTo: subHeaderLabel.bottomAnchor, constant: 8),
-            subHeaderLabel2.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            subHeaderLabel2.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-
-            containerView.topAnchor.constraint(equalTo: subHeaderLabel2.bottomAnchor, constant: 24),
+            containerView.topAnchor.constraint(equalTo: subHeaderLabel.bottomAnchor, constant: 8),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             containerView.bottomAnchor.constraint(equalTo: confirmButton.topAnchor, constant: -28),
